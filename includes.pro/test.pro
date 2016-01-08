@@ -15,7 +15,8 @@ HEADERS += \
     ../test/AddressBookStoreTest.hpp \
     ../test/DataBaseDirectory.hpp \
     ../test/ScanIndexStoreTest.hpp \
-    ../test/TransactionStoreTest.hpp
+    ../test/TransactionStoreTest.hpp \
+    ../test/AccountScanCriterionTest.hpp
 
 
 SOURCES += \
@@ -23,7 +24,8 @@ SOURCES += \
     ../test/AddressBookStoreTest.cpp\
     ../test/main.cpp \
     ../test/ScanIndexStoreTest.cpp \
-    ../test/TransactionStoreTest.cpp
+    ../test/TransactionStoreTest.cpp \
+    ../test/AccountScanCriterionTest.cpp
 
 
 

@@ -4,6 +4,7 @@
 #include "AddressBookStoreTest.hpp"
 #include "ScanIndexStoreTest.hpp"
 #include "TransactionStoreTest.hpp"
+#include "AccountScanCriterionTest.hpp"
 
 
 int main(int argc, char** argv)
@@ -19,6 +20,10 @@ int main(int argc, char** argv)
    }
    {
        TransactionStoreTest test;
+       status |= QTest::qExec(&test, argc, argv);
+   }
+   {
+       AccountScanCriterionTest test;
        status |= QTest::qExec(&test, argc, argv);
    }
    return status;
