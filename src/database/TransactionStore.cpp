@@ -42,11 +42,23 @@ std::string TransactionIndexDecoder::operator ()(const std::string &index) const
     return index;
 }
 
-TransactionStore::TransactionStore(const std::string &path ) :
-    _dataStore(path),
-    _indexStore(path+".index")
+TransactionStore::TransactionStore()
+{}
+
+TransactionStore::TransactionStore(const std::string &path )
 {
-   ReverseIterator it = _dataStore.rbegin();
+    open(path);
+}
+
+bool TransactionStore::openNoThrow(const std::string &path)
+{
+    if(!_dataStore.openNoThrow(path) || !_indexStore.openNoThrow(path+".index"))
+    {
+        return false;
+    }
+
+
+    ReverseIterator it = _dataStore.rbegin();
     if(it != _dataStore.rend())
     {
         QJsonObject lastTransaction = *it;
@@ -56,7 +68,24 @@ TransactionStore::TransactionStore(const std::string &path ) :
     {
         _lastIndex = -1;
     }
+
+    return true;
 }
+
+
+void TransactionStore::open(const std::string &path)
+{
+    if(!openNoThrow(path))
+    {
+        std::stringstream stream;
+        stream<<"failed to open transactions DB : "<<path;
+        throw std::runtime_error(stream.str());
+    }
+}
+
+
+
+
 
 QJsonObject TransactionStore::get(const char *hash) const
 {

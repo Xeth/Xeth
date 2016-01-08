@@ -41,7 +41,11 @@ class TransactionStore
 
 
     public:
+        TransactionStore();
         TransactionStore(const std::string &path);
+
+        void open(const std::string &);
+        bool openNoThrow(const std::string &);
 
         bool insert(const QJsonObject &);
 
