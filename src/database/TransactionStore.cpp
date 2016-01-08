@@ -54,7 +54,7 @@ TransactionStore::TransactionStore(const std::string &path ) :
     }
     else
     {
-        _lastIndex = 0;
+        _lastIndex = -1;
     }
 }
 
@@ -79,7 +79,7 @@ TransactionStore::Iterator TransactionStore::end() const
     return _dataStore.end();
 }
 
-TransactionStore::Iterator TransactionStore::at(uint64_t index) const
+TransactionStore::Iterator TransactionStore::at(int index) const
 {
     return _dataStore.find(boost::lexical_cast<std::string>(index).c_str());
 }

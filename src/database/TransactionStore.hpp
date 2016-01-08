@@ -48,7 +48,7 @@ class TransactionStore
         QJsonObject get(const char *hash) const;
         Iterator begin() const;
         Iterator end() const;
-        Iterator at(uint64_t ) const;
+        Iterator at(int ) const;
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 
@@ -59,7 +59,7 @@ class TransactionStore
     private:
         TransactionDataStore _dataStore;
         TransactionIndexStore _indexStore;
-        uint64_t _lastIndex;
+        size_t _lastIndex;
 
 };
 
