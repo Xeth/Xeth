@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+.page .formpage.receive .txtURI {
+	color: #5B945B;
+}
+.page .formpage.receive .controls {
+	padding-top:56px;
+}
+
+.page .formpage.receive .btns {
+	margin-top:34px;
+}
+
+.page .formpage.receive .btns .btn.highlight {
+	background-color: #9DBF9D;
+	background-color: rgba(91, 148, 91, 0.4);
+}
+
+.page .formpage.receive .btns .btn.highlight:hover {
+	background-color: #5b945b;
+}
+
+.page .formpage.receive .QR {
+	height: 240px;
+	width: 240px;
+	padding: 25px;
+	background-color: #f2f2f2;
+	background-color: rgba(255, 255, 255, 0.7);
+	overflow:hidden;
+	text-align:center;
+}
+.page .formpage.receive .QR img {
+	height: 100%;
+}

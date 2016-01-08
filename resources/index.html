@@ -1,0 +1,634 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ETH</title>
+<link href="CSS/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="CSS/main.css" rel="stylesheet" type="text/css">
+<link href="CSS/page.css" rel="stylesheet" type="text/css">
+<link href="CSS/form.css" rel="stylesheet" type="text/css">
+<link href="CSS/send.css" rel="stylesheet" type="text/css">
+<link href="CSS/receive.css" rel="stylesheet" type="text/css">
+<link href="CSS/addressbook.css" rel="stylesheet" type="text/css">
+<link href="CSS/transactions.css" rel="stylesheet" type="text/css">
+<link href="CSS/bitprofile.css" rel="stylesheet" type="text/css">
+</head>
+<script type="text/javascript">
+/*setTimeout(function(){
+console.log("testing here");
+
+XETH.Error.connect(function(msg){
+    alert("error: "+msg);
+});
+setTimeout(function(){
+//alert("starting ...");
+var accounts = XETH.getAccounts();
+//alert(accounts.length);
+//alert(typeof accounts);
+alert(JSON.stringify(accounts));
+
+},0);
+},1000);
+*/
+</script>
+<body>
+
+<div id="page_send" class="page">
+    
+    <div class="formpage send">
+    	<h1>From:</h1>
+        <div id="sendFrom" class="input accountList send" value="0">
+            <a class="select">
+                <span class="amount txtBalance">
+                    <span class="int">221035</span><span class="dec">10417670</span>
+                </span>
+            	<span class="address">
+                    0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                </span>
+            </a>
+            <div class="dropdownBox dropdown3 off">
+                <ul>
+                    <li>
+                        <a>
+                            <span class="amount txtBalance">
+                                <span class="int">0</span><span class="dec">00000000</span>
+                            </span>
+                            <span class="address">
+                                0x092a5172f796d4c3cd0e03520134317fc25b74f6
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="amount txtBalance">
+                                <span class="int">221035</span><span class="dec">10417670</span>
+                            </span>
+                            <span class="address">
+                                0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="group section_to">
+    		<h1 error="invalid">To:</h1>
+            <a class="btn addressbook" title="addressbook" href="#page_addressbook"></a>
+            <a class="btn clipboard" title="paste" href="javascript:getClipboard();"></a>
+        	<div id="sendToType" class="input type" value="1">
+                <a class="select">BitProfile</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>Address</a></li>
+                        <li><a>BitProfile</a></li>
+                    </ul>
+                </div>
+            </div>
+        	<input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
+        </div>
+        
+        <div class="half_left section_amount">
+        	<h1 error="required">Amount:</h1>
+            <div class="input amount">
+        		<input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
+            </div>
+        </div>
+        
+        <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">
+        	<h1>Fee:<span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+        	<div class="slider">
+                <div class="handle ui-slider-handle" style="left:20%;"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+        
+        <div class="half_left headless_section section_saveContact">
+        	<a id="saveContact" class="checkbox">save contact to addressbook</a>
+        </div>
+        
+        <div class="half_right headless_section section_alias">
+        	<div class="input">
+        		<input id="sendAlias" class="mandatory" type="text" placeholder="alias" />
+            </div>
+        </div>
+        
+        <div class="half_left section_password">
+        	<h1 error="incorrect">Password:</h1>
+            <div class="input">
+        		<input id="sendPassword" class="mandatory" type="password" />
+            </div>
+        </div>
+        
+        <div class="submit half_right">
+        	<a href="javascript:void(0);" id="submitSend" class="btnSubmit btnSend"><span class="txt">Send</span></a>
+        </div>
+    </div>
+    
+</div>
+
+<div id="page_receive" class="page">
+    
+    <div class="formpage receive">
+    	<h1>To:</h1>
+        <div id="receiveTo" class="input accountList receive">
+            <a class="select">
+                <span class="amount txtBalance">
+                    <span class="int">221035</span><span class="dec">10417670</span>
+                </span>
+            	<span class="address">
+                    0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                </span>
+            </a>
+            <div class="dropdownBox dropdown3 off">
+                <ul>
+                    <li>
+                        <a>
+                            <span class="amount txtBalance">
+                                <span class="int">0</span><span class="dec">00000000</span>
+                            </span>
+                            <span class="address">
+                                0x092a5172f796d4c3cd0e03520134317fc25b74f6
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="amount txtBalance">
+                                <span class="int">221035</span><span class="dec">10417670</span>
+                            </span>
+                            <span class="address">
+                                0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="half_right controls">
+        	<div id="receiveQR" class="QR"></div>
+            <div class="btns x2">
+                <a href="javascript:void(0);" id="saveReceiveQR" class="btn">Save image</a>
+                <a href="javascript:void(0);" id="copyReceiveURI" class="btn highlight">Copy URI</a>
+            </div>
+        </div>
+        
+        <div class="half_left">
+        	<h1>Amount:</h1>
+            <div class="input amount">
+        		<input id="receiveAmount" type="number" min="0" placeholder="0.00000000" />
+            </div>
+            
+            <h1>Message:</h1>
+            <textarea id="receiveMessage" name="" cols="" rows=""></textarea>
+            
+            <h1>URI:</h1>
+            <textarea readonly class="txtURI" name="" cols="" rows="">bitcoin:1yd5mi6VsFR42gpXcquqLt51JJM6qor3y?amount=0.06500000&amp;message=LoremIpsumDolorSitAmet</textarea>
+        </div>
+    </div>
+    
+</div>
+
+<div id="page_addressbook" class="page">
+  <div class="head">
+    	<div class="controls left">
+          	<div id="filterContacts" class="input" value="0">
+                <a class="select">All contacts</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>All contacts</a></li>
+                        <li><a>With bitprofile</a></li>
+                        <li><a>Without bitprofile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    	<div class="controls">
+            <input class="search" type="text" placeholder="search bitprofile" />
+            <a class="inputBtnSearch" href="javascript:void(0);"></a>
+    	</div>
+    </div>
+    
+    <div class="scrollpage addressbook">
+    	<div class="holder contactList">
+        	<div class="listItem">
+            	<span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+                <div class="data">
+                    <div class="detailsRow">
+                        <a class="userProfile" href="javascript:void(0);">
+                            <span class="name">Peter Ferguson</span>
+                            <span class="bitprofileIcon on"></span>
+                        </a>
+                        <a class="detail s_titled transactions" href="javascript:void(0);">268</a>
+                    </div>
+                    <div class="detailsRow">
+                        <div class="controls">
+                        	<a class="btn send" href="javascript:void(0);"></a>
+                        	<a class="btn remove" href="javascript:void(0);"></a>
+                        </div>
+                        <a class="address" href="javascript:void(0);">
+                        	0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="listItem">
+            	<span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+                <div class="data">
+                    <div class="detailsRow">
+                        <a class="userProfile" href="javascript:void(0);">
+                            <span class="name">Peter Ferguson</span>
+                            <span class="bitprofileIcon"></span>
+                        </a>
+                        <a class="detail s_titled transactions" href="javascript:void(0);">0</a>
+                        <div class="controls">
+                        	<a class="btn btntxt send" href="javascript:void(0);"></a>
+                        </div>
+                    </div>
+                    <div class="detailsRow">
+                        <a class="address" href="javascript:void(0);">
+                        	0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                        </a>
+                        <div class="controls">
+                        	<a class="btn btntxt remove" href="javascript:void(0);"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scrollbar off">
+        	<div class="scroller">
+            	<div class="bar" style="top:25%; height:50%;"></div>
+            </div>
+            <div class="btn up"></div>
+            <div class="btn dn"></div>
+        </div>
+    </div>
+    
+</div>
+
+<div id="page_transactions" class="page">
+  <div class="head">
+    	<div class="controls left">
+        	<div id="filterTransactions" class="input" value="0">
+                <a class="select">All transactions</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>All transactions</a></li>
+                        <li><a>Received</a></li>
+                        <li><a>Sent</a></li>
+                    </ul>
+                </div>
+            </div>
+        
+            <div class="input date">
+        		<input type="text" class="daterange" placeholder="date" />
+            </div>
+    	</div>
+        
+        <div class="controls">
+            
+            <div class="input accountList mini">
+                <a class="select">
+                    <span class="amount txtBalance">
+                        <span class="int">221035</span><span class="dec">10417670</span>
+                    </span>
+                    <span class="address">
+                        0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                    </span>
+                </a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li>
+                            <a>
+                                <span class="amount txtBalance">
+                                    <span class="int">0</span><span class="dec">00000000</span>
+                                </span>
+                                <span class="address">
+                                    0x092a5172f796d4c3cd0e03520134317fc25b74f6
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="amount txtBalance">
+                                    <span class="int">221035</span><span class="dec">10417670</span>
+                                </span>
+                                <span class="address">
+                                    0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="scrollpage transactions">
+    	<div class="holder transactionList">
+        	<div class="listItem sent">
+            	<span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+                <div class="data">
+                    <div class="detailsRow">
+                        <a class="userProfile" href="javascript:void(0);">
+                            <span class="name">Peter Ferguson</span>
+                            <span class="bitprofileIcon on"></span>
+                        </a>
+                        <a class="detail s_titled hash" href="javascript:void(0);">0x54118d53...</a>
+                    	<span class="detail txtBalance">
+                        	<span class="int">221035</span><span class="dec">1041744670</span>
+                        </span>
+                    </div>
+                    <div class="detailsRow">
+                        <a class="address" href="javascript:void(0);">
+                        	0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                        </a>
+                        <span class="detail time">5 days ago</span>
+                    </div>
+                </div>
+            </div>
+            <div class="listItem received">
+            	<div class="header icon">
+                	<span class="detail s_titled userAddress">0x69d48e1d37d76d0be85be0bc717cad59644d9098</span>
+                </div>
+            	<span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+                <div class="data">
+                    <div class="detailsRow">
+                        <a class="userProfile" href="javascript:void(0);">
+                            <span class="name">Peter Ferguson</span>
+                            <span class="bitprofileIcon"></span>
+                        </a>
+                        <a class="detail s_titled hash" href="javascript:void(0);">0x54118d53...</a>
+                    	<span class="detail txtBalance">
+                        	<span class="int">221035</span><span class="dec">1041744670</span>
+                        </span>
+                    </div>
+                    <div class="detailsRow">
+                        <a class="address" href="javascript:void(0);">
+                        	0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                        </a>
+                        <span class="detail time">5 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scrollbar">
+        	<div class="scroller">
+            	<div class="bar" style="top:25%; height:50%;"></div>
+            </div>
+            <div class="btn up"></div>
+            <div class="btn dn"></div>
+        </div>
+    </div>
+    
+    <div class="transactions_total">
+    	<div class="total sent right">
+            <span class="detail txtBalance">
+                <span class="int">221035</span><span class="dec">1041744670</span>
+            </span>
+        </div>
+    	<div class="total received">
+            <span class="detail txtBalance">
+                <span class="int">221035</span><span class="dec">1041744670</span>
+            </span>
+        </div>
+    </div>
+    
+</div>
+
+
+<div id="page_bitprofile" class="page navpage">
+    
+    <div id="page_bitprofile_new" class="page subpage active">
+    	<div class="formpage">
+        	<h1>Details:</h1>
+            <div class="input bitprofileID">
+        		<input type="text" placeholder="bitprofile ID" />
+            </div>
+        	<input type="text" class="name" placeholder="Your Name" />
+        	<input type="text" class="avatarURL" placeholder="image URL" />
+            <span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+            
+            <h1>Security key:</h1>
+            <input type="password" class="mandatory" placeholder="Password" />
+            <input type="password" class="mandatory" placeholder="Repeat Password" />
+            
+            <div class="submit">
+                <div class="sendFrom">
+                    <h1>Registration fee:</h1>
+                    <div class="input accountList send mini">
+                        <a class="select">
+                            <span class="amount txtBalance">
+                                <span class="int">221035</span><span class="dec">10417670</span>
+                            </span>
+                            <span class="address">
+                                0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                            </span>
+                        </a>
+                        <div class="dropdownBox dropdown3 off">
+                            <ul>
+                                <li>
+                                    <a>
+                                        <span class="amount txtBalance">
+                                            <span class="int">0</span><span class="dec">00000000</span>
+                                        </span>
+                                        <span class="address">
+                                            0x092a5172f796d4c3cd0e03520134317fc25b74f6
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span class="amount txtBalance">
+                                            <span class="int">221035</span><span class="dec">10417670</span>
+                                        </span>
+                                        <span class="address">
+                                            0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="section_fee" title="fee involves transaction speed">
+                    <h1><span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+                    <div class="slider">
+                        <div class="handle ui-slider-handle" style="left:20%;"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                
+                <a href="javascript:void(0);" class="btnSubmit">Create</a>
+                <a href="javascript:void(0);" class="submitCancel">Clear</a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div id="page_bitprofile_import" class="page subpage">
+    	ASD das
+    </div>
+    
+	<div id="page_bitprofile_view" class="page subpage">
+    	<div class="formpage">
+            <div class="input bitprofileID">
+        		<input type="text" readonly value="peter_ferguson" />
+            </div>
+        	<input type="text" readonly class="name" value="Peter Ferguson" />
+            <span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+            
+            <div class="btns x3">
+                <a href="javascript:void(0);" class="btn editBitprofile">Edit</a>
+                <a href="javascript:void(0);" class="btn">Keys</a>
+                <a href="javascript:void(0);" class="btn">Backup</a>
+            </div>
+            <div class="btns">
+                <a href="javascript:void(0);" class="btn highlight">Stealth Addresses</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="page_bitprofile_edit" class="page subpage">
+    	<div class="formpage">
+        	<h1>Edit profile:</h1>
+            <div class="input bitprofileID">
+        		<input type="text" readonly value="peter_ferguson" />
+            </div>
+        	<input type="text" class="name" placeholder="Your Name" />
+        	<input type="text" class="avatarURL" placeholder="image URL" />
+            <span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+            
+            
+            <div class="submit">
+                <div class="sendFrom">
+                    <h1>Modification fee:</h1>
+                    <div class="input accountList send mini">
+                        <a class="select">
+                            <span class="amount txtBalance">
+                                <span class="int">221035</span><span class="dec">10417670</span>
+                            </span>
+                            <span class="address">
+                                0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                            </span>
+                        </a>
+                        <div class="dropdownBox dropdown3 off">
+                            <ul>
+                                <li>
+                                    <a>
+                                        <span class="amount txtBalance">
+                                            <span class="int">0</span><span class="dec">00000000</span>
+                                        </span>
+                                        <span class="address">
+                                            0x092a5172f796d4c3cd0e03520134317fc25b74f6
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <span class="amount txtBalance">
+                                            <span class="int">221035</span><span class="dec">10417670</span>
+                                        </span>
+                                        <span class="address">
+                                            0x69d48e1d37d76d0be85be0bc717cad59644d9098
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="section_fee" title="fee involves transaction speed">
+                    <h1><span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+                    <div class="slider">
+                        <div class="handle ui-slider-handle" style="left:20%;"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                
+        		<input type="password" class="mandatory" placeholder="Password" />
+                <a href="javascript:void(0);" class="btnSubmit">Save</a>
+                <a href="javascript:void(0);" class="submitCancel">Cancel</a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="subNav">
+        <ul class="nav controls">
+            <li class="newBitprofile active"><a href="#page_bitprofile" page="page_bitprofile_new">New BitProfile Account</a></li>
+            <li class="importBitprofile"><a href="#page_bitprofile" page="page_bitprofile_import">Import Existing BitProfile</a></li>
+        </ul>
+        <ul class="nav list" page="page_bitprofile_view">
+            <li class="viewBitprofile"><a href="#page_bitprofile">
+            	<span class="avatar"><span class="img"><img src="http://oi63.tinypic.com/30t13dj.jpg" /></span></span>
+                <span class="name">Peter Ferguson</span>
+                <span class="id">peter_ferguson</span>
+            </a></li>
+            <li class="viewBitprofile"><a href="#page_bitprofile">
+            	<span class="avatar"><span class="img"><img src="http://oi68.tinypic.com/i539z7.jpg" /></span></span>
+                <span class="name">Ferguson P.</span>
+                <span class="id">petclub.peter_ferguson4865</span>
+            </a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="mainNav">
+	<a class="profile myProfile" href="#page_bitprofile">
+    	<span class="avatar"><span class="img"><img src="avatar1-01.png" /></span></span>
+    	<span class="name">Peter Ferguson</span>
+    	<span class="bitprofileIcon on"></span>
+    </a>
+    <ul class="nav">
+    	<li class="send"><a href="#page_send">send</a></li>
+    	<li class="receive"><a href="#page_receive">receive</a></li>
+    	<li class="addressbook"><a href="#page_addressbook">addressbook</a></li>
+    	<li class="transactions"><a href="#page_transactions">transactions</a></li>
+    	<li class="settings"><a href="#page_settings">settings</a></li>
+    	<li><a href="javascript:void(0);">none</a></li>
+    </ul>
+    <div class="footer">
+    	<div class="status">
+        	<div class="message">
+            	Synchronizing with network
+            </div>
+            <div class="loader">
+            	<div class="value" style="width:50%;"></div>
+                5 days behind
+            </div>
+        </div>
+        <div class="icons">
+        	<div class="icon secure">&nbsp;</div>
+        	<div class="icon network ok">&nbsp;</div>
+        	<div class="icon updated ok">&nbsp;</div>
+        </div>
+    </div>
+</div>
+
+<div class="subnavBg"></div>
+
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.timeago.js"></script>
+<script type="text/javascript" src="js/qrcode.js"></script>
+<script type="text/javascript" src="js/moment.js"></script>
+<script type="text/javascript" src="js/daterangepicker.js"></script>
+<script type="text/javascript" src="js/notie.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/accounts.js"></script>
+<script type="text/javascript" src="js/send.js"></script>
+<script type="text/javascript" src="js/receive.js"></script>
+<script type="text/javascript" src="js/addressbook.js"></script>
+<script type="text/javascript" src="js/transactions.js"></script>
+<script type="text/javascript" src="js/bitprofile.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/XETH.js"></script>
+
+</body>
+</html>

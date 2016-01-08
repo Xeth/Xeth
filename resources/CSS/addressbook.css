@@ -1,0 +1,9 @@
+@charset "utf-8";
+
+.listItem .s_titled.transactions {
+	color: #1C2E30;
+}
+.listItem .s_titled.transactions:before {
+	content: "transactions:";
+	color: #778283;
+}

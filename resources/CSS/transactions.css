@@ -1,0 +1,113 @@
+@charset "utf-8";
+
+.listItem.received {
+	background-color: #DEE5E0;
+	background-color: rgba(236, 247, 236, 0.4);
+}
+.listItem.sent {
+	background-color: #DBE4E8;
+	background-color: rgba(226, 247, 255, 0.4);
+}
+.listItem.received .header {
+	background-color: #D7E1D9;
+	background-color: rgba(91, 148, 91, 0.05);
+}
+.listItem.sent .header {
+	background-color: #D3DFE5;
+	background-color: rgba(61, 138, 171, 0.05);
+}
+
+.listItem.received .header .title,
+.listItem.received .header:before {
+	color: #5B945B;
+	content:'received from:';
+}
+.listItem.sent .header .title,
+.listItem.sent .header:before {
+	color: #3D8AAB;
+	content:'sent to:';
+}
+.listItem.received .header.icon .title,
+.listItem.received .header.icon:before {
+	background-position-y: -160px;
+}
+.listItem.sent .header.icon .title,
+.listItem.sent .header.icon:before {
+	background-position-y: -160px;
+}
+
+.listItem.received .avatar {
+	border-color: #5B945B;
+}
+.listItem.sent .avatar {
+	border-color: #3D8AAB;
+}
+.received .txtBalance .int,
+.received .txtBalance .dec {
+	color: #5B945B;
+}
+.sent .txtBalance .int,
+.sent .txtBalance .dec {
+	color: #3D8AAB;
+}
+
+.received .txtBalance .int:before {
+	content: "+";
+}
+.sent .txtBalance .int:before {
+	content: "-";
+}
+
+.listItem.received .s_title,
+.listItem.received .s_titled:before {
+	color:#5B945B;
+}
+.listItem.sent .s_title,
+.listItem.sent .s_titled:before {
+	color:#3D8AAB;
+}
+
+.listItem .s_titled.hash:before {
+	content: "hash:";
+}
+
+.listItem.received .s_titled.userAddress:before {
+	content: "to:";
+}
+.listItem.sent .s_titled.userAddress:before {
+	content: "from:";
+}
+
+.transactions .listItem .txtBalance,
+.transactions .listItem .time {
+	float:right;
+	margin-right: 10px;
+}
+
+.transactions .listItem .time {
+	color:#1C2E30;
+}
+
+.transactions_total {
+	height: 20px;
+	line-height: 20px;
+	position:absolute;
+	width: 100%;
+	bottom: -30px;
+	font-size:0.8rem;
+}
+
+.transactions_total .total:before {
+	margin-right: 8px;
+	text-transform: uppercase;
+	font-size:0.65rem;
+	color:#778283;
+}
+
+.transactions_total .total.sent:before {
+	content:"total sent:";
+}
+
+.transactions_total .total.received:before {
+	content:"total received:";
+}

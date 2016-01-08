@@ -1,0 +1,100 @@
+@charset "utf-8";
+
+#page_bitprofile .avatar {
+	border-color:#ffffff;
+}
+
+#page_bitprofile > h1:first-child,
+#page_bitprofile :first-child > h1:first-child {
+	margin-top: -26px;
+}
+
+
+#page_bitprofile .nav.controls li {
+	height: 46px;
+}
+#page_bitprofile .nav.controls li a {
+	line-height: 16px;
+	padding: 15px;
+	padding-left: 40px;
+	color: #ffffff;
+	
+	background-position-y: -420px;
+}
+#page_bitprofile .nav.controls li.importBitprofile a {
+	background-position-y: -466px;
+}
+
+#page_bitprofile .nav.list{
+	top:92px;
+	bottom:0px;
+	/*overflow-y:scroll;*/
+}
+#page_bitprofile .nav.list li {
+	height: 80px;
+}
+#page_bitprofile .nav.list li a {
+	text-transform: none;
+	height: 50px;
+	background-image: none;
+	padding: 15px;
+	color: #ffffff;
+}
+
+#page_bitprofile .nav .viewBitprofile .avatar .img {
+	background-color: #778283;
+}
+#page_bitprofile .nav .viewBitprofile .name {
+	display: block;
+	padding-top: 5px;
+}
+#page_bitprofile .nav .viewBitprofile .id {
+	color: #BB874E;
+}
+
+#page_bitprofile_view .formpage .avatar {
+	height: 242px;
+	width: 242px;
+	float:none;
+}
+#page_bitprofile_view .formpage .btns {
+	margin-top:41px;
+}
+
+#page_bitprofile_view:target,
+#page_bitprofile_view.active {
+	transition-delay: 0ms;
+}
+
+#page_bitprofile_new .formpage .avatar,
+#page_bitprofile_edit .formpage .avatar {
+	height: 54px;
+	width: 54px;
+	float:right;
+	margin-right: 0;
+	margin-bottom: -5px;
+}
+#page_bitprofile_new .formpage .avatarURL,
+#page_bitprofile_edit .formpage .avatarURL {
+	width: 166px;
+	float:left;
+}
+
+#page_bitprofile .formpage .section_fee {
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
+#page_bitprofile .formpage h1 .fee {
+	float: none;
+}
+#page_bitprofile .formpage h1 .fee .eth {
+	float:right;
+}
+
+#page_bitprofile .formpage .btnSubmit {
+	color: #F7931E;
+	background-position-y: -794px;
+}
+#page_bitprofile .formpage .btnSubmit:hover {
+	background-position-y: -734px;
+}

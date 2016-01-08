@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+.page .formpage.send {
+	/*position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);*/
+}
+
+.page .formpage .section_password {
+	margin-top: 66px;
+}
+
+.page .formpage.send .section_to h1 {
+	margin-right: 86px;
+}
+
+.page .formpage.send .section_to .input.type {
+	width: 110px;
+	font-family: Bold, Arial, Helvetica, sans-serif;
+	color:#3D8AAB;
+	float:left;
+	margin-right:10px;
+}
+.page .formpage.send .section_to .input.type a{
+	color:#3D8AAB;
+}
+
+.page .formpage.send .section_to .input.address,
+.page .formpage.send .section_to input.address {
+	width: 334px;
+}
+
+.page .formpage.send .submit {
+	/*clear: both;*/
+	padding-top: 90px;
+}
+
+.page .formpage.send .btnSubmit.btnSend {
+	color: #3D8AAB;
+	background-position-y: -660px;
+}
+.page .formpage.send .btnSubmit.btnSend:hover {
+	background-position-y: -600px;
+}
