@@ -1,7 +1,6 @@
 
 #include "TransactionStoreTest.hpp"
 
-#include <QDebug>
 
 void TransactionStoreTest::initTestCase()
 {
@@ -32,17 +31,14 @@ void TransactionStoreTest::testInsert()
 void TransactionStoreTest::testGet()
 {
     QJsonObject transaction = _store.get("somehash1");
-    qDebug()<<"got : "<<transaction;
     QVERIFY(transaction["hash"].toString() == "somehash1");
     QVERIFY(transaction["index"].toInt() == 0);
 
     transaction = _store.get("somehash2");
-    qDebug()<<"got : "<<transaction;
     QVERIFY(transaction["hash"].toString() == "somehash2");
     QVERIFY(transaction["index"].toInt() == 1);
 
     transaction = _store.get("somehash3");
-    qDebug()<<"got : "<<transaction;
     QVERIFY(transaction["hash"].toString() == "somehash3");
     QVERIFY(transaction["index"].toInt() == 2);
 }
@@ -83,14 +79,11 @@ void TransactionStoreTest::testReverseIteration()
 void TransactionStoreTest::testRandomAccessIteration()
 {
     Xeth::TransactionStore::Iterator it = _store.at(1), end = _store.end();
-    qDebug()<<"here";
     QVERIFY(it != end);
-    qDebug()<<"here2";
-    qDebug()<<*it;
+
     QVERIFY((*it)["index"].toInt() == 1);
     QVERIFY((*it)["hash"].toString() == "somehash2");
 
-    qDebug()<<"here3";
     size_t count = 0;
 
     for(;it!=end; ++it)

@@ -14,14 +14,16 @@ TEMPLATE = app
 HEADERS += \
     ../test/AddressBookStoreTest.hpp \
     ../test/DataBaseDirectory.hpp \
-    ../test/ScanIndexStoreTest.hpp
+    ../test/ScanIndexStoreTest.hpp \
+    ../test/TransactionStoreTest.hpp
 
 
 SOURCES += \
     ../test/DataBaseDirectory.cpp\
     ../test/AddressBookStoreTest.cpp\
     ../test/main.cpp \
-    ../test/ScanIndexStoreTest.cpp
+    ../test/ScanIndexStoreTest.cpp \
+    ../test/TransactionStoreTest.cpp
 
 
 
