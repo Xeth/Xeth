@@ -47,6 +47,9 @@ class ScanCriteria : public QObject
         size_t process(BlockChain &, QJsonArray &);
         size_t process(BlockChain &, QJsonArray &, ScanProgress &);
 
+        template<class BlockChain, class Progress>
+        size_t process(BlockChain &, QJsonArray &, Progress &);
+
         void clear();
 
         Iterator begin() const;
@@ -59,9 +62,6 @@ class ScanCriteria : public QObject
         ScanCriteria(const ScanCriteria &);
 
         void addCriterion(size_t minBlock, ScanCriterion *);
-
-        template<class Progress>
-        size_t process(BlockChain &, QJsonArray &, Progress &);
 
     private:
         typedef std::list<std::pair<size_t, ScanCriterion *> > Container;
