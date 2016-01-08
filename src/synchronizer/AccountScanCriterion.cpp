@@ -58,10 +58,13 @@ void AccountScanCriterion::saveTransaction
     QJsonObject obj;
     obj.insert("category", category.toString());
     obj.insert("hash", hash.c_str());
-    obj.insert("from",  from.c_str());
+    if(from.size())
+    {
+        obj.insert("from",  from.c_str());
+    }
     obj.insert("to", to.c_str());
-    obj.insert("amount", amount.str().c_str());
-    obj.insert("timestamp", boost::lexical_cast<std::string>(timestamp).c_str());
+    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("timestamp", (int)timestamp);
     result.push_back(obj);
 }
 
