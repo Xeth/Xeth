@@ -38,13 +38,13 @@ HEADERS = \
     ../src/Notifier.hpp \
     ../src/Settings.hpp \
     ../src/Synchronizer.hpp \
-    ../src/TransactionCategory.hpp \
     ../src/WalletFacade.hpp \
     ../src/database/DataBaseDirectory.hpp \
     ../src/database/Store.ipp \
     ../src/database/ConstReverseIterator.ipp \
     ../src/database/ConstIterator.ipp \
-    ../src/synchronizer/ScanCriteria.ipp
+    ../src/synchronizer/ScanCriteria.ipp \
+    ../src/synchronizer/TransactionCategory.hpp
 
 
 
