@@ -12,7 +12,7 @@ QJsonObject TransactionDataDecoder::operator()(const char *key, const char *valu
 
 bool TransactionDataDecoder::operator()(const char *key, const char *value, QJsonObject &result) const
 {
-    QJsonDocument document = QJsonDocument::fromRawData(value, strlen(value));
+    QJsonDocument document = QJsonDocument::fromJson(value);
     result = document.object();
     result.insert("index", boost::lexical_cast<int>(key));
     return true;
