@@ -29,7 +29,7 @@ bool ConstIterator<Decoder, Value>::equal(const ConstIterator &it) const
 template<class Decoder, class Value>
 Value ConstIterator<Decoder, Value>::dereference() const
 {
-    return _decoder(_handle->key().data(), _handle->value().data());
+    return _decoder(_handle->key().ToString().c_str(), _handle->value().ToString().c_str());
 }
 
 template<class Decoder, class Value>
