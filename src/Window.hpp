@@ -6,10 +6,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include "Synchronizer.hpp"
-#include "WalletFacade.hpp"
-#include "AddressBookFacade.hpp"
-#include "Notifier.hpp"
+#include "FrameContextBuilder.hpp"
 
 namespace Xeth{
 
@@ -18,7 +15,7 @@ class Window : public QWebView
     Q_OBJECT
     
     public:
-        explicit Window(const char *, WalletFacade &, AddressBookFacade &, Synchronizer &, Notifier &);
+        explicit Window(const char *, FrameContextBuilder &contextBuilder);
 
         void moveToScreenCenter();
 
@@ -30,10 +27,7 @@ class Window : public QWebView
         void addJSObject();
 
     private:
-        WalletFacade &_wallet;
-        AddressBookFacade &_addressbook;
-        Synchronizer &_synchronizer;
-        Notifier &_notifier;
+        FrameContextBuilder &_contextBuilder;
 
 };
 

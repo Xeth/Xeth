@@ -13,6 +13,7 @@
 #include "AddressBookFacade.hpp"
 #include "Notifier.hpp"
 
+#include "FrameContextBuilder.hpp"
 #include "Window.hpp"
 
 #include "EthProcessSupervisor.hpp"
@@ -44,6 +45,7 @@ class Application : public QObject
         boost::shared_ptr<EthProcessSupervisor> _ethProcess;
         WalletFacade _wallet;
         AddressBookFacade _addressbook;
+        FrameContextBuilder _contextBuilder;
         Window _window;
 };
 

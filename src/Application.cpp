@@ -9,7 +9,8 @@ Application::Application(const Settings &settings, int argc, char* argv[]):
     _synchronizer(_provider, _database),
     _wallet(settings, _provider, _database, _notifier),
     _addressbook(_database, _notifier),
-    _window("qrc:/index.html", _wallet, _addressbook, _synchronizer, _notifier)
+    _contextBuilder(_notifier, _wallet, _addressbook, _synchronizer),
+    _window("qrc:/index.html", _contextBuilder)
 {
     QObject::connect(&_notifier, SIGNAL(Ready()), this, SLOT(synchronize()));
 }
