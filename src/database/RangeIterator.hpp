@@ -28,12 +28,13 @@ class RangeIterator :
                 Value
             > Base;
     public:
-        RangeIterator(const Iterator &, size_t limit);
+        RangeIterator(const Iterator &begin, const Iterator &end, size_t limit);
         RangeIterator();
 
         void increment();
 
     private:
+        Iterator _end;
         size_t _limit;
         size_t _offset;
 

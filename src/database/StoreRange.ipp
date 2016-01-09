@@ -25,13 +25,13 @@ void StoreRange<Store>::setOffset(size_t offset)
 template<class Store>
 typename StoreRange<Store>::Iterator StoreRange<Store>::begin() const
 {
-    return Iterator(_store.at(_offset), _limit);
+    return Iterator(_store.at(_offset), _store.end(), _limit);
 }
 
 template<class Store>
 typename StoreRange<Store>::Iterator StoreRange<Store>::end() const
 {
-    return Iterator();
+    return Iterator(_store.end(), _store.end(), 0);
 }
 
 

@@ -5,8 +5,9 @@ namespace Xeth{
 
 
 template<class Iterator, class Value>
-RangeIterator<Iterator, Value>::RangeIterator(const Iterator &it, size_t limit) :
+RangeIterator<Iterator, Value>::RangeIterator(const Iterator &it, const Iterator &end, size_t limit) :
     Base(it),
+    _end(end),
     _limit(limit),
     _offset(0)
 {}
@@ -26,7 +27,7 @@ void RangeIterator<Iterator, Value>::increment()
 {
     if(++_offset >= _limit)
     {
-        this->base_reference() = Iterator();
+        this->base_reference() = _end;
     }
     else
     {
