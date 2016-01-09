@@ -8,6 +8,7 @@
 
 #include "Synchronizer.hpp"
 #include "WalletFacade.hpp"
+#include "AddressBookFacade.hpp"
 #include "Notifier.hpp"
 
 namespace Xeth{
@@ -17,7 +18,7 @@ class Window : public QWebView
     Q_OBJECT
     
     public:
-        explicit Window(const char *, WalletFacade &, Synchronizer &, Notifier &);
+        explicit Window(const char *, WalletFacade &, AddressBookFacade &, Synchronizer &, Notifier &);
 
         void moveToScreenCenter();
 
@@ -30,6 +31,7 @@ class Window : public QWebView
 
     private:
         WalletFacade &_wallet;
+        AddressBookFacade &_addressbook;
         Synchronizer &_synchronizer;
         Notifier &_notifier;
 

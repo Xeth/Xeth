@@ -23,4 +23,21 @@ std::string AddressBookDataDecoder::operator ()(const QJsonObject &object) const
 }
 
 
+
+AddressBookStore::AddressBookStore()
+{}
+
+AddressBookStore::AddressBookStore(const std::string &path) : Base(path)
+{}
+
+bool AddressBookStore::insert(const char *alias, const char *address)
+{
+    QJsonObject object;
+    object.insert("address", address);
+
+    return Base::insert(alias, address);
+}
+
+
+
 }

@@ -7,8 +7,9 @@
 
 namespace Xeth{
 
-Window::Window(const char *uri, WalletFacade &wallet, Synchronizer &synchronizer, Notifier &notifier) :
+Window::Window(const char *uri, WalletFacade &wallet, AddressBookFacade &addressbook, Synchronizer &synchronizer, Notifier &notifier) :
     _wallet(wallet),
+    _addressbook(addressbook),
     _synchronizer(synchronizer),
     _notifier(notifier)
 {
@@ -29,6 +30,7 @@ void Window::addJSObject()
 {
     QWebFrame *frame = page()->mainFrame();
     frame->addToJavaScriptWindowObject("wallet", &_wallet);
+    frame->addToJavaScriptWindowObject("addressbook", &_addressbook);
     frame->addToJavaScriptWindowObject("synchronizer", &_synchronizer);
     frame->addToJavaScriptWindowObject("events", &_notifier);
 }

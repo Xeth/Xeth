@@ -10,6 +10,7 @@
 #include "DataBase.hpp"
 #include "Synchronizer.hpp"
 #include "WalletFacade.hpp"
+#include "AddressBookFacade.hpp"
 #include "Notifier.hpp"
 
 #include "Window.hpp"
@@ -42,6 +43,7 @@ class Application : public QObject
         boost::shared_ptr<boost::thread> _initThread;
         boost::shared_ptr<EthProcessSupervisor> _ethProcess;
         WalletFacade _wallet;
+        AddressBookFacade _addressbook;
         Window _window;
 };
 

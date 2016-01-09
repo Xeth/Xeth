@@ -15,7 +15,26 @@ class AddressBookDataDecoder
         std::string operator()(const QJsonObject &) const;
 };
 
-typedef Store<AddressBookDataDecoder, QJsonObject> AddressBookStore;
+
+
+class AddressBookStore : public Store<AddressBookDataDecoder, QJsonObject>
+{
+    public:
+        typedef Store<AddressBookDataDecoder, QJsonObject> Base;
+        typedef Base::Iterator Iterator;
+        typedef Base::ReverseIterator ReverseIterator;
+        typedef Base::DataType DataType;
+
+    public:
+        AddressBookStore();
+        AddressBookStore(const std::string &);
+
+        bool insert(const char *, const char *);
+
+        using Base::insert;
+
+};
+
 
 
 

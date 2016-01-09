@@ -1,6 +1,6 @@
 include(destination.pri)
 
-QT       -= gui
+ QT += widgets webkit webkitwidgets
 
 TARGET = xeth
 TEMPLATE = lib
@@ -48,7 +48,15 @@ HEADERS = \
     ../src/database/StoreRange.hpp \
     ../src/database/RangeIterator.hpp \
     ../src/database/RangeIterator.ipp \
-    ../src/database/StoreRange.ipp
+    ../src/database/StoreRange.ipp \
+    ../src/addressbook/EditContactCommand.hpp \
+    ../src/addressbook/ListContactsCommand.hpp \
+    ../src/addressbook/RemoveContactCommand.hpp \
+    ../src/Application.hpp \
+    ../src/Window.hpp \
+    ../src/addressbook/AddContactCommand.hpp \
+    ../src/addressbook/RenameConactCommand.hpp \
+    ../src/AddressBookFacade.hpp
 
 
 
@@ -79,7 +87,16 @@ SOURCES = \
     ../src/Settings.cpp \
     ../src/Synchronizer.cpp \
     ../src/WalletFacade.cpp \
-    ../src/database/DataBaseDirectory.cpp
+    ../src/database/DataBaseDirectory.cpp \
+    ../src/addressbook/AddContactCommand.cpp \
+    ../src/addressbook/EditContactCommand.cpp \
+    ../src/addressbook/ListContactsCommand.cpp \
+    ../src/addressbook/RemoveContactCommand.cpp \
+    ../src/Application.cpp \
+    ../src/main.cpp \
+    ../src/Window.cpp \
+    ../src/addressbook/RenameConactCommand.cpp \
+    ../src/AddressBookFacade.cpp
 
 QMAKE_CXXFLAGS += -I$$_PRO_FILE_PWD_/../src
 
