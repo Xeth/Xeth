@@ -7,6 +7,7 @@
 #include "AccountScanCriterionTest.hpp"
 #include "ScanCriteriaTest.hpp"
 #include "ScanProgressTest.hpp"
+#include "StoreRangeTest.hpp"
 
 
 int main(int argc, char** argv)
@@ -34,6 +35,10 @@ int main(int argc, char** argv)
    }
    {
        ScanProgressTest test;
+       status |= QTest::qExec(&test, argc, argv);
+   }
+   {
+       StoreRangeTest test;
        status |= QTest::qExec(&test, argc, argv);
    }
    return status;

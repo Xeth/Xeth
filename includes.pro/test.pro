@@ -19,7 +19,10 @@ HEADERS += \
     ../test/AccountScanCriterionTest.hpp \
     ../test/ScanCriteriaTest.hpp \
     ../test/BlockChainSimulator.hpp \
-    ../test/ScanProgressTest.hpp
+    ../test/ScanProgressTest.hpp \
+    ../test/StoreSimulator.hpp \
+    ../test/StoreSimulator.ipp \
+    ../test/StoreRangeTest.hpp
 
 
 SOURCES += \
@@ -31,7 +34,8 @@ SOURCES += \
     ../test/AccountScanCriterionTest.cpp \
     ../test/ScanCriteriaTest.cpp \
     ../test/BlockChainSimulator.cpp \
-    ../test/ScanProgressTest.cpp
+    ../test/ScanProgressTest.cpp \
+    ../test/StoreRangeTest.cpp
 
 
 
