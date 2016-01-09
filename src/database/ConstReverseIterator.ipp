@@ -13,8 +13,8 @@ ConstReverseIterator<Decoder, Value>::ConstReverseIterator(const boost::shared_p
 {}
 
 template<class Decoder, class Value>
-ConstReverseIterator<Decoder, Value>::ConstReverseIterator(bool valid) :
-    Base(valid)
+ConstReverseIterator<Decoder, Value>::ConstReverseIterator() :
+    Base()
 {}
 
 template<class Decoder, class Value>

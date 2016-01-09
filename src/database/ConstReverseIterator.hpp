@@ -33,7 +33,7 @@ class ConstReverseIterator :
     public:
         ConstReverseIterator(const ConstIterator<Decoder, Value> &);
         ConstReverseIterator(const boost::shared_ptr<leveldb::Iterator> &);
-        ConstReverseIterator(bool);
+        ConstReverseIterator();
 
         void increment();
         void decrement();

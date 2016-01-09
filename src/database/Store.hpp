@@ -18,6 +18,7 @@ class Store
     public:
         typedef ConstIterator<Decoder, Value> Iterator;
         typedef ConstReverseIterator<Decoder, Value> ReverseIterator;
+        typedef Value DataType;
 
     public:
         Store();

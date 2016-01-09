@@ -5,6 +5,7 @@
 #include <QJsonArray>
 
 #include "DataBase.hpp"
+#include "database/StoreRange.hpp"
 
 
 

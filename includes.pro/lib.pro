@@ -44,7 +44,11 @@ HEADERS = \
     ../src/database/ConstReverseIterator.ipp \
     ../src/database/ConstIterator.ipp \
     ../src/synchronizer/ScanCriteria.ipp \
-    ../src/TransactionCategory.hpp
+    ../src/TransactionCategory.hpp \
+    ../src/database/StoreRange.hpp \
+    ../src/database/RangeIterator.hpp \
+    ../src/database/RangeIterator.ipp \
+    ../src/database/StoreRange.ipp
 
 
 

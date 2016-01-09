@@ -77,7 +77,7 @@ typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::begin() const
 template<class Decoder, class Value>
 typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::end() const
 {
-    return Iterator(false);
+    return Iterator();
 }
 
 template<class Decoder, class Value>
@@ -91,7 +91,7 @@ typename Store<Decoder, Value>::ReverseIterator Store<Decoder, Value>::rbegin() 
 template<class Decoder, class Value>
 typename Store<Decoder, Value>::ReverseIterator Store<Decoder, Value>::rend() const
 {
-    return ReverseIterator(false);
+    return ReverseIterator();
 }
 
 template<class Decoder, class Value>

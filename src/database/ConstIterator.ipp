@@ -9,8 +9,8 @@ ConstIterator<Decoder, Value>::ConstIterator(const boost::shared_ptr<leveldb::It
 {}
 
 template<class Decoder, class Value>
-ConstIterator<Decoder, Value>::ConstIterator(bool valid) :
-    _valid(valid)
+ConstIterator<Decoder, Value>::ConstIterator() :
+    _valid(false)
 {}
 
 

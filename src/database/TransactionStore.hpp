@@ -38,6 +38,7 @@ class TransactionStore
     public:
         typedef TransactionDataStore::Iterator Iterator;
         typedef TransactionDataStore::ReverseIterator ReverseIterator;
+        typedef TransactionDataStore::DataType DataType;
 
 
     public:

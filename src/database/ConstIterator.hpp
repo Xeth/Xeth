@@ -20,7 +20,7 @@ class ConstIterator :
 {
     public:
         ConstIterator(const boost::shared_ptr<leveldb::Iterator> &);
-        ConstIterator(bool);
+        ConstIterator();
 
         void increment();
         void decrement();

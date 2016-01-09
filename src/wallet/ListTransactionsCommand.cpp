@@ -11,47 +11,34 @@ ListTransactionsCommand::ListTransactionsCommand(DataBase &database) :
 
 QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
 {
-    size_t limit, offset;
-
-    if(request.contains("limit"))
-    {
-        limit = request["limit"].toInt();
-    }
-    else
-    {
-        limit = 0;
-    }
-
-    if(request.contains("offset"))
-    {
-        offset = request["offset"].toInt();
-    }
-    else
-    {
-        offset = 0;
-    }
+    QJsonArray result;
 
     TransactionStore & store = _database.getTransactions();
 
-    TransactionStore::Iterator it = offset ? store.at(offset) : store.begin();
-    TransactionStore::Iterator end = store.end();
-
-    QJsonArray result;
-
-    if(limit)
+    if(request.contains("limit"))
     {
-        for(;limit > 0 && it != end; limit--, ++it)
+        StoreRange<TransactionStore> range(store);
+        range.setLimit(request["limit"].toInt());
+
+        if(request.contains("offset"))
+        {
+            range.setOffset(request["offset"].toInt());
+        }
+
+        for(StoreRange<TransactionStore>::Iterator it = range.begin(), end = range.end(); it!=end; ++it)
         {
             result.push_back(*it);
         }
+
     }
     else
     {
-        for(;it != end; ++it)
+        for(TransactionStore::Iterator  it = store.begin(), end = store.end(); it!=end; ++it)
         {
             result.push_back(*it);
         }
     }
+
 
     return QVariant::fromValue(result);
 }
