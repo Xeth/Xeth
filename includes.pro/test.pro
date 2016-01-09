@@ -22,7 +22,8 @@ HEADERS += \
     ../test/ScanProgressTest.hpp \
     ../test/StoreSimulator.hpp \
     ../test/StoreSimulator.ipp \
-    ../test/StoreRangeTest.hpp
+    ../test/StoreRangeTest.hpp \
+    ../test/AddressValidatorTest.hpp
 
 
 SOURCES += \
@@ -35,7 +36,8 @@ SOURCES += \
     ../test/ScanCriteriaTest.cpp \
     ../test/BlockChainSimulator.cpp \
     ../test/ScanProgressTest.cpp \
-    ../test/StoreRangeTest.cpp
+    ../test/StoreRangeTest.cpp \
+    ../test/AddressValidatorTest.cpp
 
 
 

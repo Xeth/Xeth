@@ -8,6 +8,7 @@
 #include "ScanCriteriaTest.hpp"
 #include "ScanProgressTest.hpp"
 #include "StoreRangeTest.hpp"
+#include "AddressValidatorTest.hpp"
 
 
 int main(int argc, char** argv)
@@ -39,6 +40,10 @@ int main(int argc, char** argv)
    }
    {
        StoreRangeTest test;
+       status |= QTest::qExec(&test, argc, argv);
+   }
+   {
+       AddressValidatorTest test;
        status |= QTest::qExec(&test, argc, argv);
    }
    return status;
