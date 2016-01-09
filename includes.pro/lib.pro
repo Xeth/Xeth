@@ -57,7 +57,11 @@ HEADERS = \
     ../src/addressbook/AddContactCommand.hpp \
     ../src/addressbook/RenameConactCommand.hpp \
     ../src/AddressBookFacade.hpp \
-    ../src/FrameContextBuilder.hpp
+    ../src/FrameContextBuilder.hpp \
+    ../src/database/ConfigStore.hpp \
+    ../src/ConfigFacade.hpp \
+    ../src/config/AddConfigCommand.hpp \
+    ../src/config/GetConfigCommand.hpp
 
 
 
@@ -98,7 +102,11 @@ SOURCES = \
     ../src/Window.cpp \
     ../src/addressbook/RenameConactCommand.cpp \
     ../src/AddressBookFacade.cpp \
-    ../src/FrameContextBuilder.cpp
+    ../src/FrameContextBuilder.cpp \
+    ../src/database/ConfigStore.cpp \
+    ../src/ConfigFacade.cpp \
+    ../src/config/AddConfigCommand.cpp \
+    ../src/config/GetConfigCommand.cpp
 
 QMAKE_CXXFLAGS += -I$$_PRO_FILE_PWD_/../src
 

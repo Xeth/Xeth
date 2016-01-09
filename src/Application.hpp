@@ -11,6 +11,7 @@
 #include "Synchronizer.hpp"
 #include "WalletFacade.hpp"
 #include "AddressBookFacade.hpp"
+#include "ConfigFacade.hpp"
 #include "Notifier.hpp"
 
 #include "FrameContextBuilder.hpp"
@@ -45,6 +46,7 @@ class Application : public QObject
         boost::shared_ptr<EthProcessSupervisor> _ethProcess;
         WalletFacade _wallet;
         AddressBookFacade _addressbook;
+        ConfigFacade _config;
         FrameContextBuilder _contextBuilder;
         Window _window;
 };

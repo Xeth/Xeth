@@ -6,6 +6,7 @@
 #include "WalletFacade.hpp"
 #include "AddressBookFacade.hpp"
 #include "Synchronizer.hpp"
+#include "ConfigFacade.hpp"
 
 
 namespace Xeth{
@@ -14,7 +15,7 @@ namespace Xeth{
 class FrameContextBuilder
 {
     public:
-        FrameContextBuilder(Notifier &, WalletFacade &, AddressBookFacade &, Synchronizer &);
+        FrameContextBuilder(Notifier &, WalletFacade &, AddressBookFacade &, Synchronizer &, ConfigFacade &config);
 
         void buildContext(QWebFrame *);
 
@@ -24,6 +25,7 @@ class FrameContextBuilder
         WalletFacade &_wallet;
         AddressBookFacade &_addressbook;
         Synchronizer &_synchronizer;
+        ConfigFacade &_config;
 };
 
 
