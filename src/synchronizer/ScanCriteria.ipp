@@ -50,11 +50,12 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
         }
     }
 
+
     mappedCriteria.insert(std::make_pair(height, _criteria.end()));
 
     progress.setRange(minBlock, height);
 
-    size_t blockIndex = 0;
+    size_t blockIndex = minIndex;
     BigInt blockReward("5000000000000000000");
 
     try
@@ -62,7 +63,8 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
 
         for(std::map<size_t, Container::iterator>::iterator it=mappedCriteria.begin(), end=mappedCriteria.end(); it!=end; ++it)
         {
-            for(blockIndex = it->second->first; blockIndex < it->first; blockIndex++)
+
+            for(; blockIndex < it->first; blockIndex++)
             {
                 size_t prevSize = result.size();
                 Block block = blockchain.getBlock(blockIndex);
