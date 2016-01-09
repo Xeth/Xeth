@@ -16,7 +16,10 @@ HEADERS += \
     ../test/DataBaseDirectory.hpp \
     ../test/ScanIndexStoreTest.hpp \
     ../test/TransactionStoreTest.hpp \
-    ../test/AccountScanCriterionTest.hpp
+    ../test/AccountScanCriterionTest.hpp \
+    ../test/ScanCriteriaTest.hpp \
+    ../test/BlockChainSimulator.hpp \
+    ../test/ScanProgressTest.hpp
 
 
 SOURCES += \
@@ -25,7 +28,10 @@ SOURCES += \
     ../test/main.cpp \
     ../test/ScanIndexStoreTest.cpp \
     ../test/TransactionStoreTest.cpp \
-    ../test/AccountScanCriterionTest.cpp
+    ../test/AccountScanCriterionTest.cpp \
+    ../test/ScanCriteriaTest.cpp \
+    ../test/BlockChainSimulator.cpp \
+    ../test/ScanProgressTest.cpp
 
 
 
