@@ -1,7 +1,7 @@
 #pragma once
 
-#include <eth-connector/Provider.hpp>
-#include <eth-connector/Wallet.hpp>
+#include "ethrpc/Provider.hpp"
+#include "ethrpc/Wallet.hpp"
 
 #include <QString>
 #include <QVariant>

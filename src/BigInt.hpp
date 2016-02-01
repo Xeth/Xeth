@@ -3,7 +3,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include <eth-connector/BigInt.hpp>
+#include "ethrpc/BigInt.hpp"
 
 namespace Xeth{
 

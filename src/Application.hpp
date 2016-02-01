@@ -4,7 +4,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <eth-connector/Provider.hpp>
+#include "ethrpc/Provider.hpp"
 
 #include "Settings.hpp"
 #include "DataBase.hpp"

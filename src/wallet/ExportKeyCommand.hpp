@@ -9,7 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include <eth-connector/transport/Path.hpp>
+#include "ethrpc/transport/Path.hpp"
 
 #include "Settings.hpp"
 

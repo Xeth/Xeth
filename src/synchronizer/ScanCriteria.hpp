@@ -8,10 +8,10 @@
 #include <boost/thread.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 
-#include <eth-connector/BlockChain.hpp>
-#include <eth-connector/Block.hpp>
-#include <eth-connector/Transaction.hpp>
-#include <eth-connector/Collection.hpp>
+#include "ethrpc/BlockChain.hpp"
+#include "ethrpc/Block.hpp"
+#include "ethrpc/Transaction.hpp"
+#include "ethrpc/Collection.hpp"
 
 #include "ScanCriterion.hpp"
 #include "ScanProgress.hpp"

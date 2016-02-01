@@ -3,8 +3,8 @@
 #include <QVariantList>
 #include <QVariantMap>
 
-#include <eth-connector/Provider.hpp>
-#include <eth-connector/Wallet.hpp>
+#include "ethrpc/Provider.hpp"
+#include "ethrpc/Wallet.hpp"
 
 #include "DataBase.hpp"
 

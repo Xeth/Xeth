@@ -1,6 +1,6 @@
 #pragma once
 
-#include <eth-connector/Block.hpp>
+#include "ethrpc/Block.hpp"
 
 #include <string>
 #include <QVariantList>

@@ -6,9 +6,9 @@
 #include <QVariantList>
 #include <QJsonDocument>
 
-#include <eth-connector/Provider.hpp>
-#include <eth-connector/BlockChain.hpp>
-#include <eth-connector/Wallet.hpp>
+#include "ethrpc/Provider.hpp"
+#include "ethrpc/BlockChain.hpp"
+#include "ethrpc/Wallet.hpp"
 
 #include "DataBase.hpp"
 #include "ScanProgress.hpp"

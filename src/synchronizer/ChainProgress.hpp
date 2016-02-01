@@ -1,7 +1,7 @@
 #pragma once
 
-#include <eth-connector/Provider.hpp>
-#include <eth-connector/BlockChain.hpp>
+#include "ethrpc/Provider.hpp"
+#include "ethrpc/BlockChain.hpp"
 
 #include <QObject>
 #include <QTimer>

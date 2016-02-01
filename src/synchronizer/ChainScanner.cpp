@@ -1,4 +1,4 @@
-#include "ChainSanner.hpp"
+#include "ChainScanner.hpp"
 
 namespace Xeth{
 

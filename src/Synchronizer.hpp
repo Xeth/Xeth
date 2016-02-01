@@ -2,11 +2,11 @@
 
 #include <QObject>
 
-#include <eth-connector/Provider.hpp>
-#include <eth-connector/BlockChain.hpp>
+#include "ethrpc/Provider.hpp"
+#include "ethrpc/BlockChain.hpp"
 
 #include "synchronizer/ChainProgress.hpp"
-#include "synchronizer/ChainSanner.hpp"
+#include "synchronizer/ChainScanner.hpp"
 
 namespace Xeth{
 
