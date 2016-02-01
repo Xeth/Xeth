@@ -45,7 +45,6 @@ class ScanCriteria : public QObject
         void addCriterion(size_t minBlock, const Arg1 &, const Arg2 &, const Arg3&);
 
         size_t process(BlockChain &, QJsonArray &);
-        size_t process(BlockChain &, QJsonArray &, ScanProgress &);
 
         template<class BlockChain, class Progress>
         size_t process(BlockChain &, QJsonArray &, Progress &);

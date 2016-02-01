@@ -55,11 +55,6 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result)
     return process(blockchain, result, progress);
 }
 
-size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, ScanProgress &progress)
-{
-    return process(blockchain, result, progress);
-}
-
 
 
 bool ScanCriteria::CriterionCompare::operator ()(const std::pair<size_t, ScanCriterion *> &criterion, size_t minBlock)
