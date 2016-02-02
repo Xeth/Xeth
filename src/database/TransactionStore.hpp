@@ -9,14 +9,17 @@
 
 #include "Store.hpp"
 
+
 namespace Xeth{
 
-class TransactionDataSerializer
+
+class TransactionDataSerializer : public DataSerializer<QJsonObject>
 {
     public:
         QJsonObject operator()(const char *, const char *) const;
         bool operator()(const char *, const char *, QJsonObject &) const;
-        std::string operator ()(const QJsonObject &) const;
+
+        using DataSerializer::operator(); //for serialization
 };
 
 

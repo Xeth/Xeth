@@ -13,16 +13,9 @@ QJsonObject TransactionDataSerializer::operator()(const char *key, const char *v
 
 bool TransactionDataSerializer::operator()(const char *key, const char *value, QJsonObject &result) const
 {
-    QJsonDocument document = QJsonDocument::fromJson(value);
-    result = document.object();
+    DataSerializer<QJsonObject>::operator()(key, value, result);
     result.insert("index", boost::lexical_cast<int>(key));
     return true;
-}
-
-std::string TransactionDataSerializer::operator ()(const QJsonObject &object) const
-{
-    QJsonDocument document(object);
-    return document.toJson().toStdString();
 }
 
 
