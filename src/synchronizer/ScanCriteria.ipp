@@ -1,3 +1,4 @@
+#include <QDebug>
 
 namespace Xeth{
 
@@ -27,6 +28,7 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
         return 0;
     }
 
+    blockchain.retrieveBlockDetails(true);
     size_t height = blockchain.getHeight();
     size_t minBlock = _criteria.begin()->first;
 
@@ -108,8 +110,13 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
 
         }
     }
-    catch(boost::thread_interrupted &)
+    catch(const boost::thread_interrupted &)
     {}
+    catch(const Json::LogicError &e)
+    {
+        const char * msg = e.what();
+        qDebug()<<"invalid response : "<<msg;
+    }
 
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
     {
