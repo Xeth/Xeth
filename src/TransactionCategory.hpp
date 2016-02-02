@@ -4,6 +4,6 @@
 
 namespace Xeth{
 
-DECLARE_ENUM_CLASS(TransactionCategory, Sent, Received, Mined);
+DECLARE_ENUM_CLASS(TransactionCategory, Sent, Received, Mined, Stealth);
 
 }

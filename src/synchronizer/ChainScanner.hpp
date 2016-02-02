@@ -42,10 +42,10 @@ class ChainScanner : public QObject
         void scheduleScan();
 
     signals:
-        void Data(QJsonArray::const_iterator, QJsonArray::const_iterator );
+        void Data(const PartialScanResult &);
 
     private slots:
-        void processData(size_t , QJsonArray::const_iterator, QJsonArray::const_iterator);
+        void processData(const PartialScanResult &);
 
     private:
 

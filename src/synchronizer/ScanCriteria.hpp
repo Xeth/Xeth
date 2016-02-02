@@ -3,8 +3,6 @@
 #include <map>
 #include <list>
 
-#include <QJsonArray>
-
 #include <boost/thread.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 
@@ -15,6 +13,7 @@
 
 #include "ScanCriterion.hpp"
 #include "ScanProgress.hpp"
+#include "ScanResult.hpp"
 
 namespace Xeth{
 
@@ -44,10 +43,10 @@ class ScanCriteria : public QObject
         template<class Criterion, class Arg1, class Arg2, class Arg3>
         void addCriterion(size_t minBlock, const Arg1 &, const Arg2 &, const Arg3&);
 
-        size_t process(BlockChain &, QJsonArray &);
+        size_t process(BlockChain &, ScanResult &);
 
         template<class BlockChain, class Progress>
-        size_t process(BlockChain &, QJsonArray &, Progress &);
+        size_t process(BlockChain &, ScanResult &, Progress &);
 
         void clear();
 
@@ -55,7 +54,7 @@ class ScanCriteria : public QObject
         Iterator end() const;
 
     signals:
-        void Data(size_t , QJsonArray::const_iterator, QJsonArray::const_iterator);
+        void Data(const PartialScanResult &);
 
     private:
         ScanCriteria(const ScanCriteria &);

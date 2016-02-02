@@ -3,7 +3,13 @@
 
 namespace Xeth{
 
-ScanCriterion::ScanCriterion(const char *address) :
+
+ScanCriterion::ScanCriterion(const char *address) : 
+    _address(address)
+{}
+
+
+ScanCriterion::ScanCriterion(const std::string &address) :
     _address(address)
 {}
 
@@ -11,10 +17,13 @@ ScanCriterion::ScanCriterion(const char *address) :
 ScanCriterion::~ScanCriterion()
 {}
 
+
+
 const char * ScanCriterion::getAddress() const
 {
     return _address.c_str();
 }
+
 
 void ScanCriterion::processHeader
 (
@@ -23,9 +32,10 @@ void ScanCriterion::processHeader
     const std::string &,
     const BigInt &,
     time_t ,
-    QJsonArray &
+    ScanResult &
 )
 {}
+
 
 void ScanCriterion::processTransaction
 (
@@ -35,8 +45,9 @@ void ScanCriterion::processTransaction
     const BigInt &,
     const std::string &,
     time_t ,
-    QJsonArray &
+    ScanResult &
 )
 {}
+
 
 }

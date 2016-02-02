@@ -49,7 +49,7 @@ void ScanCriteria::addCriterion(size_t minBlock, ScanCriterion *criterion)
 }
 
 
-size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result)
+size_t ScanCriteria::process(BlockChain &blockchain, ScanResult &result)
 {
     DummyScanProgress progress;
     return process(blockchain, result, progress);

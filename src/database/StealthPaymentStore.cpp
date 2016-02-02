@@ -13,15 +13,20 @@ StealthPaymentStore::StealthPaymentStore(const std::string &path) :
 {}
 
 
-bool StealthPaymentStore::insert(const char *stealthAddress, const char *paymentAddress, const char *ephemPubKey, const char *txid)
+bool StealthPaymentStore::insert(const char *address, const char *sharedSecret, const char *txid)
 {
     QJsonObject object;
-    object.insert("address", paymentAddress);
-    object.insert("ephem", ephemPubKey);
+    object.insert("address", address);
+    object.insert("secret", sharedSecret);
     object.insert("txid", txid);
-    object.insert("stealth", stealthAddress);
 
-    return Base::insert(stealthAddress, object);
+    return Base::insert(address, object);
+}
+
+
+bool StealthPaymentStore::insert(const QJsonObject &obj)
+{
+    return Base::insert(obj["address"].toString().toStdString().c_str(), obj); //ToDo: optimize it !!!
 }
 
 

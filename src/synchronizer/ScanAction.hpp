@@ -10,6 +10,7 @@
 
 #include "ScanCriteria.hpp"
 #include "ScanProgress.hpp"
+#include "ScanResult.hpp"
 
 namespace Xeth{
 
@@ -27,8 +28,7 @@ class ScanAction : public QObject
         void waitToComplete();
         bool isActive() const;
 
-        const QJsonArray & getResult() const;
-        size_t getScanHeight() const;
+        const ScanResult & getResult() const;
 
     private:
         void execute(BlockChain &, ScanCriteria &, ScanProgress &);
@@ -39,8 +39,7 @@ class ScanAction : public QObject
 
     private:
         boost::shared_ptr<boost::thread> _thread;
-        QJsonArray _result;
-        size_t _scanHeight;
+        ScanResult _result;
 };
 
 

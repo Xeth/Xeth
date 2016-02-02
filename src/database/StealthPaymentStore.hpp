@@ -20,9 +20,8 @@ class StealthPaymentStore : public Store<QJsonObject>
         StealthPaymentStore();
         StealthPaymentStore(const std::string &);
 
-        bool insert(const char *stealthAddress, const char *paymentAddress, const char *ephemPubKey, const char *txid);
-
-        using Base::insert;
+        bool insert(const char *address, const char *sharedSecret, const char *txid);
+        bool insert(const QJsonObject &);
 
 };
 

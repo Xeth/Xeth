@@ -2,8 +2,7 @@
 
 namespace Xeth{
 
-ScanAction::ScanAction() :
-    _scanHeight(0)
+ScanAction::ScanAction()
 {}
 
 void ScanAction::start(BlockChain &blockchain, ScanCriteria &criteria)
@@ -46,26 +45,22 @@ bool ScanAction::isActive() const
 
 void ScanAction::execute(BlockChain &blockchain, ScanCriteria &criteria)
 {
-    _result = QJsonArray();
-    _scanHeight = criteria.process(blockchain, _result);
+    _result = ScanResult();
+    criteria.process(blockchain, _result);
     emit Done();
 }
 
 void ScanAction::execute(BlockChain &blockchain, ScanCriteria &criteria, ScanProgress &progress)
 {
-    _result = QJsonArray();
-    _scanHeight = criteria.process(blockchain, _result, progress);
+    _result = ScanResult();
+    criteria.process(blockchain, _result, progress);
     emit Done();
 }
 
-const QJsonArray & ScanAction::getResult() const
+const ScanResult & ScanAction::getResult() const
 {
     return _result;
 }
 
-size_t ScanAction::getScanHeight() const
-{
-    return _scanHeight;
-}
 
 }

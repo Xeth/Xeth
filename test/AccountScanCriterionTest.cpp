@@ -7,13 +7,13 @@ AccountScanCriterionTest::AccountScanCriterionTest() :
 
 void AccountScanCriterionTest::testMinedTransaction()
 {
-    QJsonArray result;
+    ScanResult result;
 
     _criterion.processHeader(1, "blockhash", "testaddress", Xeth::BigInt("10000"), 1000, result);
 
-    QVERIFY(result.size()==1);
+    QVERIFY(result.transaction.size()==1);
 
-    QJsonObject transaction = result.begin()->toObject();
+    QJsonObject transaction = result.transactions.begin()->toObject();
 
 
     QVERIFY(transaction["to"].toString() == "testaddress");
@@ -25,13 +25,13 @@ void AccountScanCriterionTest::testMinedTransaction()
 
 void AccountScanCriterionTest::testReceivedTransaction()
 {
-    QJsonArray result;
+    ScanResult result;
 
     _criterion.processTransaction("somehash", "senderaddress", "testaddress", Xeth::BigInt(10001), "", 1001, result);
 
-    QVERIFY(result.size()==1);
+    QVERIFY(result.transactions.size()==1);
 
-    QJsonObject transaction = result.begin()->toObject();
+    QJsonObject transaction = result.transactions.begin()->toObject();
 
 
     QVERIFY(transaction["to"].toString() == "testaddress");
@@ -43,13 +43,13 @@ void AccountScanCriterionTest::testReceivedTransaction()
 
 void AccountScanCriterionTest::testSentTransaction()
 {
-    QJsonArray result;
+    ScanResult result;
 
     _criterion.processTransaction("somehash", "testaddress", "receiveraddress", Xeth::BigInt(10002), "", 1002, result);
 
-    QVERIFY(result.size()==1);
+    QVERIFY(result.transactions.size()==1);
 
-    QJsonObject transaction = result.begin()->toObject();
+    QJsonObject transaction = result.transactions.begin()->toObject();
 
 
     QVERIFY(transaction["to"].toString() == "receiveraddress");
@@ -61,9 +61,9 @@ void AccountScanCriterionTest::testSentTransaction()
 
 void AccountScanCriterionTest::testUnknownTransaction()
 {
-    QJsonArray result;
+    ScanResult result;
 
     _criterion.processTransaction("somehash", "senderaddress", "receiveraddress", Xeth::BigInt(10003), "", 1003, result);
 
-    QVERIFY(result.size()==0);
+    QVERIFY(result.transactions.size()==0);
 }

@@ -1,11 +1,12 @@
 #pragma once
 
+#include <string>
+
 #include "ethrpc/Block.hpp"
 
-#include <string>
-#include <QVariantList>
-
+#include "TransactionCategory.hpp"
 #include "BigInt.hpp"
+#include "ScanResult.hpp"
 
 namespace Xeth{
 
@@ -13,7 +14,9 @@ namespace Xeth{
 class ScanCriterion
 {
     public:
+
         ScanCriterion(const char *);
+        ScanCriterion(const std::string &);
 
         virtual ~ScanCriterion();
 
@@ -24,7 +27,7 @@ class ScanCriterion
             const std::string &miner,
             const BigInt &amount,
             time_t timestamp,
-            QJsonArray &result
+            ScanResult &result
         );
 
         virtual void processTransaction
@@ -35,7 +38,7 @@ class ScanCriterion
             const BigInt &amount,
             const std::string &data,
             time_t timestamp,
-            QJsonArray &result
+            ScanResult &result
         );
 
         const char * getAddress() const;

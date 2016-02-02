@@ -85,12 +85,12 @@ void ScanCriteriaTest::testScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    QJsonArray result;
+    ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
 
-    QVERIFY(result.size()==4);
+    QVERIFY(result.transactions.size()==4);
 }
 
 void ScanCriteriaTest::testEmptyResultScan()
@@ -117,12 +117,12 @@ void ScanCriteriaTest::testEmptyResultScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    QJsonArray result;
+    ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
 
-    QVERIFY(result.size()==0);
+    QVERIFY(result.transactions.size()==0);
 }
 
 void ScanCriteriaTest::testEmptyChainScan()
@@ -133,12 +133,12 @@ void ScanCriteriaTest::testEmptyChainScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    QJsonArray result;
+    ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
 
-    QVERIFY(result.size()==0);
+    QVERIFY(result.transactions.size()==0);
 }
 
 void ScanCriteriaTest::testRandomOffsetScan()
@@ -226,12 +226,12 @@ void ScanCriteriaTest::testRandomOffsetScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    QJsonArray result;
+    ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
 
-    QVERIFY(result.size()==3);
+    QVERIFY(result.transactions.size()==3);
 }
 
 void ScanCriteriaTest::testConsecutiveScan()
@@ -319,12 +319,12 @@ void ScanCriteriaTest::testConsecutiveScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    QJsonArray result;
+    ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
 
-    QVERIFY(result.size()==3);
+    QVERIFY(result.transactions.size()==3);
 
     blockchain.push("{"
         "\"number\":\"6\", "
@@ -386,5 +386,5 @@ void ScanCriteriaTest::testConsecutiveScan()
         "}");
 
     criteria.process(blockchain, result, progress);
-    QVERIFY(result.size()==5);
+    QVERIFY(result.transactions.size()==5);
 }

@@ -5,9 +5,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "BigInt.hpp"
 #include "ScanCriterion.hpp"
-#include "TransactionCategory.hpp"
+
 
 namespace Xeth{
 
@@ -23,7 +22,7 @@ class AccountScanCriterion : public ScanCriterion
             const std::string &miner,
             const BigInt &amount,
             time_t timestamp,
-            QJsonArray &result
+            ScanResult &result
         );
 
         void processTransaction
@@ -34,7 +33,7 @@ class AccountScanCriterion : public ScanCriterion
             const BigInt &amount,
             const std::string &data,
             time_t timestamp,
-            QJsonArray &result
+            ScanResult &result
         );
 
     private:
@@ -46,7 +45,7 @@ class AccountScanCriterion : public ScanCriterion
             const std::string &to,
             const BigInt &amount,
             time_t timestamp,
-            QJsonArray &result
+            ScanResult &result
         );
 };
 

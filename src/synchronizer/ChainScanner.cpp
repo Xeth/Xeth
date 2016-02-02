@@ -30,8 +30,8 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     _scanInterval(10000)
 {
     QObject::connect(&_scanTimer, SIGNAL(timeout()), this, SLOT(scan()));
-    QObject::connect(&_scanCriteria, SIGNAL(Data(size_t, QJsonArray::const_iterator , QJsonArray::const_iterator)),
-                     this, SLOT(processData(size_t, QJsonArray::const_iterator, QJsonArray::const_iterator)));
+    QObject::connect(&_scanCriteria, SIGNAL(Data(const PartialScanResult &)),
+                     this, SLOT(processData(const PartialScanResult &)));
     QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
 }
 
@@ -86,12 +86,13 @@ void ChainScanner::scan()
     _scanAction.start(_blockchain, _scanCriteria, _scanProgress);
 }
 
-void ChainScanner::processData(size_t lastBlock, QJsonArray::const_iterator it, QJsonArray::const_iterator end)
+void ChainScanner::processData(const PartialScanResult &result)
 {
     ScanIndexStore & indexStore = _database.getScanIndex();
     TransactionStore & transactionStore = _database.getTransactions();
+    StealthPaymentStore & stealthPaymentStore = _database.getStealthPayments();
 
-    for(;it!=end; ++it)
+    for(QJsonArray::const_iterator it = result.transactions.first; it!=result.transactions.second; ++it)
     {
         if(!transactionStore.insert(it->toObject()))
         {
@@ -99,13 +100,21 @@ void ChainScanner::processData(size_t lastBlock, QJsonArray::const_iterator it, 
         }
     }
 
+    for(QJsonArray::const_iterator it = result.stealthPayments.first; it!=result.stealthPayments.second; ++it)
+    {
+        if(!stealthPaymentStore.insert(it->toObject()))
+        {
+            return;
+        }
+    }
+
     for(ScanCriteria::Iterator sIt=_scanCriteria.begin(), sEnd=_scanCriteria.end(); sIt!=sEnd; ++sIt)
     {
-        indexStore.insert(sIt->getAddress(), lastBlock);
+        indexStore.insert(sIt->getAddress(), result.lastBlock);
     }
 
 
-    emit Data(it, end);
+    emit Data(result);
 
 }
 

@@ -21,7 +21,7 @@ void ScanCriteria::addCriterion(size_t minBlock, const Arg1 &arg1, const Arg2 &a
 }
 
 template<class BlockChain, class Progress>
-size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progress &progress)
+size_t ScanCriteria::process(BlockChain &blockchain, ScanResult &result, Progress &progress)
 {
     if(!_criteria.size())
     {
@@ -68,7 +68,10 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
 
             for(; blockIndex < it->first; blockIndex++)
             {
-                size_t prevSize = result.size();
+
+                size_t prevTxSize = result.transactions.size();
+                size_t prevStSize = result.stealthPayments.size();
+
                 Block block = blockchain.getBlock(blockIndex);
 
                 std::string miner = block.getMiner();
@@ -97,12 +100,12 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
                 }
 
                 progress.next();
-                size_t resultSize = result.size();
-                if(prevSize != resultSize)
+                
+                size_t txSize = result.transactions.size();
+                size_t stSize = result.stealthPayments.size();
+                if(prevTxSize != txSize || stSize != prevStSize)
                 {
-                    size_t numItems = resultSize - prevSize;
-                    QJsonArray::const_iterator resultEnd = result.constEnd();
-                    emit Data(blockIndex, resultEnd- numItems, resultEnd);
+                    emit Data(MakePartialScanResult(result, txSize - prevTxSize, stSize - prevStSize, blockIndex));
                 }
 
                 boost::this_thread::interruption_point();
@@ -122,6 +125,8 @@ size_t ScanCriteria::process(BlockChain &blockchain, QJsonArray &result, Progres
     {
         it->first = blockIndex;
     }
+
+    result.lastBlock = blockIndex;
 
     return blockIndex;
 

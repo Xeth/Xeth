@@ -24,7 +24,6 @@ void Synchronizer::loadAddresses()
 
 void Synchronizer::synchronize(size_t scanInterval, size_t syncInterval)
 {
-    qDebug()<<"synchronizing...";
     _syncProgress.autoUpdate(syncInterval);
     _scanner.autoScan(scanInterval);
 }

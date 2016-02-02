@@ -19,6 +19,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
     ${PROJECT_BINARY_DIR}/libethkey/include
+    ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
 
@@ -31,6 +32,7 @@ target_link_libraries(xeth
     xethlib
     ethrpc
     ethkey
+    ethstealth
     ${Qt5Core_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKitWidgets_LIBRARIES}

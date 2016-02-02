@@ -13,7 +13,7 @@ void AccountScanCriterion::processHeader
     const std::string &miner,
     const BigInt &amount,
     time_t timestamp,
-    QJsonArray &result
+    ScanResult &result
 )
 {
     if(miner == _address)
@@ -30,7 +30,7 @@ void AccountScanCriterion::processTransaction
     const BigInt &amount,
     const std::string &,
     time_t timestamp,
-    QJsonArray &result
+    ScanResult &result
 )
 {
     if(from == _address)
@@ -43,7 +43,6 @@ void AccountScanCriterion::processTransaction
     }
 }
 
-
 void AccountScanCriterion::saveTransaction
 (
     const TransactionCategory &category,
@@ -52,7 +51,7 @@ void AccountScanCriterion::saveTransaction
     const std::string &to,
     const BigInt &amount,
     time_t timestamp,
-    QJsonArray &result
+    ScanResult &result
 )
 {
     QJsonObject obj;
@@ -65,8 +64,12 @@ void AccountScanCriterion::saveTransaction
     obj.insert("to", to.c_str());
     obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
     obj.insert("timestamp", (int)timestamp);
-    result.push_back(obj);
+
+    result.transactions.push_back(obj);
 }
+
+
+
 
 
 }
