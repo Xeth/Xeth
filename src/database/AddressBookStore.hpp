@@ -7,7 +7,7 @@
 namespace Xeth{
 
 
-class AddressBookDataDecoder
+class AddressBookDataSerializer
 {
     public:
         QJsonObject operator()(const char *, const char *) const;
@@ -17,10 +17,10 @@ class AddressBookDataDecoder
 
 
 
-class AddressBookStore : public Store<AddressBookDataDecoder, QJsonObject>
+class AddressBookStore : public Store<QJsonObject, AddressBookDataSerializer>
 {
     public:
-        typedef Store<AddressBookDataDecoder, QJsonObject> Base;
+        typedef Store<QJsonObject, AddressBookDataSerializer> Base;
         typedef Base::Iterator Iterator;
         typedef Base::ReverseIterator ReverseIterator;
         typedef Base::DataType DataType;

@@ -6,18 +6,19 @@
 
 #include "ConstIterator.hpp"
 #include "ConstReverseIterator.hpp"
+#include "DataSerializer.hpp"
 
 
 namespace Xeth{
 
 
 
-template<class Decoder, class Value>
+template<class Value, class Serializer=DataSerializer<Value> >
 class Store
 {
     public:
-        typedef ConstIterator<Decoder, Value> Iterator;
-        typedef ConstReverseIterator<Decoder, Value> ReverseIterator;
+        typedef ConstIterator<Serializer, Value> Iterator;
+        typedef ConstReverseIterator<Serializer, Value> ReverseIterator;
         typedef Value DataType;
 
     public:

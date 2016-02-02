@@ -9,20 +9,10 @@
 namespace Xeth{
 
 
-
-class ScanIndexDataDecoder
+class ScanIndexStore : private Store<size_t>
 {
     public:
-        size_t operator()(const char *key, const char *value) const;
-        bool operator()(const char *key, const char *value, size_t &result) const;
-        std::string operator()(size_t ) const;
-};
-
-
-class ScanIndexStore : private Store<ScanIndexDataDecoder, size_t>
-{
-    public:
-        typedef Store<ScanIndexDataDecoder, size_t> Base;
+        typedef Store<size_t> Base;
 
     public:
         ScanIndexStore();

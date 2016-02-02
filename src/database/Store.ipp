@@ -2,28 +2,28 @@
 
 namespace Xeth{
 
-template<class Decoder, class Value>
-Store<Decoder, Value>::Store(const char *path) :
+template<class Value, class Serializer>
+Store<Value, Serializer>::Store(const char *path) :
     _db(NULL)
 {
     open(path);
 }
 
-template<class Decoder, class Value>
-Store<Decoder, Value>::Store(const std::string &path) :
+template<class Value, class Serializer>
+Store<Value, Serializer>::Store(const std::string &path) :
     _db(NULL)
 {
     open(path);
 }
 
 
-template<class Decoder, class Value>
-Store<Decoder, Value>::Store() :
+template<class Value, class Serializer>
+Store<Value, Serializer>::Store() :
     _db(NULL)
 {}
 
-template<class Decoder, class Value>
-void Store<Decoder, Value>::close()
+template<class Value, class Serializer>
+void Store<Value, Serializer>::close()
 {
     if(_db)
     {
@@ -31,9 +31,9 @@ void Store<Decoder, Value>::close()
     }
 }
 
-template<class Decoder, class Value>
+template<class Value, class Serializer>
 template<class String>
-void Store<Decoder, Value>::open(const String &path)
+void Store<Value, Serializer>::open(const String &path)
 {
     if(!openNoThrow(path))
     {
@@ -42,9 +42,9 @@ void Store<Decoder, Value>::open(const String &path)
 
 }
 
-template<class Decoder, class Value>
+template<class Value, class Serializer>
 template<class String>
-bool Store<Decoder, Value>::openNoThrow(const String &path)
+bool Store<Value, Serializer>::openNoThrow(const String &path)
 {
     _path = path;
 
@@ -60,70 +60,70 @@ bool Store<Decoder, Value>::openNoThrow(const String &path)
 
 
 
-template<class Decoder, class Value>
-Store<Decoder, Value>::~Store()
+template<class Value, class Serializer>
+Store<Value, Serializer>::~Store()
 {
     close();
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::begin() const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::begin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToFirst();
     return makeIterator(it);
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::end() const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::end() const
 {
     return Iterator();
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::ReverseIterator Store<Decoder, Value>::rbegin() const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::rbegin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToLast();
     return makeReverseIterator(it);
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::ReverseIterator Store<Decoder, Value>::rend() const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::rend() const
 {
     return ReverseIterator();
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::find(const char *key) const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::find(const char *key) const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->Seek(key);
     return makeIterator(it);
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::Iterator Store<Decoder, Value>::makeIterator(leveldb::Iterator *it) const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::makeIterator(leveldb::Iterator *it) const
 {
     return Iterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
-template<class Decoder, class Value>
-typename Store<Decoder, Value>::ReverseIterator Store<Decoder, Value>::makeReverseIterator(leveldb::Iterator *it) const
+template<class Value, class Serializer>
+typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::makeReverseIterator(leveldb::Iterator *it) const
 {
     return ReverseIterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
-template<class Decoder, class Value>
-Value Store<Decoder, Value>::get(const char *key) const
+template<class Value, class Serializer>
+Value Store<Value, Serializer>::get(const char *key) const
 {
     Value result;
     get(key, result);
     return result;
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::get(const char *key, Value &result) const
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::get(const char *key, Value &result) const
 {
     std::string data;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &data);
@@ -132,21 +132,21 @@ bool Store<Decoder, Value>::get(const char *key, Value &result) const
         return false;
     }
 
-    Decoder decoder;
-    decoder(key, data.c_str(), result);
+    Serializer serializer;
+    serializer(key, data.c_str(), result);
     return true;
 }
 
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::insert(const char *key, const Value &value)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::insert(const char *key, const Value &value)
 {
-    Decoder decoder;
-    return insert(key, decoder(value).c_str());
+    Serializer serializer;
+    return insert(key, serializer(value).c_str());
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::insert(const char *key, const char *value)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::insert(const char *key, const char *value)
 {
     std::string oldValue;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &oldValue);
@@ -159,8 +159,8 @@ bool Store<Decoder, Value>::insert(const char *key, const char *value)
     return status.ok();
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::move(const char *oldKey, const char *newKey)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::move(const char *oldKey, const char *newKey)
 {
     std::string data;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), oldKey, &data);
@@ -180,22 +180,22 @@ bool Store<Decoder, Value>::move(const char *oldKey, const char *newKey)
     return status.ok();
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::replace(const char *key, const Value &value)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::replace(const char *key, const Value &value)
 {
-    Decoder decoder;
-    return replace(key, decoder(value).c_str());
+    Serializer serializer;
+    return replace(key, serializer(value).c_str());
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::replace(const char *key, const char *value)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::replace(const char *key, const char *value)
 {
     leveldb::Status status = _db->Put(leveldb::WriteOptions(), key, value);
     return status.ok();
 }
 
-template<class Decoder, class Value>
-bool Store<Decoder, Value>::remove(const char *key)
+template<class Value, class Serializer>
+bool Store<Value, Serializer>::remove(const char *key)
 {
     leveldb::Status status = _db->Delete(leveldb::WriteOptions(), key);
     return status.ok();

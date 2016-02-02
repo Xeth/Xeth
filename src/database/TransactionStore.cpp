@@ -4,14 +4,14 @@
 namespace Xeth{
 
 
-QJsonObject TransactionDataDecoder::operator()(const char *key, const char *value) const
+QJsonObject TransactionDataSerializer::operator()(const char *key, const char *value) const
 {
     QJsonObject result;
     operator()(key, value, result);
     return result;
 }
 
-bool TransactionDataDecoder::operator()(const char *key, const char *value, QJsonObject &result) const
+bool TransactionDataSerializer::operator()(const char *key, const char *value, QJsonObject &result) const
 {
     QJsonDocument document = QJsonDocument::fromJson(value);
     result = document.object();
@@ -19,29 +19,13 @@ bool TransactionDataDecoder::operator()(const char *key, const char *value, QJso
     return true;
 }
 
-std::string TransactionDataDecoder::operator ()(const QJsonObject &object) const
+std::string TransactionDataSerializer::operator ()(const QJsonObject &object) const
 {
     QJsonDocument document(object);
     return document.toJson().toStdString();
 }
 
 
-
-std::string TransactionIndexDecoder::operator ()(const char *, const char *value) const
-{
-    return value;
-}
-
-bool TransactionIndexDecoder::operator()(const char *, const char *value, std::string &result) const
-{
-    result = value;
-    return true;
-}
-
-std::string TransactionIndexDecoder::operator ()(const std::string &index) const
-{
-    return index;
-}
 
 TransactionStore::TransactionStore()
 {}
