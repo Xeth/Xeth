@@ -4,16 +4,16 @@
 
 #include "StoreSimulator.hpp"
 
-#include "database/StoreRange.hpp"
+#include "database/DataRange.hpp"
 
 
-class StoreRangeTest : public QObject
+class DataRangeTest : public QObject
 {
     Q_OBJECT
 
     public:
         typedef StoreSimulator<int> Store;
-        typedef Xeth::StoreRange<Store> StoreRange;
+        typedef Xeth::DataRange<Store> DataRange;
 
     private:
         Store makeStore();

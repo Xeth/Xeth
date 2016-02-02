@@ -1,7 +1,7 @@
-#include "StoreRangeTest.hpp"
+#include "DataRangeTest.hpp"
 
 
-StoreRangeTest::Store StoreRangeTest::makeStore()
+DataRangeTest::Store DataRangeTest::makeStore()
 {
     Store store;
     for(int i=0; i<100; i++)
@@ -11,16 +11,16 @@ StoreRangeTest::Store StoreRangeTest::makeStore()
     return store;
 }
 
-void StoreRangeTest::testLimit()
+void DataRangeTest::testLimit()
 {
     Store store = makeStore();
 
-    StoreRange range(store);
+    DataRange range(store);
 
     range.setLimit(10);
 
     int value = 0;
-    for(StoreRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
+    for(DataRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
     {
         QCOMPARE(*it, value++);
     }
@@ -30,17 +30,17 @@ void StoreRangeTest::testLimit()
 }
 
 
-void StoreRangeTest::testOffset()
+void DataRangeTest::testOffset()
 {
     Store store = makeStore();
 
-    StoreRange range(store);
+    DataRange range(store);
 
     range.setLimit(10);
     range.setOffset(10);
 
     int value = 10;
-    for(StoreRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
+    for(DataRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
     {
         QCOMPARE(*it, value++);
     }
@@ -50,16 +50,16 @@ void StoreRangeTest::testOffset()
 }
 
 
-void StoreRangeTest::testLimitOverflow()
+void DataRangeTest::testLimitOverflow()
 {
     Store store = makeStore();
 
-    StoreRange range(store);
+    DataRange range(store);
     range.setLimit(10);
     range.setOffset(95);
 
     int value = 95;
-    for(StoreRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
+    for(DataRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
     {
         QCOMPARE(*it, value++);
     }
@@ -68,16 +68,16 @@ void StoreRangeTest::testLimitOverflow()
 }
 
 
-void StoreRangeTest::testOffsetOverflow()
+void DataRangeTest::testOffsetOverflow()
 {
     Store store = makeStore();
 
-    StoreRange range(store);
+    DataRange range(store);
     range.setLimit(10);
     range.setOffset(101);
 
     int value = 101;
-    for(StoreRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
+    for(DataRange::Iterator it=range.begin(), end=range.end(); it!=end; ++it)
     {
         QCOMPARE(*it, value++);
     }

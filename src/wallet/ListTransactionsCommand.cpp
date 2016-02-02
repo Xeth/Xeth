@@ -17,7 +17,7 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
 
     if(request.contains("limit"))
     {
-        StoreRange<TransactionStore> range(store);
+        DataRange<TransactionStore> range(store);
         range.setLimit(request["limit"].toInt());
 
         if(request.contains("offset"))
@@ -25,7 +25,7 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
             range.setOffset(request["offset"].toInt());
         }
 
-        for(StoreRange<TransactionStore>::Iterator it = range.begin(), end = range.end(); it!=end; ++it)
+        for(DataRange<TransactionStore>::Iterator it = range.begin(), end = range.end(); it!=end; ++it)
         {
             result.push_back(*it);
         }

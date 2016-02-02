@@ -8,14 +8,14 @@ namespace Xeth{
 
 
 template<class Store>
-class StoreRange
+class DataRange
 {
     public:
         typedef RangeIterator<typename Store::Iterator, typename Store::DataType> Iterator;
 
     public:
 
-        StoreRange(Store &);
+        DataRange(Store &);
 
         void setLimit(size_t);
         void setOffset(size_t);
@@ -34,4 +34,4 @@ class StoreRange
 
 }
 
-#include "StoreRange.ipp"
+#include "DataRange.ipp"
