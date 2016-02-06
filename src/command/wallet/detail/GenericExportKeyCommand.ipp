@@ -18,7 +18,7 @@ QVariant GenericExportKeyCommand<Store>::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    EthereumKeyStore::Iterator it = _store.find(address.toStdString().c_str());
+    typename Store::Iterator it = _store.find(address.toStdString().c_str());
 
     if(it==_store.end())
     {

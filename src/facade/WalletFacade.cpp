@@ -4,7 +4,7 @@
 
 namespace Xeth{
 
-WalletFacade::WalletFacade(const Settings &settings, Ethereum::Connector::Provider &provider, DataBase &database, Notifier &notifier) :\
+WalletFacade::WalletFacade(const Settings &settings, Ethereum::Connector::Provider &provider, DataBase &database, Notifier &notifier) :
     _settings(settings),
     _invoker(notifier),
     _provider(provider),
@@ -68,6 +68,12 @@ QVariant WalletFacade::exportKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+
+QVariant WalletFacade::exportStealthKey(const QVariantMap &request)
+{
+    ExportStealthKeyCommand command(_database);
+    return _invoker.invoke(command, request);
+}
 
 
 }
