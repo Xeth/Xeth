@@ -11,10 +11,10 @@ namespace Xeth{
 
 
 
-class ImportKeyCommand
+class ImportPresaleKeyCommand
 {
     public:
-        ImportKeyCommand(const Settings &);
+        ImportPresaleKeyCommand(const Settings &);
 
         QVariant operator()(const QVariantMap &);
 

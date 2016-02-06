@@ -1,12 +1,12 @@
-#include "ImportKeyCommand.hpp"
+#include "ImportPresaleKeyCommand.hpp"
 
 namespace Xeth{
 
-ImportKeyCommand::ImportKeyCommand(const Settings &settings) :
+ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings) :
     _process(settings)
 {}
 
-QVariant ImportKeyCommand::operator ()(const QVariantMap &request)
+QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
 {
     QString path = request["path"].toString();
     QString password = request["password"].toString();
