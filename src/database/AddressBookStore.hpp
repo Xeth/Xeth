@@ -2,7 +2,7 @@
 
 #include <QJsonObject>
 
-#include "Store.hpp"
+#include "LevelDbStore.hpp"
 
 namespace Xeth{
 
@@ -17,10 +17,10 @@ class AddressBookDataSerializer
 
 
 
-class AddressBookStore : public Store<QJsonObject, AddressBookDataSerializer>
+class AddressBookStore : public LevelDbStore<QJsonObject, AddressBookDataSerializer>
 {
     public:
-        typedef Store<QJsonObject, AddressBookDataSerializer> Base;
+        typedef LevelDbStore<QJsonObject, AddressBookDataSerializer> Base;
         typedef Base::Iterator Iterator;
         typedef Base::ReverseIterator ReverseIterator;
         typedef Base::DataType DataType;

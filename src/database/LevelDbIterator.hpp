@@ -9,24 +9,24 @@
 namespace Xeth{
 
 template<class Decoder, class Value>
-class ConstIterator :
+class LevelDbIterator :
         public boost::iterator_facade
         <
-            ConstIterator<Decoder, Value>,
+            LevelDbIterator<Decoder, Value>,
             Value,
             boost::bidirectional_traversal_tag,
             Value
         >
 {
     public:
-        ConstIterator(const boost::shared_ptr<leveldb::Iterator> &);
-        ConstIterator();
+        LevelDbIterator(const boost::shared_ptr<leveldb::Iterator> &);
+        LevelDbIterator();
 
         void increment();
         void decrement();
 
         Value dereference() const;
-        bool equal(const ConstIterator &) const;
+        bool equal(const LevelDbIterator &) const;
 
     private:
         Decoder _decoder;
@@ -38,4 +38,4 @@ class ConstIterator :
 
 }
 
-#include "ConstIterator.ipp"
+#include "LevelDbIterator.ipp"

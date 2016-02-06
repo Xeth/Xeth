@@ -3,16 +3,16 @@
 #include <boost/lexical_cast.hpp>
 #include <string>
 
-#include "Store.hpp"
+#include "LevelDbStore.hpp"
 
 
 namespace Xeth{
 
 
-class ScanIndexStore : private Store<size_t>
+class ScanIndexStore : private LevelDbStore<size_t>
 {
     public:
-        typedef Store<size_t> Base;
+        typedef LevelDbStore<size_t> Base;
 
     public:
         ScanIndexStore();

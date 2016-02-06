@@ -2,16 +2,16 @@
 
 #include <QJsonObject>
 
-#include "Store.hpp"
+#include "LevelDbStore.hpp"
 
 
 namespace Xeth{
 
 
-class StealthPaymentStore : public Store<QJsonObject>
+class StealthPaymentStore : public LevelDbStore<QJsonObject>
 {
     public:
-        typedef Store<QJsonObject> Base;
+        typedef LevelDbStore<QJsonObject> Base;
         typedef Base::Iterator Iterator;
         typedef Base::ReverseIterator ReverseIterator;
         typedef Base::DataType DataType;

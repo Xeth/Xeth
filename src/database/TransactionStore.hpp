@@ -7,7 +7,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "Store.hpp"
+#include "LevelDbStore.hpp"
 
 
 namespace Xeth{
@@ -25,8 +25,8 @@ class TransactionDataSerializer : public DataSerializer<QJsonObject>
 
 
 
-typedef Store<QJsonObject, TransactionDataSerializer> TransactionDataStore;
-typedef Store<std::string> TransactionIndexStore;
+typedef LevelDbStore<QJsonObject, TransactionDataSerializer> TransactionDataStore;
+typedef LevelDbStore<std::string> TransactionIndexStore;
 
 
 

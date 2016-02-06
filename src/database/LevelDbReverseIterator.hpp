@@ -2,7 +2,7 @@
 
 #include <boost/iterator/iterator_adaptor.hpp>
 
-#include "ConstIterator.hpp"
+#include "LevelDbIterator.hpp"
 
 
 namespace  Xeth {
@@ -10,11 +10,11 @@ namespace  Xeth {
 
 
 template<class Decoder, class Value>
-class ConstReverseIterator :
+class LevelDbReverseIterator :
         public boost::iterator_adaptor
         <
-            ConstReverseIterator<Decoder, Value>,
-            ConstIterator<Decoder, Value>,
+            LevelDbReverseIterator<Decoder, Value>,
+            LevelDbIterator<Decoder, Value>,
             Value,
             boost::bidirectional_traversal_tag,
             Value
@@ -23,17 +23,17 @@ class ConstReverseIterator :
     public:
         typedef boost::iterator_adaptor
         <
-            ConstReverseIterator<Decoder, Value>,
-            ConstIterator<Decoder, Value>,
+            LevelDbReverseIterator<Decoder, Value>,
+            LevelDbIterator<Decoder, Value>,
             Value,
             boost::bidirectional_traversal_tag,
             Value
         > Base;
 
     public:
-        ConstReverseIterator(const ConstIterator<Decoder, Value> &);
-        ConstReverseIterator(const boost::shared_ptr<leveldb::Iterator> &);
-        ConstReverseIterator();
+        LevelDbReverseIterator(const LevelDbIterator<Decoder, Value> &);
+        LevelDbReverseIterator(const boost::shared_ptr<leveldb::Iterator> &);
+        LevelDbReverseIterator();
 
         void increment();
         void decrement();
@@ -42,4 +42,4 @@ class ConstReverseIterator :
 
 }
 
-#include "ConstReverseIterator.ipp"
+#include "LevelDbReverseIterator.ipp"

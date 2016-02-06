@@ -1,10 +1,10 @@
-#include "Store.hpp"
+#include "LevelDbStore.hpp"
 
 
 namespace Xeth {
 
 
-typedef Store<std::string> ConfigStore;
+typedef LevelDbStore<std::string> ConfigStore;
 
 
 }

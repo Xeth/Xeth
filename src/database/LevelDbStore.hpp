@@ -4,8 +4,8 @@
 
 #include <boost/make_shared.hpp>
 
-#include "ConstIterator.hpp"
-#include "ConstReverseIterator.hpp"
+#include "LevelDbIterator.hpp"
+#include "LevelDbReverseIterator.hpp"
 #include "DataSerializer.hpp"
 
 
@@ -14,19 +14,19 @@ namespace Xeth{
 
 
 template<class Value, class Serializer=DataSerializer<Value> >
-class Store
+class LevelDbStore
 {
     public:
-        typedef ConstIterator<Serializer, Value> Iterator;
-        typedef ConstReverseIterator<Serializer, Value> ReverseIterator;
+        typedef LevelDbIterator<Serializer, Value> Iterator;
+        typedef LevelDbReverseIterator<Serializer, Value> ReverseIterator;
         typedef Value DataType;
 
     public:
-        Store();
-        Store(const char *path);
-        Store(const std::string &);
+        LevelDbStore();
+        LevelDbStore(const char *path);
+        LevelDbStore(const std::string &);
 
-        ~Store();
+        ~LevelDbStore();
 
         template<class String>
         void open(const String &);
@@ -70,4 +70,4 @@ class Store
 
 }
 
-#include "Store.ipp"
+#include "LevelDbStore.ipp"

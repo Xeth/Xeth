@@ -3,19 +3,19 @@ namespace Xeth{
 
 
 template<class Decoder, class Value>
-ConstIterator<Decoder, Value>::ConstIterator(const boost::shared_ptr<leveldb::Iterator> &handle) :
+LevelDbIterator<Decoder, Value>::LevelDbIterator(const boost::shared_ptr<leveldb::Iterator> &handle) :
     _handle(handle),
     _valid(handle->Valid())
 {}
 
 template<class Decoder, class Value>
-ConstIterator<Decoder, Value>::ConstIterator() :
+LevelDbIterator<Decoder, Value>::LevelDbIterator() :
     _valid(false)
 {}
 
 
 template<class Decoder, class Value>
-bool ConstIterator<Decoder, Value>::equal(const ConstIterator &it) const
+bool LevelDbIterator<Decoder, Value>::equal(const LevelDbIterator &it) const
 {
     if((_valid == it._valid) && (!_valid || (_handle->key() == it._handle->key())))
     {
@@ -27,13 +27,13 @@ bool ConstIterator<Decoder, Value>::equal(const ConstIterator &it) const
 
 
 template<class Decoder, class Value>
-Value ConstIterator<Decoder, Value>::dereference() const
+Value LevelDbIterator<Decoder, Value>::dereference() const
 {
     return _decoder(_handle->key().ToString().c_str(), _handle->value().ToString().c_str());
 }
 
 template<class Decoder, class Value>
-void ConstIterator<Decoder, Value>::increment()
+void LevelDbIterator<Decoder, Value>::increment()
 {
     if(_valid)
     {
@@ -44,7 +44,7 @@ void ConstIterator<Decoder, Value>::increment()
 
 
 template<class Decoder, class Value>
-void ConstIterator<Decoder, Value>::decrement()
+void LevelDbIterator<Decoder, Value>::decrement()
 {
     if(_valid)
     {

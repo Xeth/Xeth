@@ -3,14 +3,14 @@
 namespace Xeth{
 
 template<class Value, class Serializer>
-Store<Value, Serializer>::Store(const char *path) :
+LevelDbStore<Value, Serializer>::LevelDbStore(const char *path) :
     _db(NULL)
 {
     open(path);
 }
 
 template<class Value, class Serializer>
-Store<Value, Serializer>::Store(const std::string &path) :
+LevelDbStore<Value, Serializer>::LevelDbStore(const std::string &path) :
     _db(NULL)
 {
     open(path);
@@ -18,12 +18,12 @@ Store<Value, Serializer>::Store(const std::string &path) :
 
 
 template<class Value, class Serializer>
-Store<Value, Serializer>::Store() :
+LevelDbStore<Value, Serializer>::LevelDbStore() :
     _db(NULL)
 {}
 
 template<class Value, class Serializer>
-void Store<Value, Serializer>::close()
+void LevelDbStore<Value, Serializer>::close()
 {
     if(_db)
     {
@@ -33,7 +33,7 @@ void Store<Value, Serializer>::close()
 
 template<class Value, class Serializer>
 template<class String>
-void Store<Value, Serializer>::open(const String &path)
+void LevelDbStore<Value, Serializer>::open(const String &path)
 {
     if(!openNoThrow(path))
     {
@@ -44,7 +44,7 @@ void Store<Value, Serializer>::open(const String &path)
 
 template<class Value, class Serializer>
 template<class String>
-bool Store<Value, Serializer>::openNoThrow(const String &path)
+bool LevelDbStore<Value, Serializer>::openNoThrow(const String &path)
 {
     _path = path;
 
@@ -61,13 +61,13 @@ bool Store<Value, Serializer>::openNoThrow(const String &path)
 
 
 template<class Value, class Serializer>
-Store<Value, Serializer>::~Store()
+LevelDbStore<Value, Serializer>::~LevelDbStore()
 {
     close();
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::begin() const
+typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::begin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToFirst();
@@ -75,13 +75,13 @@ typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::begin() co
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::end() const
+typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::end() const
 {
     return Iterator();
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::rbegin() const
+typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::rbegin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToLast();
@@ -89,13 +89,13 @@ typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::rbe
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::rend() const
+typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::rend() const
 {
     return ReverseIterator();
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::find(const char *key) const
+typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::find(const char *key) const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->Seek(key);
@@ -103,19 +103,19 @@ typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::find(const
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::Iterator Store<Value, Serializer>::makeIterator(leveldb::Iterator *it) const
+typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::makeIterator(leveldb::Iterator *it) const
 {
     return Iterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
 template<class Value, class Serializer>
-typename Store<Value, Serializer>::ReverseIterator Store<Value, Serializer>::makeReverseIterator(leveldb::Iterator *it) const
+typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::makeReverseIterator(leveldb::Iterator *it) const
 {
     return ReverseIterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
 template<class Value, class Serializer>
-Value Store<Value, Serializer>::get(const char *key) const
+Value LevelDbStore<Value, Serializer>::get(const char *key) const
 {
     Value result;
     get(key, result);
@@ -123,7 +123,7 @@ Value Store<Value, Serializer>::get(const char *key) const
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::get(const char *key, Value &result) const
+bool LevelDbStore<Value, Serializer>::get(const char *key, Value &result) const
 {
     std::string data;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &data);
@@ -139,14 +139,14 @@ bool Store<Value, Serializer>::get(const char *key, Value &result) const
 
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::insert(const char *key, const Value &value)
+bool LevelDbStore<Value, Serializer>::insert(const char *key, const Value &value)
 {
     Serializer serializer;
     return insert(key, serializer(value).c_str());
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::insert(const char *key, const char *value)
+bool LevelDbStore<Value, Serializer>::insert(const char *key, const char *value)
 {
     std::string oldValue;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &oldValue);
@@ -160,7 +160,7 @@ bool Store<Value, Serializer>::insert(const char *key, const char *value)
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::move(const char *oldKey, const char *newKey)
+bool LevelDbStore<Value, Serializer>::move(const char *oldKey, const char *newKey)
 {
     std::string data;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), oldKey, &data);
@@ -181,21 +181,21 @@ bool Store<Value, Serializer>::move(const char *oldKey, const char *newKey)
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::replace(const char *key, const Value &value)
+bool LevelDbStore<Value, Serializer>::replace(const char *key, const Value &value)
 {
     Serializer serializer;
     return replace(key, serializer(value).c_str());
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::replace(const char *key, const char *value)
+bool LevelDbStore<Value, Serializer>::replace(const char *key, const char *value)
 {
     leveldb::Status status = _db->Put(leveldb::WriteOptions(), key, value);
     return status.ok();
 }
 
 template<class Value, class Serializer>
-bool Store<Value, Serializer>::remove(const char *key)
+bool LevelDbStore<Value, Serializer>::remove(const char *key)
 {
     leveldb::Status status = _db->Delete(leveldb::WriteOptions(), key);
     return status.ok();
