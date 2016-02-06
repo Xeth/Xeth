@@ -7,6 +7,25 @@ FileStore<Value, Serializer>::FileStore(const std::string &path, const std::stri
     _ext(ext)
 {}
 
+
+template<class Value, class Serializer>
+bool FileStore<Value, Serializer>::importFile(const char *filename) 
+{
+    Reader reader;
+    try
+    {
+        boost::filesystem::path source = boost::filesystem::absolute(filename); 
+        boost::filesystem::path destination = boost::filesystem::absolute(_path);
+        destination /= source.filename();
+
+        Value content = reader(source); //make sure content is valid
+        return write(destination.string(), content);
+    }
+    catch(...)
+    {}
+    return false;
+}
+
 template<class Value, class Serializer>
 bool FileStore<Value, Serializer>::write(const std::string &path, const Value &val)
 {
@@ -80,6 +99,13 @@ template<class Value, class Serializer>
 typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::end() const
 {
     return Iterator();
+}
+
+
+template<class Value, class Serializer>
+const std::string & FileStore<Value, Serializer>::getPath() const
+{
+    return _path;
 }
 
 

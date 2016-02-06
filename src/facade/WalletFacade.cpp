@@ -50,6 +50,11 @@ QVariant WalletFacade::importPresaleKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::importKey(const QVariantMap &request)
+{
+    ImportKeyCommand command(_database);
+    return _invoker.invoke(command, request);
+}
 
 QVariant WalletFacade::exportKey(const QVariantMap &request)
 {

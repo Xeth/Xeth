@@ -17,7 +17,9 @@
 #include "command/wallet/ListTransactionsCommand.hpp"
 #include "command/wallet/SendToAddressCommand.hpp"
 #include "command/wallet/ImportPresaleKeyCommand.hpp"
+#include "command/wallet/ImportKeyCommand.hpp"
 #include "command/wallet/ExportKeyCommand.hpp"
+
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -40,6 +42,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant getTransaction(const QString &hash);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
         Q_INVOKABLE QVariant importPresaleKey(const QVariantMap &);
+        Q_INVOKABLE QVariant importKey(const QVariantMap &);
 
 
     private:

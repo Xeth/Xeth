@@ -26,6 +26,7 @@ class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
 
         using Base::begin;
         using Base::end;
+        using Base::importFile;
 
     private:
         std::string makeFileName(const std::string &) const;

@@ -15,11 +15,14 @@ template<class Value, class Serializer>
 class FileStore
 {
     public:
-        typedef FileIterator<Value, FileReader<Value, Serializer> > Iterator;
+        typedef FileReader<Value, Serializer> Reader;
+        typedef FileIterator<Value, Reader> Iterator;
 
     public:
 
         FileStore(const std::string &path, const std::string &ext);
+
+        bool importFile(const char *filename);
 
         bool replace(const char *id, const Value &);
         bool insert(const char *id, const Value &);
@@ -28,6 +31,8 @@ class FileStore
         Iterator find(const char *) const;
         Iterator begin() const;
         Iterator end() const;
+
+        const std::string & getPath() const;
 
     private:
         bool write(const std::string &, const Value &);
