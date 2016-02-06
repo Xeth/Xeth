@@ -53,7 +53,7 @@ QVariant WalletFacade::importKey(const QVariantMap &request)
 
 QVariant WalletFacade::exportKey(const QVariantMap &request)
 {
-    ExportKeyCommand command(_settings);
+    ExportKeyCommand command(_database);
     return _invoker.invoke(command, request);
 }
 

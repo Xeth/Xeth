@@ -2,14 +2,13 @@
 
 namespace Xeth{
 
-ExportKeyCommand::ExportKeyCommand(const Settings &settings ) :
-    _settings(settings)
+ExportKeyCommand::ExportKeyCommand(const DataBase &database ) :
+    _database(database)
 {}
 
 
 QVariant ExportKeyCommand::operator ()(const QVariantMap &request)
 {
-
     QString address = request["address"].toString();
     QString destinationPath = request["destination"].toString();
 
@@ -18,58 +17,20 @@ QVariant ExportKeyCommand::operator ()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
+    const EthereumKeyStore & keyStore = _database.getEthereumKeys();
 
-    QString path = _settings.get("attach", "");
+    EthereumKeyStore::Iterator it = keyStore.find(address.toStdString().c_str());
 
-    if(!path.length())
+    if(it==keyStore.end())
     {
-        Ethereum::Connector::DefaultGethPath defaultPath;
-        path = defaultPath.toString().c_str();
+        return QVariant::fromValue(false);
     }
 
-    path += QDir::separator();
-    path += "keystore";
-
-    QDirIterator it(path);
-
-    while(it.hasNext())
-    {
-        QString fileName = it.next();
-        if(fileName == "."|| fileName == "..")
-        {
-            continue;
-        }
-
-        QFile file;
-        file.setFileName(fileName);
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-
-        QJsonDocument document;
-        document.fromJson(file.readAll());
-
-        QJsonObject object = document.object();
-
-        QString keyAddress = object.value("address").toString();
-
-        if(address == keyAddress)
-        {
-            QString destinationFile = destinationPath;
-            destinationFile +=  QDir::separator();
-            destinationFile += fileName;
-
-            QString sourceFile = path;
-            sourceFile +=  QDir::separator();
-            sourceFile += fileName;
-
-            return QVariant::fromValue(QFile::copy(sourceFile, destinationFile));
-        }
-
-    }
-
-    return QVariant::fromValue(false);
-
-
-
+    const boost::filesystem::path & path = it.path();
+    QString destinationFile = destinationPath;
+    destinationFile +=  QDir::separator();
+    destinationFile += path.filename().c_str();
+    return QVariant::fromValue(QFile::copy(path.string().c_str(), destinationFile));
 }
 
 

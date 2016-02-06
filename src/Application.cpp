@@ -5,7 +5,7 @@ namespace Xeth{
 Application::Application(const Settings &settings, int argc, char* argv[]):
     _app(argc, argv),
     _settings(settings),
-    _database(settings.get("database", "")),
+    _database(settings),
     _synchronizer(_provider, _database),
     _wallet(settings, _provider, _database, _notifier),
     _addressbook(_database, _notifier),

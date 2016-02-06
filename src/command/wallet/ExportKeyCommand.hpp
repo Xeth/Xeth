@@ -9,10 +9,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <boost/filesystem.hpp>
+
 #include "ethrpc/transport/Path.hpp"
 
-#include "Settings.hpp"
-
+#include "database/DataBase.hpp"
 
 namespace Xeth{
 
@@ -20,13 +21,13 @@ namespace Xeth{
 class ExportKeyCommand
 {
     public:
-        ExportKeyCommand(const Settings &);
+        ExportKeyCommand(const DataBase &);
 
         QVariant operator()(const QVariantMap &path);
 
 
     private:
-        const Settings &_settings;
+        const DataBase &_database;
 };
 
 

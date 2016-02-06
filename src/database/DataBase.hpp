@@ -8,6 +8,9 @@
 #include "database/ConfigStore.hpp"
 #include "database/StealthPaymentStore.hpp"
 #include "database/StealthKeyStore.hpp"
+#include "database/EthereumKeyStore.hpp"
+
+#include "EthereumKeyStorePath.hpp"
 
 namespace Xeth{
 
@@ -15,8 +18,8 @@ namespace Xeth{
 class DataBase
 {
     public:
-        DataBase();
-        DataBase(const char *path);
+        DataBase(const Settings &);
+//        DataBase(const char *path);
 
         TransactionStore & getTransactions();
         ScanIndexStore & getScanIndex();
@@ -24,6 +27,7 @@ class DataBase
         ConfigStore & getConfig();
         StealthPaymentStore & getStealthPayments();
         StealthKeyStore & getStealthKeys();
+        EthereumKeyStore & getEthereumKeys();
 
         const TransactionStore & getTransactions() const;
         const ScanIndexStore & getScanIndex() const;
@@ -31,15 +35,18 @@ class DataBase
         const ConfigStore & getConfig() const;
         const StealthPaymentStore & getStealthPayments() const;
         const StealthKeyStore & getStealthKeys() const;
+        const EthereumKeyStore & getEthereumKeys() const;
 
     private:
         DataBaseDirectory _directory;
+        EthereumKeyStorePath _ethereumKeysPath;
         TransactionStore _transactions;
         ScanIndexStore _scanIndex;
         AddressBookStore _addressbook;
         ConfigStore _config;
         StealthPaymentStore _stealthPayments;
         StealthKeyStore _stealthKeys;
+        EthereumKeyStore _ethereumKeys;
 
 };
 

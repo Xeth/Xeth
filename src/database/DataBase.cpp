@@ -3,25 +3,18 @@
 
 namespace Xeth{
 
-DataBase::DataBase() :
-    _directory(true),
-    _transactions(_directory.getPath() + "transactions"),
-    _scanIndex(_directory.getPath()  + "scanindex"),
-    _addressbook(_directory.getPath() + "addressbook"),
-    _config(_directory.getPath() + "config"),
-    _stealthPayments(_directory.getPath()+"stealth"),
-    _stealthKeys(_directory.getPath()+"keys")
-{}
 
 
-DataBase::DataBase(const char *path) :
-    _directory(path, true),
+DataBase::DataBase(const Settings &settings) :
+    _directory(settings.get("database"), true),
+    _ethereumKeysPath(settings),
     _transactions(_directory.getPath().c_str()),
     _scanIndex(_directory.getPath() + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
     _stealthPayments(_directory.getPath() + "stealth"),
-    _stealthKeys(_directory.getPath()+"keys")
+    _stealthKeys(_directory.getPath()+"keys"),
+    _ethereumKeys(_ethereumKeysPath.toString())
 {}
 
 TransactionStore & DataBase::getTransactions()
@@ -54,6 +47,11 @@ StealthKeyStore & DataBase::getStealthKeys()
     return _stealthKeys;
 }
 
+EthereumKeyStore & DataBase::getEthereumKeys()
+{
+    return _ethereumKeys;
+}
+
 const TransactionStore & DataBase::getTransactions() const
 {
     return _transactions;
@@ -83,6 +81,11 @@ const StealthPaymentStore & DataBase::getStealthPayments() const
 const StealthKeyStore & DataBase::getStealthKeys() const
 {
     return _stealthKeys;
+}
+
+const EthereumKeyStore & DataBase::getEthereumKeys() const
+{
+    return _ethereumKeys;
 }
 
 }
