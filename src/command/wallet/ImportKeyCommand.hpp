@@ -4,7 +4,7 @@
 #include <QVariantMap>
 
 #include "database/DataBase.hpp"
-#include "GenericImportKeyCommand.hpp"
+#include "detail/GenericImportKeyCommand.hpp"
 
 
 namespace Xeth{

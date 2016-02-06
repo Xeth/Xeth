@@ -11,7 +11,7 @@
 #include "database/DataBase.hpp"
 #include "types/BigInt.hpp"
 
-#include "AddressValidator.hpp"
+#include "detail/AddressValidator.hpp"
 
 namespace Xeth{
 

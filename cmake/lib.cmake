@@ -22,6 +22,7 @@ file(GLOB LIBRARY_SOURCES
     "src/database/*.cpp"
     "src/synchronizer/*.cpp"
     "src/command/wallet/*.cpp"
+    "src/command/wallet/detail/*cpp"
     "src/command/addressbook/*.cpp"
     "src/command/config/*.cpp"
     "src/facade/*.cpp"

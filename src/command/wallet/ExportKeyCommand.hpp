@@ -1,7 +1,7 @@
 #pragma once
 
 #include "database/DataBase.hpp"
-#include "GenericExportKeyCommand.hpp"
+#include "detail/GenericExportKeyCommand.hpp"
 
 
 namespace Xeth{
