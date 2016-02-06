@@ -29,7 +29,12 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
         std::string filename = it.path().filename().string();
         if(boost::regex_match(filename.c_str(), regex))
         {
-            break;
+            //extra check
+            EthereumKey key = *it;
+            if(it->getAddress().toString() == address)
+            {
+                break;
+            }
         }
     }
     return it;
