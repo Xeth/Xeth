@@ -12,9 +12,14 @@ Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &da
     QObject::connect(&_syncProgress, SIGNAL(Progress(double)), this, SLOT(emitChainProgress(double)));
 }
 
-void Synchronizer::addAddress(const char *address)
+void Synchronizer::addAddress(const EthereumAddress &address)
 {
     _scanner.addAddress(address);
+}
+
+void Synchronizer::addStealthAddress(const StealthKey &key)
+{
+    _scanner.addStealthAddress(key);
 }
 
 void Synchronizer::loadAddresses()

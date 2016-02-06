@@ -21,8 +21,6 @@ ScopedScanPause::~ScopedScanPause()
 }
 
 
-
-
 ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &database):
     _provider(provider),
     _blockchain(_provider),
@@ -35,11 +33,41 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
 }
 
-void ChainScanner::addAddress(const char *address)
+void ChainScanner::addAddress(const EthereumAddress &address)
 {
     ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<AccountScanCriterion>(getChainHeight(), address.toString().c_str());
+}
 
-    addCriterion<AccountScanCriterion>(address);
+
+void ChainScanner::addStealthAddress(const StealthKey &key)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<StealthScanCriterion>(getChainHeight(), key);
+}
+
+void ChainScanner::addAddress(const EthereumAddress &address, time_t time)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<AccountScanCriterion>(estimateHeight(time), address.toString().c_str());
+}
+
+size_t ChainScanner::estimateHeight(time_t time)
+{
+    return time/12;
+}
+
+size_t ChainScanner::getChainHeight()
+{
+    Ethereum::Connector::BlockChain chain(_provider);
+    return chain.getHeight();
+}
+
+
+void ChainScanner::addStealthAddress(const StealthKey &key, time_t time)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<StealthScanCriterion>(estimateHeight(time), key);
 }
 
 void ChainScanner::loadAddresses()
@@ -50,12 +78,6 @@ void ChainScanner::loadAddresses()
     loader.load(_scanCriteria);
 }
 
-template<class Criterion>
-void ChainScanner::addCriterion(const char *address)
-{
-    size_t updateCursor = _database.getScanIndex().get(address);
-    _scanCriteria.addCriterion<Criterion>(updateCursor, address);
-}
 
 const ScanProgress & ChainScanner::getProgress() const
 {

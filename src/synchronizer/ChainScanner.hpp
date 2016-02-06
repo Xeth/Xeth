@@ -35,7 +35,12 @@ class ChainScanner : public QObject
         bool isActive() const;
 
         void loadAddresses();
-        void addAddress(const char *);
+
+        void addAddress(const EthereumAddress &);
+        void addStealthAddress(const StealthKey &);
+
+        void addAddress(const EthereumAddress &, time_t);
+        void addStealthAddress(const StealthKey &, time_t);
 
         void stop();
 
@@ -50,9 +55,8 @@ class ChainScanner : public QObject
         void processData(const PartialScanResult &);
 
     private:
-
-        template<class Criterion>
-        void addCriterion(const char *);
+        size_t estimateHeight(time_t);
+        size_t getChainHeight();
 
     private:
         Ethereum::Connector::Provider &_provider;
