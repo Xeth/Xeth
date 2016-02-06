@@ -56,6 +56,12 @@ QVariant WalletFacade::importKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::importStealthKey(const QVariantMap &request)
+{
+    ImportStealthKeyCommand command(_database);
+    return _invoker.invoke(command, request);
+}
+
 QVariant WalletFacade::exportKey(const QVariantMap &request)
 {
     ExportKeyCommand command(_database);

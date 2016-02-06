@@ -24,6 +24,7 @@ class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
 
         using Base::begin;
         using Base::end;
+        using Base::importFile;
 
     private:
         std::string makeAddress(const StealthKey &) const;

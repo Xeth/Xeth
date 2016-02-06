@@ -19,6 +19,7 @@
 #include "command/wallet/ImportPresaleKeyCommand.hpp"
 #include "command/wallet/ImportKeyCommand.hpp"
 #include "command/wallet/ExportKeyCommand.hpp"
+#include "command/wallet/ImportStealthKeyCommand.hpp"
 
 
 #include "Invoker.hpp"
@@ -43,6 +44,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
         Q_INVOKABLE QVariant importPresaleKey(const QVariantMap &);
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
+        Q_INVOKABLE QVariant importStealthKey(const QVariantMap &);
 
 
     private:
