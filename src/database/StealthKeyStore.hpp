@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "StealthKey.hpp"
+#include "types/StealthKey.hpp"
 #include "FileStore.hpp"
 
 

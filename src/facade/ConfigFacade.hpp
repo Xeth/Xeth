@@ -5,12 +5,12 @@
 #include <QVariantMap>
 #include <QString>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 #include "Notifier.hpp"
 #include "Invoker.hpp"
 
-#include "config/AddConfigCommand.hpp"
-#include "config/GetConfigCommand.hpp"
+#include "command/config/AddConfigCommand.hpp"
+#include "command/config/GetConfigCommand.hpp"
 
 
 namespace Xeth{

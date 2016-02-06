@@ -7,6 +7,7 @@
 #include "database/AddressBookStore.hpp"
 #include "database/ConfigStore.hpp"
 #include "database/StealthPaymentStore.hpp"
+#include "database/StealthKeyStore.hpp"
 
 namespace Xeth{
 
@@ -22,13 +23,14 @@ class DataBase
         AddressBookStore & getAddressBook();
         ConfigStore & getConfig();
         StealthPaymentStore & getStealthPayments();
+        StealthKeyStore & getStealthKeys();
 
         const TransactionStore & getTransactions() const;
         const ScanIndexStore & getScanIndex() const;
         const AddressBookStore & getAddressBook() const;
         const ConfigStore & getConfig() const;
         const StealthPaymentStore & getStealthPayments() const;
-
+        const StealthKeyStore & getStealthKeys() const;
 
     private:
         DataBaseDirectory _directory;
@@ -36,7 +38,8 @@ class DataBase
         ScanIndexStore _scanIndex;
         AddressBookStore _addressbook;
         ConfigStore _config;
-        StealthPaymentStore _stealthStore;
+        StealthPaymentStore _stealthPayments;
+        StealthKeyStore _stealthKeys;
 
 };
 

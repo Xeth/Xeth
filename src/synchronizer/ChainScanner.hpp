@@ -10,7 +10,8 @@
 #include "ethrpc/BlockChain.hpp"
 #include "ethrpc/Wallet.hpp"
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
+
 #include "ScanProgress.hpp"
 #include "ScanCriteria.hpp"
 #include "ScanAction.hpp"

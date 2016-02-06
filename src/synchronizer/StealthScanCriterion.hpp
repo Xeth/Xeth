@@ -9,7 +9,8 @@
 #include "ethstealth/Literal.hpp"
 
 #include "ScanCriterion.hpp"
-#include "StealthKey.hpp"
+
+#include "types/StealthKey.hpp"
 
 namespace Xeth{
 

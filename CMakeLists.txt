@@ -10,11 +10,11 @@ set(CMAKE_AUTORCC ON)
 add_subdirectory(libethrpc)
 add_subdirectory(libethkey)
 
-set(ETHKEY_INCLUDE_PATH "${PROJECT_BINARY_DIR}/libethkey/include")
-set(ETHKEY_LIBRARY "ethkey")
+set(ETHKEY_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethkey/include")
+set(ETHKEY_LIBRARY "${PROJECT_BINARY_DIR}/libethkey/libethkey.a")
 
 message("vars : ")
-message(${ETHKEY_INCLUDE_PATH})
+message(${ETHKEY_INCLUDE_DIR})
 add_subdirectory(libethstealth)
 
 add_dependencies(ethstealth ethkey)

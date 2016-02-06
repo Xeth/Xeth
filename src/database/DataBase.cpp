@@ -9,7 +9,8 @@ DataBase::DataBase() :
     _scanIndex(_directory.getPath()  + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
-    _stealthStore(_directory.getPath()+"stealth")
+    _stealthPayments(_directory.getPath()+"stealth"),
+    _stealthKeys(_directory.getPath()+"keys")
 {}
 
 
@@ -19,7 +20,8 @@ DataBase::DataBase(const char *path) :
     _scanIndex(_directory.getPath() + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
-    _stealthStore(_directory.getPath() + "stealth")
+    _stealthPayments(_directory.getPath() + "stealth"),
+    _stealthKeys(_directory.getPath()+"keys")
 {}
 
 TransactionStore & DataBase::getTransactions()
@@ -44,7 +46,12 @@ ConfigStore & DataBase::getConfig()
 
 StealthPaymentStore & DataBase::getStealthPayments()
 {
-    return _stealthStore;
+    return _stealthPayments;
+}
+
+StealthKeyStore & DataBase::getStealthKeys()
+{
+    return _stealthKeys;
 }
 
 const TransactionStore & DataBase::getTransactions() const
@@ -70,7 +77,12 @@ const ConfigStore & DataBase::getConfig() const
 
 const StealthPaymentStore & DataBase::getStealthPayments() const
 {
-    return _stealthStore;
+    return _stealthPayments;
+}
+
+const StealthKeyStore & DataBase::getStealthKeys() const
+{
+    return _stealthKeys;
 }
 
 }

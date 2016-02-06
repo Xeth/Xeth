@@ -4,8 +4,9 @@
 
 #include "ethrpc/Block.hpp"
 
-#include "TransactionCategory.hpp"
-#include "BigInt.hpp"
+#include "types/TransactionCategory.hpp"
+#include "types/BigInt.hpp"
+
 #include "ScanResult.hpp"
 
 namespace Xeth{

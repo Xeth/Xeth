@@ -2,13 +2,13 @@
 
 #include <QObject>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
-#include "addressbook/AddContactCommand.hpp"
-#include "addressbook/EditContactCommand.hpp"
-#include "addressbook/ListContactsCommand.hpp"
-#include "addressbook/RemoveContactCommand.hpp"
-#include "addressbook/RenameConactCommand.hpp"
+#include "command/addressbook/AddContactCommand.hpp"
+#include "command/addressbook/EditContactCommand.hpp"
+#include "command/addressbook/ListContactsCommand.hpp"
+#include "command/addressbook/RemoveContactCommand.hpp"
+#include "command/addressbook/RenameConactCommand.hpp"
 
 #include "Invoker.hpp"
 

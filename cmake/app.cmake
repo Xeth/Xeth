@@ -1,6 +1,6 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
-find_package(Boost COMPONENTS system filesystem thread program_options REQUIRED)
+find_package(Boost COMPONENTS system filesystem thread program_options random REQUIRED)
 find_package(LevelDB REQUIRED)
 
 
@@ -30,9 +30,9 @@ MESSAGE(${LEVELDB_LIBRARY})
 
 target_link_libraries(xeth
     xethlib
+    ethstealth
     ethrpc
     ethkey
-    ethstealth
     ${Qt5Core_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKitWidgets_LIBRARIES}
@@ -42,6 +42,9 @@ target_link_libraries(xeth
     ${Boost_THREAD_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_RANDOM_LIBRARY}
+    ${CRYPTOPP_LIBRARY}
     ${LEVELDB_LIBRARY}
     ${CMAKE_THREAD_LIBS_INIT}
+    gmp
 )

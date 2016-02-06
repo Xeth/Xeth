@@ -3,25 +3,24 @@
 #include <QVariant>
 #include <QVariantMap>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 namespace Xeth{
 
 
 
-class EditContactCommand
+class GetConfigCommand
 {
     public:
-        EditContactCommand(DataBase &);
+        GetConfigCommand(DataBase &);
 
-        QVariant operator()(const QVariantMap &);
+        QVariant operator()(const QString &);
 
     private:
         DataBase &_database;
 
 };
-
 
 
 }

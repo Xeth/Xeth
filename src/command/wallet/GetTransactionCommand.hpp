@@ -1,25 +1,25 @@
 #pragma once
 
+#include <QString>
 #include <QVariant>
-#include <QVariantMap>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 namespace Xeth{
 
 
 
-class RemoveContactCommand
+class GetTransactionCommand
 {
     public:
-        RemoveContactCommand(DataBase &);
+        GetTransactionCommand(DataBase &);
 
         QVariant operator()(const QString &);
+        QVariant operator()(const char *);
 
     private:
         DataBase &_database;
-
 };
 
 

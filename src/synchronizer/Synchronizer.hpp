@@ -5,8 +5,8 @@
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/BlockChain.hpp"
 
-#include "synchronizer/ChainProgress.hpp"
-#include "synchronizer/ChainScanner.hpp"
+#include "ChainProgress.hpp"
+#include "ChainScanner.hpp"
 
 namespace Xeth{
 

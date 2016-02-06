@@ -8,8 +8,8 @@
 
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-#include "DataBase.hpp"
-#include "BigInt.hpp"
+#include "database/DataBase.hpp"
+#include "types/BigInt.hpp"
 
 #include "AddressValidator.hpp"
 

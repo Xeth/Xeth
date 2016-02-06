@@ -3,17 +3,17 @@
 #include <QVariant>
 #include <QVariantMap>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 namespace Xeth{
 
 
 
-class GetConfigCommand
+class RemoveContactCommand
 {
     public:
-        GetConfigCommand(DataBase &);
+        RemoveContactCommand(DataBase &);
 
         QVariant operator()(const QString &);
 
@@ -21,6 +21,7 @@ class GetConfigCommand
         DataBase &_database;
 
 };
+
 
 
 }

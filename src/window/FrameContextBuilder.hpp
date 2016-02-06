@@ -2,11 +2,13 @@
 
 #include <QWebFrame>
 
-#include "Notifier.hpp"
-#include "WalletFacade.hpp"
-#include "AddressBookFacade.hpp"
-#include "Synchronizer.hpp"
-#include "ConfigFacade.hpp"
+#include "facade/Notifier.hpp"
+#include "facade/WalletFacade.hpp"
+#include "facade/AddressBookFacade.hpp"
+#include "facade/ConfigFacade.hpp"
+
+#include "synchronizer/Synchronizer.hpp"
+
 
 
 namespace Xeth{

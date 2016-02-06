@@ -6,7 +6,7 @@
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/Wallet.hpp"
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 
@@ -17,13 +17,13 @@ namespace Xeth{
 class GetAccountsCommand
 {
     public:
-        GetAccountsCommand(Ethereum::Connector::Provider &, DataBase &);
+        GetAccountsCommand(Ethereum::Connector::Provider &, const DataBase &);
 
         QVariant operator()();
 
     private:
         Ethereum::Connector::Provider &_provider;
-        DataBase &_database;
+        const DataBase &_database;
 };
 
 

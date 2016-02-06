@@ -4,7 +4,7 @@
 #include <QVariantMap>
 #include <QJsonArray>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 namespace Xeth{

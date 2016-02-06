@@ -3,16 +3,17 @@
 #include <QVariant>
 #include <QVariantMap>
 
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
 namespace Xeth{
 
 
-class RenameConactCommand
+
+class AddConfigCommand
 {
     public:
-        RenameConactCommand(DataBase &database);
+        AddConfigCommand(DataBase &);
 
         QVariant operator()(const QVariantMap &);
 

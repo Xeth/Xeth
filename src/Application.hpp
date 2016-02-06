@@ -7,17 +7,18 @@
 #include "ethrpc/Provider.hpp"
 
 #include "Settings.hpp"
-#include "DataBase.hpp"
-#include "Synchronizer.hpp"
-#include "WalletFacade.hpp"
-#include "AddressBookFacade.hpp"
-#include "ConfigFacade.hpp"
-#include "Notifier.hpp"
+#include "database/DataBase.hpp"
+#include "synchronizer/Synchronizer.hpp"
 
-#include "FrameContextBuilder.hpp"
-#include "Window.hpp"
+#include "facade/WalletFacade.hpp"
+#include "facade/AddressBookFacade.hpp"
+#include "facade/ConfigFacade.hpp"
+#include "facade/Notifier.hpp"
 
-#include "EthProcessSupervisor.hpp"
+#include "window/FrameContextBuilder.hpp"
+#include "window/Window.hpp"
+
+#include "process/EthProcessSupervisor.hpp"
 
 
 namespace Xeth{

@@ -8,16 +8,16 @@
 #include <boost/thread.hpp>
 
 #include "Settings.hpp"
-#include "DataBase.hpp"
+#include "database/DataBase.hpp"
 
 
-#include "wallet/GetAccountsCommand.hpp"
-#include "wallet/GetBalanceCommand.hpp"
-#include "wallet/GetTransactionCommand.hpp"
-#include "wallet/ListTransactionsCommand.hpp"
-#include "wallet/SendToAddressCommand.hpp"
-#include "wallet/ImportKeyCommand.hpp"
-#include "wallet/ExportKeyCommand.hpp"
+#include "command/wallet/GetAccountsCommand.hpp"
+#include "command/wallet/GetBalanceCommand.hpp"
+#include "command/wallet/GetTransactionCommand.hpp"
+#include "command/wallet/ListTransactionsCommand.hpp"
+#include "command/wallet/SendToAddressCommand.hpp"
+#include "command/wallet/ImportKeyCommand.hpp"
+#include "command/wallet/ExportKeyCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"

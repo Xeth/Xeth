@@ -1,25 +1,25 @@
 #pragma once
 
+#include "Settings.hpp"
+#include "process/EthProcess.hpp"
+
 #include <QVariant>
 #include <QVariantMap>
-
-#include "DataBase.hpp"
 
 
 namespace Xeth{
 
 
 
-class AddContactCommand
+class ImportKeyCommand
 {
     public:
-        AddContactCommand(DataBase &);
+        ImportKeyCommand(const Settings &);
 
         QVariant operator()(const QVariantMap &);
 
     private:
-        DataBase &_database;
-
+        EthProcess _process;
 };
 
 
