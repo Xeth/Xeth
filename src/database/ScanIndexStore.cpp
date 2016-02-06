@@ -19,7 +19,7 @@ bool ScanIndexStore::insert(const char *key, size_t index)
     return replace(key, index);
 }
 
-size_t ScanIndexStore::get(const char *key)
+size_t ScanIndexStore::get(const char *key) const
 {
     size_t result = 0;
     Base::get(key, result);

@@ -13,6 +13,10 @@ StealthScanCriterion::StealthScanCriterion(const StealthKey &key) :
     _key(key)
 {}
 
+StealthScanCriterion::StealthScanCriterion(const StealthKey &key, const StealthAddress &address) :
+    ScanCriterion(Literal(address)),
+    _key(key)
+{}
 
 
 

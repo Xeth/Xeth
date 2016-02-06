@@ -25,6 +25,12 @@ class StealthScanCriterion : public ScanCriterion
             const StealthKey &
         );
 
+        StealthScanCriterion
+        (
+            const StealthKey &,
+            const StealthAddress &
+        );
+
         void processTransaction
         (
             const std::string &hash,

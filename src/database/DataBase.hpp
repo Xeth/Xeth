@@ -17,9 +17,18 @@ namespace Xeth{
 
 class DataBase
 {
+
+    public:
+        typedef Xeth::TransactionStore TransactionStore;
+        typedef Xeth::ScanIndexStore ScanIndexStore;
+        typedef Xeth::AddressBookStore AddressBookStore;
+        typedef Xeth::ConfigStore ConfigStore;
+        typedef Xeth::StealthPaymentStore StealthPaymentStore;
+        typedef Xeth::StealthKeyStore StealthKeyStore;
+        typedef Xeth::EthereumKeyStore EthereumKeyStore;
+
     public:
         DataBase(const Settings &);
-//        DataBase(const char *path);
 
         TransactionStore & getTransactions();
         ScanIndexStore & getScanIndex();

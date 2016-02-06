@@ -25,7 +25,7 @@ class ScanIndexStore : private LevelDbStore<size_t>
         using Base::getPath;
 
         bool insert(const char *key, size_t index);
-        size_t get(const char *key);
+        size_t get(const char *key) const;
 
 };
 

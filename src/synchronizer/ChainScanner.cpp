@@ -45,16 +45,9 @@ void ChainScanner::addAddress(const char *address)
 void ChainScanner::loadAddresses()
 {
     ScopedScanPause pause(this);
-
     _scanCriteria.clear();
-
-    Ethereum::Connector::Wallet wallet(_provider);
-    Ethereum::Connector::Collection<std::string> accounts = wallet.getAccounts();
-
-    for(Ethereum::Connector::Collection<std::string>::Iterator it = accounts.begin(), end=accounts.end(); it!=end; ++it)
-    {
-        addAddress(it->c_str());
-    }
+    ScanCriteriaLoader loader(_provider, _database);
+    loader.load(_scanCriteria);
 }
 
 template<class Criterion>
