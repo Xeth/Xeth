@@ -14,6 +14,8 @@ class ObjectReader
         ObjectReader();
         ObjectReader(const Serializer &);
 
+        Value read(const char *path) const;
+        Value read(const boost::filesystem::path &) const;
         Value operator()(const boost::filesystem::path &) const;
 
 

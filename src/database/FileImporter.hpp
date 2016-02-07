@@ -5,7 +5,7 @@
 #include <json/value.h>
 #include <boost/filesystem.hpp>
 
-#include "JsonReader.hpp"
+#include "io/JsonReader.hpp"
 
 
 namespace Xeth{

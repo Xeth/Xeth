@@ -5,7 +5,9 @@
 #include <boost/filesystem.hpp>
 
 #include "detail/FileIterator.hpp"
-#include "ObjectReader.hpp"
+
+#include "io/ObjectReader.hpp"
+#include "io/ObjectWriter.hpp"
 
 
 namespace Xeth{
@@ -18,6 +20,7 @@ class FileStore
         typedef Value Data;
         typedef Serializer DataSerializer;
         typedef ObjectReader<Value, Serializer> Reader;
+        typedef ObjectWriter<Value, Serializer> Writer;
         typedef FileIterator<Value, Reader> Iterator;
 
     public:

@@ -12,10 +12,8 @@ FileStore<Value, Serializer>::FileStore(const std::string &path, const std::stri
 template<class Value, class Serializer>
 bool FileStore<Value, Serializer>::write(const std::string &path, const Value &val)
 {
-    std::ofstream file(path.c_str(), std::ofstream::trunc);
-    file<<_serializer.serialize(val);
-    file.close();
-    return !file.bad();
+    Writer writer(path.c_str(), true);
+    return writer.write(val);
 }
 
 template<class Value, class Serializer>

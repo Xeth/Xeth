@@ -7,7 +7,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "JsonReader.hpp"
+#include "io/JsonReader.hpp"
+
 #include "StealthKeyStore.hpp"
 #include "EthereumKeyStore.hpp"
 

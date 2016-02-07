@@ -3,7 +3,7 @@
 #include "Settings.hpp"
 #include "process/EthProcess.hpp"
 #include "synchronizer/Synchronizer.hpp"
-#include "database/JsonReader.hpp" //ToDo: move it in a separate package, io for instance
+#include "io/JsonReader.hpp"
 
 #include <QVariant>
 #include <QVariantMap>

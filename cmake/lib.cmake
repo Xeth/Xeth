@@ -19,6 +19,7 @@ set(CMAKE_CXX_FLAGS "-fPIC")
 
 file(GLOB LIBRARY_SOURCES
     "src/*.cpp"
+    "src/database/detail/*.cpp"
     "src/database/*.cpp"
     "src/synchronizer/*.cpp"
     "src/command/wallet/*.cpp"
@@ -29,26 +30,12 @@ file(GLOB LIBRARY_SOURCES
     "src/window/*.cpp"
     "src/process/*.cpp"
     "src/types/*.cpp"
+    "src/io/*.cpp"
 )
 
 
 list(REMOVE_ITEM LIBRARY_SOURCES "src/main.cpp")
 
-
-file(GLOB LIBRARY_HEADERS
-    "src/*.hpp"
-    "src/database/*.hpp"
-    "src/synchronizer/*.hpp"
-    "src/wallet/*.hpp"
-    "src/*.ipp"
-    "src/database/*.ipp"
-    "src/synchronizer/*.ipp"
-    "src/wallet/*.ipp"
-    "src/addressbook/*.hpp"
-    "src/addressbook/*.ipp"
-    "src/config/*.hpp"
-    "src/config/*.ipp"
- )
 
 add_library(xethlib STATIC ${LIBRARY_SOURCES})
 add_dependencies(xethlib ethrpc)
