@@ -2,8 +2,9 @@
 
 namespace Xeth{
 
-ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings) :
-    _process(settings)
+ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer) :
+    _process(settings),
+    _synchronizer(synchronizer)
 {}
 
 QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
@@ -34,7 +35,19 @@ QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
     if(_process.exitStatus() != 0)
     {
         result["error"] = "Import failed";
-
+    }
+    else
+    {
+        JsonReader reader;
+        Json::Value json;
+        if(!reader.read(path.toStdString().c_str(), json))
+        {
+            result["error"] = "invalid json";
+        }
+        else
+        {
+            _synchronizer.watchAddress(json["ethaddr"].asString());
+        }
     }
 
     return QVariant::fromValue(result);

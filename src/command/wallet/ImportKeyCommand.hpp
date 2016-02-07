@@ -6,6 +6,7 @@
 #include "database/DataBase.hpp"
 #include "detail/GenericImportKeyCommand.hpp"
 
+#include "synchronizer/Synchronizer.hpp"
 
 namespace Xeth{
 
@@ -13,7 +14,10 @@ namespace Xeth{
 class ImportKeyCommand : public GenericImportKeyCommand<EthereumKeyStore>
 {
     public:
-        ImportKeyCommand(DataBase &);
+        typedef GenericImportKeyCommand<EthereumKeyStore> Base;
+
+    public:
+        ImportKeyCommand(DataBase &db, Synchronizer &);
 
 };
 

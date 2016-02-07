@@ -3,10 +3,9 @@
 namespace Xeth{
 
 
-ImportStealthKeyCommand::ImportStealthKeyCommand(DataBase &database ) :
-    GenericImportKeyCommand<StealthKeyStore>(database.getStealthKeys())
+ImportStealthKeyCommand::ImportStealthKeyCommand(DataBase &database, Synchronizer &synchronizer) :
+    Base(database.getStealthKeys(), synchronizer)
 {}
-
 
 
 }

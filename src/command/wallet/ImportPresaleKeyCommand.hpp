@@ -2,6 +2,8 @@
 
 #include "Settings.hpp"
 #include "process/EthProcess.hpp"
+#include "synchronizer/Synchronizer.hpp"
+#include "database/JsonReader.hpp" //ToDo: move it in a separate package, io for instance
 
 #include <QVariant>
 #include <QVariantMap>
@@ -14,12 +16,13 @@ namespace Xeth{
 class ImportPresaleKeyCommand
 {
     public:
-        ImportPresaleKeyCommand(const Settings &);
+        ImportPresaleKeyCommand(const Settings &, Synchronizer &);
 
         QVariant operator()(const QVariantMap &);
 
     private:
         EthProcess _process;
+        Synchronizer &_synchronizer;
 };
 
 

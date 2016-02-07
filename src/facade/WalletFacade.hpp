@@ -33,7 +33,7 @@ class WalletFacade :public QObject
 {
     Q_OBJECT
     public:
-        WalletFacade(const Settings &, Ethereum::Connector::Provider &, DataBase &, Notifier &);
+        WalletFacade(const Settings &, Ethereum::Connector::Provider &, DataBase &, Notifier &, Synchronizer &);
 
     public:
 
@@ -54,6 +54,7 @@ class WalletFacade :public QObject
         Invoker _invoker;
         Ethereum::Connector::Provider &_provider;
         DataBase &_database;
+        Synchronizer &_synchronizer;
 
 };
 

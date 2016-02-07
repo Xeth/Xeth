@@ -3,8 +3,8 @@
 namespace Xeth{
 
 
-ImportKeyCommand::ImportKeyCommand(DataBase &database ) :
-    GenericImportKeyCommand<EthereumKeyStore>(database.getEthereumKeys())
+ImportKeyCommand::ImportKeyCommand(DataBase &database, Synchronizer &synchronizer) :
+    Base(database.getEthereumKeys(), synchronizer)
 {}
 
 

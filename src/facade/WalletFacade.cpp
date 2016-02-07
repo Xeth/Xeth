@@ -4,11 +4,19 @@
 
 namespace Xeth{
 
-WalletFacade::WalletFacade(const Settings &settings, Ethereum::Connector::Provider &provider, DataBase &database, Notifier &notifier) :
+WalletFacade::WalletFacade
+(
+    const Settings &settings, 
+    Ethereum::Connector::Provider &provider, 
+    DataBase &database, 
+    Notifier &notifier, 
+    Synchronizer &synchronizer
+) :
     _settings(settings),
     _invoker(notifier),
     _provider(provider),
-    _database(database)
+    _database(database),
+    _synchronizer(synchronizer)
 {}
 
 QVariant WalletFacade::getAccounts()
@@ -46,19 +54,19 @@ QVariant WalletFacade::getTransaction(const QString &hash)
 
 QVariant WalletFacade::importPresaleKey(const QVariantMap &request)
 {
-    ImportPresaleKeyCommand command(_settings);
+    ImportPresaleKeyCommand command(_settings, _synchronizer);
     return _invoker.invoke(command, request);
 }
 
 QVariant WalletFacade::importKey(const QVariantMap &request)
 {
-    ImportKeyCommand command(_database);
+    ImportKeyCommand command(_database, _synchronizer);
     return _invoker.invoke(command, request);
 }
 
 QVariant WalletFacade::importStealthKey(const QVariantMap &request)
 {
-    ImportStealthKeyCommand command(_database);
+    ImportStealthKeyCommand command(_database, _synchronizer);
     return _invoker.invoke(command, request);
 }
 

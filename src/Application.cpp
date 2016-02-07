@@ -7,7 +7,7 @@ Application::Application(const Settings &settings, int argc, char* argv[]):
     _settings(settings),
     _database(settings),
     _synchronizer(_provider, _database),
-    _wallet(settings, _provider, _database, _notifier),
+    _wallet(settings, _provider, _database, _notifier, _synchronizer),
     _addressbook(_database, _notifier),
     _config(_database, _notifier),
     _contextBuilder(_notifier, _wallet, _addressbook, _synchronizer, _config),
