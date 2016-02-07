@@ -12,14 +12,45 @@ Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &da
     QObject::connect(&_syncProgress, SIGNAL(Progress(double)), this, SLOT(emitChainProgress(double)));
 }
 
-void Synchronizer::addAddress(const EthereumAddress &address)
+void Synchronizer::watchAddress(const std::string &address)
 {
     _scanner.addAddress(address);
 }
 
-void Synchronizer::addStealthAddress(const StealthKey &key)
+void Synchronizer::watchAddress(const std::string &address, time_t scanStart)
+{
+    _scanner.addAddress(address, scanStart);
+}
+
+void Synchronizer::watch(const EthereumKey &key)
+{
+    _scanner.addAddress(key.getAddress());
+}
+
+void Synchronizer::watch(const EthereumAddress &address)
+{
+    _scanner.addAddress(address);
+}
+
+void Synchronizer::watch(const StealthKey &key)
 {
     _scanner.addStealthAddress(key);
+}
+
+
+void Synchronizer::watch(const EthereumKey &key, time_t startTime)
+{
+    _scanner.addAddress(key.getAddress(), startTime);
+}
+
+void Synchronizer::watch(const EthereumAddress &address, time_t startTime)
+{
+    _scanner.addAddress(address, startTime);
+}
+
+void Synchronizer::watch(const StealthKey &key, time_t startTime)
+{
+    _scanner.addStealthAddress(key, startTime);
 }
 
 void Synchronizer::loadAddresses()

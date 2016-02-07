@@ -40,6 +40,19 @@ void ChainScanner::addAddress(const EthereumAddress &address)
 }
 
 
+void ChainScanner::addAddress(const std::string &address)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<AccountScanCriterion>(getChainHeight(), address.c_str());
+}
+
+
+void ChainScanner::addAddress(const std::string &address, time_t time)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<AccountScanCriterion>(estimateHeight(time), address.c_str());
+}
+
 void ChainScanner::addStealthAddress(const StealthKey &key)
 {
     ScopedScanPause pause(this);

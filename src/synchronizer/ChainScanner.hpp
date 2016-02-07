@@ -36,6 +36,9 @@ class ChainScanner : public QObject
 
         void loadAddresses();
 
+        void addAddress(const std::string &);
+        void addAddress(const std::string &, time_t);
+
         void addAddress(const EthereumAddress &);
         void addStealthAddress(const StealthKey &);
 
