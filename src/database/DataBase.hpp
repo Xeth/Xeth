@@ -1,16 +1,18 @@
 #pragma once
 
 
-#include "database/DataBaseDirectory.hpp"
-#include "database/TransactionStore.hpp"
-#include "database/ScanIndexStore.hpp"
-#include "database/AddressBookStore.hpp"
-#include "database/ConfigStore.hpp"
-#include "database/StealthPaymentStore.hpp"
-#include "database/StealthKeyStore.hpp"
-#include "database/EthereumKeyStore.hpp"
+#include "detail/DataBaseDirectory.hpp"
+#include "detail/EthereumKeyStorePath.hpp"
 
-#include "EthereumKeyStorePath.hpp"
+#include "TransactionStore.hpp"
+#include "ScanIndexStore.hpp"
+#include "AddressBookStore.hpp"
+#include "ConfigStore.hpp"
+#include "StealthPaymentStore.hpp"
+#include "StealthKeyStore.hpp"
+#include "EthereumKeyStore.hpp"
+
+
 
 namespace Xeth{
 

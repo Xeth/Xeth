@@ -4,8 +4,8 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 
-#include "FileIterator.hpp"
-#include "FileReader.hpp"
+#include "detail/FileIterator.hpp"
+#include "ObjectReader.hpp"
 
 
 namespace Xeth{
@@ -15,14 +15,14 @@ template<class Value, class Serializer>
 class FileStore
 {
     public:
-        typedef FileReader<Value, Serializer> Reader;
+        typedef Value Data;
+        typedef Serializer DataSerializer;
+        typedef ObjectReader<Value, Serializer> Reader;
         typedef FileIterator<Value, Reader> Iterator;
 
     public:
 
         FileStore(const std::string &path, const std::string &ext);
-
-        bool importFile(const char *filename);
 
         bool replace(const char *id, const Value &);
         bool insert(const char *id, const Value &);

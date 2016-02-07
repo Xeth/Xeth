@@ -8,23 +8,6 @@ FileStore<Value, Serializer>::FileStore(const std::string &path, const std::stri
 {}
 
 
-template<class Value, class Serializer>
-bool FileStore<Value, Serializer>::importFile(const char *filename) 
-{
-    Reader reader;
-    try
-    {
-        boost::filesystem::path source = boost::filesystem::absolute(filename); 
-        boost::filesystem::path destination = boost::filesystem::absolute(_path);
-        destination /= source.filename();
-
-        Value content = reader(source); //make sure content is valid
-        return write(destination.string(), content);
-    }
-    catch(...)
-    {}
-    return false;
-}
 
 template<class Value, class Serializer>
 bool FileStore<Value, Serializer>::write(const std::string &path, const Value &val)
@@ -41,8 +24,11 @@ std::string FileStore<Value, Serializer>::makePath(const char *id) const
     std::string name = _path;
     name += boost::filesystem::path::preferred_separator;
     name += id;
-    name += ".";
-    name += _ext;
+    if(_ext.size())
+    {
+        name += ".";
+        name += _ext;
+    }
     return name;
 }
 

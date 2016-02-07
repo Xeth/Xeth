@@ -4,9 +4,9 @@
 
 #include <boost/make_shared.hpp>
 
-#include "LevelDbIterator.hpp"
-#include "LevelDbReverseIterator.hpp"
-#include "DataSerializer.hpp"
+#include "detail/LevelDbIterator.hpp"
+#include "detail/LevelDbReverseIterator.hpp"
+#include "detail/DataSerializer.hpp"
 
 
 namespace Xeth{

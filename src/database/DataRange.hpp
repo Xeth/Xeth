@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RangeIterator.hpp"
+#include "detail/RangeIterator.hpp"
 
 
 namespace Xeth{
