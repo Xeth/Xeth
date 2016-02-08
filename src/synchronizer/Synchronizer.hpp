@@ -5,16 +5,18 @@
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/BlockChain.hpp"
 
-#include "ChainProgress.hpp"
+#include "ChainProgressFetcher.hpp"
 #include "ChainScanner.hpp"
 
 namespace Xeth{
 
-typedef ChainProgress SyncProgress;
 
 class Synchronizer : public QObject
 {
     Q_OBJECT
+    public:
+        typedef Xeth::ChainProgressFetcher SyncProgress;
+
     public:
         Synchronizer(Ethereum::Connector::Provider &, DataBase &);
 

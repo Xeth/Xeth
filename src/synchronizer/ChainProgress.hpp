@@ -1,41 +1,26 @@
 #pragma once
 
-#include "ethrpc/Provider.hpp"
-#include "ethrpc/BlockChain.hpp"
-
-#include <QObject>
-#include <QTimer>
-
-
 
 namespace Xeth{
 
 
-class ChainProgress : public QObject
+template<class BlockChain>
+class ChainProgress
 {
-    Q_OBJECT
-
     public:
-        ChainProgress(Ethereum::Connector::Provider &);
+        ChainProgress(const BlockChain &);
         double getValue() const;
+        bool update();
 
-        void autoUpdate(size_t interval = 120000);
-        void stop();
-
-        bool isActive() const;
-
-    public slots:
-        void update();
-
-    signals:
-        void Progress(double) const;
 
     private:
-        Ethereum::Connector::BlockChain _chain;
+        BlockChain _chain;
         time_t _firstBlockTime;
         double _progress;
-        QTimer _timer;
 };
 
 
+
 }
+
+#include "ChainProgress.ipp"
