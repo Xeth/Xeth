@@ -7,3 +7,6 @@
 [submodule "libethstealth"]
 	path = libethstealth
 	url = git@github.com:BitProfile/libethstealth.git
+[submodule "cmake/modules"]
+	path = cmake/modules
+	url = git@github.com:BitProfile/cmake-modules.git
