@@ -22,7 +22,7 @@
 #include "command/wallet/ImportStealthKeyCommand.hpp"
 #include "command/wallet/ExportStealthKeyCommand.hpp"
 #include "command/wallet/GenerateKeyCommand.hpp"
-
+#include "command/wallet/GenerateStealthKeyCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -49,6 +49,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant importStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant exportStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateKey(const QVariantMap &);
+        Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
 
     private:
         const Settings &_settings;

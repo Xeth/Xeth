@@ -91,4 +91,11 @@ QVariant WalletFacade::generateKey(const QVariantMap &request)
 }
 
 
+QVariant WalletFacade::generateStealthKey(const QVariantMap &request)
+{
+    GenerateStealthKeyCommand command(_database, _synchronizer);
+    return _invoker.invoke(command, request);
+}
+
+
 }
