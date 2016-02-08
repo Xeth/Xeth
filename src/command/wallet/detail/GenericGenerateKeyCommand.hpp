@@ -2,10 +2,11 @@
 
 #include "synchronizer/Synchronizer.hpp"
 
+
 namespace Xeth{
 
 
-template<class Store, class KeyGenerator, class CipherParamsGenerator>
+template<class Store, class KeyGenerator, class CipherFactory>
 class GenericGenerateKeyCommand
 {
     public:
@@ -20,7 +21,7 @@ class GenericGenerateKeyCommand
         Store &_store;
         Synchronizer &_synchronizer;
         KeyGenerator _keyGenerator;
-        CipherParamsGenerator _paramsGenerator;
+        CipherFactory _cipherFactory;
 };
 
 

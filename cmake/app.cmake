@@ -2,6 +2,7 @@ find_package(Qt5 COMPONENTS Core Widgets WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time REQUIRED)
 find_package(LevelDB REQUIRED)
+find_package(LibScrypt REQUIRED)
 
 
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
@@ -46,6 +47,7 @@ target_link_libraries(xeth
     ${Boost_REGEX_LIBRARY}
     ${Boost_DATE_TIME_LIBRARY}
     ${CRYPTOPP_LIBRARY}
+    ${LIBSCRYPT_LIBRARY}
     ${LEVELDB_LIBRARY}
     ${CMAKE_THREAD_LIBS_INIT}
     gmp

@@ -1,21 +1,21 @@
 namespace Xeth{
 
-template<class Store, class KeyGenerator, class CipherParamsGenerator>
-GenericGenerateKeyCommand<Store, KeyGenerator, CipherParamsGenerator>::GenericGenerateKeyCommand(Store &store, Synchronizer &synchronizer) :
+template<class Store, class KeyGenerator, class CipherFactory>
+GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::GenericGenerateKeyCommand(Store &store, Synchronizer &synchronizer) :
     _store(store),
     _synchronizer(synchronizer)
 {}
 
 
-template<class Store, class KeyGenerator, class CipherParamsGenerator>
-QVariant GenericGenerateKeyCommand<Store, KeyGenerator, CipherParamsGenerator>::operator()(const QVariantMap &request)
+template<class Store, class KeyGenerator, class CipherFactory>
+QVariant GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::operator()(const QVariantMap &request)
 {
     return QVariant::fromValue(generate(request));
 }
 
 
-template<class Store, class KeyGenerator, class CipherParamsGenerator>
-bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherParamsGenerator>::generate(const QVariantMap &request)
+template<class Store, class KeyGenerator, class CipherFactory>
+bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::generate(const QVariantMap &request)
 {
 
     if(!request.contains("password"))
@@ -31,11 +31,11 @@ bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherParamsGenerator>::gene
         if(request.contains("entropy"))
         {
             std::string entropy = request["entropy"].toString().toStdString();
-            key = _keyGenerator.generate(entropy.data(), entropy.size(), _paramsGenerator.generate(), password);
+            key = _keyGenerator.generate((const unsigned char *)entropy.data(), entropy.size(), _cipherFactory.create(), password);
         }
         else
         {
-            key = _keyGenerator.generate(_paramsGenerator.generate(), password);
+            key = _keyGenerator.generate(_cipherFactory.create(), password);
         }
     }
     catch(...)
