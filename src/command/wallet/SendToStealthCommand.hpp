@@ -3,11 +3,12 @@
 #include "detail/AddressValidator.hpp"
 #include "detail/Sender.hpp"
 #include "detail/GenericSendCommand.hpp"
+#include "types/StealthKey.hpp"
 
 namespace Xeth{
 
 
-typedef GenericSendCommand<AddressSender, HexAddressValidator> SendToAddressCommand;
+typedef GenericSendCommand<StealthSender, StealhAddressValidator> SendToStealthCommand;
 
 
 

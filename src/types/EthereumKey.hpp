@@ -7,8 +7,11 @@
 #include "ethkey/Address.hpp"
 #include "ethkey/KeyGenerator.hpp"
 #include "ethkey/cipher/CipherFactory.hpp"
+#include "ethkey/Literal.hpp"
 
 namespace Xeth{
+
+using Ethereum::Literal;
 
 typedef Ethereum::ScryptParamsGenerator EthereumKeyCipherParamsGenerator;
 typedef Ethereum::AesCipher<Ethereum::Scrypt> EthereumKeyCipher;
