@@ -101,6 +101,54 @@ TransactionStore::ReverseIterator TransactionStore::rend() const
     return _dataStore.rend();
 }
 
+bool TransactionStore::insert
+(
+    const TransactionCategory &category,
+    const std::string &hash,
+    const std::string &from,
+    const std::string &to,
+    const BigInt &amount,
+    time_t timestamp
+)
+{
+    QJsonObject obj;
+    obj.insert("category", category.toString());
+    obj.insert("hash", hash.c_str());
+    if(from.size())
+    {
+        obj.insert("from",  from.c_str());
+    }
+    obj.insert("to", to.c_str());
+    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("timestamp", (int)timestamp);
+    return insert(obj);
+}
+
+bool TransactionStore::insert
+(
+    const TransactionCategory &category,
+    const std::string &hash,
+    const std::string &from,
+    const std::string &to,
+    const StealthAddress &stealth,
+    const BigInt &amount,
+    time_t timestamp
+)
+{
+    QJsonObject obj;
+    obj.insert("category", category.toString());
+    obj.insert("hash", hash.c_str());
+    if(from.size())
+    {
+        obj.insert("from",  from.c_str());
+    }
+    obj.insert("to", to.c_str());
+    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("timestamp", (int)timestamp);
+    obj.insert("stealth", stealth.toString().c_str());
+    return insert(obj);
+}
+
 bool TransactionStore::insert(const QJsonObject &obj)
 {
     std::string index = getNextIndex();

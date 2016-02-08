@@ -3,18 +3,36 @@
 namespace Xeth{
 
 
-std::string AddressSender::operator()(Ethereum::Connector::Wallet &wallet, const std::string &from, const std::string &to, const BigInt &amount)
+std::string AddressSender::operator()
+(
+    Ethereum::Connector::Wallet &wallet,
+    DataBase &database,
+    const std::string &from,
+    const std::string &to,
+    const BigInt &amount
+)
 {
-    return wallet.sendTransaction(from, to, amount);
+    std::string txid = wallet.sendTransaction(from, to, amount);
+    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, amount, time(NULL));
+    return txid;
 }
 
 
-std::string StealthSender::operator()(Ethereum::Connector::Wallet &wallet, const std::string &from, const std::string &to, const BigInt &amount)
+std::string StealthSender::operator()
+(
+    Ethereum::Connector::Wallet &wallet,
+    DataBase &database,
+    const std::string &from,
+    const std::string &to,
+    const BigInt &amount
+)
 {
     StealthAddress address = Literal<StealthAddress>(to);
     StealthPaymentAddressBuilder builder(address);
     StealthPaymentAddress paymentAddr = builder.build();
-    return wallet.sendTransaction(from, paymentAddr.getAddresses()[0].toString(), amount, Literal(paymentAddr.getEphemPublicKey()));
+    std::string txid = wallet.sendTransaction(from, paymentAddr.getAddresses()[0].toString(), amount, Literal(paymentAddr.getEphemPublicKey()));
+    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, address, amount, time(NULL));
+    return txid;
 }
 
 

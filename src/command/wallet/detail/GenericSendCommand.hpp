@@ -21,11 +21,12 @@ class GenericSendCommand
 {
     public:
 
-        GenericSendCommand(Ethereum::Connector::Provider &provider);
+        GenericSendCommand(Ethereum::Connector::Provider &provider, DataBase &database);
         QVariant operator()(const QVariantMap &);
 
     private:
         Ethereum::Connector::Wallet _wallet;
+        DataBase &_database;
 
 };
 

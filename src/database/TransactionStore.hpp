@@ -8,6 +8,9 @@
 #include <boost/lexical_cast.hpp>
 
 #include "LevelDbStore.hpp"
+#include "types/TransactionCategory.hpp"
+#include "types/BigInt.hpp"
+#include "types/StealthKey.hpp"
 
 
 namespace Xeth{
@@ -44,6 +47,28 @@ class TransactionStore
 
         void open(const std::string &);
         bool openNoThrow(const std::string &);
+
+        bool insert
+        (
+            const TransactionCategory &category,
+            const std::string &hash,
+            const std::string &from,
+            const std::string &to,
+            const BigInt &amount,
+            time_t timestamp
+        );
+        
+        bool insert
+        (
+            const TransactionCategory &category,
+            const std::string &hash,
+            const std::string &from,
+            const std::string &to,
+            const StealthAddress &stealth,
+            const BigInt &amount,
+            time_t timestamp
+        );
+
 
         bool insert(const QJsonObject &);
 

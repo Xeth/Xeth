@@ -1,8 +1,9 @@
 namespace Xeth{
 
 template<class Sender, class Validator>
-GenericSendCommand<Sender, Validator>::GenericSendCommand(Ethereum::Connector::Provider &provider):
-    _wallet(provider)
+GenericSendCommand<Sender, Validator>::GenericSendCommand(Ethereum::Connector::Provider &provider, DataBase &database):
+    _wallet(provider),
+    _database(database)
 {}
 
 
@@ -10,7 +11,6 @@ template<class Sender, class Validator>
 QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &request)
 {
     QVariantMap result;
-    QVariantMap error;
 
     std::string from = request["from"].toString().toStdString();
     std::string to = request["to"].toString().toStdString();
@@ -25,31 +25,29 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
 
     if(!validator(to))
     {
-        error["address"] = true;
+        return QVariant::fromValue(false);
     }
 
-    if(amount<=0 || _wallet.getBalance(from) < amount)
+    try
     {
-        error["amount"] = true;
-    }
 
-    if(!_wallet.unlockAccount(from, password, 5))
-    {
-        error["password"] = true;
-    }
+        if(amount<=0 || _wallet.getBalance(from) < amount)
+        {
+            return QVariant::fromValue(false);
+        }
 
-    if(!error.empty())
-    {
-        result["error"] = error;
-    }
-    else
-    {
+        if(!_wallet.unlockAccount(from, password, 5))
+        {
+            return QVariant::fromValue(false);
+        }
+
         Sender sender;
-        std::string txid = sender(_wallet, from, to, amount);
-        result["txid"] = txid.c_str();
+        std::string txid = sender(_wallet, _database, from, to, amount);
+        return QVariant::fromValue(QString(txid.c_str()));
     }
-
-    return result;
+    catch(...)
+    {}
+    return QVariant::fromValue(false);
 }
 
 }
