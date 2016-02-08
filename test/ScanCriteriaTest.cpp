@@ -85,7 +85,7 @@ void ScanCriteriaTest::testScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    ScanResult result;
+    Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
@@ -117,7 +117,7 @@ void ScanCriteriaTest::testEmptyResultScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    ScanResult result;
+    Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
@@ -133,7 +133,7 @@ void ScanCriteriaTest::testEmptyChainScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    ScanResult result;
+    Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
@@ -226,7 +226,7 @@ void ScanCriteriaTest::testRandomOffsetScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    ScanResult result;
+    Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);
@@ -319,7 +319,7 @@ void ScanCriteriaTest::testConsecutiveScan()
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
-    ScanResult result;
+    Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
     criteria.process(blockchain, result, progress);

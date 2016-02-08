@@ -7,11 +7,11 @@ AccountScanCriterionTest::AccountScanCriterionTest() :
 
 void AccountScanCriterionTest::testMinedTransaction()
 {
-    ScanResult result;
+    Xeth::ScanResult result;
 
     _criterion.processHeader(1, "blockhash", "testaddress", Xeth::BigInt("10000"), 1000, result);
 
-    QVERIFY(result.transaction.size()==1);
+    QVERIFY(result.transactions.size()==1);
 
     QJsonObject transaction = result.transactions.begin()->toObject();
 
@@ -25,7 +25,7 @@ void AccountScanCriterionTest::testMinedTransaction()
 
 void AccountScanCriterionTest::testReceivedTransaction()
 {
-    ScanResult result;
+    Xeth::ScanResult result;
 
     _criterion.processTransaction("somehash", "senderaddress", "testaddress", Xeth::BigInt(10001), "", 1001, result);
 
@@ -43,7 +43,7 @@ void AccountScanCriterionTest::testReceivedTransaction()
 
 void AccountScanCriterionTest::testSentTransaction()
 {
-    ScanResult result;
+    Xeth::ScanResult result;
 
     _criterion.processTransaction("somehash", "testaddress", "receiveraddress", Xeth::BigInt(10002), "", 1002, result);
 
@@ -61,7 +61,7 @@ void AccountScanCriterionTest::testSentTransaction()
 
 void AccountScanCriterionTest::testUnknownTransaction()
 {
-    ScanResult result;
+    Xeth::ScanResult result;
 
     _criterion.processTransaction("somehash", "senderaddress", "receiveraddress", Xeth::BigInt(10003), "", 1003, result);
 

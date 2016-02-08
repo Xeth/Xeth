@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QTest>
 
-#include "wallet/AddressValidator.hpp"
+#include "command/wallet/detail/AddressValidator.hpp"
 
 
 class AddressValidatorTest : public QObject

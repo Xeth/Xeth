@@ -7,7 +7,7 @@
 #include "AccountScanCriterionTest.hpp"
 #include "ScanCriteriaTest.hpp"
 #include "ScanProgressTest.hpp"
-#include "StoreRangeTest.hpp"
+#include "DataRangeTest.hpp"
 #include "AddressValidatorTest.hpp"
 
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
        status |= QTest::qExec(&test, argc, argv);
    }
    {
-       StoreRangeTest test;
+       DataRangeTest test;
        status |= QTest::qExec(&test, argc, argv);
    }
    {

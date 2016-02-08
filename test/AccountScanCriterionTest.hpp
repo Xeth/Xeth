@@ -4,8 +4,8 @@
 #include <QTest>
 
 
-#include "BigInt.hpp"
-#include "TransactionCategory.hpp"
+#include "types/BigInt.hpp"
+#include "types/TransactionCategory.hpp"
 #include "synchronizer/AccountScanCriterion.hpp"
 
 

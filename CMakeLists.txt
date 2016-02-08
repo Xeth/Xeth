@@ -13,11 +13,10 @@ add_subdirectory(libethkey)
 set(ETHKEY_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethkey/include")
 set(ETHKEY_LIBRARY "${PROJECT_BINARY_DIR}/libethkey/libethkey.a")
 
-message("vars : ")
-message(${ETHKEY_INCLUDE_DIR})
 add_subdirectory(libethstealth)
 
 add_dependencies(ethstealth ethkey)
 
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)

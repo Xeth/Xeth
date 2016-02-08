@@ -9,6 +9,7 @@
 #include "ethstealth/Literal.hpp"
 
 #include "ScanCriterion.hpp"
+#include "ScanResult.hpp"
 
 #include "types/StealthKey.hpp"
 

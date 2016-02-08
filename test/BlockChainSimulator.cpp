@@ -6,6 +6,8 @@ BlockChainSimulator::BlockChainSimulator()
 {}
 
 
+void BlockChainSimulator::retrieveBlockDetails(bool)
+{}
 
 void BlockChainSimulator::push(const char *json)
 {

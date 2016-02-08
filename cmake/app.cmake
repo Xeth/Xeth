@@ -26,8 +26,6 @@ include_directories(
 
 
 add_executable(xeth ${APP_SOURCES} resources/xeth.qrc)
-MESSAGE(${LEVELDB_INCLUDE_DIR})
-MESSAGE(${LEVELDB_LIBRARY})
 
 target_link_libraries(xeth
     xethlib

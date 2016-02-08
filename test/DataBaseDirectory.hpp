@@ -5,7 +5,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 
-#include "database/DataBaseDirectory.hpp"
+#include "database/detail/DataBaseDirectory.hpp"
 
 
 

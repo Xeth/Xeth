@@ -6,6 +6,7 @@
 #include <QJsonObject>
 
 #include "ScanCriterion.hpp"
+#include "ScanResult.hpp"
 
 
 namespace Xeth{

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <eth-connector/Block.hpp>
+#include "ethrpc/Block.hpp"
 
 #include <json/reader.h>
 
@@ -13,6 +13,7 @@ class BlockChainSimulator
     public:
         BlockChainSimulator();
 
+        void retrieveBlockDetails(bool);
 
         void push(const char *);
         void push(const Ethereum::Connector::Block &);
