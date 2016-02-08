@@ -8,7 +8,7 @@
 namespace Xeth{
 
 
-typedef GenericSendCommand<StealthSender, StealhAddressValidator> SendToStealthCommand;
+typedef GenericSendCommand<StealthSender, StealthAddressValidator> SendToStealthCommand;
 
 
 

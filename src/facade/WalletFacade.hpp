@@ -16,6 +16,7 @@
 #include "command/wallet/GetTransactionCommand.hpp"
 #include "command/wallet/ListTransactionsCommand.hpp"
 #include "command/wallet/SendToAddressCommand.hpp"
+#include "command/wallet/SendToStealthCommand.hpp"
 #include "command/wallet/ImportPresaleKeyCommand.hpp"
 #include "command/wallet/ImportKeyCommand.hpp"
 #include "command/wallet/ExportKeyCommand.hpp"
@@ -41,6 +42,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant getAccounts() ;
         Q_INVOKABLE QVariant getBalance(const QString &);
         Q_INVOKABLE QVariant sendToAddress(const QVariantMap &);
+        Q_INVOKABLE QVariant sendToStealth(const QVariantMap &);
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
         Q_INVOKABLE QVariant getTransaction(const QString &hash);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);

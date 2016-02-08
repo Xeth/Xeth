@@ -37,6 +37,11 @@ QVariant WalletFacade::sendToAddress(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::sendToStealth(const QVariantMap &request)
+{
+    SendToStealthCommand command(_provider);
+    return _invoker.invoke(command, request);
+}
 
 QVariant WalletFacade::listTransactions(const QVariantMap &request)
 {
