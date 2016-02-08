@@ -25,6 +25,17 @@ class AddressSender
             const std::string &to,
             const BigInt &amount
         );
+
+        std::string operator()
+        (
+            Ethereum::Connector::Wallet &,
+            DataBase &,
+            const std::string &from,
+            const std::string &to,
+            const BigInt &amount,
+            const BigInt &gas
+        );
+
 };
 
 class StealthSender
@@ -38,6 +49,17 @@ class StealthSender
             const std::string &to,
             const BigInt &amount
         );
+
+        std::string operator()
+        (
+            Ethereum::Connector::Wallet &,
+            DataBase &,
+            const std::string &from,
+            const std::string &to,
+            const BigInt &amount,
+            const BigInt &gas
+        );
+
 };
 
 }

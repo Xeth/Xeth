@@ -18,7 +18,6 @@ QVariant GetAccountsCommand::operator ()()
     {
         QVariantMap obj;
         obj["address"] = it->c_str();
-        obj["stealth"] = false;
         accounts.push_back(obj);
     }
 

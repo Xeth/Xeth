@@ -31,6 +31,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
     try
     {
 
+
         if(amount<=0 || _wallet.getBalance(from) < amount)
         {
             return QVariant::fromValue(false);
@@ -42,7 +43,16 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         }
 
         Sender sender;
-        std::string txid = sender(_wallet, _database, from, to, amount);
+        std::string txid;
+        if(request.contains("gas"))
+        {
+            BigInt gas(request["gas"].toString().toStdString());
+            txid = sender(_wallet, _database, from, to, amount, gas);
+        }
+        else
+        {
+            txid = sender(_wallet, _database, from, to, amount);
+        }
         return QVariant::fromValue(QString(txid.c_str()));
     }
     catch(...)
