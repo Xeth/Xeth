@@ -102,5 +102,16 @@ QVariant WalletFacade::generateStealthKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::validateAddress(const QVariantMap &request)
+{
+    ValidateAddressCommand command;
+    return _invoker.invoke(command, request);
+}
+
+QVariant WalletFacade::validateStealthAddress(const QVariantMap &request)
+{
+    ValidateStealthAddressCommand command;
+    return _invoker.invoke(command, request);
+}
 
 }
