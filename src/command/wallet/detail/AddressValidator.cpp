@@ -28,7 +28,7 @@ bool AddressValidator::validateAddress(const std::string &address)
 
 bool AddressValidator::validateStealth(const std::string &)
 {
-    return false;
+    return true; //its validated when is unserialized
 }
 
 
