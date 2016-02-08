@@ -9,6 +9,9 @@
 
 #include "synchronizer/Synchronizer.hpp"
 
+#include "AddressBuilder.hpp"
+
+
 namespace Xeth{
 
 
@@ -21,7 +24,7 @@ class GenericImportKeyCommand
         QVariant operator ()(const QVariantMap &request);
 
     private:
-        bool import(const QVariantMap &request);
+        bool import(const QVariantMap &request, std::string &address);
 
     private:
         Store _store;

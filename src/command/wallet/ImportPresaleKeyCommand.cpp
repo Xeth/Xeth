@@ -16,11 +16,13 @@ QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
 
     if(!path.length() || !password.length())
     {
-        result["error"] = "Invalid arguments";
-        return QVariant::fromValue(result);
+        return QVariant::fromValue(false);
     }
 
     QStringList args;
+    Json::Value json;
+    std::string address;
+
     args.push_back("--password");
     args.push_back(password);
     args.push_back("wallet");
@@ -30,27 +32,28 @@ QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
     _process.exec(args);
     _process.waitForFinished();
 
-    result["output"] = _process.readAll();
+    _process.readAll();
 
     if(_process.exitStatus() != 0)
     {
-        result["error"] = "Import failed";
+        return QVariant::fromValue(false);
     }
     else
     {
         JsonReader reader;
-        Json::Value json;
+
         if(!reader.read(path.toStdString().c_str(), json))
         {
-            result["error"] = "invalid json";
+            return QVariant::fromValue(false);
         }
         else
         {
-            _synchronizer.watchAddress(json["ethaddr"].asString());
+            address = json["ethaddr"].asString();
+            _synchronizer.watchAddress(address);
         }
     }
 
-    return QVariant::fromValue(result);
+    return QVariant::fromValue(QString(address.c_str()));
 
 }
 

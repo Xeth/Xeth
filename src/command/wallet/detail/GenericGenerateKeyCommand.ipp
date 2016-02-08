@@ -10,12 +10,17 @@ GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::GenericGenerateKe
 template<class Store, class KeyGenerator, class CipherFactory>
 QVariant GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::operator()(const QVariantMap &request)
 {
-    return QVariant::fromValue(generate(request));
+    std::string address;
+    if(!generate(request, address))
+    {
+        return QVariant::fromValue(false);
+    }
+    return QVariant::fromValue(QString(address.c_str()));
 }
 
 
 template<class Store, class KeyGenerator, class CipherFactory>
-bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::generate(const QVariantMap &request)
+bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::generate(const QVariantMap &request, std::string &address)
 {
 
     if(!request.contains("password"))
@@ -49,6 +54,8 @@ bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::generate(con
     }
 
     _synchronizer.watch(key);
+    AddressBuilder builder;
+    address = builder.build(key);
     return true;
 }
 

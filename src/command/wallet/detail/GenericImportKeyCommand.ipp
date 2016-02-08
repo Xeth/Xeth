@@ -9,7 +9,7 @@ GenericImportKeyCommand<Store>::GenericImportKeyCommand(Store &store, Synchroniz
 
 
 template<class Store>
-bool GenericImportKeyCommand<Store>::import(const QVariantMap &request)
+bool GenericImportKeyCommand<Store>::import(const QVariantMap &request, std::string &address)
 {
 
     std::string file = request["file"].toString().toStdString();
@@ -31,6 +31,9 @@ bool GenericImportKeyCommand<Store>::import(const QVariantMap &request)
 
     KeyAttributesReader<Store> attr(file, json);
     _synchronizer.watch(key, attr.getCreationTime());
+    AddressBuilder builder;
+    address = builder.build(key);
+
     return true;
 }
 
@@ -38,7 +41,12 @@ bool GenericImportKeyCommand<Store>::import(const QVariantMap &request)
 template<class Store>
 QVariant GenericImportKeyCommand<Store>::operator()(const QVariantMap &request)
 {
-    return QVariant::fromValue(import(request));
+    std::string address;
+    if(!import(request, address))
+    {
+        return QVariant::fromValue(false);
+    }
+    return QVariant::fromValue(QString(address.c_str()));
 }
 
 

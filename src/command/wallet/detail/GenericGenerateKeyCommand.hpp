@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "synchronizer/Synchronizer.hpp"
-
+#include "AddressBuilder.hpp"
 
 namespace Xeth{
 
@@ -15,7 +15,7 @@ class GenericGenerateKeyCommand
         QVariant operator()(const QVariantMap &);
 
     private:
-        bool generate(const QVariantMap &);
+        bool generate(const QVariantMap &, std::string &address);
 
     private:
         Store &_store;
