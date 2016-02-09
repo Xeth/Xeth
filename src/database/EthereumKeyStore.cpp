@@ -17,17 +17,18 @@ bool EthereumKeyStore::insert(const EthereumKey &key)
 
 EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
 {
-    std::string pattern = "--";
+    std::string pattern = "\\-\\-";
     pattern += address;
     pattern += "$";
+    boost::smatch match;
 
     boost::regex regex(pattern);
     Iterator it=begin(), e=end();
 
     for(; it!=e; ++it)
     {
-        std::string filename = it.path().filename().string();
-        if(boost::regex_match(filename.c_str(), regex))
+        std::string filename = it.path().stem().string();
+        if(boost::regex_search(filename, match, regex))
         {
             //extra check
             EthereumKey key = *it;
