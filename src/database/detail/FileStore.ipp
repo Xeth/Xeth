@@ -73,6 +73,18 @@ typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::fi
 
 
 template<class Value, class Serializer>
+Value FileStore<Value, Serializer>::get(const char *id) const
+{
+    Iterator it = find(id);
+    if(it==end())
+    {
+        throw std::runtime_error("key not found");
+    }
+    return *it;
+}
+
+
+template<class Value, class Serializer>
 typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::begin() const
 {
     return Iterator(_directory.getPath(), _ext);

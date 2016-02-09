@@ -33,6 +33,8 @@ class FileStore
         bool remove(const char *);
 
         Iterator find(const char *) const;
+        Value get(const char *) const;
+
         Iterator begin() const;
         Iterator end() const;
 

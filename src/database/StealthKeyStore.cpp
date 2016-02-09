@@ -26,6 +26,11 @@ bool StealthKeyStore::insert(const StealthKey &key)
 }
 
 
+StealthKey StealthKeyStore::get(const char *address) const
+{
+    return Base::get(address);
+}
+
 StealthKeyStore::Iterator StealthKeyStore::find(const char *address) const
 {
     return Base::find(address);

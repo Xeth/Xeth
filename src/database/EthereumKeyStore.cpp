@@ -82,6 +82,17 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const Ethereum::Address &addre
 }
 
 
+EthereumKey EthereumKeyStore::get(const char *address) const
+{
+    Iterator it = find(address);
+    if(it==end())
+    {
+        throw std::runtime_error("key not found");
+    }
+    return *it;
+}
+
+
 std::string EthereumKeyStore::makeFileName(const EthereumKey &key, const boost::posix_time::ptime &time) const
 {
     std::string path = "UTC--";
