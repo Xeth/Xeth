@@ -9,7 +9,7 @@ std::string AddressBuilder::build(const EthereumKey &key) const
 
 std::string AddressBuilder::build(const StealthKey &key) const
 {
-    StealthAddress address(key);
+    Ethereum::Stealth::Address address(key);
     return address.toString();
 }
 

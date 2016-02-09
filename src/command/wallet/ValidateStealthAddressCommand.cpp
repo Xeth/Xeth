@@ -11,7 +11,7 @@ QVariant ValidateStealthAddressCommand::operator()(const QVariantMap &request)
 
     try
     {
-        StealthAddress address = Literal<StealthAddress>(request["address"].toString().toStdString());
+        Ethereum::Stealth::Address address = Literal<Ethereum::Stealth::Address>(request["address"].toString().toStdString());
         qDebug()<<"address "<<address.toString().c_str()<<" is valid";
     }
     catch(...)

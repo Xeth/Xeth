@@ -27,7 +27,7 @@ QVariant GetAccountsCommand::operator ()()
     {
         try
         {
-            StealthAddress address(*it);
+            Ethereum::Stealth::Address address(*it);
             QVariantMap obj;
             obj["address"] = address.toString().c_str();
             obj["stealth"] = true;

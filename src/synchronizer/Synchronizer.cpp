@@ -27,7 +27,7 @@ void Synchronizer::watch(const EthereumKey &key)
     _scanner.addAddress(key.getAddress());
 }
 
-void Synchronizer::watch(const EthereumAddress &address)
+void Synchronizer::watch(const Ethereum::Address &address)
 {
     _scanner.addAddress(address);
 }
@@ -43,7 +43,7 @@ void Synchronizer::watch(const EthereumKey &key, time_t startTime)
     _scanner.addAddress(key.getAddress(), startTime);
 }
 
-void Synchronizer::watch(const EthereumAddress &address, time_t startTime)
+void Synchronizer::watch(const Ethereum::Address &address, time_t startTime)
 {
     _scanner.addAddress(address, startTime);
 }

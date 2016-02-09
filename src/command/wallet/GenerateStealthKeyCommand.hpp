@@ -7,10 +7,10 @@ namespace Xeth{
 
 
 class GenerateStealthKeyCommand : 
-    public GenericGenerateKeyCommand<StealthKeyStore, StealthKeyGenerator, StealthKeyCipherFactory>
+    public GenericGenerateKeyCommand<StealthKeyStore, Ethereum::Stealth::KeyGenerator, CipherFactory>
 {
     public:
-        typedef GenericGenerateKeyCommand<StealthKeyStore, StealthKeyGenerator, StealthKeyCipherFactory> Base;
+        typedef GenericGenerateKeyCommand<StealthKeyStore, Ethereum::Stealth::KeyGenerator, CipherFactory> Base;
 
     public:
         GenerateStealthKeyCommand(DataBase &, Synchronizer &);

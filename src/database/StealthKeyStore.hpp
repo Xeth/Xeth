@@ -24,7 +24,7 @@ class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
         bool insert(const StealthKey &);
 
         Iterator find(const char *address) const;
-        Iterator find(const StealthAddress &) const;
+        Iterator find(const Ethereum::Stealth::Address &) const;
 
         using Base::begin;
         using Base::end;

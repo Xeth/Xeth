@@ -44,7 +44,7 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
         for(typename DataBase::StealthKeyStore::Iterator it=stealthKeys.begin(), end=stealthKeys.end(); it!=end; ++it)
         {
             StealthKey key = *it;
-            StealthAddress address(key);
+            Ethereum::Stealth::Address address(key);
             size_t cursor = indexStore.get(address.toString().c_str());
             criteria.addCriterion<StealthScanCriterion>(cursor, key, address);
         }

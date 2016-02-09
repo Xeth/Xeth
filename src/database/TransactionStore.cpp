@@ -130,7 +130,7 @@ bool TransactionStore::insert
     const std::string &hash,
     const std::string &from,
     const std::string &to,
-    const StealthAddress &stealth,
+    const Ethereum::Stealth::Address &stealth,
     const BigInt &amount,
     time_t timestamp
 )

@@ -41,7 +41,7 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
 }
 
 
-EthereumKeyStore::Iterator EthereumKeyStore::find(const EthereumAddress &address) const
+EthereumKeyStore::Iterator EthereumKeyStore::find(const Ethereum::Address &address) const
 {
     return find(address.toString().c_str());
 }

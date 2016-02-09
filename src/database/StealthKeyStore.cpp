@@ -19,7 +19,7 @@ StealthKeyStore::Iterator StealthKeyStore::find(const char *address) const
 }
 
 
-StealthKeyStore::Iterator StealthKeyStore::find(const StealthAddress &address) const
+StealthKeyStore::Iterator StealthKeyStore::find(const Ethereum::Stealth::Address &address) const
 {
     return Base::find(address.toString().c_str());
 }
@@ -27,7 +27,7 @@ StealthKeyStore::Iterator StealthKeyStore::find(const StealthAddress &address) c
 
 std::string StealthKeyStore::makeAddress(const StealthKey &key) const
 {
-    StealthAddress address(key);
+    Ethereum::Stealth::Address address(key);
     return address.toString();
 }
 

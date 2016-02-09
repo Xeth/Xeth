@@ -26,7 +26,7 @@ class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
         bool insert(const EthereumKey &);
 
         Iterator find(const char *address) const;
-        Iterator find(const EthereumAddress &) const;
+        Iterator find(const Ethereum::Address &) const;
 
         using Base::begin;
         using Base::end;

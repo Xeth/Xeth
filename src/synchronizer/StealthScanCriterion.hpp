@@ -12,6 +12,7 @@
 #include "ScanResult.hpp"
 
 #include "types/StealthKey.hpp"
+#include "types/EthereumKey.hpp"
 
 namespace Xeth{
 
@@ -29,7 +30,7 @@ class StealthScanCriterion : public ScanCriterion
         StealthScanCriterion
         (
             const StealthKey &,
-            const StealthAddress &
+            const Ethereum::Stealth::Address &
         );
 
         void processTransaction

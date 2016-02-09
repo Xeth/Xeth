@@ -33,7 +33,7 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
 }
 
-void ChainScanner::addAddress(const EthereumAddress &address)
+void ChainScanner::addAddress(const Ethereum::Address &address)
 {
     ScopedScanPause pause(this);
     _scanCriteria.addCriterion<AccountScanCriterion>(getChainHeight(), address.toString().c_str());
@@ -59,7 +59,7 @@ void ChainScanner::addStealthAddress(const StealthKey &key)
     _scanCriteria.addCriterion<StealthScanCriterion>(getChainHeight(), key);
 }
 
-void ChainScanner::addAddress(const EthereumAddress &address, time_t time)
+void ChainScanner::addAddress(const Ethereum::Address &address, time_t time)
 {
     ScopedScanPause pause(this);
     _scanCriteria.addCriterion<AccountScanCriterion>(estimateHeight(time), address.toString().c_str());

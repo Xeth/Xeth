@@ -32,7 +32,7 @@ size_t ScanCriteria::process(BlockChain &blockchain, ScanResult &result, Progres
     size_t height = blockchain.getHeight();
     size_t minBlock = _criteria.begin()->first;
 
-    if(height < minBlock)
+    if(!height || height < minBlock)
     {
         return height;
     }
@@ -66,7 +66,7 @@ size_t ScanCriteria::process(BlockChain &blockchain, ScanResult &result, Progres
         for(std::map<size_t, Container::iterator>::iterator it=mappedCriteria.begin(), end=mappedCriteria.end(); it!=end; ++it)
         {
 
-            for(; blockIndex < it->first; blockIndex++)
+            for(; blockIndex <= it->first; blockIndex++)
             {
 
                 size_t prevTxSize = result.transactions.size();

@@ -27,11 +27,11 @@ class Synchronizer : public QObject
         void watchAddress(const std::string &, time_t);
 
         void watch(const EthereumKey &);
-        void watch(const EthereumAddress &);
+        void watch(const Ethereum::Address &);
         void watch(const StealthKey &);
 
         void watch(const EthereumKey &, time_t);
-        void watch(const EthereumAddress &, time_t);
+        void watch(const Ethereum::Address &, time_t);
         void watch(const StealthKey &, time_t);
 
 

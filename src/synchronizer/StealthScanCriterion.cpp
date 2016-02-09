@@ -9,11 +9,11 @@ using Ethereum::Literal;
 using Ethereum::HexEncoder;
 
 StealthScanCriterion::StealthScanCriterion(const StealthKey &key) :
-    ScanCriterion(Literal(StealthAddress(key))),
+    ScanCriterion(Literal(Ethereum::Stealth::Address(key))),
     _key(key)
 {}
 
-StealthScanCriterion::StealthScanCriterion(const StealthKey &key, const StealthAddress &address) :
+StealthScanCriterion::StealthScanCriterion(const StealthKey &key, const Ethereum::Stealth::Address &address) :
     ScanCriterion(Literal(address)),
     _key(key)
 {}
@@ -31,17 +31,15 @@ void StealthScanCriterion::processTransaction
     ScanResult &result
 )
 {
-
     if(data.size() == 66 || data.size() == 130)
     {
         PublicKeySerializer serializer;
         try
         {
-            PublicKey ephem = serializer.unserialize(data);
-            StealthPaymentResolver resolver(_key);
-            StealthSharedSecret secret;
-
-            if(resolver.uncover(to, ephem, secret))
+            Ethereum::PublicKey ephem = serializer.unserialize(data);
+            StealthResolver resolver(_key);
+            Ethereum::Stealth::SharedSecret secret;
+            if(resolver.uncover(Ethereum::Address(to), ephem, secret))
             {
                 QJsonObject tx;
                 tx.insert("category", TransactionCategory::ToString(TransactionCategory::Stealth));
@@ -64,7 +62,6 @@ void StealthScanCriterion::processTransaction
         catch(...)
         {}
     }
-
 }
 
 
