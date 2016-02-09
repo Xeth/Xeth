@@ -16,6 +16,10 @@ bool JsonReader::read(const char *filename, Json::Value &result) const
 {
     Json::Reader reader;
     std::ifstream stream(boost::filesystem::absolute(filename).string().c_str());
+    if(!stream)
+    {
+        return false;
+    }
     std::string content;
     stream.seekg(0, std::ios::end);
     content.resize(stream.tellg());
