@@ -20,12 +20,13 @@ class BlockChainSimulator
 
         void push(const std::string &);
         void push(const char *);
-        void push(const Ethereum::Connector::Block &);
 
         Ethereum::Connector::Block getBlock(size_t);
+        const char * getBlockData(size_t);
         size_t getHeight();
 
     private:
         std::vector<Ethereum::Connector::Block> _blocks;
+        std::vector<std::string> _data;
 
 };

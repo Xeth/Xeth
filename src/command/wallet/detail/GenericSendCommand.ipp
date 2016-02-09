@@ -38,7 +38,24 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
 
         if(!_wallet.unlockAccount(from, password, 5))
         {
-            return QVariant::fromValue(false);
+            //maybe it was a stealth payment
+            StealthPaymentStore &payments = _database.getStealthPayments();
+            StealthPaymentStore::Iterator it = payments.find(from.c_str());
+            if(it==payments.end())
+            {
+                return QVariant::fromValue(false);
+            }
+
+            //address found, lets import key
+            //finding stealth address
+            StealthRedeemKeyFactory factory(_database);
+            EthereumKey key = factory.create(*it, password);
+            _database.getEthereumKeys().insert(key);
+            if(!_wallet.unlockAccount(from, password, 5))
+            {
+                return QVariant::fromValue(false);
+            }
+
         }
 
         Sender sender;

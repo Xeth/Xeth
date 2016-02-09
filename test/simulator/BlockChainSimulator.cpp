@@ -24,15 +24,11 @@ void BlockChainSimulator::push(const char *json)
         throw std::runtime_error("invalid json");
     }
 
-    push(Ethereum::Connector::Block(value));
+    _blocks.push_back(Ethereum::Connector::Block(value));
+    
+    _data.push_back(json);
 }
 
-
-
-void BlockChainSimulator::push(const Ethereum::Connector::Block &block)
-{
-    _blocks.push_back(block);
-}
 
 
 
@@ -42,6 +38,15 @@ size_t BlockChainSimulator::getHeight()
     return size? size -1: 0;
 }
 
+const char * BlockChainSimulator::getBlockData(size_t number)
+{
+    if(number > _data.size())
+    {
+        throw std::runtime_error("invalid block offset");
+    }
+
+    return _data[number].c_str();
+}
 
 
 Ethereum::Connector::Block BlockChainSimulator::getBlock(size_t number)

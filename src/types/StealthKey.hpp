@@ -11,6 +11,7 @@
 #include "ethstealth/Literal.hpp"
 #include "ethstealth/PaymentAddressBuilder.hpp"
 #include "ethstealth/PaymentAddress.hpp"
+#include "ethstealth/RedeemKeyFactory.hpp"
 
 #include "Cipher.hpp"
 

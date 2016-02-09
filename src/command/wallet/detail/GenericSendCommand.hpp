@@ -12,6 +12,8 @@
 #include "types/BigInt.hpp"
 
 #include "AddressValidator.hpp"
+#include "StealthRedeemKeyFactory.hpp"
+
 
 namespace Xeth{
 
