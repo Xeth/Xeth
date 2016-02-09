@@ -6,7 +6,7 @@
 
 #include "synchronizer/ChainProgress.hpp"
 
-#include "BlockChainSimulator.hpp"
+#include "simulator/BlockChainSimulator.hpp"
 
 
 class BlockChainProgressTest : public QObject

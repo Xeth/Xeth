@@ -23,25 +23,25 @@ void StealthKeyImporterTest::checkKey(const std::string &address, const std::str
 void StealthKeyImporterTest::testImport()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(importer.import("key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey"));
-    checkKey("3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw", "key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey");
+    QVERIFY(importer.import("data/key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey"));
+    checkKey("3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw", "data/key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey");
 }
 
 void StealthKeyImporterTest::testNonExistentFile()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(!importer.import("key/somenonexistentkey.skey"));
+    QVERIFY(!importer.import("data/key/somenonexistentkey.skey"));
 }
 
 void StealthKeyImporterTest::testMalformedFile()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(!importer.import("UTC--2016-02-09T04:33:27.436497--7420f23ff3e5c9d713f87d9db5a0a18bb9bfb6d0"));
+    QVERIFY(!importer.import("data/key/3oTYZ99VRU4oAqBarSjVAGZpQ1XfyftWkQYJQZKSRAzWAzCizPFS4sqrfZFXhgpQ473jVUJ5mZ5EYviUp9dfPsnD2kQgLWzFtshbCRf.skey"));
 }
 
 void StealthKeyImporterTest::testIncorrectName()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(importer.import("key/stealthbackup.skey"));
-    checkKey("3oTYcWA1XeEvkx4JB3MKq8FuSVgESQZG53L8DhMRWY7rnh8tb15cdDLVfGDZKZ5K3XYmwXg3mNSqiZvcWAtXFym4QMR9owhBGTFcgjZ", "key/stealthbackup.skey");
+    QVERIFY(importer.import("data/key/stealthbackup.skey"));
+    checkKey("3oTYcWA1XeEvkx4JB3MKq8FuSVgESQZG53L8DhMRWY7rnh8tb15cdDLVfGDZKZ5K3XYmwXg3mNSqiZvcWAtXFym4QMR9owhBGTFcgjZ", "data/key/stealthbackup.skey");
 }

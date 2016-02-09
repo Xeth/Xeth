@@ -31,7 +31,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
     try
     {
 
-
         if(amount<=0 || _wallet.getBalance(from) < amount)
         {
             return QVariant::fromValue(false);

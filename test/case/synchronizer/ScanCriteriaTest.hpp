@@ -7,7 +7,7 @@
 #include "synchronizer/AccountScanCriterion.hpp"
 #include "synchronizer/ScanCriteria.hpp"
 
-#include "BlockChainSimulator.hpp"
+#include "simulator/BlockChainSimulator.hpp"
 
 
 class ScanCriteriaTest : public QObject

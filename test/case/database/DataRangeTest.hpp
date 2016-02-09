@@ -2,7 +2,7 @@
 
 #include <QTest>
 
-#include "StoreSimulator.hpp"
+#include "simulator/StoreSimulator.hpp"
 
 #include "database/DataRange.hpp"
 

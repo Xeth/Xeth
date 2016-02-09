@@ -5,7 +5,7 @@
 #include <QTest>
 
 #include "database/EthereumKeyStore.hpp"
-#include "DataBaseDirectory.hpp"
+#include "simulator/DataBaseDirectory.hpp"
 
 
 

@@ -3,15 +3,14 @@ find_package(JsonCPP REQUIRED)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time REQUIRED)
 find_package(LevelDB REQUIRED)
 find_package(LibScrypt REQUIRED)
-
-
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
 
-file(GLOB TEST_SOURCES
+file(GLOB_RECURSE TEST_SOURCES
     "test/*.cpp"
 )
 
+add_definitions(-DBOOST_PP_VARIADICS)
 
 
 include_directories(
@@ -22,12 +21,13 @@ include_directories(
     ${Qt5Test_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/test
     ${PROJECT_BINARY_DIR}/libethrpc/include
     ${PROJECT_BINARY_DIR}/libethkey/include
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
-file(COPY ${PROJECT_SOURCE_DIR}/test/key DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/test/data DESTINATION ${PROJECT_BINARY_DIR})
 
 add_executable(xeth-test ${TEST_SOURCES})
 

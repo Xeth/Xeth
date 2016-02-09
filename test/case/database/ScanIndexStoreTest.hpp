@@ -4,7 +4,7 @@
 #include <QTest>
 
 #include "database/ScanIndexStore.hpp"
-#include "DataBaseDirectory.hpp"
+#include "simulator/DataBaseDirectory.hpp"
 
 
 

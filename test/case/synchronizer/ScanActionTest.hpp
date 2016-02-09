@@ -8,7 +8,7 @@
 #include "synchronizer/ScanCriteria.hpp"
 #include "synchronizer/AccountScanCriterion.hpp"
 
-#include "RandomBlockChain.hpp"
+#include "simulator/RandomBlockChain.hpp"
 
 
 
