@@ -9,6 +9,11 @@ BlockChainSimulator::BlockChainSimulator()
 void BlockChainSimulator::retrieveBlockDetails(bool)
 {}
 
+void BlockChainSimulator::push(const std::string &block)
+{
+    push(block.c_str());
+}
+
 void BlockChainSimulator::push(const char *json)
 {
     Json::Value value;
@@ -33,7 +38,8 @@ void BlockChainSimulator::push(const Ethereum::Connector::Block &block)
 
 size_t BlockChainSimulator::getHeight()
 {
-    return _blocks.size();
+    size_t size = _blocks.size();
+    return size? size -1: 0;
 }
 
 

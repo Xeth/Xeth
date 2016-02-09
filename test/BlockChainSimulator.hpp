@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "ethrpc/Block.hpp"
 
@@ -9,12 +10,15 @@
 
 class BlockChainSimulator
 {
+    public:
+        typedef Ethereum::Connector::Block Block;
 
     public:
         BlockChainSimulator();
 
         void retrieveBlockDetails(bool);
 
+        void push(const std::string &);
         void push(const char *);
         void push(const Ethereum::Connector::Block &);
 
