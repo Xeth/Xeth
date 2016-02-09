@@ -5,7 +5,8 @@ namespace Xeth{
 
 
 ChainProgressFetcher::ChainProgressFetcher(Ethereum::Connector::Provider &provider):
-    _progress(Ethereum::Connector::BlockChain(provider))
+    _chain(provider),
+    _progress(_chain)
 {
     QObject::connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
 }

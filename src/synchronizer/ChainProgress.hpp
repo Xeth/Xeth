@@ -8,14 +8,13 @@ template<class BlockChain>
 class ChainProgress
 {
     public:
-        ChainProgress(const BlockChain &);
+        ChainProgress(BlockChain &);
         double getValue() const;
         bool update();
 
 
     private:
-        BlockChain _chain;
-        time_t _firstBlockTime;
+        BlockChain &_chain;
         double _progress;
 };
 

@@ -32,6 +32,7 @@ class ChainProgressFetcher : public QObject
         void Progress(double) const;
 
     private:
+        Ethereum::Connector::BlockChain _chain;
         ChainProgress<Ethereum::Connector::BlockChain> _progress;
         QTimer _timer;
 };
