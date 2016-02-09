@@ -11,7 +11,7 @@ bool JsonWriter::write(const Json::Value &data)
 {
     _stream<<_parser.write(data);
     _stream.close();
-    return !_stream.bad();
+    return (bool)_stream;
 }
 
 
