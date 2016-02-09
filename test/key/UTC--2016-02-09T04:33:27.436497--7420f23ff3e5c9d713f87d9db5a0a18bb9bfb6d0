@@ -1,1 +1,2 @@
+malformed key
 {"Crypto":{"cipher":"aes-128-ctr","cipherparams":{"iv":"d18cba2c2b3ffb8c2c3bf06549771974"},"ciphertext":"fd986f9b3e052018938d3c3cb9909bcceaf584c50900e3715fece5e3252c2054","kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"bd838424e0216c4cfcae552171cae4636c7557fbcdb746e5e2186d1469450439"},"mac":"e54796485803be1f9242fb0ea6163e3f63011f7a63ba9a3ff1cd35f893d43c1f"},"address":"7420f23ff3e5c9d713f87d9db5a0a18bb9bfb6d0","id":"4e97f00a-0f10-45f3-9731-aa7f005c95f6","version":3}

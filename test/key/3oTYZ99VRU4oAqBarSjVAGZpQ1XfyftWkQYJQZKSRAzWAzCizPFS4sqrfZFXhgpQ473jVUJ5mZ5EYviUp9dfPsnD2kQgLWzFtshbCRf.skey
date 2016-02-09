@@ -1,1 +1,3 @@
+
+Malformed key
 {"address":"3oTYZ99VRU4oAqBarSjVAGZpQ1XfyftWkQYJQZKSRAzWAzCizPFS4sqrfZFXhgpQ473jVUJ5mZ5EYviUp9dfPsnD2kQgLWzFtshbCRf","scan":"89614f860433338a2405daf22f81fbca9eafc4ed68fda64ff560a62cacc8461d","spend":[{"pub":"02f3a813feef1f06710f7e56f57564c3051d4b006f989d0306415ea9be587c2de1","secret":{"cipher":"aes-128-ctr","cipherparams":{"iv":"a53332587289624e0b59c7b32aa50e19"},"ciphertext":"cbea010dfc9ba2dcf3ad783f6d85d2e740410347b78428fa6d7947c95ed4170c","kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"4fbefebf9ba412b11ca4d63c697c1c4528af2c32c39c6c45da61198b20d02606"},"mac":"fa2fdd3114c5402826d561b5f3bbef51e056b062cc93d03ac28b0591aa64a047"}}],"time":1454983284,"version":1}

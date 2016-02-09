@@ -16,6 +16,8 @@
 #include "StealthKeyStoreTest.hpp"
 #include "EthereumKeyStoreTest.hpp"
 #include "KeyAttributesReaderTest.hpp"
+#include "StealthKeyImporterTest.hpp"
+#include "EthereumKeyImporterTest.hpp"
 
 int main(int argc, char** argv)
 {
@@ -76,7 +78,14 @@ int main(int argc, char** argv)
         KeyAttributesReaderTest test;
         status |= QTest::qExec(&test, argc, argv);
     }
-
+    {
+        StealthKeyImporterTest test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+    {
+        EthereumKeyImporterTest test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
     if(status)
     {
         std::cout<<"\nUnit-Test failed\n";
