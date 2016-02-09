@@ -15,6 +15,7 @@
 #include "ScanActionTest.hpp"
 #include "StealthKeyStoreTest.hpp"
 #include "EthereumKeyStoreTest.hpp"
+#include "KeyAttributesReaderTest.hpp"
 
 int main(int argc, char** argv)
 {
@@ -69,6 +70,10 @@ int main(int argc, char** argv)
     }
     {
         EthereumKeyStoreTest test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+    {
+        KeyAttributesReaderTest test;
         status |= QTest::qExec(&test, argc, argv);
     }
 

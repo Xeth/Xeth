@@ -13,6 +13,7 @@ file(GLOB TEST_SOURCES
 )
 
 
+
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -26,7 +27,7 @@ include_directories(
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
-
+file(COPY ${PROJECT_SOURCE_DIR}/test/key DESTINATION ${PROJECT_BINARY_DIR})
 
 add_executable(xeth-test ${TEST_SOURCES})
 
