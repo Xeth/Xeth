@@ -5,6 +5,7 @@
 #include <boost/filesystem.hpp>
 
 #include "detail/FileIterator.hpp"
+#include "detail/DataBaseDirectory.hpp"
 
 #include "io/ObjectReader.hpp"
 #include "io/ObjectWriter.hpp"
@@ -42,7 +43,7 @@ class FileStore
         std::string makePath(const char *id) const;
 
     private:
-        std::string _path;
+        DataBaseDirectory _directory;
         std::string _ext;
         Serializer _serializer;
 };

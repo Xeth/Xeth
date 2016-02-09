@@ -3,9 +3,11 @@ namespace Xeth{
 
 template<class Value, class Serializer>
 FileStore<Value, Serializer>::FileStore(const std::string &path, const std::string &ext) : 
-    _path(path),
-    _ext(ext)
-{}
+    _directory(path.c_str(), false),
+    _ext("."+ext)
+{
+    _directory.createIfNotExists();
+}
 
 
 
@@ -19,12 +21,11 @@ bool FileStore<Value, Serializer>::write(const std::string &path, const Value &v
 template<class Value, class Serializer>
 std::string FileStore<Value, Serializer>::makePath(const char *id) const
 {
-    std::string name = _path;
+    std::string name = _directory.getPath();
     name += boost::filesystem::path::preferred_separator;
     name += id;
     if(_ext.size())
     {
-        name += ".";
         name += _ext;
     }
     return name;
@@ -59,11 +60,10 @@ bool FileStore<Value, Serializer>::remove(const char *id)
 template<class Value, class Serializer>
 typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::find(const char *id) const
 {
-    std::string path = makePath(id);
     Iterator it=begin(), e=end();
     for(; it!=e; ++it)
     {
-        if(it.path().string() == path)
+        if(it.path().stem().string() == id)
         {
             break;
         }
@@ -75,7 +75,7 @@ typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::fi
 template<class Value, class Serializer>
 typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::begin() const
 {
-    return Iterator(_path, _ext);
+    return Iterator(_directory.getPath(), _ext);
 }
 
 
@@ -89,7 +89,7 @@ typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::en
 template<class Value, class Serializer>
 const std::string & FileStore<Value, Serializer>::getPath() const
 {
-    return _path;
+    return _directory.getPath();
 }
 
 

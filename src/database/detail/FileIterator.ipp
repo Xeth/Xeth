@@ -23,19 +23,19 @@ FileIterator<Value, Parser>::FileIterator()
 template<class Value, class Parser>
 fs::directory_iterator FileIterator<Value, Parser>::findValid(const fs::directory_iterator &begin)
 {
-    if(begin==fs::directory_iterator())
+    fs::directory_iterator it = begin, end = fs::directory_iterator();
+    if(begin==end)
     {
         return begin;
     }
 
-    fs::directory_iterator it = begin;
-    while(!fs::is_regular_file(it->status())||it->path().extension().string() != _ext)
+    while(it!=end)
     {
-        ++it;
-        if(it==fs::directory_iterator())
+        if(fs::is_regular_file(it->status()) && it->path().extension().string() == _ext)
         {
             break;
         }
+        ++it;
     }
     return it;
 }
