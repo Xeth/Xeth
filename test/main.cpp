@@ -14,6 +14,7 @@
 #include "case/database/KeyAttributesReaderTest.hpp"
 #include "case/database/StealthKeyImporterTest.hpp"
 #include "case/database/EthereumKeyImporterTest.hpp"
+#include "case/database/StealthPaymentStoreTest.hpp"
 
 #include "case/synchronizer/AccountScanCriterionTest.hpp"
 #include "case/synchronizer/ScanCriteriaTest.hpp"
@@ -54,7 +55,8 @@ int main(int argc, char** argv)
         EthereumKeyStoreTest,
         KeyAttributesReaderTest,
         StealthKeyImporterTest,
-        EthereumKeyImporterTest
+        EthereumKeyImporterTest,
+        StealthPaymentStoreTest
     );
 
     if(status)
