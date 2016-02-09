@@ -64,6 +64,9 @@ class KeyAttributesReader<EthereumKeyStore>
         std::string getAddress() const;
 
     private:
+        void throwIfNotExists();
+
+    private:
         std::string _path; //can get attributes only from filename
 };
 

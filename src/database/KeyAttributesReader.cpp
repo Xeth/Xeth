@@ -32,12 +32,25 @@ time_t KeyAttributesReader<StealthKeyStore>::getCreationTime() const
 
 KeyAttributesReader<EthereumKeyStore>::KeyAttributesReader(const std::string &path) :
     _path(path)
-{}
+{
+    throwIfNotExists();
+}
 
 
 KeyAttributesReader<EthereumKeyStore>::KeyAttributesReader(const std::string &path, const Json::Value &) :
     _path(path)
-{}
+{
+    throwIfNotExists();
+}
+
+void KeyAttributesReader<EthereumKeyStore>::throwIfNotExists()
+{
+    boost::filesystem::path path = boost::filesystem::absolute(_path);
+    if(!boost::filesystem::is_regular_file(path))
+    {
+        throw std::runtime_error("invalid file");
+    }
+}
 
 
 std::string KeyAttributesReader<EthereumKeyStore>::getAddress() const
