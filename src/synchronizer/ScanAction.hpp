@@ -21,7 +21,10 @@ class ScanAction : public QObject
     public:
         ScanAction();
 
+        template<class BlockChain>
         void start(BlockChain &, ScanCriteria &, ScanProgress &);
+
+        template<class BlockChain>
         void start(BlockChain &, ScanCriteria &);
 
         void stop();
@@ -31,7 +34,10 @@ class ScanAction : public QObject
         const ScanResult & getResult() const;
 
     private:
+        template<class BlockChain>
         void execute(BlockChain &, ScanCriteria &, ScanProgress &);
+
+        template<class BlockChain>
         void execute(BlockChain &, ScanCriteria &);
 
     signals:
@@ -44,3 +50,5 @@ class ScanAction : public QObject
 
 
 }
+
+#include "ScanAction.ipp"
