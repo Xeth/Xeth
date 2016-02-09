@@ -1,4 +1,4 @@
-#include "LevelDbStore.hpp"
+#include "detail/LevelDbStore.hpp"
 
 
 namespace Xeth {

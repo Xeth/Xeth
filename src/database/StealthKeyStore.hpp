@@ -2,8 +2,8 @@
 
 #include "types/StealthKey.hpp"
 
-#include "FileStore.hpp"
-#include "FileImporter.hpp"
+#include "detail/FileStore.hpp"
+#include "detail/FileImporter.hpp"
 
 
 namespace Xeth{

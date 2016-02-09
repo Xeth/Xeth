@@ -7,7 +7,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "LevelDbStore.hpp"
+#include "detail/LevelDbStore.hpp"
 #include "types/TransactionCategory.hpp"
 #include "types/BigInt.hpp"
 #include "types/StealthKey.hpp"
