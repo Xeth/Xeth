@@ -9,7 +9,6 @@
 namespace Xeth{
 
 
-
 class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
 {
     public:
@@ -22,13 +21,14 @@ class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
         StealthKeyStore(const std::string &path);
 
         bool insert(const StealthKey &);
+        bool insert(const std::string &, const StealthKey &);
+        bool insert(const char *, const StealthKey &);
 
         Iterator find(const char *address) const;
         Iterator find(const Ethereum::Stealth::Address &) const;
 
         using Base::begin;
         using Base::end;
-        using Base::insert;
 
     private:
         std::string makeAddress(const StealthKey &) const;

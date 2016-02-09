@@ -12,6 +12,7 @@
 namespace Xeth{
 
 
+
 class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
 {
     public:
@@ -24,16 +25,18 @@ class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
         EthereumKeyStore(const std::string &path);
 
         bool insert(const EthereumKey &);
+        bool insert(const char *id, const EthereumKey &);
+        bool insert(const std::string &, const EthereumKey &);
 
         Iterator find(const char *address) const;
         Iterator find(const Ethereum::Address &) const;
 
         using Base::begin;
         using Base::end;
-        using Base::insert;
 
     private:
-        std::string makeFileName(const std::string &) const;
+        std::string makeFileName(const EthereumKey &, const boost::posix_time::ptime &time) const;
+        bool validateId(const std::string &id, const EthereumKey &);
 };
 
 

@@ -45,7 +45,7 @@ bool FileImporter<Store>::import(const std::string &path, Json::Value &json, Dat
     {
         DataSerializer serializer;
         value = serializer.unserialize(json);
-        return _store.insert(source.filename().string().c_str(), value);
+        return _store.insert(source.filename().string(), value);
     }
     catch(...)
     {}

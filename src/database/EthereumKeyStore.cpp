@@ -11,7 +11,41 @@ EthereumKeyStore::EthereumKeyStore(const std::string &path) :
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
 
-    return Base::insert(makeFileName(key.getAddress().toString()).c_str(), key);
+    return Base::insert(makeFileName(key, boost::posix_time::microsec_clock::universal_time()).c_str(), key);
+}
+
+
+
+
+bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
+{
+    if(!validateId(id, key))
+    {
+        return Base::insert(makeFileName(key, boost::posix_time::from_time_t(0)).c_str(), key); //creation data unknown
+    }
+    return Base::insert(id, key);
+}
+
+bool EthereumKeyStore::insert(const std::string &id, const EthereumKey &key)
+{
+    if(!validateId(id, key))
+    {
+        return Base::insert(makeFileName(key, boost::posix_time::from_time_t(0)).c_str(), key); //creation data unknown
+    }
+    return Base::insert(id.c_str(), key);
+}
+
+bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)
+{
+    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+)$");
+    boost::smatch match;
+
+    if (boost::regex_search(id, match, regex))
+    {
+        return key.getAddress().toString() == match[1];
+    }
+
+    return false;
 }
 
 
@@ -48,12 +82,12 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const Ethereum::Address &addre
 }
 
 
-std::string EthereumKeyStore::makeFileName(const std::string &address) const
+std::string EthereumKeyStore::makeFileName(const EthereumKey &key, const boost::posix_time::ptime &time) const
 {
     std::string path = "UTC--";
-    path += boost::posix_time::to_iso_extended_string(boost::posix_time::microsec_clock::universal_time());
+    path += boost::posix_time::to_iso_extended_string(time);
     path += "--";
-    path += address;
+    path += key.getAddress().toString();
     return path;
 }
 
