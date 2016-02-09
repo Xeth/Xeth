@@ -12,6 +12,7 @@
 #include "AddressValidatorTest.hpp"
 #include "BlockChainProgressTest.hpp"
 #include "StealthScanCriterionTest.hpp"
+#include "ScanActionTest.hpp"
 
 int main(int argc, char** argv)
 {
@@ -56,6 +57,11 @@ int main(int argc, char** argv)
         StealthScanCriterionTest test;
         status |= QTest::qExec(&test, argc, argv);
     }
+    {
+        ScanActionTest test;
+        status |= QTest::qExec(&test, argc, argv);
+    }
+
     if(status)
     {
         std::cout<<"\nUnit-Test failed\n";
