@@ -16,11 +16,11 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
     std::string to = request["to"].toString().toStdString();
     std::string password = request["password"].toString().toStdString();
 
-    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<12> > dAmount(request["amount"].toDouble());
-    dAmount *= 1000000000000000000;
+//    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<12> > dAmount(request["amount"].toDouble());
+//    dAmount *= 1000000000000000000;
+//    BigInt amount(dAmount.str(0, std::ios_base::fixed));
 
-    BigInt amount(dAmount.str(0, std::ios_base::fixed));
-
+    BigInt amount(request["amount"].toString().toStdString());
     Validator validator;
 
     if(!validator(to))
@@ -30,7 +30,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
 
     try
     {
-
         if(amount<=0 || _wallet.getBalance(from) < amount)
         {
             return QVariant::fromValue(false);
@@ -45,7 +44,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
             {
                 return QVariant::fromValue(false);
             }
-
             //address found, lets import key
             //finding stealth address
             StealthRedeemKeyFactory factory(_database);
@@ -57,7 +55,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
             }
 
         }
-
         Sender sender;
         std::string txid;
         if(request.contains("gas"))
@@ -71,7 +68,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         }
         return QVariant::fromValue(QString(txid.c_str()));
     }
-    catch(...)
+    catch(const std::exception &e)
     {}
     return QVariant::fromValue(false);
 }
