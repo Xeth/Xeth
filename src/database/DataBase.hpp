@@ -31,6 +31,8 @@ class DataBase
 
     public:
         DataBase(const Settings &);
+        DataBase(const DataBaseDirectory &);
+        DataBase(const DataBaseDirectory &, const EthereumKeyStorePath &);
 
         TransactionStore & getTransactions();
         ScanIndexStore & getScanIndex();

@@ -17,6 +17,32 @@ DataBase::DataBase(const Settings &settings) :
     _ethereumKeys(_ethereumKeysPath.toString())
 {}
 
+DataBase::DataBase(const DataBaseDirectory &directory) :
+    _directory(directory),
+    _transactions(_directory.getPath().c_str()),
+    _scanIndex(_directory.getPath() + "scanindex"),
+    _addressbook(_directory.getPath() + "addressbook"),
+    _config(_directory.getPath() + "config"),
+    _stealthPayments(_directory.getPath() + "stealth"),
+    _stealthKeys(_directory.getPath()+"keys"),
+    _ethereumKeys(_ethereumKeysPath.toString())
+{}
+
+
+DataBase::DataBase(const DataBaseDirectory &directory, const EthereumKeyStorePath &ethPath) :
+    _directory(directory),
+    _ethereumKeysPath(ethPath),
+    _transactions(_directory.getPath().c_str()),
+    _scanIndex(_directory.getPath() + "scanindex"),
+    _addressbook(_directory.getPath() + "addressbook"),
+    _config(_directory.getPath() + "config"),
+    _stealthPayments(_directory.getPath() + "stealth"),
+    _stealthKeys(_directory.getPath()+"keys"),
+    _ethereumKeys(_ethereumKeysPath.toString())
+{}
+
+
+
 TransactionStore & DataBase::getTransactions()
 {
     return _transactions;
