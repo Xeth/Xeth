@@ -24,6 +24,8 @@ class Settings
 
     public:
 
+        bool has(const char *) const;
+
         template<class T>
         T get(const char *) const;
 
