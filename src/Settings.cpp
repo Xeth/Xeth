@@ -3,6 +3,14 @@
 
 namespace Xeth{
 
+
+bool Settings::has(const char *name) const
+{
+    boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
+    return it!=_data.end();
+}
+
+
 const char * Settings::get(const char *name) const
 {
     boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
