@@ -24,6 +24,8 @@
 #include "case/synchronizer/ScanActionTest.hpp"
 
 #include "case/wallet/AddressValidatorTest.hpp"
+#include "case/wallet/SendToAddressTest.hpp"
+
 
 template<class Test>
 int ExecuteTest(int argc, char **argv)
@@ -56,7 +58,8 @@ int main(int argc, char** argv)
         KeyAttributesReaderTest,
         StealthKeyImporterTest,
         EthereumKeyImporterTest,
-        StealthPaymentStoreTest
+        StealthPaymentStoreTest,
+        SendToAddressTest
     );
 
     if(status)
