@@ -25,6 +25,7 @@
 
 #include "case/wallet/AddressValidatorTest.hpp"
 #include "case/wallet/SendToAddressTest.hpp"
+#include "case/wallet/StealthPaymentTest.hpp"
 
 
 template<class Test>
@@ -59,7 +60,8 @@ int main(int argc, char** argv)
         StealthKeyImporterTest,
         EthereumKeyImporterTest,
         StealthPaymentStoreTest,
-        SendToAddressTest
+        SendToAddressTest,
+        StealthPaymentTest
     );
 
     if(status)

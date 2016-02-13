@@ -10,6 +10,7 @@
 #include "command/wallet/SendToAddressCommand.hpp"
 
 
+
 class SendToAddressTest : public QObject
 {
     Q_OBJECT
