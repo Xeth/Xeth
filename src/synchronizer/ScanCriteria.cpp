@@ -60,6 +60,11 @@ void ScanCriteria::processBlock(size_t blockIndex, Ethereum::Connector::Block &b
     }
 }
 
+size_t ScanCriteria::size() const
+{
+    return _criteria.size();
+}
+
 void ScanCriteria::clear()
 {
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)

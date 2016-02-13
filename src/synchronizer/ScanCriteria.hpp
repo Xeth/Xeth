@@ -55,6 +55,8 @@ class ScanCriteria : public QObject
         Iterator begin() const;
         Iterator end() const;
 
+        size_t size() const;
+
     signals:
         bool Data(const Xeth::PartialScanResult &);
         bool Test();
