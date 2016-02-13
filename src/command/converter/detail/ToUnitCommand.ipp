@@ -4,10 +4,15 @@ namespace Xeth{
 template<uint64_t unit>
 QVariant ToUnitCommand<unit>::operator()(const QVariant &request)
 {
-    boost::multiprecision::cpp_int value(request.toString().toStdString());
-    boost::multiprecision::cpp_dec_float_50 result(value);
-    result /= unit;
-    return QVariant::fromValue(QString(result.str().c_str()));
+    try
+    {
+        boost::multiprecision::number<boost::multiprecision::cpp_dec_float<12> > value(request.toString().toStdString());
+        value *= unit;
+        return QVariant::fromValue(QString(value.convert_to<boost::multiprecision::cpp_int>().str().c_str()));
+    }
+    catch(...)
+    {}
+    return QVariant::fromValue(false);
 }
 
 
