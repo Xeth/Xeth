@@ -43,11 +43,15 @@ std::string StealthSender::operator()
     const BigInt &amount
 )
 {
-    Ethereum::Stealth::Address address = Literal<Ethereum::Stealth::Address>(to);
+    Ethereum::PublicKeySerializer serializer;
+    Ethereum::Stealth::Address address = Ethereum::Stealth::Address::FromString(to);
     Ethereum::Stealth::PaymentAddressBuilder builder(address);
     Ethereum::Stealth::PaymentAddress paymentAddr = builder.build();
-    std::string txid = wallet.sendTransaction(from, paymentAddr.getAddresses()[0].toString(), amount, Literal(paymentAddr.getEphemPublicKey()));
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, address, amount, time(NULL));
+
+    std::string data =  serializer.serialize(paymentAddr.getEphemPublicKey());
+    std::string destination = paymentAddr.getAddresses()[0].toString();
+    std::string txid = wallet.sendTransaction(from, destination, amount, data);
+    database.getTransactions().insert(TransactionCategory::Sent, txid, from, destination, address, amount, time(NULL));
     return txid;
 }
 
@@ -61,11 +65,16 @@ std::string StealthSender::operator()
     const BigInt &gas
 )
 {
-    Ethereum::Stealth::Address address = Literal<Ethereum::Stealth::Address>(to);
+
+    Ethereum::PublicKeySerializer serializer;
+    Ethereum::Stealth::Address address = Ethereum::Stealth::Address::FromString(to);
     Ethereum::Stealth::PaymentAddressBuilder builder(address);
     Ethereum::Stealth::PaymentAddress paymentAddr = builder.build();
-    std::string txid = wallet.sendTransaction(from, paymentAddr.getAddresses()[0].toString(), amount, Literal(paymentAddr.getEphemPublicKey()), gas);
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, address, amount, time(NULL));
+
+    std::string data =  serializer.serialize(paymentAddr.getEphemPublicKey());
+    std::string destination = paymentAddr.getAddresses()[0].toString();
+    std::string txid = wallet.sendTransaction(from, destination, amount, data, gas);
+    database.getTransactions().insert(TransactionCategory::Sent, txid, from, destination, address, amount, time(NULL));
     return txid;
 }
 
