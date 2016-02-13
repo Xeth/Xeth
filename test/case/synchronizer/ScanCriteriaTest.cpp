@@ -1,7 +1,9 @@
 #include "ScanCriteriaTest.hpp"
+#include <QSignalSpy>
 
 void ScanCriteriaTest::testScan()
 {
+
     BlockChainSimulator blockchain;
 
     blockchain.push("{"
@@ -82,15 +84,17 @@ void ScanCriteriaTest::testScan()
           "]"
         "}");
     Xeth::ScanCriteria criteria;
+    QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
 
     QVERIFY(result.transactions.size()==4);
+    QVERIFY(spy.size() == 3);
 }
 
 void ScanCriteriaTest::testEmptyResultScan()
@@ -114,31 +118,41 @@ void ScanCriteriaTest::testEmptyResultScan()
         "}");
 
     Xeth::ScanCriteria criteria;
+    QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
 
     QVERIFY(result.transactions.size()==0);
+    QVERIFY(spy.size()==0);
 }
 
 void ScanCriteriaTest::testEmptyChainScan()
 {
     BlockChainSimulator blockchain;
-
+    blockchain.push("{"
+        "\"number\":\"1\", "
+        "\"hash\":\"blockhash\", "
+        "\"miner\":\"nominer\", "
+        "\"timestamp\":\"123\","
+         "\"transactions\":[]"
+    "}"); //genesis only
     Xeth::ScanCriteria criteria;
+    QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
 
     QVERIFY(result.transactions.size()==0);
+    QVERIFY(spy.size()==0);
 }
 
 void ScanCriteriaTest::testRandomOffsetScan()
@@ -223,15 +237,17 @@ void ScanCriteriaTest::testRandomOffsetScan()
           "]"
         "}");
     Xeth::ScanCriteria criteria;
+    QSignalSpy spy(&criteria, &Xeth::ScanCriteria::Data);
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
 
     QVERIFY(result.transactions.size()==3);
+    QVERIFY(spy.size() == 2);
 }
 
 void ScanCriteriaTest::testConsecutiveScan()
@@ -316,13 +332,14 @@ void ScanCriteriaTest::testConsecutiveScan()
           "]"
         "}");
     Xeth::ScanCriteria criteria;
+    QSignalSpy spy(&criteria, &Xeth::ScanCriteria::Data);
     criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
 
     QVERIFY(result.transactions.size()==3);
 
@@ -385,6 +402,7 @@ void ScanCriteriaTest::testConsecutiveScan()
          "\"transactions\":[]"
         "}");
 
-    criteria.process(blockchain, result, progress);
+    criteria.parse(blockchain, result, progress);
     QVERIFY(result.transactions.size()==5);
+    QVERIFY(spy.size() == 4);
 }
