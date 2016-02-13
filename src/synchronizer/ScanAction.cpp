@@ -8,7 +8,7 @@ ScanAction::ScanAction()
 void ScanAction::start(BlockChain &chain, ScanCriteria &criteria, ScanProgress &progress)
 {
     _result = ScanResult();
-    _worker.reset(new ScanWorker(chain, criteria, _result, progress));
+    _worker.reset(new ScanWorker(QThread::currentThread(), chain, criteria, _result, progress));
     QObject::connect(_worker.get(), &ScanWorker::finished, this, &ScanAction::emitDone);
     criteria.moveToThread(_worker.get());
     _worker->start();
@@ -19,7 +19,7 @@ void ScanAction::stop()
 {
     if(isActive())
     {
-        _worker->quit();
+        _worker->stop();
         _worker->wait();
     }
 }

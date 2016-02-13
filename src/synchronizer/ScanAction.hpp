@@ -36,7 +36,7 @@ class ScanAction : public QObject
         void emitDone();
 
     private:
-        boost::shared_ptr<QThread> _worker;
+        boost::shared_ptr<ScanWorker> _worker;
         ScanResult _result;
 };
 

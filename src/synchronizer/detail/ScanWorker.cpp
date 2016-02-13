@@ -1,9 +1,11 @@
 #include "ScanWorker.hpp"
+#include <QCoreApplication>
 
 namespace Xeth{
 
 
-ScanWorker::ScanWorker(BlockChain &chain, ScanCriteria &criteria, ScanResult &result, ScanProgress &progress):
+ScanWorker::ScanWorker(QThread *parent, BlockChain &chain, ScanCriteria &criteria, ScanResult &result, ScanProgress &progress):
+    _parent(parent),
     _interrupted(false),
     _chain(chain),
     _criteria(criteria),
@@ -15,7 +17,7 @@ ScanWorker::ScanWorker(BlockChain &chain, ScanCriteria &criteria, ScanResult &re
 void ScanWorker::run()
 {
     _criteria.parse(_chain, _result, _progress);
-    quit();
+    _criteria.moveToThread(_parent);
 }
 
 

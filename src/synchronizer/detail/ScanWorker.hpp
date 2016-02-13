@@ -18,13 +18,14 @@ class ScanWorker : public QThread
         typedef Ethereum::Connector::BlockChain BlockChain;
 
     public:
-        ScanWorker(BlockChain &, ScanCriteria &, ScanResult &, ScanProgress &);
+        ScanWorker(QThread *parent, BlockChain &, ScanCriteria &, ScanResult &, ScanProgress &);
         void run();
 
         void stop();
         bool isInterrupted() const;
 
     private:
+        QThread *_parent;
         bool _interrupted;
         BlockChain &_chain;
         ScanCriteria &_criteria;
