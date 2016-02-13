@@ -3,28 +3,29 @@
 
 void ScanActionTest::testStart()
 {
+    BlockChain chain(_context.getProvider());
     Xeth::ScanCriteria criteria;
     Xeth::ScanAction action;
     Xeth::ScanProgress progress;
-    RandomBlockChain chain(99999999999999);
-
+    _context.getBlockChain().setHeight(999999999999);
     criteria.addCriterion<Xeth::AccountScanCriterion>(10, "asdasd123");
 
     action.start(chain, criteria, progress);
 
     QVERIFY(action.isActive());
     sleep(1);
-    QVERIFY(chain.getTotalFetched() > 0);
+    QVERIFY(_context.getBlockChain().getTotalFetched() > 0);
     action.stop();
 }
 
 
 void ScanActionTest::testStop()
 {
+    BlockChain chain(_context.getProvider());
     Xeth::ScanCriteria criteria;
     Xeth::ScanAction action;
     Xeth::ScanProgress progress;
-    RandomBlockChain chain(99999999999999);
+    _context.getBlockChain().setHeight(999999999999);
 
     criteria.addCriterion<Xeth::AccountScanCriterion>(10, "asdasd123");
 
@@ -32,19 +33,20 @@ void ScanActionTest::testStop()
 
     QVERIFY(action.isActive());
     action.stop();
-    size_t fetched = chain.getTotalFetched();
+    size_t fetched = _context.getBlockChain().getTotalFetched();
     QVERIFY(fetched > 0);
     sleep(1);
-    QVERIFY(fetched == chain.getTotalFetched());
+    QVERIFY(fetched == _context.getBlockChain().getTotalFetched());
 }
 
 
 void ScanActionTest::testResume()
 {
+    BlockChain chain(_context.getProvider());
     Xeth::ScanCriteria criteria;
     Xeth::ScanAction action;
     Xeth::ScanProgress progress;
-    RandomBlockChain chain(99999999999999);
+    _context.getBlockChain().setHeight(99999999999999);
 
     criteria.addCriterion<Xeth::AccountScanCriterion>(10, "asdasd123");
 
@@ -52,25 +54,26 @@ void ScanActionTest::testResume()
 
     QVERIFY(action.isActive());
     action.stop();
-    size_t fetched = chain.getTotalFetched();
+    size_t fetched = _context.getBlockChain().getTotalFetched();
     QVERIFY(fetched > 0);
     action.start(chain, criteria, progress);
     sleep(1);
-    QVERIFY(fetched < chain.getTotalFetched());
+    QVERIFY(fetched < _context.getBlockChain().getTotalFetched());
     action.stop();
 }
 
 void ScanActionTest::testComplete()
 {
+    BlockChain chain(_context.getProvider());
     Xeth::ScanCriteria criteria;
     Xeth::ScanAction action;
     Xeth::ScanProgress progress;
-    RandomBlockChain chain(5);
+    _context.getBlockChain().setHeight(5);
 
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "asdasd123");
     action.start(chain, criteria, progress);
 
     sleep(1);
     QVERIFY(!action.isActive());
-    QVERIFY(chain.getTotalFetched()==6);
+    QVERIFY(_context.getBlockChain().getTotalFetched()==6);
 }
