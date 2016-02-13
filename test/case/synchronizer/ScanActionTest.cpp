@@ -69,6 +69,7 @@ void ScanActionTest::testComplete()
     Xeth::ScanAction action;
     Xeth::ScanProgress progress;
     _context.getBlockChain().setHeight(5);
+    _context.getBlockChain().resetCounter();
 
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "asdasd123");
     action.start(chain, criteria, progress);
