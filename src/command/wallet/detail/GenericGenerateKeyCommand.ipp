@@ -36,6 +36,10 @@ bool GenericGenerateKeyCommand<Store, KeyGenerator, CipherFactory>::generate(con
         if(request.contains("entropy"))
         {
             std::string entropy = request["entropy"].toString().toStdString();
+            if(entropy.size()<32)
+            {
+                return false;
+            }
             key = _keyGenerator.generate((const unsigned char *)entropy.data(), entropy.size(), _cipherFactory.create(), password);
         }
         else
