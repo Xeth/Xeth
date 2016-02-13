@@ -27,11 +27,24 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     _database(database),
     _scanInterval(10000)
 {
-    QObject::connect(&_scanTimer, SIGNAL(timeout()), this, SLOT(scan()));
-    QObject::connect(&_scanCriteria, SIGNAL(Data(const PartialScanResult &)),
-                     this, SLOT(processData(const PartialScanResult &)));
-    QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
+    if(!QObject::connect(&_scanTimer, SIGNAL(timeout()), this, SLOT(scan())))
+    {
+        throw std::runtime_error("failed to connect timeout signal");
+    }
+
+    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Data, this, &ChainScanner::processData))
+    {
+        throw std::runtime_error("failed to connect Data signal");
+    }
+
 }
+
+
+ChainScanner::ChainScanner(const ChainScanner &copy) : /*is private, copy is not allowed */
+    _provider(copy._provider),
+    _blockchain(copy._blockchain),
+    _database(copy._database)
+{}
 
 void ChainScanner::addAddress(const Ethereum::Address &address)
 {
@@ -110,11 +123,32 @@ void ChainScanner::stop()
 
 void ChainScanner::scan()
 {
-    _scanTimer.stop();
-    _scanAction.start(_blockchain, _scanCriteria, _scanProgress);
+    if(!_scanAction.isActive())
+    {
+        _scanTimer.stop();
+        _scanAction.start(_blockchain, _scanCriteria, _scanProgress);
+    }
 }
 
-void ChainScanner::processData(const PartialScanResult &result)
+void ChainScanner::syncScan()
+{
+    if(_scanAction.isActive())
+    {
+        _scanAction.waitToComplete();
+    }
+    else
+    {
+        ScanResult result;
+        _scanCriteria.parse(_blockchain, result, _scanProgress);
+    }
+}
+
+bool ChainScanner::processTest()
+{
+    return true;
+}
+
+bool ChainScanner::processData(const PartialScanResult &result)
 {
     ScanIndexStore & indexStore = _database.getScanIndex();
     TransactionStore & transactionStore = _database.getTransactions();
@@ -122,14 +156,17 @@ void ChainScanner::processData(const PartialScanResult &result)
 
     for(QJsonArray::const_iterator it = result.transactions.first; it!=result.transactions.second; ++it)
     {
-        transactionStore.insert(it->toObject()); //ignore duplicates
+        if(transactionStore.insert(it->toObject())) //ignore duplicates
+        {
+            //emit transaction
+        }
     }
 
     for(QJsonArray::const_iterator it = result.stealthPayments.first; it!=result.stealthPayments.second; ++it)
     {
         if(!stealthPaymentStore.insert(it->toObject()))
         {
-            return;
+            return true;
         }
     }
 
@@ -139,8 +176,13 @@ void ChainScanner::processData(const PartialScanResult &result)
     }
 
 
-    emit Data(result);
+//    emit Data(result);
+    return true;
+}
 
+const ScanCriteria & ChainScanner::getScanCriteria() const
+{
+    return _scanCriteria;
 }
 
 void ChainScanner::scheduleScan()
@@ -154,11 +196,15 @@ void ChainScanner::scheduleScan()
 void ChainScanner::autoScan(size_t scanInterval)
 {
     _scanInterval = scanInterval;
-
-    if(!isActive())
+    if(_scanTimer.isActive())
     {
-        scan();
+        _scanTimer.stop();
     }
+    else
+    {
+        QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
+    }
+    scan();
 }
 
 

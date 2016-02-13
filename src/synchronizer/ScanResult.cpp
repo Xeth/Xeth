@@ -1,5 +1,7 @@
 #include "ScanResult.hpp"
 
+
+
 namespace Xeth{
 
 
@@ -33,3 +35,5 @@ PartialScanResult MakePartialScanResult(const ScanResult &result, size_t txCount
 
 
 }
+
+

@@ -5,32 +5,40 @@ namespace Xeth{
 ScanAction::ScanAction()
 {}
 
+void ScanAction::start(BlockChain &chain, ScanCriteria &criteria, ScanProgress &progress)
+{
+    _result = ScanResult();
+    _worker.reset(new ScanWorker(chain, criteria, _result, progress));
+    QObject::connect(_worker.get(), &ScanWorker::finished, this, &ScanAction::emitDone);
+    criteria.moveToThread(_worker.get());
+    _worker->start();
+}
 
 
 void ScanAction::stop()
 {
-    if(_thread)
+    if(isActive())
     {
-        _thread->interrupt();
-        _thread->join();
+        _worker->quit();
+        _worker->wait();
     }
 }
 
 void ScanAction::waitToComplete()
 {
-    if(_thread)
+    if(isActive())
     {
-        _thread->join();
+        _worker->wait();
     }
 }
 
 bool ScanAction::isActive() const
 {
-    if(!_thread)
+    if(!_worker)
     {
         return false;
     }
-    return !_thread->timed_join(boost::posix_time::seconds(0));
+    return !_worker->isFinished();
 }
 
 
@@ -38,6 +46,12 @@ bool ScanAction::isActive() const
 const ScanResult & ScanAction::getResult() const
 {
     return _result;
+}
+
+
+void ScanAction::emitDone()
+{
+    emit Done();
 }
 
 

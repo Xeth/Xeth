@@ -15,6 +15,8 @@
 #include "ScanProgress.hpp"
 #include "ScanResult.hpp"
 
+#include "detail/InterruptionPoint.hpp"
+
 namespace Xeth{
 
 typedef Ethereum::Connector::Collection<Ethereum::Connector::Transaction> TransactionCollection;
@@ -43,10 +45,10 @@ class ScanCriteria : public QObject
         template<class Criterion, class Arg1, class Arg2, class Arg3>
         void addCriterion(size_t minBlock, const Arg1 &, const Arg2 &, const Arg3&);
 
-        size_t process(BlockChain &, ScanResult &);
+        size_t parse(BlockChain &, ScanResult &);
 
         template<class BlockChain, class Progress>
-        size_t process(BlockChain &, ScanResult &, Progress &);
+        size_t parse(BlockChain &, ScanResult &, Progress &);
 
         void clear();
 
@@ -54,19 +56,21 @@ class ScanCriteria : public QObject
         Iterator end() const;
 
     signals:
-        void Data(const PartialScanResult &);
-
-    private:
-        ScanCriteria(const ScanCriteria &);
-
-        void addCriterion(size_t minBlock, ScanCriterion *);
+        bool Data(const Xeth::PartialScanResult &);
+        bool Test();
 
     private:
         typedef std::list<std::pair<size_t, ScanCriterion *> > Container;
         class CriterionCompare;
 
     private:
+        ScanCriteria(const ScanCriteria &);
+        void processBlock(size_t index, Ethereum::Connector::Block &, Container::iterator, ScanResult &);
+        void addCriterion(size_t minBlock, ScanCriterion *);
+
+    private:
         Container _criteria;
+        bool _interrupted;
 
 };
 

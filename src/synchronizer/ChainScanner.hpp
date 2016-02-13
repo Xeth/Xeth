@@ -46,18 +46,24 @@ class ChainScanner : public QObject
         void addStealthAddress(const StealthKey &, time_t);
 
         void stop();
+        
+        const ScanCriteria & getScanCriteria() const;
+
+        void syncScan();
 
     public slots:
         void scan();
         void scheduleScan();
 
-    signals:
-        void Data(const PartialScanResult &);
+//    signals:
+//        void Data(const Xeth::PartialScanResult &);
 
-    private slots:
-        void processData(const PartialScanResult &);
+    public slots:
+        bool processData(const PartialScanResult &);
+        bool processTest();
 
     private:
+        ChainScanner(const ChainScanner &);
         size_t estimateHeight(time_t);
         size_t getChainHeight();
 

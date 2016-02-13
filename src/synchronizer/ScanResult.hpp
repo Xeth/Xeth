@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <QJsonArray>
-
+#include <QMetaType>
 
 namespace Xeth{
 
@@ -39,3 +39,6 @@ PartialScanResult MakePartialScanResult(const ScanResult &, size_t txCount, size
 
 
 }
+
+Q_DECLARE_METATYPE(Xeth::PartialScanResult)
+

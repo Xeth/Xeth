@@ -58,6 +58,17 @@ void Synchronizer::loadAddresses()
     _scanner.loadAddresses();
 }
 
+void Synchronizer::scan()
+{
+    _scanner.syncScan();
+}
+
+
+const ScanCriteria & Synchronizer::getScanCriteria() const
+{
+    return _scanner.getScanCriteria();
+}
+
 void Synchronizer::synchronize(size_t scanInterval, size_t syncInterval)
 {
     _syncProgress.autoUpdate(syncInterval);
