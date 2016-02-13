@@ -3,7 +3,6 @@
 
 #include <QWebFrame>
 #include <QWebElementCollection>
-#include <iostream>
 
 namespace Xeth{
 

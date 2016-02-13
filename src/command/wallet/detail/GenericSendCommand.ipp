@@ -20,6 +20,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
 //    dAmount *= 1000000000000000000;
 //    BigInt amount(dAmount.str(0, std::ios_base::fixed));
 
+
     BigInt amount(request["amount"].toString().toStdString());
     Validator validator;
 
@@ -34,7 +35,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         {
             return QVariant::fromValue(false);
         }
-
         if(!_wallet.unlockAccount(from, password, 5))
         {
             //maybe it was a stealth payment
