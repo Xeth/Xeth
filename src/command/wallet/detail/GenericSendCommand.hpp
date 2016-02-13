@@ -6,8 +6,6 @@
 #include <QString>
 #include <QVariant>
 
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
 #include "database/DataBase.hpp"
 #include "types/BigInt.hpp"
 

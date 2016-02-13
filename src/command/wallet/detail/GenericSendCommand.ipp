@@ -16,10 +16,6 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
     std::string to = request["to"].toString().toStdString();
     std::string password = request["password"].toString().toStdString();
 
-//    boost::multiprecision::number<boost::multiprecision::cpp_dec_float<12> > dAmount(request["amount"].toDouble());
-//    dAmount *= 1000000000000000000;
-//    BigInt amount(dAmount.str(0, std::ios_base::fixed));
-
 
     BigInt amount(request["amount"].toString().toStdString());
     Validator validator;
