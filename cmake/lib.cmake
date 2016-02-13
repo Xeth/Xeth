@@ -17,20 +17,8 @@ include_directories(
 
 set(CMAKE_CXX_FLAGS "-fPIC")
 
-file(GLOB LIBRARY_SOURCES
+file(GLOB_RECURSE LIBRARY_SOURCES
     "src/*.cpp"
-    "src/database/detail/*.cpp"
-    "src/database/*.cpp"
-    "src/synchronizer/*.cpp"
-    "src/command/wallet/*.cpp"
-    "src/command/wallet/detail/*cpp"
-    "src/command/addressbook/*.cpp"
-    "src/command/config/*.cpp"
-    "src/facade/*.cpp"
-    "src/window/*.cpp"
-    "src/process/*.cpp"
-    "src/types/*.cpp"
-    "src/io/*.cpp"
 )
 
 

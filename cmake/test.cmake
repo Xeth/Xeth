@@ -6,6 +6,8 @@ find_package(LibScrypt REQUIRED)
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
 
+add_definitions ("-Wall")
+
 file(GLOB_RECURSE TEST_SOURCES
     "test/*.cpp"
 )
