@@ -30,6 +30,10 @@
 #include "case/wallet/GenerateStealthKeyTest.hpp"
 #include "case/wallet/ImportKeyTest.hpp"
 #include "case/wallet/ImportStealthKeyTest.hpp"
+#include "case/converter/WeiConversionTest.hpp"
+#include "case/converter/SzaboConversionTest.hpp"
+#include "case/converter/FinneyConversionTest.hpp"
+
 
 template<class Test>
 int ExecuteTest(int argc, char **argv)
@@ -68,7 +72,10 @@ int main(int argc, char** argv)
         GenerateKeyTest,
         GenerateStealthKeyTest,
         ImportKeyTest,
-        ImportStealthKeyTest
+        ImportStealthKeyTest,
+        WeiConversionTest,
+        SzaboConversionTest,
+        FinneyConversionTest
     );
 
     if(status)
