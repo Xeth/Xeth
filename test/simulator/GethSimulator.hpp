@@ -40,13 +40,13 @@ class GethSimulator : public boost::noncopyable
         void addBalance(const char *address, const BigInt &);
         BigInt getBalance(const char *address);
 
-        bool sendTransaction(const char *from, const char *to, const BigInt &amount);
+        std::string sendTransaction(const char *from, const char *to, const BigInt &amount, const char *data=NULL);
 
         bool unlockAccount(const char *address, const char *password, size_t duration);
         std::vector<std::string> getAccounts();
 
         Block getBlock(size_t );
-        const char * getBlockData(size_t );
+        Json::Value getBlockData(size_t );
         size_t getChainHeight();
 
         bool listen(const char *path);

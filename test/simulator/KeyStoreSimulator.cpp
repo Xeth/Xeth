@@ -1,5 +1,8 @@
 #include "KeyStoreSimulator.hpp"
 
+KeyStoreSimulator::KeyStoreSimulator(Xeth::DataBase &)
+{}
+
 std::vector<std::string> KeyStoreSimulator::getAccounts()
 {
     std::vector<std::string> result;

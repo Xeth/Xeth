@@ -3,14 +3,13 @@
 #include <string>
 #include <sstream>
 
-#include <boost/random/random_device.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
 
 #include <json/reader.h>
 
 #include "ethrpc/Block.hpp"
 
-
+#include "RandomString.hpp"
+#include "Hex.hpp"
 
 
 class RandomBlockChain
@@ -19,22 +18,20 @@ class RandomBlockChain
         typedef Ethereum::Connector::Block Block;
 
     public:
+        RandomBlockChain();
         RandomBlockChain(size_t maxHeight);
 
         void retrieveBlockDetails(bool);
 
         Ethereum::Connector::Block getBlock(size_t);
+        Json::Value getBlockData(size_t);
+
         size_t getHeight();
         size_t getTotalFetched();
 
-    private:
-        std::string randomString(size_t) const;
-        std::string getHex(size_t) const;
+        void setHeight(size_t);
 
     private:
         size_t _height;
         size_t _fetched;
-        std::string _alphabet;
-        boost::random::uniform_int_distribution<> _dist;
-
 };

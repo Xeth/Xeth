@@ -76,14 +76,17 @@ void GethSession<GethSimulator>::handleRead(const boost::system::error_code& err
                         response["result"] = Json::Value(stream.str());
                     }
                     else
-                    if(method=="eth_SendTransaction")
+                    if(method=="eth_sendTransaction")
                     {
                         Json::Value tx = params[0];
-                        if(_simulator->sendTransaction(tx["from"].asCString(), tx["to"].asCString(), BigInt(tx["value"].asCString())))
+                        const char *data = tx.isMember("data") ? tx["data"].asCString() : NULL;
+                        const char *from = tx["from"].asCString();
+                        const char *to = tx["to"].asCString();
+                        const char *value = tx["value"].asCString();
+                        std::string txid = _simulator->sendTransaction(from, to, BigInt(value), data);
+                        if(txid.size())
                         {
-                            std::stringstream id;
-                            id<<tx["value"].asCString()<<std::hex<<time(NULL)<<rand();
-                            response["result"] = id.str();
+                            response["result"] = txid;
                         }
                         else
                         {
@@ -117,8 +120,7 @@ void GethSession<GethSimulator>::handleRead(const boost::system::error_code& err
                     else
                     if(method=="eth_getBlockByNumber")
                     {
-                        const char *block = _simulator->getBlockData(params[0].asInt());
-                        response["result"] = block;
+                        response["result"] = _simulator->getBlockData(unhex<size_t>(params[0].asCString()));
                     }
                     else
                     {

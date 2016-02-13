@@ -15,6 +15,7 @@ class ApplicationContext
 {
     public:
         typedef ::GethSimulator<KeyStore, BlockChain> GethSimulator;
+        typedef Ethereum::Connector::Provider Provider;
 
     public:
         ApplicationContext();
@@ -29,8 +30,8 @@ class ApplicationContext
     private:
         DataBaseDirectory _dir;
         Xeth::DataBase _database;
-        KeyStore _keys;
         BlockChain _chain;
+        KeyStore _keys;
         std::string _gethPath;
         GethSimulator _geth;
         Ethereum::Connector::Provider _provider;

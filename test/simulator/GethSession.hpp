@@ -16,6 +16,7 @@
 #include <json/writer.h>
 
 #include "ethrpc/transport/JsonMatcher.hpp"
+#include "ethrpc/hex.hpp"
 
 #include "types/BigInt.hpp"
 
@@ -23,6 +24,8 @@
 using boost::asio::local::stream_protocol;
 using Xeth::BigInt;
 using Ethereum::Connector::JsonMatcher;
+using Ethereum::Connector::unhex;
+
 
 template<class GethSimulator>
 class GethSession : public boost::enable_shared_from_this<GethSession<GethSimulator> >
