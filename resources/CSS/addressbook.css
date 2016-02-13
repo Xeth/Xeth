@@ -2,8 +2,36 @@
 
 .listItem .s_titled.transactions {
 	color: #1C2E30;
+	margin-right: 0;
 }
 .listItem .s_titled.transactions:before {
 	content: "transactions:";
 	color: #778283;
+}
+
+.listItem .controls.removing {
+	display:none;
+	text-align: right;
+	margin-top: -52px;
+}
+
+.listItem .controls.removing .txt {
+	height: 16px;
+	line-height:16px;
+	padding: 5px 0 10px 0;
+	color: #ed1c24;
+}
+
+.listItem.removing .controls.removing {
+	display:block;
+}
+
+.listItem.removing .avatar,
+.listItem.removing .data {
+	pointer-events: none;
+	opacity: 0.3;
+}
+
+.listItem.removing .data .controls {
+	display:none;
 }

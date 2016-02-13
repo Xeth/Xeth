@@ -7,10 +7,6 @@
 	transform: translate(-50%, -50%);*/
 }
 
-.page .formpage .section_password {
-	margin-top: 66px;
-}
-
 .page .formpage.send .section_to h1 {
 	margin-right: 86px;
 }
@@ -29,11 +25,6 @@
 .page .formpage.send .section_to .input.address,
 .page .formpage.send .section_to input.address {
 	width: 334px;
-}
-
-.page .formpage.send .submit {
-	/*clear: both;*/
-	padding-top: 90px;
 }
 
 .page .formpage.send .btnSubmit.btnSend {

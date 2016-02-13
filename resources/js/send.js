@@ -56,7 +56,11 @@ function setSendAmount(_eth)
 	var _slider = $(_target+' .slider');
 	var _maxSlice = 0.3;
 	var _sliderPos = _slider.slider( "value" ) / 100;
-	var _balance = accountList[$('#sendFrom').attr("value")].balance;
+	//var _balanceTxt = $('#sendFrom .select .amount');
+	//var _balance = accountItem($('#sendFrom').attr("value")).balance;
+	var _balance = parseAmount($('#sendFrom .select .amount'));
+	//Number(_balanceTxt.children('.int').text()+'.'+_balanceTxt.children('.dec').text());
+	//accountList[$('#sendFrom').attr("value")].balance;
 	var _balanceAvailable = _balance / (1+_maxSlice*_sliderPos);
 	var _fee = _eth*_maxSlice*_sliderPos;
 	
@@ -66,6 +70,7 @@ function setSendAmount(_eth)
 		$('#sendAmount').val(_eth.toFixed(ETH_dec));
 		_fee = _balance - _eth;
 	}
+	if(_balance<=0) $('#sendAmount').val('');
 	
 	if(isNaN(_eth) || _eth.length===0) _eth=0;
 	
@@ -123,6 +128,8 @@ function toggleSendError(_err)
 	if(typeof _err.amount !== "undefined") $("#page_send .section_amount").toggleClass('error', _err.amount);
 	if(typeof _err.password !== "undefined") $("#page_send .section_password").toggleClass('error', _err.password);
 	if(typeof _err.alias !== "undefined") $("#page_send .section_alias").toggleClass('error', _err.alias);
+	
+	checkNotifyError(_err, "please fill all mandatory fields correctly");
 }
 
 function submitSend()
@@ -142,12 +149,12 @@ function submitSend()
 		
 		scheduleSaveContact($('#saveContact').hasClass('on'), $("#sendAlias").val(), $('#sendToType').attr('value'), $("#sendToInput").val());
 		
-		XETH.submitSend(accountList[$('#sendFrom').attr('value')].address,
-					$('#sendToType').attr('value'),
-					$("#sendToInput").val(),
-					$("#sendAmount").val(),
-					$('#sendFee .fee .gas').text(),
-					$("#sendPassword").val());
+		XETH.submitSend($('#sendFrom .select .account > .address').text(), //accountList[$('#sendFrom').attr('value')].address,
+						$('#sendToType').attr('value'),
+						$("#sendToInput").val(),
+						$("#sendAmount").val(),
+						$('#sendFee .fee .gas').text(),
+						$("#sendPassword").val());
 	}
 }
 
@@ -156,6 +163,12 @@ function sentSuccessful()
 	notifySuccess('transaction sent successful!');
 	resetSendForm();
 	saveContact();
+}
+
+function sentError(_err)
+{
+	toggleSendError(_err);
+	$('#page_send .formpage').toggleClass('waiting', false);
 }
 
 function resetSendForm()

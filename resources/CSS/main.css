@@ -40,11 +40,29 @@ a {
 	color: #778283;
 	text-decoration: none;
 	outline: none;
+	cursor: pointer;
+}
+
+button,
+input[type="button"] {
+	outline: none;
+	cursor: pointer;
+	border: none;
+	overflow:hidden;
+}
+
+p {
+	font-size: 0.8rem;
+	color: #778283;
 }
 
 .hidden {
 	opacity: 0;
 	pointer-events:none;
+}
+
+.invisible {
+	display:none;
 }
 
 .bitprofileIcon {
@@ -102,11 +120,15 @@ a {
 	overflow:hidden;
 	padding-left: 50%;
 }
-.avatar .img img {
+.avatar .img>img,
+.avatar .img object {
 	height: 100%;
-	transform: translate(-50%, 0%);
 	-webkit-transform: translate(-50%, 0%);
 	transform: translate(-50%, 0%);
+}
+.avatar .img object img {
+	height: 100%;
+	margin-left: -100%;
 }
 
 /*******************************************************/
@@ -116,6 +138,7 @@ input[type="text"],
 input[type="password"],
 input[type="number"],
 textarea {
+	font-family: Regular, Arial, Helvetica, sans-serif;
 	font-size: 0.9rem;
 	color: #1C2E30;
 	background:none;
@@ -218,6 +241,10 @@ input[type=number]:-ms-input-placeholder { /* Internet Explorer 10+ */
 	background-position: center -135px;
 	background-image: url(../img/icons-01.png);
 	background-repeat: no-repeat;
+}
+
+input.search {
+	padding-right: 30px;
 }
 
 .input .select {
@@ -516,4 +543,45 @@ input[type="number"]:focus {
 #notie-alert-inner {
 	padding: 10px !important;
 	text-transform: uppercase;
+}
+
+.editableTxt {
+	cursor:pointer;
+}
+.editableTxt:hover {
+	text-decoration: underline;
+}
+
+.editable-inline {
+	float:left;
+	white-space:nowrap;
+	margin: -5px 5px 0px -5px;
+}
+.editable-inline .editable-input input{
+	padding: 0px 45px 0px 5px;
+	height: 26px;
+	line-height: 26px;
+	font-size: 0.9rem;
+}
+.editable-inline .editable-buttons {
+	float:right;
+	margin: -21px 5px 0px 0px;
+}
+.editable-inline .editable-buttons button {
+	display:block;
+	height: 16px;
+	width: 16px;
+	float: left;
+	margin-left: 2px;
+	text-indent: 20px;
+	background: none;
+	background-image: url(../img/icons-01.png);
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+.editable-inline .editable-buttons button.editable-submit {
+	background-position-y: -334px;
+}
+.editable-inline .editable-buttons button.editable-cancel {
+	background-position-y: -358px;
 }

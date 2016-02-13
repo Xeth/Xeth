@@ -9,6 +9,9 @@
 	width:250px;
 	margin:auto;
 }
+.innerpage .formpage {
+	width:580px;
+}
 
 .page .formpage.waiting {
 	pointer-events: none;
@@ -30,18 +33,92 @@
 	margin-bottom: 2px;
 }
 
-.page .input .address {
+.page .input .account {
 	font-size: 0.85rem;
 	font-family: Bold, Arial, Helvetica, sans-serif;
 	/*overflow:hidden;
 	width: calc(100% - 180px);*/
 	display: block;
+	height: 100%;
+	pointer-events: none;
 }
+
+.page .input .account .address,
+.page .input .account .shortAddress {
+	display:block;
+}
+.page .input .account.stealth:before,
+.page .input .account.bitprofile:before {
+	content:"";
+	display: block;
+	float:left;
+	width: 16px;
+	height: 16px;
+	margin: 11px 5px 0 0;
+	background-image: url(../img/icons-01.png);
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+.page .input .account.stealth:before {
+	background-position-y: -310px;
+}
+.page .input .account.bitprofile:before {
+	background-position-y: -60px;
+}
+.page .input .account .id {
+	color: #BB874E;
+	font-family: Regular, Arial, Helvetica, sans-serif;
+	text-transform:none;
+	margin-right:10px;
+	float:left;
+}
+
 .page .input .txtBalance {
 	pointer-events: none;
 	font-size: 0.8rem;
 	float: right;
 	margin-right:30px;
+}
+
+.page .input .account.originated {
+	padding: 6px 0;
+}
+
+.page .input .account.originated > .address {
+	font-size: 0.75rem;
+	line-height: 16px;
+}
+
+.page .input .account .origin {
+	font-size: 0.65rem;
+	font-family: Regular, Arial, Helvetica, sans-serif;
+	line-height: 10px;
+	display:block;
+}
+
+.page .input .account .origin .address {
+	color:#778283;
+}
+
+.page .input .account.originated .origin:before {
+	content:"";
+	display: block;
+	float:left;
+	width: 8px;
+	height: 8px;
+	margin: 1px 3px 0 0;
+	background-image: url(../img/icons-01.png);
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+.page .input .account.originStealth .origin:before {
+	background-position-y: -899px;
+}
+.page .input .account.originBitprofile .origin:before {
+	background-position-y: -909px;
+}
+.page .input .account.originBitprofile .origin .id {
+	margin-right:6px;
 }
 
 .input.accountList.mini {
@@ -58,20 +135,25 @@
 	margin-left: -330px;
 }
 
-.input.accountList.send .address {
+.input.accountList.send .address,
+.input.accountList.send .shortAddress {
 	color:#3D8AAB;
 }
 
-.input.accountList.receive .address {
+.input.accountList.receive .address,
+.input.accountList.receive .shortAddress {
 	color:#5B945B;
 }
 
-.input.accountList.send li[empty] {
+.input.accountList.send li[empty],
+.input.accountList.send li[stealth],
+.input.accountList.send li[bitprofile],
+.input.accountList li.all {
 	display:none;
 }
 
-.input.accountList.receive li[stealth] {
-	display:none;
+.input.accountList.all li.all {
+	display:block;
 }
 
 .page .formpage .group .btn {
@@ -151,6 +233,9 @@
 	width: 290px;
 	float:right;
 }
+.page .formpage .half_equal {
+	width: 270px;
+}
 
 .page .formpage .headless_section {
 	margin-top: 30px;
@@ -171,6 +256,13 @@
 .page .formpage .half_right textarea {
 	width: 270px;
 	float:none;
+}
+.page .formpage .half_equal input[type="text"],
+.page .formpage .half_equal input[type="password"],
+.page .formpage .half_equal input[type="number"],
+.page .formpage .half_equal .input,
+.page .formpage .half_equal textarea {
+	width: 250px;
 }
 
 .page .input.amount:after {
@@ -245,7 +337,7 @@
 	display: block;
 	line-height: 64px;
 	height: 64px;
-	max-width: 350px;
+	max-width: 300px;
 	padding-top: 6px;
 	margin: auto;
 	text-transform: uppercase;
@@ -260,12 +352,14 @@
 }
 
 .page .formpage .btnSubmit:after {
-	content:"";
+	content: "";
 	display: inline-block;
 	height: 16px;
 	width: 100px;
-	background-color:#0F0;
-	display:none;
+	display: none;
+	background-image: url(../img/submit_loader.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 .page .formpage.waiting .btnSubmit .txt {
 	display: none;
@@ -285,7 +379,8 @@
 	color:#ffffff;
 	text-align:center;
 	text-transform:uppercase;
-	margin:22px auto 0 auto;
+	/*margin:22px auto 0 auto;*/
+	margin:22px auto -50px auto;
 	transition: background-color 300ms ease-in-out;
 	font-size: 0.8em;
 }
@@ -297,8 +392,14 @@
 .subpage .formpage .submit {
 	clear: both;
 	position:absolute;
-	bottom: -40px;
+	/*bottom: -40px;*/
+	bottom: 10px;
 	width:250px;
+}
+
+.innerpage .formpage .submit {
+	bottom: 60px;
+	width:100%;
 }
 .subpage .formpage .submit input[type=password] {
 	margin-bottom:30px;
@@ -334,4 +435,31 @@
 .page .formpage h1 .fee .eth:after {
 	content:" ETH)";
 	margin-left:5px;
+}
+
+.page .formpage h1 .controls {
+	float: right;
+	padding-top:0 !important;
+}
+.page .formpage h1 .controls > a {
+	color:#BB874E;
+}
+.page .formpage h1 .controls > *:before {
+	content: "|";
+	margin: 0px 10px;
+	color: #778283;
+	font-family: Regular, Arial, Helvetica, sans-serif;
+}
+.page .formpage h1 .controls > *:first-child:before {
+	display:none;
+}
+
+.formpage .section_submit {
+	position:absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.formpage .section_submit .section_password h1 {
+	margin-top:6px;
 }

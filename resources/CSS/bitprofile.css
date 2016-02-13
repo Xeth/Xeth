@@ -25,15 +25,18 @@
 	background-position-y: -466px;
 }
 
-#page_bitprofile .nav.list{
+#page_bitprofile .bitprofileList{
 	top:92px;
 	bottom:0px;
 	/*overflow-y:scroll;*/
 }
-#page_bitprofile .nav.list li {
+#page_bitprofile .bitprofileList .nav {
+	position:relative;
+}
+#page_bitprofile .bitprofileList li {
 	height: 80px;
 }
-#page_bitprofile .nav.list li a {
+#page_bitprofile .bitprofileList li a {
 	text-transform: none;
 	height: 50px;
 	background-image: none;
@@ -41,14 +44,14 @@
 	color: #ffffff;
 }
 
-#page_bitprofile .nav .viewBitprofile .avatar .img {
+#page_bitprofile .bitprofileList .avatar .img {
 	background-color: #778283;
 }
-#page_bitprofile .nav .viewBitprofile .name {
+#page_bitprofile .bitprofileList .name {
 	display: block;
 	padding-top: 5px;
 }
-#page_bitprofile .nav .viewBitprofile .id {
+#page_bitprofile .bitprofileList .id {
 	color: #BB874E;
 }
 

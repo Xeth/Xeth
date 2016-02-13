@@ -29,7 +29,7 @@
 	
 	background-color: rgba(255,255,255,0.90);
 	
-	transition: all 300ms ease-in-out;
+	transition: opacity 300ms ease-in-out, margin-top 300ms ease-in-out;
 }
 
 .daterangepicker.on {
@@ -316,19 +316,20 @@
 
 .daterangepicker .ranges li {
   font-size: 13px;
-  background: #f5f5f5;
-  border: 1px solid #f5f5f5;
-  color: #08c;
+  background: none;
+  /*border: 1px solid #f5f5f5;*/
+  color: #778283;
   padding: 5px;
+  line-height: 15px;
   margin: 2px 0px;
   /*border-radius: 5px;*/
   cursor: pointer;
 }
 
 .daterangepicker .ranges li.active, .daterangepicker .ranges li:hover {
-  background: #08c;
-  border: 1px solid #08c;
-  color: #fff;
+  background: rgba(255,255,255,0.90);
+  /*border: 1px solid #1C2E30;*/
+  color: #1C2E30;
 }
 
 .daterangepicker .ranges .range_inputs {
@@ -340,7 +341,17 @@
 	width: 30px;
 	height: 20px;
 	margin: auto;
-	background-color: #0F0;
+	background-image: url(../img/icons-01.png);
+	background-repeat: no-repeat;
+	background-position-x: center;
+}
+
+.daterangepicker .calendar-table thead .glyphicon-chevron-right {
+	background-position-y: -920px;
+}
+
+.daterangepicker .calendar-table thead .glyphicon-chevron-left {
+	background-position-y: -940px;
 }
 
 /*  Larger Screen Styling */
@@ -350,7 +361,7 @@
   }
 
   .daterangepicker .ranges ul {
-    width: 100px;
+    width: 124px;
   }
   .daterangepicker.single .ranges ul {
     width: 100%;

@@ -1,4 +1,5 @@
 var receiveQR;
+var receiveSubmitTimeout;
 
 function initReceive() 
 {
@@ -10,46 +11,93 @@ function initReceive()
 		correctLevel : QRCode.CorrectLevel.M
 	});
 	
-	$( '#receiveTo' ).change(generateReceiveCode);
-	$( '#receiveAmount' ).on('input', generateReceiveCode);
-	$( '#receiveMessage' ).on('input', generateReceiveCode);
+	$( '#receiveTo' ).change(submitReceiveForm);
+	$( '#receiveAmount' ).on('change', submitReceiveForm);
+	$( '#receiveMessage' ).on('change', submitReceiveForm);
+	$( '#receiveAmount' ).on('input', delaySubmitReceiveForm);
+	$( '#receiveMessage' ).on('input', delaySubmitReceiveForm);
 	
 	$('#saveReceiveQR').on('click', saveReceiveQR);
 	$('#copyReceiveURI').on('click', copyReceiveURI);
+	
+	generateReceiveCode();
 }
 
 function generateReceiveCode () 
 {		
-	var _txt = 	"xeth:"+
-				accountList[$('#receiveTo').attr("value")].address;
-	
-	var _vars = "?";
-	
-	if($('#receiveAmount').val()>0) _vars += "amount=" + $('#receiveAmount').val();
-	
-	if($('#receiveMessage').val().length>0)
+	var _address = $('#receiveTo .select .account > .address').text();
+	if(_address)
 	{
-		if(_vars!="?") _vars += "&";
-		_vars += "message=" + $('#receiveMessage').val();
-	}
-	
-	if(_vars!="?") _txt += _vars;
-	
-	//console.log(_txt);
+		var _txt = 	"xeth:"+
+					_address;
+					//accountList[$('#receiveTo').attr("value")].address;
 		
-	$('.receive .txtURI').val(_txt);
+		var _vars = "?";
+		
+		if($('#receiveAmount').val()>0) _vars += "amount=" + $('#receiveAmount').val();
+		
+		if($('#receiveMessage').val().length>0)
+		{
+			if(_vars!="?") _vars += "&";
+			_vars += "message=" + $('#receiveMessage').val();
+		}
+		
+		if(_vars!="?") _txt += _vars;
+		
+		//console.log(_txt);
+			
+		$('.receive .txtURI').val(_txt);
+		
+		receiveQR.makeCode(_txt);
+	}
+	else
+	{
+		$('.receive .txtURI').val("");
+		receiveQR.clear();
+	}
+}
+
+function submitReceiveForm() 
+{		
+	var _address = $('#receiveTo .select .account.bitprofile .id').text();
+	if(!_address) _address = $('#receiveTo .select .account > .address').text();
 	
-	receiveQR.makeCode(_txt);
+	if(_address)
+	{
+		XETH.submitReceiveForm(	_address,
+								$('#receiveAmount').val(),
+								$('#receiveMessage').val());
+	}
+	else
+	{
+		setReceiveURI("");
+	}
+}
+
+function delaySubmitReceiveForm()
+{
+	window.clearTimeout(receiveSubmitTimeout);
+	receiveSubmitTimeout = window.setTimeout( submitReceiveForm , 1000 );
 }
 
 function saveReceiveQR () 
 {
-	$( '#receiveQR img' ).attr("name","QR_"+moment());
-	window.location.href = ($( '#receiveQR img' ).attr("src").replace('image/png', 'image/octet-stream'));
+	var _img = ($( '#receiveQR img' ).attr("src").replace('image/png', 'image/octet-stream'));
+	var _name = "QR_"+moment()+'.png';
+	//$( '#receiveQR img' ).attr("name",_name);
+	//window.location.href = _img;
+	//saveFile(2, _img, _name);
+	XETH.fileBrowseSave(_name, _img);
 }
 
 
 function copyReceiveURI()
 {
 	XETH.setClipboard($('.receive .txtURI').val());
+}
+
+function setReceiveURI(_txt)
+{		
+	$('.receive .txtURI').val(_txt);
+	(_txt.length>0)? receiveQR.makeCode(_txt) : receiveQR.clear();
 }

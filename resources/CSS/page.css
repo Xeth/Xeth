@@ -9,6 +9,7 @@
 	color: #778283;
 	cursor: default;
 	z-index: 2;
+	left:-260px;
 }
 
 .subNav {
@@ -29,12 +30,34 @@
 	right:0;
 	background-color: #3E4E5A;
 }
+
+.loaded .mainNav {
+	left: 0;
+	transition: left 300ms ease-in-out 500ms;
+}
+
+.mainNav .profile {
+	line-height: 62px;
+	padding: 9px;
+	padding-left: 66px;
+	background-color: #3E4E5A;
+	color: #ffffff;
+	display: block;
+	cursor: pointer;
+	text-transform: uppercase;
+	
+	background-image: url(../img/menu_icons-01.png);
+	background-repeat: no-repeat;
+	background-position: 10px -350px;
+}
+/*
 .mainNav .profile {
 	line-height: 62px;
 	padding: 9px;
 	background-color: #3E4E5A;
 	color: #ffffff;
 	display: block;
+	cursor: pointer;
 }
 .mainNav .profile .avatar {
 	height: 54px;
@@ -48,7 +71,7 @@
 .mainNav .profile .name {
 	font-size: 1.1rem;
 }
-
+*/
 
 .nav {
 	display: block;
@@ -83,34 +106,6 @@
 
 .subNav .nav li {
 	background-image: url(../img/submenu_bg-01.png);
-}
-/*
-.nav li a:after {
-	content:"";
-	opacity:0;
-	transition: all 300ms ease-in-out;
-}
-
-.nav li a[new]:after {
-	content:"+" attr(new);
-	font-family: Bold, Arial, Helvetica, sans-serif;
-	color: #57BF57;
-	font-size: 0.9rem;
-	margin-left: 10px;
-	opacity:1;
-}
-*/
-.nav li a .new {
-	font-family: Bold, Arial, Helvetica, sans-serif;
-	color: #57BF57;
-	font-size: 0.9rem;
-	opacity:0;
-	transition: all 500ms ease-in-out 1s;
-}
-.nav li a .new.show {
-	margin-left: 10px;
-	opacity:1;
-	transition: all 300ms ease-in-out;
 }
 
 .nav li a .new:before {
@@ -153,6 +148,7 @@
 #page_transactions:target ~ .mainNav .nav li.transactions,
 #page_settings:target ~ .mainNav .nav li.settings {
 	margin-left: 0px;
+	pointer-events: none;
 } 
 
 .nav li a {
@@ -170,6 +166,8 @@
 	transition: background 600ms ease-in-out, margin-left 100ms ease-in-out;
 	/*margin-left: -240px;*/
 	margin-left: -100%;
+	cursor: pointer;
+	opacity: 0.75;
 }
 
 .nav li:hover a{
@@ -179,6 +177,19 @@
 	margin-left: -webkit-calc(-100% + 16px);
 	margin-left: calc(-100% + 16px);
 	transition: all 200ms ease-in-out;
+}
+
+.nav li a .new {
+	font-family: Bold, Arial, Helvetica, sans-serif;
+	color: #57BF57;
+	font-size: 0.9rem;
+	opacity:0;
+	transition: all 500ms ease-in-out 1s;
+}
+.nav li a .new.show {
+	margin-left: 10px;
+	opacity:1;
+	transition: all 300ms ease-in-out;
 }
 
 .nav li.active a,
@@ -218,16 +229,26 @@
 	left: 20px;
 	right: 25px;
 }
-.mainNav .footer .status {
+.preloader {
 	text-align: center;
 	font-size: 0.8rem;
 	margin-bottom: 20px;
+	opacity: 1;
+	transition: all 300ms ease-in-out 1000ms;
 }
-.mainNav .footer .status .message {
+.mainNav .footer .status[loader="100"] {
+	margin-top: 5px;
+	margin-bottom: 15px;
+	opacity: 0;
+}
+#newAddressSeedLoader[loader="100"] .loader .txt {
+	opacity: 0;
+}
+.preloader .message {
 	padding-bottom: 5px;
 }
 
-.mainNav .footer .status .loader {
+.preloader .loader {
 	color: #FFF;
 	height: 22px;
 	border-radius: 5px;
@@ -236,7 +257,7 @@
 	line-height: 22px;
 	padding: 2px;
 }
-.mainNav .footer .status .loader .value {
+.preloader .loader .value {
 	height: 22px;
 	margin-bottom: -22px;
 	background-color: #495859;
@@ -292,6 +313,10 @@
 	z-index: 3;
 }
 
+.page.off {
+	display:none;
+}
+
 .subpage {
 	top:25px;
 	bottom:15px;
@@ -301,6 +326,13 @@
 	left: 365px;
 	min-width: 250px;
 	min-height:480px;
+}
+
+.innerpage {
+	top:0;
+	bottom:60px;
+	left:0;
+	right:0;
 }
 
 .page.navpage {
@@ -321,17 +353,44 @@
 	width: 130px;
 	z-index:0;	
 	pointer-events: none;
+	opacity:0;
 	transition: width 150ms ease-in-out 150ms;
 }
 
-.navpage:target ~ .subnavBg {
+.loaded .subnavBg {
+	opacity:1;
+	transition: width 150ms ease-in-out 150ms, opacity 0ms ease-in-out 1000ms;
+}
+
+#page_splash {
+	left:60px;
+}
+
+#page_splash .logo {
+	width: 450px;
+	/*margin: 50% auto 0 auto;*/
+	margin: calc(30% - 50px) auto 0 auto;
+	background-image: url(../img/logo-01.png);
+	background-repeat: no-repeat;
+	background-position: center top;
+	padding-top: 80px;
+	font-size:0.8rem;
+	text-transform:uppercase;
+	color:#778283;
+	text-align:center;
+}
+
+
+.navpage:target ~ .subnavBg,
+.navpage.active ~ .subnavBg {
 	/*width: 50%;*/
 	/*width: calc(50% - 20px);*/
 	width: 460px;
 	transition: width 150ms ease-in-out 100ms;
 }
 
-.navpage:target ~ .mainNav .nav {
+.navpage:target ~ .mainNav .nav,
+.navpage.active ~ .mainNav .nav {
 	right: 5px;
 }
 
@@ -421,6 +480,11 @@
 	margin-top: 0;
 }
 
+.innerpage > h1:first-child,
+.innerpage :first-child > h1:first-child {
+	margin-top: 30px;
+}
+
 .listItem {
 	background-color: #E4E6E6;
 	background-color: rgba(255, 255, 255, 0.4);
@@ -499,6 +563,14 @@
 	margin-right: 20px;
 	color: #1C2E30;
 }
+
+.listItem .userProfile .name {
+	float:left;
+	max-width: 230px;
+	white-space: pre;
+	overflow:hidden;
+	margin-right: 3px;
+}
 .listItem .detail {
 	margin-right:30px;
 }
@@ -558,10 +630,10 @@
 .listItem .controls .btntxt:after {
 	vertical-align: middle;
 	display: inline-block;
-	height: 14px;
+	height: 16px;
 	padding-left: 5px;
-	line-height: 14px !important;
-	margin-top: -10px;
+	line-height: 16px !important;
+	margin-top: -8px;
 }
 .listItem .controls .btn.send {
 	background-position-y: -160px;
@@ -569,21 +641,50 @@
 .listItem .controls .btn.remove {
 	background-position-y: -185px;
 }
+.listItem .controls .btn.cancel {
+	background-position-y: -960px;
+}
 .listItem .controls .btntxt.send:after {
 	content:"send payment";
 }
 .listItem .controls .btntxt.remove:after {
 	content:"remove";
 }
+.listItem .controls .btntxt.cancel:after {
+	content:"cancel";
+}
 
 .page .scrollpage {
 	position: absolute;
 	left: 0px;
 	top: 48px;
-	right: -30px;
 	bottom: 0px;
+	right: 0;/*-30px;*/
+	/*padding-right: 30px;*/
 	overflow: hidden;
-	padding-right: 30px;
+}
+.page .scrollpage .empty {
+	padding: 30px 0;
+	line-height:20px;
+	/*color: #778283;*/
+	color: #E4E6E6;
+	color: rgba(255, 255, 255, 0.4);
+	text-transform:uppercase;
+	text-align:center;
+	border-top: 1px solid;
+	border-color: #E4E6E6;
+	border-color: rgba(255, 255, 255, 0.4);
+	width: 100%;
+	height:40px;
+	display:none;
+	
+}
+.page .scrollpage.empty .empty {
+	display:block;
+	
+}
+.page .scrollpage.empty .holder {
+	opacity:0;
 }
 .page .scrollpage .scrollbar {
 	position: absolute;

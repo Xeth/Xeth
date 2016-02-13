@@ -29,7 +29,7 @@
 }
 .listItem.received .header.icon .title,
 .listItem.received .header.icon:before {
-	background-position-y: -160px;
+	background-position-y: -286px;
 }
 .listItem.sent .header.icon .title,
 .listItem.sent .header.icon:before {
@@ -76,6 +76,11 @@
 }
 .listItem.sent .s_titled.userAddress:before {
 	content: "from:";
+}
+
+.transactions .listItem[contact="true"] .userProfile,
+.transactions .listItem[contact="true"] .avatar {
+	cursor:pointer;
 }
 
 .transactions .listItem .txtBalance,
