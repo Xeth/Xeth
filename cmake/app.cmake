@@ -1,4 +1,4 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKitWidgets Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time REQUIRED)
 find_package(LevelDB REQUIRED)
@@ -8,7 +8,7 @@ find_package(LibScrypt REQUIRED)
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
 
-set(APP_SOURCES src/main.cpp)
+set(APP_SOURCES src/main.cpp src/Application.cpp src/window/Window.cpp)
 
 
 include_directories(
@@ -32,10 +32,11 @@ target_link_libraries(xeth
     ethstealth
     ethrpc
     ethkey
-    ${Qt5Core_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKitWidgets_LIBRARIES}
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5WebKit_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
+    ${Qt5Core_LIBRARIES}
     ${JSONCPP_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_THREAD_LIBRARY}
@@ -50,3 +51,6 @@ target_link_libraries(xeth
     ${CMAKE_THREAD_LIBS_INIT}
     gmp
 )
+
+
+

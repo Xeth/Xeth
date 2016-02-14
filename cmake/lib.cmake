@@ -1,12 +1,13 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKitWidgets Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
 
 include_directories(
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5WebKit_INCLUDE_DIRS}
     ${Qt5Concurrent_INCLUDE_DIRS}
+    ${Qt5Core_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
     ${LEVELDB_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
@@ -21,8 +22,14 @@ file(GLOB_RECURSE LIBRARY_SOURCES
     "src/*.cpp"
 )
 
+file(GLOB_RECURSE MAIN_CPP "src/main.cpp")
+file(GLOB_RECURSE APPLICATION_CPP "src/Application.cpp")
+file(GLOB_RECURSE WINDOW_CPP "src/Window.cpp")
 
-list(REMOVE_ITEM LIBRARY_SOURCES "src/main.cpp")
+
+list(REMOVE_ITEM LIBRARY_SOURCES ${MAIN_CPP})
+list(REMOVE_ITEM LIBRARY_SOURCES ${APPLICATION_CPP})
+list(REMOVE_ITEM LIBRARY_SOURCES ${WINDOW_CPP})
 
 
 add_library(xethlib STATIC ${LIBRARY_SOURCES})
