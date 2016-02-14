@@ -58,10 +58,17 @@ void EthProcessSupervisor::handleError(QProcess::ProcessError)
 
 void EthProcessSupervisor::start()
 {
-    if(!isActive())
-    {
+//    if(!isActive())
+//    {
         fork();
-    }
+//    }
+}
+
+void EthProcessSupervisor::moveToThread(QThread *thread)
+{
+    QObject::moveToThread(thread);
+    _process.moveToThread(thread);
+    _timer.moveToThread(thread);
 }
 
 

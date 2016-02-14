@@ -16,7 +16,7 @@ class FacadeInitializer : public QObject
 {
     Q_OBJECT
     public:
-        FacadeInitializer(Ethereum::Connector::Provider &provider, EthProcessSupervisor &process);
+        FacadeInitializer(QThread *parent, Ethereum::Connector::Provider &provider, EthProcessSupervisor &process);
         void initialize();
 
     signals:
@@ -24,6 +24,7 @@ class FacadeInitializer : public QObject
         void Error(const QString &);
 
     private:
+        QThread *_parent;
         Ethereum::Connector::Provider &_provider;
         EthProcessSupervisor &_process;
 };

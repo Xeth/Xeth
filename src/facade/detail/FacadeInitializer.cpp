@@ -3,7 +3,8 @@
 namespace Xeth{
 
 
-FacadeInitializer::FacadeInitializer(Ethereum::Connector::Provider &provider, EthProcessSupervisor &process) : 
+FacadeInitializer::FacadeInitializer(QThread *parent,Ethereum::Connector::Provider &provider, EthProcessSupervisor &process) : 
+    _parent(parent),
     _provider(provider),
     _process(process)
 {}
@@ -27,11 +28,15 @@ void FacadeInitializer::initialize()
 
         if(!_provider.isConnected())
         {
+            qDebug()<<"failed to initialize";
+            _process.moveToThread(_parent);
             emit Error("RPC failed to connect");
             return ;
 
         }
     }
+    qDebug()<<"initialization complete";
+    _process.moveToThread(_parent);
     emit Done();
 }
 

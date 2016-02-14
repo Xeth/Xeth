@@ -15,9 +15,11 @@ Facade::Facade(const Settings &settings) :
     _converter(_notifier),
     _progress(_synchronizer, _notifier)
 {
-    FacadeInitializer *initializer = new FacadeInitializer(_provider, _process);
+    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
+    _process.moveToThread(thread);
+    qDebug()<<"initializing thread : "<<thread;
 
     connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
     connect(initializer, &FacadeInitializer::Error, &_notifier, &Notifier::emitError);

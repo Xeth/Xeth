@@ -27,6 +27,7 @@ EthProcess::~EthProcess()
 
 void EthProcess::exec()
 {
+    qDebug()<<"Process:exec : "<<_command<<" args:"<<_args;
     start(_command, _args);
 }
 
@@ -35,6 +36,7 @@ void EthProcess::exec(const QStringList &args)
 {
     QStringList ethArgs = _args;
     ethArgs += args;
+    qDebug()<<"Process:exec : "<<_command<<" args:"<<ethArgs;
     start(_command, _args);
 }
 

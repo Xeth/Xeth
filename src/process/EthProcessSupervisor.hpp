@@ -26,6 +26,8 @@ class EthProcessSupervisor : public QObject
 
         bool isActive() const;
 
+        void moveToThread(QThread *);
+
     signals:
         void Error(const QString &);
         void Ready();
