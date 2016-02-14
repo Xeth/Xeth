@@ -2,22 +2,19 @@
 
 namespace Xeth{
 
-FrameContextBuilder::FrameContextBuilder(Notifier &notifier, WalletFacade &wallet, AddressBookFacade &addressbook, Synchronizer &synchronizer, ConfigFacade &config):
-    _notifier(notifier),
-    _wallet(wallet),
-    _addressbook(addressbook),
-    _synchronizer(synchronizer),
-    _config(config)
+FrameContextBuilder::FrameContextBuilder(Facade &facade):
+    _facade(facade)
 {}
 
 
 void FrameContextBuilder::buildContext(QWebFrame *frame)
 {
-    frame->addToJavaScriptWindowObject("wallet", &_wallet);
-    frame->addToJavaScriptWindowObject("addressbook", &_addressbook);
-    frame->addToJavaScriptWindowObject("synchronizer", &_synchronizer);
-    frame->addToJavaScriptWindowObject("events", &_notifier);
-    frame->addToJavaScriptWindowObject("config", &_config);
+    frame->addToJavaScriptWindowObject("xeth.wallet", &_facade.getWallet());
+    frame->addToJavaScriptWindowObject("xeth.addressbook", &_facade.getAddressBook());
+    frame->addToJavaScriptWindowObject("xeth.progress", &_facade.getProgress());
+    frame->addToJavaScriptWindowObject("xeth.events", &_facade.getNotifier());
+    frame->addToJavaScriptWindowObject("xeth.convert", &_facade.getConverter());
+    frame->addToJavaScriptWindowObject("xeth.config", &_facade.getConfig());
 }
 
 

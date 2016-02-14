@@ -8,7 +8,6 @@ EthProcessSupervisor::EthProcessSupervisor() :
     _respawnInterval(1000)
 {
     initSignals();
-    fork();
 }
 
 EthProcessSupervisor::EthProcessSupervisor(const Settings &settings) :
@@ -18,7 +17,6 @@ EthProcessSupervisor::EthProcessSupervisor(const Settings &settings) :
     _process(settings)
 {
     initSignals();
-    fork();
 }
 
 EthProcessSupervisor::~EthProcessSupervisor()
@@ -33,6 +31,11 @@ void EthProcessSupervisor::initSignals()
     QObject::connect(&_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(handleError(QProcess::ProcessError)));
     QObject::connect(&_timer, SIGNAL(timeout()), this, SLOT(fork()));
     QObject::connect(&_process, SIGNAL(started()), this, SLOT(handleReady()));
+}
+
+bool EthProcessSupervisor::isActive() const
+{
+    return _process.atEnd() ||_timer.isActive();
 }
 
 void EthProcessSupervisor::handleReady()
@@ -50,6 +53,22 @@ void EthProcessSupervisor::handleError(QProcess::ProcessError)
     {
         scheduleFork();
     }
+}
+
+
+void EthProcessSupervisor::start()
+{
+    if(!isActive())
+    {
+        fork();
+    }
+}
+
+
+void EthProcessSupervisor::stop()
+{
+    _timer.stop();
+    _process.kill();
 }
 
 

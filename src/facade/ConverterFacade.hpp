@@ -22,6 +22,8 @@ class ConverterFacade : public QObject
 
     public:
 
+        ConverterFacade(Notifier &notifier);
+
         QVariant fromFinney(const QVariant &);
         QVariant toFinney(const QVariant &);
         QVariant fromSzabo(const QVariant &);

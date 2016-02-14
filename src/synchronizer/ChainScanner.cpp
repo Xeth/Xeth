@@ -156,9 +156,10 @@ bool ChainScanner::processData(const PartialScanResult &result)
 
     for(QJsonArray::const_iterator it = result.transactions.first; it!=result.transactions.second; ++it)
     {
-        if(transactionStore.insert(it->toObject())) //ignore duplicates
+        QJsonObject object = it->toObject(); //ToDo : use const reference isntead
+        if(transactionStore.insert(object)) //ignore duplicates
         {
-            //emit transaction
+            emit Transaction(object);
         }
     }
 
@@ -176,7 +177,6 @@ bool ChainScanner::processData(const PartialScanResult &result)
     }
 
 
-//    emit Data(result);
     return true;
 }
 

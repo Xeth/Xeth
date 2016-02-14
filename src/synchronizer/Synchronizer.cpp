@@ -69,11 +69,19 @@ const ScanCriteria & Synchronizer::getScanCriteria() const
     return _scanner.getScanCriteria();
 }
 
-void Synchronizer::synchronize(size_t scanInterval, size_t syncInterval)
+
+const ChainScanner & Synchronizer::getScanner() const
 {
+    return _scanner;
+}
+
+void Synchronizer::synchronize()
+{
+    size_t scanInterval = 12000, syncInterval = 12000;
     _syncProgress.autoUpdate(syncInterval);
     _scanner.autoScan(scanInterval);
 }
+
 
 void Synchronizer::stop()
 {
