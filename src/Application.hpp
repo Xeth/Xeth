@@ -1,3 +1,4 @@
+#pragma once 
 
 #include <QApplication>
 
@@ -16,7 +17,7 @@ class Application : public QObject
     Q_OBJECT
 
     public:
-        Application(const Settings &, int argc, char* argv[]);
+        Application(const Settings &, int &argc, char **argv);
         int exec();
 
 
