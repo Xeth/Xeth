@@ -1,5 +1,4 @@
 #include "ScanWorker.hpp"
-#include <QCoreApplication>
 
 namespace Xeth{
 

@@ -77,6 +77,7 @@ const ChainScanner & Synchronizer::getScanner() const
 
 void Synchronizer::synchronize()
 {
+    qDebug()<<"synchronizing...";
     size_t scanInterval = 12000, syncInterval = 12000;
     _syncProgress.autoUpdate(syncInterval);
     _scanner.autoScan(scanInterval);

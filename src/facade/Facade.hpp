@@ -52,9 +52,14 @@ class Facade : public QObject
         const Progress & getProgress() const;
 
         const Settings & getSettings() const;
+        bool isReady() const;
+
+    private slots:
+        void setReady();
 
     private:
         const Settings &_settings;
+        bool _ready;
 
         Ethereum::Connector::Provider _provider;
 

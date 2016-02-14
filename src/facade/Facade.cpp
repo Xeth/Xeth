@@ -6,6 +6,7 @@ namespace Xeth{
 
 Facade::Facade(const Settings &settings) :
     _settings(settings),
+    _ready(false),
     _database(settings),
     _synchronizer(_provider, _database),
     _process(settings),
@@ -23,8 +24,9 @@ Facade::Facade(const Settings &settings) :
 
     connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
     connect(initializer, &FacadeInitializer::Error, &_notifier, &Notifier::emitError);
-    connect(initializer, &FacadeInitializer::Done, &_synchronizer, &Synchronizer::synchronize);
-    connect(initializer, &FacadeInitializer::Done, &_notifier, &Notifier::emitReady);
+//    connect(initializer, &FacadeInitializer::Done, &_synchronizer, &Synchronizer::synchronize);
+//    connect(initializer, &FacadeInitializer::Done, &_notifier, &Notifier::emitReady);
+    connect(initializer, &FacadeInitializer::Done, this, &Facade::setReady);
 
     connect(initializer, &FacadeInitializer::Error, thread, &QThread::quit);
     connect(initializer, &FacadeInitializer::Error, initializer, &FacadeInitializer::deleteLater);
@@ -35,6 +37,11 @@ Facade::Facade(const Settings &settings) :
     thread->start();
 }
 
+
+bool Facade::isReady() const
+{
+    return _ready;
+}
 
 
 Facade::AddressBook & Facade::getAddressBook()
@@ -103,6 +110,13 @@ const Facade::Converter & Facade::getConverter() const
 const Facade::Progress & Facade::getProgress() const
 {
     return _progress;
+}
+
+void Facade::setReady()
+{
+    _ready = true;
+    _synchronizer.synchronize();
+    _notifier.emitReady();
 }
 
 
