@@ -6,7 +6,7 @@ namespace Xeth{
 
 
 DataBase::DataBase(const Settings &settings) :
-    _directory(settings.get("database"), true),
+    _directory(settings.get("database", (const char *)NULL), true),
     _ethereumKeysPath(settings),
     _transactions(_directory.getPath().c_str()),
     _scanIndex(_directory.getPath() + "scanindex"),
