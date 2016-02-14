@@ -15,9 +15,10 @@ class Window : public QWebView
     Q_OBJECT
     
     public:
-        explicit Window(const char *, FrameContextBuilder &contextBuilder);
+        explicit Window(FrameContextBuilder &contextBuilder);
 
         void moveToScreenCenter();
+        void setUrl(const char *);
 
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );

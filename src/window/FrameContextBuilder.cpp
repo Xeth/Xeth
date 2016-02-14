@@ -9,12 +9,21 @@ FrameContextBuilder::FrameContextBuilder(Facade &facade):
 
 void FrameContextBuilder::buildContext(QWebFrame *frame)
 {
-    frame->addToJavaScriptWindowObject("xeth.wallet", &_facade.getWallet());
-    frame->addToJavaScriptWindowObject("xeth.addressbook", &_facade.getAddressBook());
-    frame->addToJavaScriptWindowObject("xeth.progress", &_facade.getProgress());
-    frame->addToJavaScriptWindowObject("xeth.events", &_facade.getNotifier());
-    frame->addToJavaScriptWindowObject("xeth.convert", &_facade.getConverter());
-    frame->addToJavaScriptWindowObject("xeth.config", &_facade.getConfig());
+    if(_facade.isReady())
+    {
+        FacadeLinker linker(frame, &_facade);
+        linker.linkAll();
+    }
+    else
+    {
+        Facade::Notifier &notifier = _facade.getNotifier();
+        FacadeLinker *linker = new FacadeLinker(frame, &_facade);
+        QObject::connect(&notifier, &Notifier::Ready, linker, &FacadeLinker::linkObjects);
+        QObject::connect(&notifier, &Notifier::Ready, linker, &FacadeLinker::deleteLater);
+        QObject::connect(&notifier, &Notifier::Error, linker, &FacadeLinker::deleteLater);
+        linker->linkEvents();
+    }
+
 }
 
 

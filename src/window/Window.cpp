@@ -6,16 +6,19 @@
 
 namespace Xeth{
 
-Window::Window(const char *uri, FrameContextBuilder &contextBuilder) :
+Window::Window(FrameContextBuilder &contextBuilder) :
     _contextBuilder(contextBuilder)
 {
 
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJSObject()));
-    QUrl startURL(uri);
 
-    setUrl(startURL);
 }
 
+void Window::setUrl(const char *uri)
+{
+    QUrl url(uri);
+    QWebView::setUrl(url);
+}
 
 void Window::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID )
 {

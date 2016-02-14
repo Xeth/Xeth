@@ -3,7 +3,7 @@
 #include <QWebFrame>
 
 #include "facade/Facade.hpp"
-
+#include "detail/FacadeLinker.hpp"
 
 namespace Xeth{
 
