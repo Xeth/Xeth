@@ -39,8 +39,7 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
         }
     }
 
-
-    return QVariant::fromValue(result);
+    return QVariant::fromValue(result.toVariantList());
 }
 
 
