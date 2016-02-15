@@ -27,7 +27,7 @@ class GenericImportKeyCommand
         bool import(const QVariantMap &request, std::string &address);
 
     private:
-        Store _store;
+        Store &_store;
         Synchronizer &_synchronizer;
 };
 
