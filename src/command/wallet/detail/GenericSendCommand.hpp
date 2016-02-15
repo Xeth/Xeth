@@ -24,6 +24,28 @@ class GenericSendCommand
         GenericSendCommand(Ethereum::Connector::Provider &provider, DataBase &database);
         QVariant operator()(const QVariantMap &);
 
+        QVariant operator()
+        (
+            const std::string &from,
+            const std::string &to,
+            const std::string &password,
+            const BigInt &amount
+        );
+        QVariant operator()
+        (
+            const std::string &from,
+            const std::string &to,
+            const std::string &password,
+            const BigInt &amount,
+            const BigInt &gas
+        );
+
+    private:
+        bool validateDestination(const std::string &);
+        bool unlockSender(const std::string &, const std::string &, const BigInt &);
+        std::string send(const std::string &from, const std::string &to, const BigInt &amount);
+        std::string send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas);
+
     private:
         Ethereum::Connector::Wallet _wallet;
         DataBase &_database;
