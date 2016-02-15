@@ -17,9 +17,7 @@ WalletFacade::WalletFacade
     _provider(provider),
     _database(database),
     _synchronizer(synchronizer)
-{
-    QObject::connect(&_synchronizer.getScanner(), &ChainScanner::Transaction, &notifier, &Notifier::emitTransaction);
-}
+{}
 
 QVariant WalletFacade::getAccounts()
 {
