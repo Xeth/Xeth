@@ -33,6 +33,12 @@ QVariant WalletFacade::getBalance(const QString &address)
     return _invoker.invoke(command, address);
 }
 
+QVariant WalletFacade::send(const QVariantMap &request)
+{
+    SendCommand command(_provider, _database);
+    return _invoker.invoke(command, request);
+}
+
 QVariant WalletFacade::sendToAddress(const QVariantMap &request)
 {
     SendToAddressCommand command(_provider, _database);
