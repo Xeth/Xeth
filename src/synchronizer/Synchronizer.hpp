@@ -16,6 +16,7 @@ class Synchronizer : public QObject
     Q_OBJECT
     public:
         typedef Xeth::ChainProgressFetcher SyncProgress;
+        typedef Xeth::ScanProgress ScanProgress;
         typedef Xeth::ChainScanner Scanner;
 
     public:
@@ -36,6 +37,7 @@ class Synchronizer : public QObject
         void watch(const Ethereum::Address &, time_t);
         void watch(const StealthKey &, time_t);
 
+        const SyncProgress & getSyncProgressFetcher() const;
         const Scanner & getScanner() const;
         const ScanCriteria & getScanCriteria() const;
 
@@ -46,15 +48,7 @@ class Synchronizer : public QObject
         void synchronize();
         double getChainProgress() const;
         double getScanProgress() const;
-        bool   isActive() const;
-
-   signals:
-        void ScanProgress(double) const;
-        void ChainProgress(double) const;
-
-    private slots:
-        void emitScanProgress(double);
-        void emitChainProgress(double);
+        bool isActive() const;
 
     private:
         SyncProgress _syncProgress;

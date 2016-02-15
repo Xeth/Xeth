@@ -55,10 +55,6 @@ class ChainScanner : public QObject
         void scan();
         void scheduleScan();
 
-    signals:
-        void Transaction(const QJsonObject &) const;
-//        void Data(const Xeth::PartialScanResult &);
-
     public slots:
         bool processData(const PartialScanResult &);
         bool processTest();

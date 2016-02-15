@@ -7,10 +7,7 @@ namespace Xeth{
 Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &database):
     _syncProgress(provider),
     _scanner(provider, database)
-{
-    QObject::connect(&_scanner.getProgress(), SIGNAL(Progress(double)), this, SLOT(emitScanProgress(double)));
-    QObject::connect(&_syncProgress, SIGNAL(Progress(double)), this, SLOT(emitChainProgress(double)));
-}
+{}
 
 void Synchronizer::watchAddress(const std::string &address)
 {
@@ -70,6 +67,11 @@ const ScanCriteria & Synchronizer::getScanCriteria() const
 }
 
 
+const Synchronizer::SyncProgress & Synchronizer::getSyncProgressFetcher() const
+{
+    return _syncProgress;
+}
+
 const ChainScanner & Synchronizer::getScanner() const
 {
     return _scanner;
@@ -105,15 +107,6 @@ double Synchronizer::getScanProgress() const
     return _scanner.getProgress().getValue();
 }
 
-void Synchronizer::emitScanProgress(double progress)
-{
-    emit ScanProgress(progress);
-}
-
-void Synchronizer::emitChainProgress(double progress)
-{
-    emit ChainProgress(progress);
-}
 
 
 }
