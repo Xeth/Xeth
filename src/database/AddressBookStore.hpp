@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QObject>
 #include <QJsonObject>
 
 #include "detail/LevelDbStore.hpp"
@@ -17,8 +18,12 @@ class AddressBookDataSerializer
 
 
 
-class AddressBookStore : public LevelDbStore<QJsonObject, AddressBookDataSerializer>
+class AddressBookStore : 
+    public QObject,
+    public LevelDbStore<QJsonObject, AddressBookDataSerializer>
 {
+
+    Q_OBJECT
     public:
         typedef LevelDbStore<QJsonObject, AddressBookDataSerializer> Base;
         typedef Base::Iterator Iterator;
@@ -30,9 +35,10 @@ class AddressBookStore : public LevelDbStore<QJsonObject, AddressBookDataSeriali
         AddressBookStore(const std::string &);
 
         bool insert(const char *, const char *);
+        bool insert(const char *, const QJsonObject &);
 
-        using Base::insert;
-
+    signals:
+        void NewItem(const QJsonObject &) const;
 };
 
 

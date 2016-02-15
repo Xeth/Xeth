@@ -35,7 +35,17 @@ bool AddressBookStore::insert(const char *alias, const char *address)
     QJsonObject object;
     object.insert("address", address);
 
-    return Base::insert(alias, address);
+    return insert(alias, object);
+}
+
+bool AddressBookStore::insert(const char *alias, const QJsonObject &object)
+{
+    if(Base::insert(alias, object))
+    {
+        emit NewItem(object);
+        return true;
+    }
+    return false;
 }
 
 

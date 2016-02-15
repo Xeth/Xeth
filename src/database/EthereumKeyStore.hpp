@@ -3,6 +3,8 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/regex.hpp> 
 
+#include <QObject>
+
 #include "types/EthereumKey.hpp"
 
 #include "detail/FileStore.hpp"
@@ -13,8 +15,12 @@ namespace Xeth{
 
 
 
-class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
+class EthereumKeyStore : 
+    public QObject,
+    protected FileStore<EthereumKey, EthereumKeySerializer>
 {
+
+    Q_OBJECT
     public:
         typedef FileStore<EthereumKey, EthereumKeySerializer> Base;
         typedef Base::Iterator Iterator;
@@ -34,6 +40,9 @@ class EthereumKeyStore : protected FileStore<EthereumKey, EthereumKeySerializer>
 
         using Base::begin;
         using Base::end;
+
+    signals:
+        void NewItem(const QString &) const;
 
     private:
         std::string makeFileName(const EthereumKey &, const boost::posix_time::ptime &time) const;

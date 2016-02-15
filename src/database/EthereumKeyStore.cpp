@@ -10,8 +10,12 @@ EthereumKeyStore::EthereumKeyStore(const std::string &path) :
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
-
-    return Base::insert(makeFileName(key, boost::posix_time::microsec_clock::universal_time()).c_str(), key);
+    if(Base::insert(makeFileName(key, boost::posix_time::microsec_clock::universal_time()).c_str(), key))
+    {
+        emit NewItem(QString(key.getAddress().toString().c_str()));
+        return true;
+    }
+    return false;
 }
 
 
@@ -23,16 +27,17 @@ bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
     {
         return Base::insert(makeFileName(key, boost::posix_time::from_time_t(0)).c_str(), key); //creation data unknown
     }
-    return Base::insert(id, key);
+    if(Base::insert(id, key))
+    {
+        emit NewItem(QString(key.getAddress().toString().c_str()));
+        return true;
+    }
+    return false;
 }
 
 bool EthereumKeyStore::insert(const std::string &id, const EthereumKey &key)
 {
-    if(!validateId(id, key))
-    {
-        return Base::insert(makeFileName(key, boost::posix_time::from_time_t(0)).c_str(), key); //creation data unknown
-    }
-    return Base::insert(id.c_str(), key);
+    return insert(id.c_str(), key);
 }
 
 bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)

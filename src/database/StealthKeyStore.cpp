@@ -22,7 +22,13 @@ bool StealthKeyStore::insert(const char *id, const StealthKey &key)
 
 bool StealthKeyStore::insert(const StealthKey &key) 
 {
-    return Base::insert(makeAddress(key).c_str(), key);
+    std::string address = makeAddress(key);
+    if(Base::insert(address.c_str(), key))
+    {
+        emit NewItem(QString(address.c_str()));
+        return true;
+    }
+    return false;
 }
 
 

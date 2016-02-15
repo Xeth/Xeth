@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <QObject>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -33,8 +34,11 @@ typedef LevelDbStore<std::string> TransactionIndexStore;
 
 
 
-class TransactionStore
+class TransactionStore : public QObject
 {
+
+    Q_OBJECT
+
     public:
         typedef TransactionDataStore::Iterator Iterator;
         typedef TransactionDataStore::ReverseIterator ReverseIterator;
@@ -79,6 +83,8 @@ class TransactionStore
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 
+    signals:
+        void NewItem(const QJsonObject &) const;
 
     private:
         std::string getNextIndex();

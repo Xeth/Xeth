@@ -1,5 +1,7 @@
 #pragma once 
 
+#include <QObject>
+
 #include "types/StealthKey.hpp"
 
 #include "detail/FileStore.hpp"
@@ -9,8 +11,12 @@
 namespace Xeth{
 
 
-class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
+class StealthKeyStore : 
+    public QObject,
+    protected FileStore<StealthKey, StealthKeySerializer>
 {
+
+    Q_OBJECT
     public:
         typedef FileStore<StealthKey, StealthKeySerializer> Base;
         typedef Base::Iterator Iterator;
@@ -31,6 +37,9 @@ class StealthKeyStore : protected FileStore<StealthKey, StealthKeySerializer>
 
         using Base::begin;
         using Base::end;
+
+    signals:
+        void NewItem(const QString &) const;
 
     private:
         std::string makeAddress(const StealthKey &) const;

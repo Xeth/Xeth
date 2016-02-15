@@ -1,5 +1,5 @@
 #include "TransactionStore.hpp"
-
+#include <QDebug>
 
 namespace Xeth{
 
@@ -40,7 +40,7 @@ bool TransactionStore::openNoThrow(const std::string &path)
     if(it != _dataStore.rend())
     {
         QJsonObject lastTransaction = *it;
-        _lastIndex = boost::lexical_cast<int>(lastTransaction["index"].toString().toStdString());
+        _lastIndex = lastTransaction["index"].toInt();
     }
     else
     {
@@ -158,7 +158,12 @@ bool TransactionStore::insert(const QJsonObject &obj)
         return false;
     }
 
-    return _dataStore.replace(index.c_str(), obj);
+    if(_dataStore.replace(index.c_str(), obj))
+    {
+        emit NewItem(obj);
+        return true;
+    }
+    return false;
 }
 
 std::string TransactionStore::getNextIndex()
