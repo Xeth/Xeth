@@ -38,6 +38,7 @@ function updateAccounts(_list)
 
 function addAccountItem(_data)
 {
+    alert("adding account: "+JSON.stringify(_data));
 	//accountList.push(_data);
 	var _balance = "";
 	if(!_data.stealth && !_data.bitprofile)

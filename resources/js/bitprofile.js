@@ -11,8 +11,8 @@ function initBitprofile()
 			else changePageBitprofileView(0);
         });
 		
-	$('#page_bitprofile_view .btn.editBitprofile').on('click', setupPageBitprofileEdit);
-	$('#page_bitprofile_view .btn.backupBitprofile').on('click', submitBitprofileExport);
+//	$('#page_bitprofile_view .btn.editBitprofile').on('click', setupPageBitprofileEdit);
+//	$('#page_bitprofile_view .btn.backupBitprofile').on('click', submitBitprofileExport);
 	
 	
 	$('#page_bitprofile_new .btnSubmit').on('click', function(){submitBitprofileForm('new')});
@@ -21,7 +21,7 @@ function initBitprofile()
 	$('#page_bitprofile_edit .submitCancel').on('click', cancelPageBitprofileEdit);
 	$('#page_bitprofile_new .submitCancel').on('click', function(){resetBitprofileForm('new')});
 	
-	initImportBitprofile();
+//	initImportBitprofile();
 }
 
 function startBitprofilePage()

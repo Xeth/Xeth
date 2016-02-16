@@ -1,4 +1,4 @@
-var XETH = {
+var XETH2 = {
 	
 	// signals
 	testSignal: 

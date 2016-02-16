@@ -15,9 +15,13 @@ $(document).ready(init);
 
 function init() 
 {
-	window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + errorMessage + ' Script: ' + errorUrl + ' Line: ' + errorLine);};
+    window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + errorMessage + ' Script: ' + errorUrl + ' Line: ' + errorLine);};
 	initUI();
-	initAccounts();
+    event.Ready.connect(this, function(){
+        pageStart();
+
+    });
+    initAccounts();
 	initSend();
 	initReceive();
 	initAddressbook();
@@ -27,9 +31,8 @@ function init()
 	initEditAddress();
 	initExportAddress();
 	initImportAddress() ;
-	
-	reconnectCount = 0;
-	reconnect = setInterval(connectSlots, 1000);
+//	reconnectCount = 0;
+//	reconnect = setInterval(connectSlots, 1000);
 }
 
 function pageStart()
@@ -111,7 +114,7 @@ function connectSlots()
 		if(reconnectCount>=reconnectRetries)
 		{
 			clearInterval(reconnect);
-			test();
+//			test();
 		}
 	}
 	

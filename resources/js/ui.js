@@ -34,15 +34,15 @@ function initUI()
 		show: { duration: 200 },
 		hide: { duration: 200 }});
 		
-	$(".scrollpage").mCustomScrollbar({
+	var scroll = $(".scrollpage").mCustomScrollbar({
 		scrollButtons:{enable:true},
 		theme:"light-thick",
 		scrollbarPosition:"outside",
 		scrollInertia:200,
 		callbacks:{
-			onUpdate:function(){
-			  onSelectorChange(_target);
-			}
+//			onUpdate:function(_target){
+//			  scroll.onSelectorChange(_target);
+//			}
 		}
 	});
 	
