@@ -20,7 +20,10 @@ Facade::Facade(const Settings &settings) :
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _process.moveToThread(thread);
-    qDebug()<<"initializing thread : "<<thread;
+
+    _notifier.watch(_synchronizer);
+    _notifier.watch(_database);
+    
 
     connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
     connect(initializer, &FacadeInitializer::Error, &_notifier, &Notifier::emitError);
@@ -115,6 +118,7 @@ const Facade::Progress & Facade::getProgress() const
 void Facade::setReady()
 {
     _ready = true;
+    _synchronizer.loadAddresses();
     _synchronizer.synchronize();
     _notifier.emitReady();
 }
