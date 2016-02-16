@@ -34,7 +34,7 @@ class Notifier : public QObject
         void ScanProgress(const QVariant &) const;
         void SyncProgress(const QVariant &) const;
         void Account(const QVariantMap &) const;
-        void Alias(const QVariantMap &) const;
+        void Contact(const QVariantMap &) const;
 
 
     private slots:

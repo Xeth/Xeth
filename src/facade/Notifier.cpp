@@ -72,7 +72,7 @@ void Notifier::emitEthereumKey(const QString &address)
 
 void Notifier::emitAddressBookItem(const QJsonObject &item)
 {
-    emit Alias(item.toVariantMap());
+    emit Contact(item.toVariantMap());
 }
 
 }
