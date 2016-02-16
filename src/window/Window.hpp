@@ -19,6 +19,7 @@ class Window : public QWebView
 
         void moveToScreenCenter();
         void setUrl(const char *);
+        void setIcon(const char *);
 
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
