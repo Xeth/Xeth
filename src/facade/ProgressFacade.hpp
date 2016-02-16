@@ -15,8 +15,8 @@ class ProgressFacade : public QObject
     public:
         ProgressFacade(Synchronizer &, Notifier &);
 
-        QVariant getScanProgress() const;
-        QVariant getSyncProgress() const;
+        Q_INVOKABLE QVariant getScan() const;
+        Q_INVOKABLE QVariant getSync() const;
 
 
     private:
