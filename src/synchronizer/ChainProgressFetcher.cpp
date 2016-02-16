@@ -14,6 +14,7 @@ ChainProgressFetcher::ChainProgressFetcher(Ethereum::Connector::Provider &provid
 
 void ChainProgressFetcher::autoUpdate(size_t interval)
 {
+    update();
     _timer.start(interval);
 }
 
