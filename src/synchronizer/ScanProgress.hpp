@@ -21,6 +21,7 @@ class ScanProgress : public QObject
         void next();
 
         double getValue() const;
+        void setValue(double);
 
     signals:
         void Progress(double) const;
@@ -39,6 +40,7 @@ class DummyScanProgress
         inline void setRange(size_t, size_t){}
         inline void next() {}
         inline double getValue() {return 0;}
+        inline void setValue(double){}
 };
 
 

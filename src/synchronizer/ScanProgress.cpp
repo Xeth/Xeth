@@ -12,10 +12,12 @@ ScanProgress::ScanProgress() :
 
 void ScanProgress::setRange(size_t minBlock, size_t maxBlock)
 {
-    _step = 100/(double)(maxBlock-minBlock);
+    _step = 100/(double)maxBlock;
     _nextSignal = _signalStep;
-    _value = 0;
+    _value = _step * (double)minBlock;
+    emit Progress(_value);
 }
+
 
 void ScanProgress::setSignalStep(double step)
 {
@@ -41,7 +43,13 @@ void ScanProgress::next()
 
 double ScanProgress::getValue() const
 {
-    return _value>100.0 ? 100.0 :_value;
+    return _value;
+}
+
+void ScanProgress::setValue(double value)
+{
+    _value = value>100.0? 100.0 : value;
+    emit Progress(_value);
 }
 
 
