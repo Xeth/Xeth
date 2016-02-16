@@ -13,7 +13,7 @@ FacadeLinker::FacadeLinker(QWebFrame *frame, Facade *facade) :
 
 void FacadeLinker::linkEvents()
 {
-    _frame->addToJavaScriptWindowObject("events", &_facade->getNotifier());
+    _frame->addToJavaScriptWindowObject("event", &_facade->getNotifier());
 }
 
 void FacadeLinker::linkAll()
