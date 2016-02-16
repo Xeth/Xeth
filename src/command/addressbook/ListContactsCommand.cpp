@@ -11,12 +11,12 @@ ListContactsCommand::ListContactsCommand(DataBase &database) :
 
 QVariant ListContactsCommand::operator ()()
 {
-    QJsonArray result;
+    QVariantList result;
     AddressBookStore & store = _database.getAddressBook();
 
     for(AddressBookStore::Iterator it=store.begin(), end=store.end(); it!=end; ++it)
     {
-        result.push_back(*it);
+        result.push_back(it->toVariantMap());
     }
 
     return QVariant::fromValue(result);
