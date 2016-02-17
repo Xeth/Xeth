@@ -17,8 +17,10 @@
 #include "WalletFacade.hpp"
 #include "ProgressFacade.hpp"
 #include "ClipboardFacade.hpp"
+#include "FileSystemFacade.hpp"
 
 #include "detail/FacadeInitializer.hpp"
+
 
 namespace Xeth{
 
@@ -35,6 +37,7 @@ class Facade : public QObject
         typedef Xeth::Notifier Notifier;
         typedef Xeth::ProgressFacade Progress;
         typedef Xeth::ClipboardFacade Clipboard;
+        typedef Xeth::FileSystemFacade FileSystem;
 
     public:
         Facade(const Settings &);
@@ -46,6 +49,7 @@ class Facade : public QObject
         Converter & getConverter();
         Progress & getProgress();
         Clipboard & getClipboard();
+        FileSystem & getFileSystem();
 
         const Notifier & getNotifier() const;
         const AddressBook & getAddressBook() const;
@@ -54,6 +58,7 @@ class Facade : public QObject
         const Converter & getConverter() const;
         const Progress & getProgress() const;
         const Clipboard & getClipboard() const;
+        const FileSystem & getFileSystem() const;
 
         const Settings & getSettings() const;
         bool isReady() const;
@@ -79,6 +84,7 @@ class Facade : public QObject
         Converter _converter;
         Progress _progress;
         Clipboard _clipboard;
+        FileSystem _filesystem;
 };
 
 

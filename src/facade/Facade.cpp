@@ -15,7 +15,8 @@ Facade::Facade(const Settings &settings) :
     _config(_database, _notifier),
     _converter(_notifier),
     _progress(_synchronizer, _notifier),
-    _clipboard(_notifier)
+    _clipboard(_notifier),
+    _filesystem(_notifier)
 {
     FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process);
     QThread *thread = new QThread;
@@ -84,6 +85,13 @@ Facade::Clipboard & Facade::getClipboard()
     return _clipboard;
 }
 
+
+Facade::FileSystem & Facade::getFileSystem()
+{
+    return _filesystem;
+}
+
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -124,6 +132,12 @@ const Facade::Progress & Facade::getProgress() const
 const Facade::Clipboard & Facade::getClipboard() const
 {
     return _clipboard;
+}
+
+
+const Facade::FileSystem & Facade::getFileSystem() const
+{
+    return _filesystem;
 }
 
 

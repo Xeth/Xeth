@@ -30,6 +30,7 @@ void FacadeLinker::linkObjects()
     _frame->addToJavaScriptWindowObject("convert", &_facade->getConverter());
     _frame->addToJavaScriptWindowObject("config", &_facade->getConfig());
     _frame->addToJavaScriptWindowObject("clipboard", &_facade->getClipboard());
+    _frame->addToJavaScriptWindowObject("filesystem", &_facade->getFileSystem());
 }
 
 
