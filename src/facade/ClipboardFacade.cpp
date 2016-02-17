@@ -9,14 +9,14 @@ ClipboardFacade::ClipboardFacade(Notifier &notifier) :
 {}
 
 
-QVariant ClipboardFacade::get()
+QVariant ClipboardFacade::getText()
 {
     GetFromClipboardCommand command;
     return _invoker.invoke(command, NullCommandArguments());
 }
 
 
-QVariant ClipboardFacade::set(const QString &text)
+QVariant ClipboardFacade::setText(const QString &text)
 {
     CopyToClipboardCommand command;
     return _invoker.invoke(command, text);

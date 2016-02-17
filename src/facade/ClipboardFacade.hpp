@@ -24,8 +24,8 @@ class ClipboardFacade : public QObject
 
         ClipboardFacade(Notifier &);
 
-        Q_INVOKABLE QVariant get();
-        Q_INVOKABLE QVariant set(const QString &);
+        Q_INVOKABLE QVariant getText();
+        Q_INVOKABLE QVariant setText(const QString &);
 
     private:
         Invoker _invoker;
