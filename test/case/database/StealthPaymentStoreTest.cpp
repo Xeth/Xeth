@@ -15,9 +15,9 @@ void StealthPaymentStoreTest::testOpen()
 
 void StealthPaymentStoreTest::testInsert()
 {
-    QVERIFY(_store.insert("someaddress1", "sharedsecret1", "txid1"));
-    QVERIFY(_store.insert("someaddress2", "sharedsecret2", "txid2"));
-    QVERIFY(_store.insert("someaddress3", "sharedsecret3", "txid3"));
+    QVERIFY(_store.insert("someaddress1", "somestealthaddress123", "sharedsecret1", "txid1"));
+    QVERIFY(_store.insert("someaddress2", "somestealthaddress123", "sharedsecret2", "txid2"));
+    QVERIFY(_store.insert("someaddress3", "somestealthaddress123", "sharedsecret3", "txid3"));
 }
 
 

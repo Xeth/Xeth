@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <QJsonObject>
+#include <QObject>
 
 #include "detail/LevelDbStore.hpp"
 
@@ -8,8 +9,11 @@
 namespace Xeth{
 
 
-class StealthPaymentStore : public LevelDbStore<QJsonObject>
+class StealthPaymentStore : 
+    public QObject,
+    public LevelDbStore<QJsonObject>
 {
+    Q_OBJECT
     public:
         typedef LevelDbStore<QJsonObject> Base;
         typedef Base::Iterator Iterator;
@@ -20,8 +24,11 @@ class StealthPaymentStore : public LevelDbStore<QJsonObject>
         StealthPaymentStore();
         StealthPaymentStore(const std::string &);
 
-        bool insert(const char *address, const char *sharedSecret, const char *txid);
+        bool insert(const char *address, const char *stealth, const char *secret, const char *txid);
         bool insert(const QJsonObject &);
+
+    signals:
+        void NewItem(const QJsonObject &) const;
 
 };
 

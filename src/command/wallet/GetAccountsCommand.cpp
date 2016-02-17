@@ -14,11 +14,29 @@ QVariant GetAccountsCommand::operator ()()
     Ethereum::Connector::Wallet wallet(_provider);
     Ethereum::Connector::Collection<std::string> addresses = wallet.getAccounts();
 
-    for(Ethereum::Connector::Collection<std::string>::Iterator it=addresses.begin(), end=addresses.end(); it!=end; ++it)
+    std::map<QString, bool> registry;
+
+    const StealthPaymentStore & stealthPayments = _database.getStealthPayments();
+    for(StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
     {
         QVariantMap obj;
-        obj["address"] = it->c_str();
+        QString address = (*it)["address"].toString();
+        obj["address"] = address;
+        obj["stealth"] = it->take("stealth");
         accounts.push_back(obj);
+        registry.insert(std::make_pair(address, true));
+    }
+
+
+    for(Ethereum::Connector::Collection<std::string>::Iterator it=addresses.begin(), end=addresses.end(); it!=end; ++it)
+    {
+        QString address = it->c_str();
+        if(registry.find(address)==registry.end())
+        {
+            QVariantMap obj;
+            obj["address"] = it->c_str();
+            accounts.push_back(obj);
+        }
     }
 
     const StealthKeyStore & stealthKeys = _database.getStealthKeys();
@@ -29,13 +47,13 @@ QVariant GetAccountsCommand::operator ()()
         {
             Ethereum::Stealth::Address address(*it);
             QVariantMap obj;
-            obj["address"] = address.toString().c_str();
-            obj["stealth"] = true;
+            obj["stealth"] = address.toString().c_str();
             accounts.push_back(obj);
         }
         catch(...)
         {}
     }
+
 
     return QVariant::fromValue(accounts);
 }

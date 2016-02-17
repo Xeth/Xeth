@@ -17,6 +17,8 @@ class Notifier : public QObject
     Q_OBJECT
     public:
 
+        Notifier();
+
         void watch(const DataBase &);
         void watch(const Synchronizer &);
 
@@ -40,12 +42,14 @@ class Notifier : public QObject
     private slots:
         void emitAddressBookItem(const QJsonObject &);
         void emitEthereumKey(const QString &);
+        void emitStealthPayment(const QJsonObject &);
         void emitStealthKey(const QString &);
         void emitTransaction(const QJsonObject &);
         void emitScanProgress(double);
         void emitSyncProgress(double);
 
-
+    private:
+        const DataBase *_database;
 };
 
 

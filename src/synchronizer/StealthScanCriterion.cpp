@@ -56,6 +56,7 @@ void StealthScanCriterion::processTransaction
                 sp.insert("address", to.c_str());
                 sp.insert("secret", encoder.encode(secret.begin(), secret.end()).c_str());
                 sp.insert("txid", hash.c_str());
+                sp.insert("stealth", getAddress());
                 result.stealthPayments.push_back(sp);
             }
         }

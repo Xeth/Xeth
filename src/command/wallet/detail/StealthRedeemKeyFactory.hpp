@@ -17,7 +17,7 @@ class StealthRedeemKeyFactory
         EthereumKey create(const QJsonObject &, const std::string &password);
 
     private:
-        EthereumKey create(const std::string &paymentTxid, const std::string &sharedSecret, const std::string &password);
+        EthereumKey create(const std::string &stealth, const std::string &secret, const std::string &password);
 
     private:
         DataBase &_database;

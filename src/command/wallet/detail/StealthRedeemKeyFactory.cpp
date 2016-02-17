@@ -11,17 +11,14 @@ StealthRedeemKeyFactory::StealthRedeemKeyFactory(DataBase &database) :
 
 EthereumKey StealthRedeemKeyFactory::create(const QJsonObject &payment, const std::string &password)
 {
-    return create(payment["txid"].toString().toStdString(), payment["secret"].toString().toStdString(), password);
+    return create(payment["stealth"].toString().toStdString(), payment["secret"].toString().toStdString(), password);
 }
 
 
-EthereumKey StealthRedeemKeyFactory::create(const std::string &txid, const std::string &secret, const std::string &password)
+EthereumKey StealthRedeemKeyFactory::create(const std::string &stealth, const std::string &secret, const std::string &password)
 {
-    QJsonObject transaction = _database.getTransactions().get(txid.c_str());
-    StealthKey stealthKey = _database.getStealthKeys().get(transaction["stealth"].toString().toStdString().c_str());
-
+    StealthKey stealthKey = _database.getStealthKeys().get(stealth.c_str());
     Ethereum::Stealth::SharedSecret secretData = Literal<Ethereum::Stealth::SharedSecret>(secret);
-
     Ethereum::Stealth::RedeemKeyFactory redeemFactory;
     CipherFactory cipherFactory;
 
