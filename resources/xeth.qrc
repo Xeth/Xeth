@@ -56,18 +56,6 @@
         <file>js/view/Collection.js</file>
         <file>js/view/Account.js</file>
 
-        <file>js/ui.js</file>
-        <file>js/app.js</file>
-        <file>js/bitprofile.js</file>
-        <file>js/accounts.js</file>
-        <file>js/addressbook.js</file>
-        <file>js/receive.js</file>
-        <file>js/send.js</file>
-        <file>js/transactions.js</file>
-        <file>js/editAddress.js</file>
-        <file>js/exportAddress.js</file>
-        <file>js/importAddress.js</file>
-        <file>js/newAddress.js</file>
 
         <file>index.html</file>
 
