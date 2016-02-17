@@ -29,6 +29,7 @@ void FacadeLinker::linkObjects()
     _frame->addToJavaScriptWindowObject("progress", &_facade->getProgress());
     _frame->addToJavaScriptWindowObject("convert", &_facade->getConverter());
     _frame->addToJavaScriptWindowObject("config", &_facade->getConfig());
+    _frame->addToJavaScriptWindowObject("clipboard", &_facade->getClipboard());
 }
 
 

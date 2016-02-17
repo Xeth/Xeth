@@ -16,6 +16,7 @@
 #include "ConverterFacade.hpp"
 #include "WalletFacade.hpp"
 #include "ProgressFacade.hpp"
+#include "ClipboardFacade.hpp"
 
 #include "detail/FacadeInitializer.hpp"
 
@@ -33,6 +34,7 @@ class Facade : public QObject
         typedef Xeth::Synchronizer Synchronizer;
         typedef Xeth::Notifier Notifier;
         typedef Xeth::ProgressFacade Progress;
+        typedef Xeth::ClipboardFacade Clipboard;
 
     public:
         Facade(const Settings &);
@@ -43,6 +45,7 @@ class Facade : public QObject
         Wallet & getWallet();
         Converter & getConverter();
         Progress & getProgress();
+        Clipboard & getClipboard();
 
         const Notifier & getNotifier() const;
         const AddressBook & getAddressBook() const;
@@ -50,6 +53,7 @@ class Facade : public QObject
         const Wallet & getWallet() const;
         const Converter & getConverter() const;
         const Progress & getProgress() const;
+        const Clipboard & getClipboard() const;
 
         const Settings & getSettings() const;
         bool isReady() const;
@@ -74,6 +78,7 @@ class Facade : public QObject
         Config _config;
         Converter _converter;
         Progress _progress;
+        Clipboard _clipboard;
 };
 
 

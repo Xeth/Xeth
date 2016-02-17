@@ -14,7 +14,8 @@ Facade::Facade(const Settings &settings) :
     _addressbook(_database, _notifier),
     _config(_database, _notifier),
     _converter(_notifier),
-    _progress(_synchronizer, _notifier)
+    _progress(_synchronizer, _notifier),
+    _clipboard(_notifier)
 {
     FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process);
     QThread *thread = new QThread;
@@ -27,8 +28,6 @@ Facade::Facade(const Settings &settings) :
 
     connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
     connect(initializer, &FacadeInitializer::Error, &_notifier, &Notifier::emitError);
-//    connect(initializer, &FacadeInitializer::Done, &_synchronizer, &Synchronizer::synchronize);
-//    connect(initializer, &FacadeInitializer::Done, &_notifier, &Notifier::emitReady);
     connect(initializer, &FacadeInitializer::Done, this, &Facade::setReady);
 
     connect(initializer, &FacadeInitializer::Error, thread, &QThread::quit);
@@ -79,6 +78,12 @@ Facade::Notifier & Facade::getNotifier()
     return _notifier;
 }
 
+
+Facade::Clipboard & Facade::getClipboard()
+{
+    return _clipboard;
+}
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -114,6 +119,13 @@ const Facade::Progress & Facade::getProgress() const
 {
     return _progress;
 }
+
+
+const Facade::Clipboard & Facade::getClipboard() const
+{
+    return _clipboard;
+}
+
 
 void Facade::setReady()
 {
