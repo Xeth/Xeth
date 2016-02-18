@@ -4,7 +4,7 @@ var ReceivePageView = Backbone.View.extend({
         _(this).bindAll("update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard");
         this.accounts = new AccountSelect({collection:options.accounts});
         this.clipboard = options.clipboard;
-        this.template = _.template($("#receive_page_tpl").html());
+        this.template = _.template($("#receive_tpl").html());
     },
 
     render:function(){

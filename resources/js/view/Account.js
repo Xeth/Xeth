@@ -17,7 +17,7 @@ var AccountView = Backbone.View.extend({
 
 var AccountSelectItemFactory = function(){
 
-    var template = _.template($("#account_select_item_tpl").html());
+    var template = _.template($("#account_item_tpl").html());
 
     this.create = function(model){
         return new AccountView({model:model, template:template});
@@ -31,7 +31,7 @@ var AccountSelect = Backbone.View.extend({
 
     initialize:function(options){
         _(this).bindAll("toggle","hide");
-        this.template = _.template($("#account_select_tpl").html());
+        this.template = _.template($("#accounts_tpl").html());
         this.collection = new CollectionView({factory:new AccountSelectItemFactory, collection:this.collection});
     },
     render:function(){
