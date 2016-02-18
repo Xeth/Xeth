@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>template/account_item.tpl</file>
+        <file>template/accounts.tpl</file>
+        <file>template/send.tpl</file>
+        <file>template/receive.tpl</file>
+    </qresource>
+</RCC>

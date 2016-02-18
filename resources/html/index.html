@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>XETH</title>
+<link href="CSS/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="CSS/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="CSS/main.css" rel="stylesheet" type="text/css">
+<link href="CSS/page.css" rel="stylesheet" type="text/css">
+<link href="CSS/form.css" rel="stylesheet" type="text/css">
+<link href="CSS/send.css" rel="stylesheet" type="text/css">
+<link href="CSS/receive.css" rel="stylesheet" type="text/css">
+<link href="CSS/addressbook.css" rel="stylesheet" type="text/css">
+<link href="CSS/transactions.css" rel="stylesheet" type="text/css">
+<link href="CSS/bitprofile.css" rel="stylesheet" type="text/css">
+<link href="CSS/newAddress.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<!--<div id="page_splash" class="page active">-->
+<!--    <div class="logo">-->
+<!--        Loading...-->
+<!--    </div>-->
+<!--</div>-->
+
+<div id="page_send" class="page active"></div>
+<div id="page_receive" class="page off"></div>
+<div id="page_addressbook" class="page off"></div>
+<div id="page_transactions" class="page off"></div>
+<div id="page_newAddress" class="page off"></div>
+<div id="page_editAddress" class="page off"></div>
+<div id="page_importAddress" class="page off"></div>
+<div id="page_exportAddress" class="page off"></div>
+<div id="page_settings" class="page off"></div>
+<div id="page_bitprofile" class="page navpage off"></div>
+
+
+<div class="mainNav menu">
+    <a class="profile myProfile" page="page_bitprofile">BitProfile</a>
+    <ul class="nav">
+        <li class="send"><a page="page_send">send</a></li>
+        <li class="receive"><a page="page_receive">receive</a></li>
+        <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
+        <li class="transactions"><a page="page_transactions">transactions</a></li>
+        <li class="settings"><a page="page_settings">settings</a></li>
+        <li><a href="javascript:void(0);">none</a></li>
+    </ul>
+    <div class="footer"></div>
+</div>
+
+<div class="subnavBg"></div>
+
+
+<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.timeago.js"></script>
+<script type="text/javascript" src="js/lib/jquery-editable-poshytip.js"></script>
+<script type="text/javascript" src="js/lib/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="js/lib/cryptojs.js"></script>
+<script type="text/javascript" src="js/lib/cryptojs.sha256.js"></script>
+<script type="text/javascript" src="js/lib/securerandom.js"></script>
+<script type="text/javascript" src="js/lib/ninja.seeder.js"></script>
+<script type="text/javascript" src="js/lib/qrcode.js"></script>
+<script type="text/javascript" src="js/lib/moment.js"></script>
+<script type="text/javascript" src="js/lib/daterangepicker.js"></script>
+<script type="text/javascript" src="js/lib/notie.js"></script>
+
+<script type="text/javascript" src="js/lib/underscore-min.js"></script>
+<script type="text/javascript" src="js/lib/backbone-min.js"></script>
+
+<script type="text/javascript" src="js/model/Account.js"></script>
+<script type="text/javascript" src="js/model/Transaction.js"></script>
+<script type="text/javascript" src="js/model/AddressBook.js"></script>
+<script type="text/javascript" src="js/model/Progress.js"></script>
+
+<script type="text/javascript" src="js/view/validate.js"></script>
+<script type="text/javascript" src="js/view/utils.js"></script>
+<script type="text/javascript" src="js/view/Collection.js"></script>
+<script type="text/javascript" src="js/view/Account.js"></script>
+<script type="text/javascript" src="js/view/ReceivePage.js"></script>
+<script type="text/javascript" src="js/view/SendPage.js"></script>
+
+
+
+<!--<script type="text/javascript" src="js/ui.js"></script>-->
+<!--<script type="text/javascript" src="js/accounts.js"></script>-->
+<!--<script type="text/javascript" src="js/send.js"></script>-->
+<!--<script type="text/javascript" src="js/receive.js"></script>-->
+<!--<script type="text/javascript" src="js/addressbook.js"></script>-->
+<!--<script type="text/javascript" src="js/transactions.js"></script>-->
+<!--<script type="text/javascript" src="js/bitprofile.js"></script>-->
+<!--<script type="text/javascript" src="js/importBitprofile.js"></script>-->
+<!--<script type="text/javascript" src="js/exportBitprofile.js"></script>-->
+<!--<script type="text/javascript" src="js/newAddress.js"></script>-->
+<!--<script type="text/javascript" src="js/editAddress.js"></script>-->
+<!--<script type="text/javascript" src="js/exportAddress.js"></script>-->
+<!--<script type="text/javascript" src="js/importAddress.js"></script>-->
+<!--<script type="text/javascript" src="js/app.js"></script>-->
+<!--<script type="text/javascript" src="js/XETH.js"></script>-->
+
+</body>
+</html>

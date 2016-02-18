@@ -1,34 +1,6 @@
 <RCC>
     <qresource prefix="/">
 
-        <file>icon/ethereum.ico</file>
-
-        <file>CSS/addressbook.css</file>
-        <file>CSS/form.css</file>
-        <file>CSS/main.css</file>
-        <file>CSS/page.css</file>
-        <file>CSS/receive.css</file>
-        <file>CSS/send.css</file>
-        <file>CSS/transactions.css</file>
-        <file>CSS/jquery.mCustomScrollbar.css</file>
-        <file>CSS/bitprofile.css</file>
-        <file>CSS/daterangepicker.css</file>
-        <file>CSS/newAddress.css</file>
-
-        <file>img/bg2-01.png</file>
-        <file>img/footer_icons-01.png</file>
-        <file>img/icons-01.png</file>
-        <file>img/menu_bg-01.png</file>
-        <file>img/menu_icons-01.png</file>
-        <file>img/submenu_bg-01.png</file>
-        <file>img/logo-01.png</file>
-        <file>img/avatarError.png</file>
-        <file>img/mCSB_buttons.png</file>
-        <file>img/avatarEmpty.png</file>
-
-        <file>fonts/Ubuntu-Bold.ttf</file>
-        <file>fonts/Ubuntu-Regular.ttf</file>
-
         <file>js/lib/jquery-1.11.0.min.js</file>
         <file>js/lib/jquery.mousewheel.min.js</file>
         <file>js/lib/jquery-ui.js</file>
@@ -57,10 +29,6 @@
         <file>js/view/Account.js</file>
         <file>js/view/ReceivePage.js</file>
         <file>js/view/SendPage.js</file>
-
-
-        <file>index.html</file>
-
 
     </qresource>
 </RCC>
