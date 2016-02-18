@@ -25,7 +25,7 @@ bool ChainProgress<BlockChain>::update()
         time_t now = time(NULL);
         size_t unfetchedBlocks = (now - lastBlock.getTimestamp()) / 12;
 
-        progress = (height * 100) / (height + unfetchedBlocks);
+        progress = (double)(height * 100) / (double)(height + unfetchedBlocks);
         if(progress > 100)
         {
             progress = 100;
