@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>XETH</title>
+<title>ETH</title>
 <link href="CSS/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="CSS/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="CSS/main.css" rel="stylesheet" type="text/css">
@@ -18,72 +18,537 @@
 
 <body>
 
-<!--<div id="page_splash" class="page active">-->
-<!--    <div class="logo">-->
-<!--        Loading...-->
-<!--    </div>-->
-<!--</div>-->
+<div id="page_splash" class="page active">
+	<div class="logo">
+    	Loading...
+    </div>
+</div>
 
-<div id="page_send" class="page off"></div>
-<div id="page_receive" class="page off"></div>
-<div id="page_addressbook" class="page off"></div>
-<div id="page_transactions" class="page off"></div>
-<div id="page_newAddress" class="page active"></div>
-<div id="page_editAddress" class="page off"></div>
-<div id="page_importAddress" class="page off"></div>
-<div id="page_exportAddress" class="page off"></div>
-<div id="page_settings" class="page off"></div>
-<div id="page_bitprofile" class="page navpage off"></div>
+<div id="page_send" class="page off">
+    
+    <div class="formpage send">
+    	<h1>From:</h1>
+        <div id="sendFrom" class="input accountList send" value="0">
+            <a class="select"></a>
+            <div class="dropdownBox dropdown3 off">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="group section_to">
+    		<h1 error="invalid">To:</h1>
+            <a class="btn addressbook" title="addressbook" href="javascript:changePage('page_addressbook');"></a>
+            <a class="btn clipboard" title="paste" href="javascript:getClipboard();"></a>
+        	<div id="sendToType" class="input type" value="1">
+                <a class="select">BitProfile</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>Address</a></li>
+                        <li><a>BitProfile</a></li>
+                    </ul>
+                </div>
+            </div>
+        	<input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
+        </div>
+        
+        <div class="half_left section_amount">
+        	<h1 error="required">Amount:</h1>
+            <div class="input amount">
+        		<input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
+            </div>
+        </div>
+        
+        <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">
+        	<h1>Fee:<span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+        	<div class="slider">
+                <div class="handle ui-slider-handle" style="left:20%;"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+        
+        <div class="half_left headless_section section_saveContact">
+        	<a id="saveContact" class="checkbox">save contact to addressbook</a>
+        </div>
+        
+        <div class="half_right headless_section section_alias">
+        	<div class="input">
+        		<input id="sendAlias" class="mandatory" type="text" placeholder="alias" />
+            </div>
+        </div>
+        
+        <div class="section_submit">
+            <div class="half_left section_password">
+                <h1 error="incorrect">Password:</h1>
+                <div class="input">
+                    <input id="sendPassword" class="mandatory" type="password" />
+                </div>
+            </div>
+            
+            <div class="submit half_right">
+                <a href="javascript:void(0);" id="submitSend" class="btnSubmit btnSend"><span class="txt">Send</span></a>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+<div id="page_receive" class="page off">
+    
+    <div class="formpage receive">
+    	<h1>To:<span class="controls"><a href="javascript:changePage('page_newAddress',0);">New address</a></span></h1>
+        <div id="receiveTo" class="input accountList receive">
+            <a class="select"></a>
+            <div class="dropdownBox dropdown3 off">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="half_right controls">
+        	<div id="receiveQR" class="QR"></div>
+            <div class="btns x2">
+                <a href="javascript:void(0);" id="saveReceiveQR" class="btn">Save image</a>
+                <a href="javascript:void(0);" id="copyReceiveURI" class="btn highlight">Copy URI</a>
+            </div>
+        </div>
+        
+        <div class="half_left">
+        	<h1>Amount:</h1>
+            <div class="input amount">
+        		<input id="receiveAmount" type="number" min="0" placeholder="0.00000000" />
+            </div>
+            
+            <h1>Message:</h1>
+            <textarea id="receiveMessage" name="" cols="" rows=""></textarea>
+            
+            <h1>URI:</h1>
+            <textarea readonly class="txtURI" name="" cols="" rows=""></textarea>
+        </div>
+    </div>
+    
+</div>
+
+<div id="page_addressbook" class="page off">
+  <div class="head">
+    	<div class="controls left">
+          	<div id="filterContacts" class="input" value="0">
+                <a class="select">All contacts</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>All contacts</a></li>
+                        <li><a>With bitprofile</a></li>
+                        <li><a>Without bitprofile</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    	<div class="controls">
+            <input id="inputSearchContacts" class="search" type="text" placeholder="search bitprofile" />
+            <a id="btnSearchContacts" class="inputBtnSearch" href="javascript:void(0);"></a>
+    	</div>
+    </div>
+    
+    <div class="scrollpage addressbook">
+    	<div class="empty">no contacts to display</div>
+    	<div class="holder contactList"></div>
+    </div>
+    
+</div>
+
+<div id="page_transactions" class="page off">
+  <div class="head">
+    	<div class="controls left">
+        	<div id="filterTransactionType" class="input" value="0">
+                <a class="select">All transactions</a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul>
+                        <li><a>All transactions</a></li>
+                        <li><a>Received</a></li>
+                        <li><a>Sent</a></li>
+                    </ul>
+                </div>
+            </div>
+        
+            <div class="input date">
+        		<input type="text" id="filterTransactionTime" class="daterange" placeholder="date" />
+            </div>
+    	</div>
+        
+        <div class="controls">
+            
+            <div id="filterTransactionAddress" class="input accountList all mini">
+                <a class="select"></a>
+                <div class="dropdownBox dropdown3 off">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="scrollpage transactions">
+    	<div class="empty">no transactions to display</div>
+    	<div class="holder transactionList"></div>
+    </div>
+    
+    <div class="transactions_total">
+    	<div class="total sent right">
+            <span class="detail txtBalance">
+                <span class="int"></span><span class="dec"></span>
+            </span>
+        </div>
+    	<div class="total received">
+            <span class="detail txtBalance">
+                <span class="int"></span><span class="dec"></span>
+            </span>
+        </div>
+    </div>
+    
+</div>
+
+
+<div id="page_newAddress" class="page off">
+	<h1>New Address</h1>
+    <div id="newAddressSeedLoader" class="preloader" loader="50">
+        <div class="loader">
+            <div class="value" style="width:50%;"></div>
+            <span class="txt">generating... <span class="percent">68</span>%</span>
+        </div>
+    </div>
+    
+    <div id="page_newAddress_seed" class="page subpage innerpage active">
+        <p>randomly move the mouse / click / press keyboard keys to generate the random seed</p>
+        
+        <div class="formpage">
+            <div class="skip">
+                <a href="javascript:void(0);" id="skipNewAddressSeed" class="btnSubmit"><span class="txt">Skip</span></a>
+        		<p>continue with the system random generator</p>
+            </div>
+        </div>
+    </div>
+    <div id="page_newAddress_create" class="page subpage innerpage">
+    	<div class="formpage">
+            <div class="section_stealth">
+                <a id="newAddress_stealth" class="checkbox">Stealth Address (LOREM IPSUM DOLOR SIT AMET)</a>
+            </div>
+        	<div class="half_left half_equal section_password">
+                <h1 error="required">Create Password:</h1>
+                <div class="input">
+                    <input id="newAddressPassword" class="password mandatory" type="password" />
+                </div>
+            </div>
+        	<div class="half_right half_equal section_repassword">
+                <h1 error="doesn't match">Repeat Password:</h1>
+                <div class="input">
+                    <input id="newAddressRepassword" class="repassword mandatory" type="password" />
+                </div>
+            </div>
+            <div class="submit">
+                <a href="javascript:void(0);" id="createNewAddress" class="btnSubmit"><span class="txt">Create</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page_editAddress" class="page off">
+
+    <div class="formpage">
+    	<h1>Change password:</h1>
+        <div id="editAddress_account" class="input accountList">
+            <a class="select"></a>
+            <div class="dropdownBox dropdown3 off">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="half_left half_equal section_newpassword">
+            <h1 error="required">New Password:</h1>
+            <div class="input">
+                <input id="editAddress_newPassword" class="password mandatory" type="password" />
+            </div>
+        </div>
+        <div class="half_right half_equal section_newrepassword">
+            <h1 error="doesn't match">Repeat Password:</h1>
+            <div class="input">
+                <input id="editAddress_newRepassword" class="repassword mandatory" type="password" />
+            </div>
+        </div>
+        
+        <div class="section_submit">
+            <div class="half_left section_password">
+                <h1 error="incorrect">Password:</h1>
+                <div class="input">
+                    <input id="editAddress_password" class="mandatory" type="password" />
+                </div>
+            </div>
+            
+            <div class="submit half_right">
+                <a href="javascript:void(0);" id="editAddress_submit" class="btnSubmit"><span class="txt">Save</span></a>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+<div id="page_importAddress" class="page off">
+
+    <div class="formpage">
+    	<h1>Import address:<span class="controls"><a href="javascript:loadFileImportAddressPage();">Change source file</a></span></h1>
+        <input id="importAddress_address" disabled type="text" />
+		<input id="importAddress_file" type="file" class="invisible" />
+        
+        <div class="section_submit">
+            <div class="half_left section_password">
+                <h1 error="incorrect">Password:</h1>
+                <div class="input">
+                    <input id="importAddress_password" class="mandatory" type="password" />
+                </div>
+            </div>
+            
+            <div class="submit half_right">
+                <a href="javascript:void(0);" id="importAddress_submit" class="btnSubmit"><span class="txt">Import</span></a>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+<div id="page_exportAddress" class="page off">
+
+    <div class="formpage">
+    	<h1>Backup address:</h1>
+        <div id="exportAddress_account" class="input accountList">
+            <a class="select"></a>
+            <div class="dropdownBox dropdown3 off">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="section_submit">            
+            <div class="submit">
+                <a href="javascript:void(0);" id="exportAddress_submit" class="btnSubmit"><span class="txt">Backup</span></a>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+    
+<div id="page_settings" class="page off">
+	<div class="formpage">
+    	<h1>Address settings:</h1>
+        <div class="btns x2">
+            <a href="javascript:changePage('page_exportAddress');" class="btn">Backup Key</a>
+            <a href="javascript:changePage('page_editAddress',0);" class="btn">Change Password</a>
+        </div>
+        <div class="btns x2">
+            <a href="javascript:startImportAddressPage();" class="btn">Import Key</a>
+            <a href="javascript:changePage('page_newAddress',0);" class="btn">New Address</a>
+        </div>
+    </div>
+</div>
+
+
+<div id="page_bitprofile" class="page navpage off">
+    
+    <div id="page_bitprofile_new" class="page subpage active">
+    	<div class="formpage">
+        	<div class="section_id">
+                <h1 error="invalid id">Details:</h1>
+                <div class="input bitprofileID">
+                    <input type="text" class="mandatory" placeholder="bitprofile ID" />
+                </div>
+            </div>
+        	<input type="text" class="name" placeholder="Your Name" />
+        	<input type="text" class="avatarURL" placeholder="image URL" />
+            <span class="avatar"><span class="img"><img src="avatarEmpty.png" /></span></span>
+            
+            <div class="section_password">
+                <h1>Security key:</h1>
+                <input type="password" class="password mandatory" placeholder="Password" />
+            </div>
+            <div class="section_repassword">
+            	<input type="password" class="repassword mandatory" placeholder="Repeat Password" />
+            </div>
+            
+            <div class="submit">
+                <div class="sendFrom">
+                    <h1>Registration fee:</h1>
+                    <div class="input accountList send mini">
+                        <a class="select"></a>
+                        <div class="dropdownBox dropdown3 off">
+                            <ul></ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="section_fee" title="fee involves transaction speed">
+                    <h1><span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+                    <div class="slider">
+                        <div class="handle ui-slider-handle" style="left:20%;"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                
+                <a href="javascript:void(0);" class="btnSubmit"><span class="txt">Create</span></a>
+                <a href="javascript:void(0);" class="submitCancel">Clear</a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div id="page_bitprofile_import" class="page subpage off">
+    	<div class="formpage">
+            <input id="importBitprofile_address" disabled type="text" />
+            <div class="btns">
+                <a href="javascript:loadFileImportBitprofilePage();" class="btn">Change source file</a>
+            </div>
+            
+            <div class="submit">
+        		<div class="section_password">
+                	<h1 error="incorrect">Security key:</h1>
+                    <input id="importBitprofile_password" type="password" class="password mandatory" placeholder="Password" />
+                </div>
+            
+                <a id="importBitprofile_submit" href="javascript:void(0);" class="btnSubmit"><span class="txt">Import</span></a>
+            </div>
+            
+        </div>
+    </div>
+    
+	<div id="page_bitprofile_view" class="page subpage off">
+    	<div class="formpage">
+            <div class="input bitprofileID">
+        		<input type="text" readonly />
+            </div>
+        	<input type="text" readonly class="name" placeholder="unnamed" />
+            <span class="avatar"><span class="img"><img src="avatarEmpty.png" /></span></span>
+            
+            <div class="btns x3">
+                <a href="javascript:void(0);" class="btn editBitprofile">Edit</a>
+                <a href="javascript:void(0);" class="btn">Keys</a>
+                <a href="javascript:void(0);" class="btn backupBitprofile">Backup</a>
+            </div>
+            <div class="btns">
+                <a href="javascript:void(0);" class="btn highlight">Stealth Addresses</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="page_bitprofile_edit" class="page subpage off">
+    	<div class="formpage">
+        	<div class="section_id">
+                <h1>Edit profile:</h1>
+                <div class="input bitprofileID">
+                    <input type="text" readonly />
+                </div>
+            </div>
+        	<input type="text" class="name" placeholder="Your Name" />
+        	<input type="text" class="avatarURL" placeholder="image URL" />
+            <span class="avatar"><span class="img"><img src="avatarEmpty.png" /></span></span>
+            
+            <div class="submit">
+                <div class="sendFrom">
+                    <h1>Modification fee:</h1>
+                    <div class="input accountList send mini">
+                        <a class="select"></a>
+                        <div class="dropdownBox dropdown3 off">
+                            <ul></ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="section_fee" title="fee involves transaction speed">
+                    <h1><span class="fee"><span class="gas">500</span><span class="eth">0.10417670</span></span></h1>
+                    <div class="slider">
+                        <div class="handle ui-slider-handle" style="left:20%;"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                
+        		<div class="section_password">
+                    <input type="password" class="password mandatory" placeholder="Password" />
+                </div>
+            
+                <a href="javascript:void(0);" class="btnSubmit"><span class="txt">Save</span></a>
+                <a href="javascript:void(0);" class="submitCancel">Cancel</a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="subNav menu">
+        <ul class="nav controls">
+            <li class="newBitprofile active"><a page="page_bitprofile_new">New BitProfile Account</a></li>
+            <li class="importBitprofile"><a href="javascript:startImportBitprofilePage();">Import Existing BitProfile</a></li>
+        </ul>
+        <div class="scrollpage bitprofileList">
+            <ul class="nav" page="page_bitprofile_view"></ul>
+        </div>
+    </div>
+</div>
 
 
 <div class="mainNav menu">
-    <a class="profile myProfile" page="page_bitprofile">BitProfile</a>
+	<a class="profile myProfile" page="page_bitprofile">BitProfile</a>
     <ul class="nav">
-        <li class="send"><a page="page_send">send</a></li>
-        <li class="receive"><a page="page_receive">receive</a></li>
-        <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
-        <li class="transactions"><a page="page_transactions">transactions</a></li>
-        <li class="settings"><a page="page_settings">settings</a></li>
-        <li><a href="javascript:void(0);">none</a></li>
+    	<li class="send"><a page="page_send">send</a></li>
+    	<li class="receive"><a page="page_receive">receive</a></li>
+    	<li class="addressbook"><a page="page_addressbook">addressbook</a></li>
+    	<li class="transactions"><a page="page_transactions">transactions</a></li>
+    	<li class="settings"><a page="page_settings">settings</a></li>
+    	<li><a href="javascript:void(0);">none</a></li>
     </ul>
-    <div class="footer"></div>
+    <div class="footer">
+    	<div class="preloader status" loader="50">
+        	<div class="message">
+            	Loading...
+            </div>
+            <div class="loader">
+            	<div class="value" style="width:50%;"></div>
+                <span class="txt"></span>
+            </div>
+        </div>
+        <div class="icons">
+        	<div class="icon secure ok">&nbsp;</div>
+        	<div class="icon network">&nbsp;</div>
+        	<div class="icon updated">&nbsp;</div>
+        </div>
+    </div>
 </div>
 
 <div class="subnavBg"></div>
-<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery.timeago.js"></script>
-<script type="text/javascript" src="js/lib/jquery-editable-poshytip.js"></script>
-<script type="text/javascript" src="js/lib/jquery.mCustomScrollbar.js"></script>
-<script type="text/javascript" src="js/lib/cryptojs.js"></script>
-<script type="text/javascript" src="js/lib/cryptojs.sha256.js"></script>
-<script type="text/javascript" src="js/lib/securerandom.js"></script>
-<script type="text/javascript" src="js/lib/ninja.seeder.js"></script>
-<script type="text/javascript" src="js/lib/qrcode.js"></script>
-<script type="text/javascript" src="js/lib/moment.js"></script>
-<script type="text/javascript" src="js/lib/daterangepicker.js"></script>
-<script type="text/javascript" src="js/lib/notie.js"></script>
 
-<script type="text/javascript" src="js/lib/underscore-min.js"></script>
-<script type="text/javascript" src="js/lib/backbone-min.js"></script>
-
-<script type="text/javascript" src="js/model/Account.js"></script>
-<script type="text/javascript" src="js/model/Transaction.js"></script>
-<script type="text/javascript" src="js/model/AddressBook.js"></script>
-<script type="text/javascript" src="js/model/Progress.js"></script>
-
-
-<script type="text/javascript" src="js/view/validate.js"></script>
-<script type="text/javascript" src="js/view/utils.js"></script>
-<script type="text/javascript" src="js/view/Collection.js"></script>
-<script type="text/javascript" src="js/view/Account.js"></script>
-<script type="text/javascript" src="js/view/ReceivePage.js"></script>
-<script type="text/javascript" src="js/view/SendPage.js"></script>
-<script type="text/javascript" src="js/view/GeneratePage.js"></script>
-
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.timeago.js"></script>
+<script type="text/javascript" src="js/jquery-editable-poshytip.js"></script>
+<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="js/cryptojs.js"></script>
+<script type="text/javascript" src="js/cryptojs.sha256.js"></script>
+<script type="text/javascript" src="js/securerandom.js"></script>
+<script type="text/javascript" src="js/ninja.seeder.js"></script>
+<script type="text/javascript" src="js/qrcode.js"></script>
+<script type="text/javascript" src="js/moment.js"></script>
+<script type="text/javascript" src="js/daterangepicker.js"></script>
+<script type="text/javascript" src="js/notie.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/accounts.js"></script>
+<script type="text/javascript" src="js/send.js"></script>
+<script type="text/javascript" src="js/receive.js"></script>
+<script type="text/javascript" src="js/addressbook.js"></script>
+<script type="text/javascript" src="js/transactions.js"></script>
+<script type="text/javascript" src="js/bitprofile.js"></script>
+<script type="text/javascript" src="js/importBitprofile.js"></script>
+<script type="text/javascript" src="js/exportBitprofile.js"></script>
+<script type="text/javascript" src="js/newAddress.js"></script>
+<script type="text/javascript" src="js/editAddress.js"></script>
+<script type="text/javascript" src="js/exportAddress.js"></script>
+<script type="text/javascript" src="js/importAddress.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/XETH.js"></script>
 
 </body>
-
-
 </html>
