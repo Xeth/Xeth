@@ -52,7 +52,6 @@
         <file>js/model/Progress.js</file>
 
         <file>js/view/utils.js</file>
-        <file>js/view/Collection.js</file>
         <file>js/view/Account.js</file>
 
 
