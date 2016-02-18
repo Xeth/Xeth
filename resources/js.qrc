@@ -29,6 +29,7 @@
         <file>js/view/Account.js</file>
         <file>js/view/ReceivePage.js</file>
         <file>js/view/SendPage.js</file>
+        <file>js/view/GeneratePage.js</file>
 
     </qresource>
 </RCC>

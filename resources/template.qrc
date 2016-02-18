@@ -4,5 +4,6 @@
         <file>template/accounts.tpl</file>
         <file>template/send.tpl</file>
         <file>template/receive.tpl</file>
+        <file>template/generate.tpl</file>
     </qresource>
 </RCC>
