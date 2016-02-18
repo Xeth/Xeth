@@ -29,6 +29,11 @@ void ScanProgress::next()
 {
     _value+=_step;
 
+    if(_value>100.0)
+    {
+        _value = 100.0;
+    }
+
     if(_value >= _nextSignal)
     {
         _nextSignal += _signalStep;
