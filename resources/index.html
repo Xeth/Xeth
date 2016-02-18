@@ -19,13 +19,13 @@
 <body>
 
 <!--<div id="page_splash" class="page active">-->
-<!--	<div class="logo">-->
-<!--    	Loading...-->
+<!--    <div class="logo">-->
+<!--        Loading...-->
 <!--    </div>-->
 <!--</div>-->
 
-<div id="page_send" class="page off"></div>
-<div id="page_receive" class="page active"></div>
+<div id="page_send" class="page active"></div>
+<div id="page_receive" class="page off"></div>
 <div id="page_addressbook" class="page off"></div>
 <div id="page_transactions" class="page off"></div>
 <div id="page_newAddress" class="page off"></div>
@@ -37,14 +37,14 @@
 
 
 <div class="mainNav menu">
-	<a class="profile myProfile" page="page_bitprofile">BitProfile</a>
+    <a class="profile myProfile" page="page_bitprofile">BitProfile</a>
     <ul class="nav">
-    	<li class="send"><a page="page_send">send</a></li>
-    	<li class="receive"><a page="page_receive">receive</a></li>
-    	<li class="addressbook"><a page="page_addressbook">addressbook</a></li>
-    	<li class="transactions"><a page="page_transactions">transactions</a></li>
-    	<li class="settings"><a page="page_settings">settings</a></li>
-    	<li><a href="javascript:void(0);">none</a></li>
+        <li class="send"><a page="page_send">send</a></li>
+        <li class="receive"><a page="page_receive">receive</a></li>
+        <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
+        <li class="transactions"><a page="page_transactions">transactions</a></li>
+        <li class="settings"><a page="page_settings">settings</a></li>
+        <li><a href="javascript:void(0);">none</a></li>
     </ul>
     <div class="footer"></div>
 </div>
@@ -67,10 +67,10 @@
         <%if(typeof bitprofile!="undefined"){%>
         <span class="account bitprofile">
             <span class="id"><%=bitprofile%></span>
-        <%}else{%>
+        <%}else{bitprofile = ""; %>
         <span class="account stealth">
         <%}%>
-            <span class="shortAddress"><%=shortify(stealth)%></span>
+            <span class="shortAddress"><%=shortify(stealth, 57-bitprofile.length*0.8)%></span>
         </span>
     </a>
 </li>
@@ -86,7 +86,7 @@
             <span class="origin bitprofile">
                 <span class="id"><%=bitprofile%></span>
                 <%if(typeof stealth!="undefined"){%>
-                <span class="address"><%=shortify(stealth)%></span>
+                <span class="address"><%=shortify(stealth, 67-bitprofile.length)%></span>
                 <%}%>
             </span>
         </span>
@@ -123,9 +123,61 @@
     </div>
 </div>
 </script>
+<script type="text/template" id="send_page_tpl">
+<div class="formpage send">
+    <h1>From:</h1>
+    <div id="sendFrom"></div>
+    <div class="group section_to">
+        <h1 error="invalid">To:</h1>
+        <a class="btn addressbook" title="addressbook" href="javascript:changePage('page_addressbook');"></a>
+        <a class="btn clipboard" title="paste" href="javascript:getClipboard();"></a>
+        <div id="sendToType" class="input type" value="1">
+            <select name="sendType">
+                <option value="address">Address</option>
+                <option value="bitprofile">BitProfile</option>
+            </select>
+        </div>
+        <input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
+    </div>
+    <div class="half_left section_amount">
+        <h1 error="required">Amount:</h1>
+        <div class="input amount">
+            <input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
+        </div>
+    </div>
+    <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">
+        <h1>Fee:<span class="fee"><span class="gas"></span><span class="eth"></span></span></h1>
+        <div class="slider">
+            <div class="handle ui-slider-handle" style="left:20%;"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <div class="half_left headless_section section_saveContact">
+        <input id="saveContact" type="checkbox" />save contact to addressbook
+    </div>
+    <div class="half_right headless_section section_alias">
+        <div class="input">
+            <input id="sendAlias" class="mandatory" type="text" placeholder="alias" />
+        </div>
+    </div>
+    <div class="section_submit">
+        <div class="half_left section_password">
+            <h1 error="incorrect">Password:</h1>
+            <div class="input">
+                <input id="sendPassword" class="mandatory" type="password" />
+            </div>
+        </div>
+        
+        <div class="submit half_right">
+            <a href="javascript:void(0);" id="submitSend" class="btnSubmit btnSend"><span class="txt">Send</span></a>
+        </div>
+    </div>
+</div>
+</script>
+
 <script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="js/lib/jquery-ui.js"></script>
+<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.timeago.js"></script>
 <script type="text/javascript" src="js/lib/jquery-editable-poshytip.js"></script>
 <script type="text/javascript" src="js/lib/jquery.mCustomScrollbar.js"></script>
@@ -146,10 +198,13 @@
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
 <script type="text/javascript" src="js/model/Progress.js"></script>
 
+<script type="text/javascript" src="js/view/validate.js"></script>
 <script type="text/javascript" src="js/view/utils.js"></script>
 <script type="text/javascript" src="js/view/Collection.js"></script>
 <script type="text/javascript" src="js/view/Account.js"></script>
 <script type="text/javascript" src="js/view/ReceivePage.js"></script>
+<script type="text/javascript" src="js/view/SendPage.js"></script>
+
 
 
 

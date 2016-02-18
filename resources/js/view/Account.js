@@ -30,7 +30,7 @@ var AccountSelectItemFactory = function(){
 var AccountSelect = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggle");
+        _(this).bindAll("toggle","hide");
         this.template = _.template($("#account_select_tpl").html());
         this.collection = new CollectionView({factory:new AccountSelectItemFactory, collection:this.collection});
     },
@@ -44,7 +44,7 @@ var AccountSelect = Backbone.View.extend({
         this.collection.render();
         var select = this;
         this.collection.each(function(view){
-            view.$el.find(">a").click(function(){
+            view.$el.find(">a").click(function(ev){
                 var selected = container.find(".selected");
                 header.children().appendTo(selected.find("a"));
                 selected.removeClass("selected");
@@ -53,14 +53,20 @@ var AccountSelect = Backbone.View.extend({
                 container.hide();
                 select.active = view.model;
                 select.trigger("change", select.active);
+                ev.stopPropagation();
             });
         });
         this.collection.$el.find("li:first >a").click();
+        $('html').click(this.hide);
     },
-    toggle:function(){
+    toggle:function(ev){
         this.collection.$el.toggle();
+        if(ev!=undefined) ev.stopPropagation();
     },
-
+    hide:function(ev){
+        this.collection.$el.hide();
+        if(ev!=undefined) ev.stopPropagation();
+    },
     selected:function(){
         return this.active;
     }
