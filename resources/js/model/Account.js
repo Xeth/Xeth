@@ -10,10 +10,8 @@ var Account = Backbone.Model.extend({
     },
 
     update:function(){
-
         this.set("balance", wallet.getBalance(this.get("address")));
     },
-
 
     autoUpdate:function(interval){
         if(typeof interval==undefined||!interval){
@@ -64,6 +62,9 @@ var AccountCollection = Backbone.Collection.extend({
         this.reset(accounts);
     },
 
+    generate:function(request){
+        return wallet.generateAccount(request);
+    },
 
     modelId: function(attrs){
         return attrs.address;
@@ -80,7 +81,6 @@ var AccountCollection = Backbone.Collection.extend({
         account.autoUpdate();
         return account;
     },
-
 
     sync:function(){}
 
