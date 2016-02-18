@@ -283,7 +283,7 @@ input.search {
 	
 	background-color: none;
 	background-color: rgba(119, 130, 131, 0);
-	transition: background-color 300ms ease-in-out;
+	transition: background-color 100ms ease-in-out;
 }
 
 .checkbox:hover:before {
@@ -359,7 +359,7 @@ input[type="number"]:focus {
 	height: 0;
 	top: 0;
 	
-	transition: all 300ms ease-in-out;
+	transition: all 100ms ease-in-out;
 }
 
 .dropdownBox.off {
