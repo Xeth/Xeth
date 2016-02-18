@@ -53,6 +53,7 @@
 
         <file>js/view/utils.js</file>
         <file>js/view/Account.js</file>
+        <file>js/view/ReceivePage.js</file>
 
 
         <file>index.html</file>
