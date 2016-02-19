@@ -19,7 +19,7 @@ QVariant GetBalanceCommand::operator()(const char *address)
 
 QVariant GetBalanceCommand::operator()(const QString &address)
 {
-    return operator ()((const char *)address.data());
+    return operator ()(address.toStdString().c_str());
 }
 
 
