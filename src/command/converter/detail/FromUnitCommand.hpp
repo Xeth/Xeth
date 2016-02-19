@@ -1,7 +1,7 @@
 #pragma once 
 
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/multiprecision/number.hpp>
+#include <boost/multiprecision/gmp.hpp>
 
 #include <QVariant>
 #include <QVariantMap>
