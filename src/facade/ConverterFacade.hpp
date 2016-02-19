@@ -24,12 +24,12 @@ class ConverterFacade : public QObject
 
         ConverterFacade(Notifier &notifier);
 
-        QVariant fromFinney(const QVariant &);
-        QVariant toFinney(const QVariant &);
-        QVariant fromSzabo(const QVariant &);
-        QVariant toSzabo(const QVariant &);
-        QVariant fromWei(const QVariant &);
-        QVariant toWei(const QVariant &);
+        Q_INVOKABLE QVariant fromFinney(const QVariant &);
+        Q_INVOKABLE QVariant toFinney(const QVariant &);
+        Q_INVOKABLE QVariant fromSzabo(const QVariant &);
+        Q_INVOKABLE QVariant toSzabo(const QVariant &);
+        Q_INVOKABLE QVariant fromWei(const QVariant &);
+        Q_INVOKABLE QVariant toWei(const QVariant &);
 
 
     private:
