@@ -13,7 +13,7 @@ FacadeLinker::FacadeLinker(QWebFrame *frame, Facade *facade) :
 
 void FacadeLinker::linkEvents()
 {
-    _frame->addToJavaScriptWindowObject("event", &_facade->getNotifier());
+    _frame->addToJavaScriptWindowObject("XETH_event", &_facade->getNotifier());
 }
 
 void FacadeLinker::linkAll()
@@ -24,13 +24,13 @@ void FacadeLinker::linkAll()
 
 void FacadeLinker::linkObjects()
 {
-    _frame->addToJavaScriptWindowObject("wallet", &_facade->getWallet());
-    _frame->addToJavaScriptWindowObject("addressbook", &_facade->getAddressBook());
-    _frame->addToJavaScriptWindowObject("progress", &_facade->getProgress());
-    _frame->addToJavaScriptWindowObject("convert", &_facade->getConverter());
-    _frame->addToJavaScriptWindowObject("config", &_facade->getConfig());
-    _frame->addToJavaScriptWindowObject("clipboard", &_facade->getClipboard());
-    _frame->addToJavaScriptWindowObject("filesystem", &_facade->getFileSystem());
+    _frame->addToJavaScriptWindowObject("XETH_wallet", &_facade->getWallet());
+    _frame->addToJavaScriptWindowObject("XETH_addressbook", &_facade->getAddressBook());
+    _frame->addToJavaScriptWindowObject("XETH_progress", &_facade->getProgress());
+    _frame->addToJavaScriptWindowObject("XETH_convert", &_facade->getConverter());
+    _frame->addToJavaScriptWindowObject("XETH_config", &_facade->getConfig());
+    _frame->addToJavaScriptWindowObject("XETH_clipboard", &_facade->getClipboard());
+    _frame->addToJavaScriptWindowObject("XETH_filesystem", &_facade->getFileSystem());
 }
 
 
