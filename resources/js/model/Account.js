@@ -6,28 +6,31 @@ var Account = Backbone.Model.extend({
     initialize:function(){
 
         _(this).bindAll("update");
-//        this.update();
+        this.update();
     },
 
     update:function(){
-//        this.set("balance", wallet.getBalance(this.get("address")));
+        this.set("balance", wallet.getBalance(this.get("address")));
     },
 
     autoUpdate:function(interval){
         if(typeof interval==undefined||!interval){
             interval = 30000;
         }
-//        setTimeout(this.update, interval);
+        setTimeout(this.update, interval);
     },
 
     send:function(request){
         request.from = this.get("address");
-//        var txid = wallet.send(request);
-//        if(txid){
-//            this.update();
-//        }
-//        return txid;
-        return true;
+        var txid = wallet.send(request);
+        if(txid){
+            this.update();
+        }
+        return txid;
+    },
+    
+    backup:function(path){
+        return XETH_wallet.exportKey({address:this.get("address")||this.get("stealth"), path:path});
     }
 
 });
