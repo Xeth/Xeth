@@ -16,7 +16,7 @@
 <link href="CSS/newAddress.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body class="loaded">
 
 <!--<div id="page_splash" class="page active">-->
 <!--    <div class="logo">-->
@@ -44,9 +44,23 @@
         <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
         <li class="transactions"><a page="page_transactions">transactions</a></li>
         <li class="settings"><a page="page_settings">settings</a></li>
-        <li><a href="javascript:void(0);">none</a></li>
     </ul>
-    <div class="footer"></div>
+    <div class="footer">
+        <div class="preloader status" loader="50">
+            <div class="message">
+                Loading...
+            </div>
+            <div class="loader">
+                <div class="value" style="width:01%;"></div>
+                <span class="txt"></span>
+            </div>
+        </div>
+        <div class="icons">
+            <div class="icon secure ok">&nbsp;</div>
+            <div class="icon network ok">&nbsp;</div>
+            <div class="icon updated">&nbsp;</div>
+        </div>
+    </div>
 </div>
 
 <div class="subnavBg"></div>
@@ -86,6 +100,7 @@
 <script type="text/javascript" src="js/view/ImportKeyPage.js"></script>
 <script type="text/javascript" src="js/view/ExportKeyPage.js"></script>
 <script type="text/javascript" src="js/view/ChangePasswordPage.js"></script>
+<script type="text/javascript" src="js/view/ProgressView.js"></script>
 
 
 
