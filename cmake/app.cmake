@@ -25,7 +25,8 @@ include_directories(
 
 
 
-add_executable(xeth ${APP_SOURCES} resources/xeth.qrc)
+#add_executable(xeth ${APP_SOURCES} resources/xeth.qrc)
+add_executable(xeth ${APP_SOURCES} resources/icon.qrc resources/template.qrc resources/css.qrc resources/js.qrc resources/html.qrc)
 
 target_link_libraries(xeth
     xethlib

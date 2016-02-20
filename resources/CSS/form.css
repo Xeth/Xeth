@@ -145,14 +145,14 @@
 	color:#5B945B;
 }
 
-.input.accountList.send li[empty],
-.input.accountList.send li[stealth],
-.input.accountList.send li[bitprofile],
-.input.accountList li.all {
+.input.accountList.send .item[empty],
+.input.accountList.send .item[stealth],
+.input.accountList.send .item[bitprofile],
+.input.accountList .item.all {
 	display:none;
 }
 
-.input.accountList.all li.all {
+.input.accountList.all .item.all {
 	display:block;
 }
 

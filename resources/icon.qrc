@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/ethereum.ico</file>
+    </qresource>
+</RCC>
