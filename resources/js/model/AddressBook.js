@@ -70,6 +70,16 @@ var AddressBook = Backbone.Collection.extend({
         }
     },
 
+    resolve:function(transactions){
+        this.transactions = transactions;
+        for(var i in this.models){
+            this.models[i].transactions = transactions;
+            for(var j in transactions.models){
+                this.models[i].resolve(transactions.models[j]);
+            }
+        }
+    },
+
     rename:function(oldName, newName){
 
         if(addressbook.renameContact({oldName:oldName, newName:newName})){
