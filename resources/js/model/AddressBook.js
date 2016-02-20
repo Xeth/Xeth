@@ -21,16 +21,24 @@ var Contact = Backbone.Model.extend({
 
     save:function(){
         if(this.isNew()){
-
-            return addressbook.addContact(this.toJSON());
+            return XETH_addressbook.addContact(this.toJSON());
         }else{
 
-            return addressbook.editContact(this.toJSON());
+            if(this.hasChanged("alias")){
+                if(!XETH_addressbook.renameContact({previous:this.previous("alias"), alias: this.get("alias")})){
+                    return false;
+                }
+            }
+            if(Object.keys(this.changedAttributes()).length>1){
+                return XETH_addressbook.editContact(this.toJSON());
+            }
         }
+        return true;
     },
 
     destroy:function(){
-        return addressbook.removeContact(this.get("alias"));
+        XETH_addressbook.removeContact(this.get("alias"));
+        this.trigger("destroy", this);
     },
 
     resolve:function(transaction){
@@ -47,9 +55,7 @@ var Contact = Backbone.Model.extend({
             return true;
         }
         return false;
-    },
-
-    sync:function(){}
+    }
 
 });
 
@@ -60,7 +66,7 @@ var AddressBook = Backbone.Collection.extend({
     },
 
     fetch:function(){
-        var contacts = addressbook.listContacts();
+        var contacts = XETH_addressbook.listContacts();
         if(contacts.length){
             this.reset(contacts);
         }else{
@@ -78,19 +84,6 @@ var AddressBook = Backbone.Collection.extend({
                 this.models[i].resolve(transactions.models[j]);
             }
         }
-    },
-
-    rename:function(oldName, newName){
-
-        if(addressbook.renameContact({oldName:oldName, newName:newName})){
-            var contact = this.get(oldName);
-            this.remove(contact, {silent:true});
-            contact.set("alias", newName);
-            this.add(contact, {silent: true});
-            this.emit("update", contact);
-            return true;
-        }
-        return false;
     },
 
     observe:function(){
