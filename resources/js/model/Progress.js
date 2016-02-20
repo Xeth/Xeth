@@ -5,9 +5,8 @@ var Progress = Backbone.Model.extend({
     },
 
     observe:function(){
-    
-        event.ScanProgress.connect(this, this.updateScan);
-        event.SyncProgress.connect(this, this.updateSync);
+        XETH_event.ScanProgress.connect(this, this.updateScan);
+        XETH_event.SyncProgress.connect(this, this.updateSync);
     },
 
     fetch:function(){
