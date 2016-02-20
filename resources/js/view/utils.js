@@ -6,7 +6,7 @@ function parseDecimals(value){
 function splitAmount(value){
     if(!value) return {int:"0",dec:"0"};
     var data = (""+value).split('.');
-    return {int:  data[0], dec: (""+data[1]).substr(0,8)||"0"};
+    return {int:  data[0], dec: data[1]?data[1].substr(0,8):"0"};
 }
 
 function shortify(value, length){
