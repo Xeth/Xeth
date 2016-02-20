@@ -31,6 +31,10 @@ var Account = Backbone.Model.extend({
     
     backup:function(path){
         return XETH_wallet.exportKey({address:this.get("address")||this.get("stealth"), path:path});
+    },
+
+    changePassword:function(previous, password){
+        return XETH_wallet.changePassword({previous: previous, password:password});
     }
 
 });
