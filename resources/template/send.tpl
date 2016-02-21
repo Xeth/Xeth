@@ -3,8 +3,8 @@
     <div id="sendFrom"></div>
     <div class="group section_to">
         <h1 error="invalid">To:</h1>
-        <a class="btn addressbook" title="addressbook" href="javascript:changePage('page_addressbook');"></a>
-        <a class="btn clipboard" title="paste" href="javascript:getClipboard();"></a>
+        <a class="btn addressbook" title="addressbook" href="javascript:void(0)"></a>
+        <a class="btn clipboard" title="paste" href="javascript:javascript:void(0)"></a>
         <div id="sendToType" class="input type" value="1">
             <select name="sendType">
                 <option value="address">Address</option>

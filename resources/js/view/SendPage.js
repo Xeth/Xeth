@@ -1,11 +1,12 @@
 var SendPageView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "updatePlaceholder", "submit");
+        _(this).bindAll("toggleAlias", "updateContact", "updatePlaceholder", "submit", "paste");
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
+        this.clipboard = options.clipboard;
 
         this.$el.html(this.template());
         this.gas = this.$el.find('.section_fee .slider');
@@ -26,15 +27,22 @@ var SendPageView = Backbone.View.extend({
         this.sendType.change(this.updatePlaceholder);
         this.updatePlaceholder();
         this.$el.find("#submitSend").click(this.submit);
+        this.$el.find("a.addressbook").click(function(){
+            options.router.redirect("addressbook");
+        });
+        this.$el.find("a.clipboard").click(this.paste);
         this.router = options.router;
     },
 
-    render:function(){
+    render:function(args){
         this.accounts.attach(this.$el.find("#sendFrom"));
         this.accounts.filter(function(model){return model!=undefined;});
         this.accounts.style("send");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
+        if(args && args.destination){
+            this.destination.val(args.destination);
+        }
     },
 
     setDestination:function(address){
@@ -78,6 +86,10 @@ var SendPageView = Backbone.View.extend({
 
     toggleAlias:function(){
         this.aliasHolder.toggle();
+    },
+
+    paste:function(){
+        this.destination.val(this.clipboard.getText());
     },
 
     submit:function(){
@@ -126,7 +138,11 @@ var SendPageView = Backbone.View.extend({
             this.addressbook.create(contact);
         }
 
-        this.router.redirect();
+        this.password.val("");
+        this.destination.val("");
+        this.amount.val("");
+
+        this.router.redirect("transactions");
         return true;
 
     }
