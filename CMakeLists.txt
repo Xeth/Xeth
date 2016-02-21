@@ -21,6 +21,7 @@ add_subdirectory(libethstealth)
 
 add_dependencies(ethstealth ethkey)
 
+include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
