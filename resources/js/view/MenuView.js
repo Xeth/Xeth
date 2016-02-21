@@ -2,7 +2,7 @@ var MenuView = Backbone.View.extend({
 
     initialize:function(){
         var view = this;
-        this.$el.find("li a").click(function(){
+        this.$el.find("a").click(function(){
             var $a = $(this);
             $a.parent().parent().find(".active").removeClass("active");
             $a.parent().addClass("active");
@@ -10,6 +10,6 @@ var MenuView = Backbone.View.extend({
         });
     },
     select:function(index){
-        this.$el.find("li a:eq("+index+")").click();
+        this.$el.find("a:eq("+index+")").click();
     }
 });
