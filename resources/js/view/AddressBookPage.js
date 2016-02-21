@@ -95,7 +95,7 @@ var AddressBookPageView = Backbone.View.extend({
         this.template = options.templates.get("addressbook");
         this.$el.html(this.template())
         this.factory = new ContactViewFactory(options.templates.get("contact_item"));
-        this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:factory});
+        this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:this.factory});
         this.collection.render();
         this.$filter = this.$el.find("#filterContacts select");
         this.$filter.change(this.applyFilter);
