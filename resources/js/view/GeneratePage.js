@@ -13,6 +13,7 @@ var GeneratePageView = Backbone.View.extend({
         this.repeatPassword = this.$el.find("#newAddressRepassword");
         this.$el.find("#skipNewAddressSeed").click(this.skipSeed);
         this.$el.find("#createNewAddress").click(this.submitForm);
+        this.router = options.router;
     },
 
     render:function(){
@@ -81,7 +82,7 @@ var GeneratePageView = Backbone.View.extend({
             msg += " account generated";
             notifySuccess(msg);
             this.entropy = "";
-            this.trigger("complete");
+            this.router.redirect(); //go to default page
         }else{
             notifyError("failed to generate account");
         }

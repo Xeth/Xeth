@@ -4,7 +4,7 @@ var SettingsPageView = Backbone.View.extend({
         this.template = options.templates.get("settings");
         this.$el.html(this.template());
         this.menu = new MenuView({el: this.$el.find(".btns")});
-        this.menu.on("change", options.router.changePage);
+        this.menu.on("change", options.router.redirect);
     },
 
     render:function(){

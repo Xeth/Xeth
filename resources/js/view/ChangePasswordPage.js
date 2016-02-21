@@ -6,6 +6,7 @@ var ChangePasswordPageView = Backbone.View.extend({
         this.template = options.templates.get("change_password");
         this.$el.html(this.template());
         this.$el.find(".btnSubmit").click(this.submit);
+        this.router = options.router;
     },
 
     render:function(){
@@ -37,7 +38,7 @@ var ChangePasswordPageView = Backbone.View.extend({
             return false;
         }
         notifySuccess("password changed");
-        this.trigger("done");
+        this.router.redirect(); //go to default page
         return true;
     }
 

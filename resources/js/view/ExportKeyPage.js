@@ -7,6 +7,7 @@ var ExportKeyPageView = Backbone.View.extend({
         this.template = options.templates.get("export");
         this.$el.html(this.template());
         this.$el.find(".btnSubmit").click(this.submit);
+        this.router = options.router;
     },
 
     render:function(){
@@ -23,7 +24,7 @@ var ExportKeyPageView = Backbone.View.extend({
             return false;
         }
         notifySuccess("key exported");
-        this.trigger("done");
+        this.router.redirect(); //go to default page
         return true;
     }
 

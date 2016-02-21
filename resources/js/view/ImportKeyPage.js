@@ -9,6 +9,7 @@ var ImportKeyPageView = Backbone.View.extend({
         this.$el.find(".browse a").click(this.render);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importAddress_address");
+        this.router = options.router;
     },
 
     render:function(){
@@ -31,6 +32,7 @@ var ImportKeyPageView = Backbone.View.extend({
             return false;
         }
         notifySuccess("key imported");
+        router.redirect();
         return true;
     }
 
