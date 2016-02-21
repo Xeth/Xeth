@@ -1,5 +1,5 @@
 <div class="formpage receive">
-    <h1>To:<span class="controls"><a href="javascript:changePage('page_newAddress',0);">New address</a></span></h1>
+    <h1>To:<span class="controls"><a href="javascript:void(0);" class="generate">New address</a></span></h1>
     <div id="receiveTo" ></div>
     <div class="half_right controls">
         <div id="receiveQR" class="QR"></div>
