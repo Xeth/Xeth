@@ -15,7 +15,7 @@ var MainWindowView = Backbone.View.extend({
         this.accounts = new AccountSelect({collection:options.accounts, templates:templates});
         this.router = new PageRouter(this);
 
-        this.menuAlias = {generate:"settings", import:"settings", export: "settings", password:"settings",default: "receive"};
+        this.menuAlias = {default: "receive"};
         this.subpages = {};
         this.subpages.send = new SendPageView
         ({
@@ -23,6 +23,7 @@ var MainWindowView = Backbone.View.extend({
             addressbook:options.addressbook, 
             el:this.$el.find("#page_send"), 
             router:this.router, 
+            clipboard: options.clipboard,
             templates:this.templates
         });
         this.subpages.receive = new ReceivePageView
@@ -30,12 +31,14 @@ var MainWindowView = Backbone.View.extend({
             accounts:this.accounts, 
             clipboard: options.clipboard, 
             el:this.$el.find("#page_receive"), 
-            templates:this.templates
+            templates:this.templates,
+            router:this.router
         });
         this.subpages.addressbook = new AddressBookPageView
         ({
             addressbook:options.addressbook,
             el:this.$el.find("#page_addressbook"),
+            router:this.router,
             templates:this.templates
         });
         this.subpages.transactions = new TransactionsPageView
