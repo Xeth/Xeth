@@ -22,7 +22,7 @@ var TransactionsPageView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
         this.template = options.templates.get("transactions");
-        this.$el.html(_.template(this.template());
+        this.$el.html(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"));
