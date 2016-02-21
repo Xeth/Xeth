@@ -26,6 +26,7 @@ var SendPageView = Backbone.View.extend({
         this.sendType.change(this.updatePlaceholder);
         this.updatePlaceholder();
         this.$el.find("#submitSend").click(this.submit);
+        this.router = options.router;
     },
 
     render:function(){
@@ -124,6 +125,8 @@ var SendPageView = Backbone.View.extend({
             contact[type] = request[type];
             this.addressbook.create(contact);
         }
+
+        this.router.redirect();
         return true;
 
     }
