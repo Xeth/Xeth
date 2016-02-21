@@ -81,8 +81,7 @@ var ContactView = Backbone.View.extend({
 
 });
 
-function ContactViewFactory(){
-    var template = _.template($("#contact_item_tpl").html());
+function ContactViewFactory(template){
     this.create = function(model){return new ContactView({model:model, template:template})}
     return this;
 }
@@ -93,9 +92,10 @@ var AddressBookPageView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("applyFilter");
 
-        this.template = _.template($("#addressbook_tpl").html());
+        this.template = options.templates.get("addressbook");
         this.$el.html(this.template())
-        this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:new ContactViewFactory});
+        this.factory = new ContactViewFactory(options.templates.get("contact_item"));
+        this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:factory});
         this.collection.render();
         this.$filter = this.$el.find("#filterContacts select");
         this.$filter.change(this.applyFilter);

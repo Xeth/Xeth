@@ -2,7 +2,7 @@ var ImportKeyPageView = Backbone.View.extend({
 
     initialize:function(options){
         _(this).bindAll("render", "submit");
-        this.template = _.template($("#import_tpl").html());
+        this.template = options.templates.get("import");
         this.$el.html(this.template());
         this.filesystem = options.filesystem;
         this.wallet = options.wallet;

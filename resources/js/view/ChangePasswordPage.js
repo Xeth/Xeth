@@ -3,7 +3,7 @@ var ChangePasswordPageView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("submit");
         this.accounts = options.accounts;
-        this.template = _.template($("#change_password_tpl").html());
+        this.template = options.templates.get("change_password");
         this.$el.html(this.template());
         this.$el.find(".btnSubmit").click(this.submit);
     },

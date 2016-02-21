@@ -4,7 +4,7 @@ var SendPageView = Backbone.View.extend({
         _(this).bindAll("toggleAlias", "updateContact", "updatePlaceholder", "submit");
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
-        this.template = _.template($("#send_tpl").html());
+        this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
 
         this.$el.html(this.template());

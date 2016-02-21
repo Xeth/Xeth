@@ -3,7 +3,8 @@ var GeneratePageView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("updateProgress", "submitEntropy", "skipSeed", "submitForm");
         this.accounts = options.accounts;
-        this.$el.html(_.template($("#generate_tpl").html())());
+        this.template = options.templates.get("generate");
+        this.$el.html(_.template(this.template());
         this.progress = this.$el.find("#newAddressSeedLoader .loader");
         this.seedPage = this.$el.find("#page_newAddress_seed");
         this.formPage = this.$el.find("#page_newAddress_create");

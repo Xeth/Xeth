@@ -4,8 +4,7 @@ var ExportKeyPageView = Backbone.View.extend({
         _(this).bindAll("submit");
         this.filesystem = options.filesystem;
         this.accounts = options.accounts;
-        console.log("template : ", $("#export_tpl").html());
-        this.template = _.template($("#export_tpl").html());
+        this.template = options.templates.get("export");
         this.$el.html(this.template());
         this.$el.find(".btnSubmit").click(this.submit);
     },

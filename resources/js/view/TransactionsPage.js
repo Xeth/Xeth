@@ -1,7 +1,6 @@
 
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        console.log("initializing transaction view...");
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
@@ -9,8 +8,7 @@ var TransactionView = Backbone.View.extend({
 });
 
 
-function TransactionViewFactory(){
-    var template = _.template($("#transaction_item_tpl").html());
+function TransactionViewFactory(template){
 
     this.create = function(model){
         return new TransactionView({model:model, template:template});
@@ -23,10 +21,12 @@ var TransactionsPageView = Backbone.View.extend({
 
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
-        this.$el.html(_.template($("#transactions_tpl").html())());
+        this.template = options.templates.get("transactions");
+        this.$el.html(_.template(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
-        this.collection = new CollectionView({reverse:true, el:this.$el.find(".transactionList"), collection:options.transactions, factory:new TransactionViewFactory});
+        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"));
+        this.collection = new CollectionView({reverse:true, el:this.$el.find(".transactionList"), collection:options.transactions, factory:this.factory});
         this.$sent = this.$el.find(".transactions_total .sent .txtBalance");
         this.$received = this.$el.find(".transactions_total .received .txtBalance");
 

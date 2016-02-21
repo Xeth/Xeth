@@ -4,7 +4,7 @@ var ReceivePageView = Backbone.View.extend({
         _(this).bindAll("update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard");
         this.accounts = options.accounts;
         this.clipboard = options.clipboard;
-        this.template = _.template($("#receive_tpl").html());
+        this.template = options.templates.get("receive");
         this.$el.html(this.template());
         this.msg = this.$el.find("#receiveMessage");
         this.amount = this.$el.find("#receiveAmount");

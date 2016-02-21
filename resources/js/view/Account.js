@@ -91,15 +91,13 @@ var AccountViewReflection = AccountView.extend({
 
 var NullAccountView = AccountBaseView.extend({
     initialize:function(options){
-        this.template = _.template($("#account_null_tpl").html());
+        this.template = options.templates.get("account_null");
         this.$el = $(this.template(options));
     }
 });
 
 
-var AccountSelectItemFactory = function(master){
-
-    var template = _.template($("#account_item_tpl").html());
+var AccountSelectItemFactory = function(master, template){
 
     this.create = function(model){
         var view = new AccountView({model:model, template:template});
@@ -115,14 +113,14 @@ var AccountSelect = Backbone.View.extend({
 
     initialize:function(options){
         _(this).bindAll("toggle","hide", "select");
-        var template = _.template($("#accounts_tpl").html());
-        this.factory = new AccountSelectItemFactory(this);
+        var template = options.templates.get("accounts");
+        this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
         this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.$el.find(".dropdownBox>div")});
         this.active = new AccountViewReflection({el:this.$el.find(".select")});
         this.active.click(this.toggle);
         $('html').click(this.hide);
-        var empty = new NullAccountView({msg:"all accounts"});
+        var empty = new NullAccountView({msg:"all accounts", templates: options.templates});
         empty.click(this.select);
         this.collection.assign(empty);
         this.collection.render();
