@@ -1,7 +1,8 @@
 var ContactView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove");
+        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove", "goToSend");
+        this.router = options.router;
         var data = {contact:this.model.toJSON()};
         this.$el = $(options.template(data));
         this.listenTo(this.model, "change:alias", this.updateAlias);
@@ -20,6 +21,7 @@ var ContactView = Backbone.View.extend({
 
         this.$el.find(".remove").click(this.removeLater);
         this.$el.find(".removing .cancel").click(this.cancelRemove);
+        this.$el.find(".send").click(this.goToSend);
 
     },
 
@@ -76,13 +78,17 @@ var ContactView = Backbone.View.extend({
     cancelRemove:function(){
         if(this.timer) clearInterval(this.timer);
         this.$el.removeClass("removing");
+    },
+
+    goToSend: function(){
+        this.router.redirect("send",{destination:this.model.get("address")});
     }
 
 
 });
 
-function ContactViewFactory(template){
-    this.create = function(model){return new ContactView({model:model, template:template})}
+function ContactViewFactory(template, router){
+    this.create = function(model){return new ContactView({model:model, template:template, router:router})}
     return this;
 }
 
@@ -94,7 +100,7 @@ var AddressBookPageView = Backbone.View.extend({
 
         this.template = options.templates.get("addressbook");
         this.$el.html(this.template())
-        this.factory = new ContactViewFactory(options.templates.get("contact_item"));
+        this.factory = new ContactViewFactory(options.templates.get("contact_item"), options.router);
         this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:this.factory});
         this.collection.render();
         this.$filter = this.$el.find("#filterContacts select");
