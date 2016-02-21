@@ -162,6 +162,13 @@ var AccountSelect = Backbone.View.extend({
        this.select(view); 
     },
 
+    focus:function(callback){
+        var _this = this;
+        this.collection.each(function(view){
+            if(!view.hidden() && callback(view.model)) _this.select(view);
+        });
+    },
+
     select:function(view){
         this.active.reset(view);
         this.collection.hide();

@@ -25,14 +25,21 @@ var ReceivePageView = Backbone.View.extend({
 
         this.$el.find("#copyReceiveURI").click(this.copyUriToClipboard);
         this.$el.find("#copyReceiveAddress").click(this.copyAddressToClipboard);
+        this.$el.find("a.generate").click(function(){
+            console.log("clicked on generate");
+            options.router.redirect("generate");
+        })
     },
 
-    render:function(){
+    render:function(args){
         this.accounts.filter(function(model){return model!=undefined;}); //hide text
         this.accounts.attach(this.$el.find("#receiveTo"));
         this.accounts.style("receive");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
+        if(args&&args.address){
+            this.accounts.focus(function(model){ return (model.get("address")||model.get("stealth"))==args.address;})
+        }
         this.update();
     },
 
