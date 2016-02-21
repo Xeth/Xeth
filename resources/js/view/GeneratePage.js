@@ -22,6 +22,8 @@ var GeneratePageView = Backbone.View.extend({
 
     renderSeedPage:function(){
         this.entropy = "";
+        this.password.val("");
+        this.repeatPassword.val("");
         this.updateProgress(0);
         this.formPage.removeClass("active");
         this.seedPage.addClass("active");
@@ -77,12 +79,13 @@ var GeneratePageView = Backbone.View.extend({
             request.entropy = this.entropy;
         }
 
-        if(this.accounts.generate(request)){
+        var account = this.accounts.generate(request);
+        if(account){
             var msg = request.type!=undefined ? request.type : "";
             msg += " account generated";
             notifySuccess(msg);
             this.entropy = "";
-            this.router.redirect(); //go to default page
+            this.router.redirect("receive", {address:account.get("address")});
         }else{
             notifyError("failed to generate account");
         }
