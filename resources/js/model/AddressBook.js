@@ -87,7 +87,7 @@ var AddressBook = Backbone.Collection.extend({
     },
 
     observe:function(){
-        event.Contact.connect(this, Backbone.Collection.prototype.add);
+        XETH_event.Contact.connect(this, Backbone.Collection.prototype.add);
     },
 
     model: function(data, options){

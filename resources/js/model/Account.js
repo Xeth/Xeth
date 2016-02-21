@@ -4,13 +4,12 @@ var Account = Backbone.Model.extend({
     idAttribute: "address",
 
     initialize:function(){
-
         _(this).bindAll("update");
         this.update();
     },
 
     update:function(){
-        this.set("balance", wallet.getBalance(this.get("address")));
+        this.set("balance", XETH_wallet.getBalance(this.get("address")));
     },
 
     autoUpdate:function(interval){
@@ -22,7 +21,7 @@ var Account = Backbone.Model.extend({
 
     send:function(request){
         request.from = this.get("address");
-        var txid = wallet.send(request);
+        var txid = XETH_wallet.send(request);
         if(txid){
             this.update();
         }
@@ -62,16 +61,16 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     observe: function(){
-        event.Account.connect(this, this.add);
+        XETH_event.Account.connect(this, this.add);
     },
 
     fetch:function(){
-        var accounts = wallet.getAccounts();
+        var accounts = XETH_wallet.getAccounts();
         this.reset(accounts);
     },
 
     generate:function(request){
-        return wallet.generateAccount(request);
+        return XETH_wallet.generateAccount(request);
     },
 
     modelId: function(attrs){
