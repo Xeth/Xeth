@@ -8,8 +8,8 @@ var AccountBaseView = Backbone.View.extend({
     },
     unbind:function(){this.$el.unbind();},
     attach:function(dom){this.$el.appendTo(dom);},
-    hide:function(){this.$el.addClass("off").hide()},
-    show:function(){this.$el.removeClass("off").show()},
+    hide:function(){this.$el.hide().addClass("off");},
+    show:function(){this.$el.show().removeClass("off");},
     hidden:function(){return this.$el.hasClass("off");}
 });
 
@@ -63,13 +63,17 @@ var AccountViewReflection = AccountView.extend({
     reset:function(view){
         this.undelegateEvents();
         this.view = view;
-        this.model = view.model;
-        this.$el.html(view.$el.clone().css("opacity", 1));
-        if(this.model!=undefined){
-            this.shortify(this.width, true);
-            this.$balance = this.$el.find(".amount");
-            this.listenTo(view.model, "change:balance", this.update);
-            if(this.compact) this.$el.find(".amount").hide()
+        if(!view){
+            this.$el.html("");
+        }else{
+            this.model = view.model;
+            this.$el.html(view.$el.clone().css("opacity", 1));
+            if(this.model!=undefined){
+                this.shortify(this.width, true);
+                this.$balance = this.$el.find(".amount");
+                this.listenTo(view.model, "change:balance", this.update);
+                if(this.compact) this.$el.find(".amount").hide()
+            }
         }
     },
     shortify:function(size){
@@ -155,13 +159,13 @@ var AccountSelect = Backbone.View.extend({
 
     update:function(){
         var view = this.collection.find(function(view){return !view.hidden();});
-        if(view) this.select(view);
+       this.select(view); 
     },
 
     select:function(view){
         this.active.reset(view);
         this.collection.hide();
-        this.trigger("change", view.model);
+        this.trigger("change", view?view.model:null);
     },
 
     toggle:function(){

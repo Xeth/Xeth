@@ -16,7 +16,7 @@ var ReceivePageView = Backbone.View.extend({
             colorLight: "rgba(255,255,255,0)",
             correctLevel : QRCode.CorrectLevel.M
         });
-        this.update();
+
         this.msg.on("input",this.scheduleUpdate);
         this.amount.on("input", this.scheduleUpdate);
         this.msg.on("change",this.update);
@@ -28,11 +28,12 @@ var ReceivePageView = Backbone.View.extend({
     },
 
     render:function(){
-        this.accounts.filter(function(model){return !model;}); //hide text
+        this.accounts.filter(function(model){return model!=undefined;}); //hide text
         this.accounts.attach(this.$el.find("#receiveTo"));
         this.accounts.style("receive");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
+        this.update();
     },
 
     update:function(){
@@ -50,7 +51,7 @@ var ReceivePageView = Backbone.View.extend({
 
     getSelectedAddress:function(){
         var account = this.accounts.selected();
-        return account.get("address")||account.get("stealth")
+        return account? account.get("address")||account.get("stealth") : "";
     },
 
     getURI:function(){
@@ -71,12 +72,10 @@ var ReceivePageView = Backbone.View.extend({
     },
 
     copyAddressToClipboard:function(){
-        alert("copying address");
         this.clipboard.setText(this.getSelectedAddress());
     },
 
     copyUriToClipboard:function(){
-        alert("copying uri");
         this.clipboard.setText(this.getURI());
     }
 

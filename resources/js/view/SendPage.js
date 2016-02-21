@@ -31,7 +31,7 @@ var SendPageView = Backbone.View.extend({
 
     render:function(){
         this.accounts.attach(this.$el.find("#sendFrom"));
-        this.accounts.filter(function(model){return !model;});
+        this.accounts.filter(function(model){return model!=undefined;});
         this.accounts.style("send");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
