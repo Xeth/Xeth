@@ -8,5 +8,11 @@
         <file>template/generate.tpl</file>
         <file>template/transaction_item.tpl</file>
         <file>template/transactions.tpl</file>
+        <file>template/addressbook.tpl</file>
+        <file>template/contact_item.tpl</file>
+        <file>template/change_password.tpl</file>
+        <file>template/export.tpl</file>
+        <file>template/import.tpl</file>
+        <file>template/settings.tpl</file>
     </qresource>
 </RCC>

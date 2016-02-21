@@ -31,6 +31,13 @@
         <file>js/view/SendPage.js</file>
         <file>js/view/GeneratePage.js</file>
         <file>js/view/TransactionsPage.js</file>
-
+        <file>js/view/ExportKeyPage.js</file>
+        <file>js/view/ImportKeyPage.js</file>
+        <file>js/view/MainWindow.js</file>
+        <file>js/view/MenuView.js</file>
+        <file>js/view/ProgressView.js</file>
+        <file>js/view/SettingsPage.js</file>
+        <file>js/view/AddressBookPage.js</file>
+        <file>js/view/ChangePasswordPage.js</file>
     </qresource>
 </RCC>
