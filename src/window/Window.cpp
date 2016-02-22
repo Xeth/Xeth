@@ -4,15 +4,21 @@
 #include <QWebFrame>
 #include <QWebElementCollection>
 #include <QAction>
+#include <QDebug>
+
 
 namespace Xeth{
+
 
 Window::Window(FrameContextBuilder &contextBuilder) :
     _contextBuilder(contextBuilder)
 {
 
-    QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJSObject()));
-//    new QAction(QIcon("qrc:/img/eth.png"), tr("ETH"), this);
+    QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
+    setContextMenuPolicy(Qt::NoContextMenu);
+    setMinimumSize(960, 600);
+    setUrl("qrc:/index.html");
+    setIcon(":/icon/ethereum.ico");
 
 }
 
@@ -33,10 +39,42 @@ void Window::javaScriptConsoleMessage ( const QString & message, int lineNumber,
 }
 
 
-void Window::addJSObject()
+void Window::initObjects()
 {
+    QObject::connect(page()->mainFrame(), &QWebFrame::loadFinished, this, &Window::loadTemplates);
     _contextBuilder.buildContext(page()->mainFrame());
 }
+
+
+void Window::loadTemplates()
+{
+    QDirIterator it(":/template", QDir::Files);
+    page()->mainFrame()->evaluateJavaScript("var XETH_templates = new TemplateRegistry;");
+    while(it.hasNext())
+    {
+        QFileInfo info(it.next());
+        QString name = info.baseName();
+        QFile file(info.filePath());
+
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+        {
+            throw std::runtime_error("failed to read file");
+        }
+
+        QTextStream stream(&file);
+        QString content = stream.readAll();
+
+        QString js = "XETH_templates.register('";
+        js+=name;
+        js+="',";
+        js+=content.replace("\n","").replace("\r","");
+        js+=");";
+//        qDebug()<<"js : "<<js;
+        qDebug()<<"registering template "<<name<<" : "<<page()->mainFrame()->evaluateJavaScript(js);
+        file.close();
+    }
+}
+
 
 
 void Window::moveToScreenCenter()

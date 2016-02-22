@@ -5,10 +5,17 @@
 #include <QRect>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QTextStream>
+#include <QDirIterator>
+#include <QFile>
+#include <QFileInfo>
+
 
 #include "FrameContextBuilder.hpp"
 
+
 namespace Xeth{
+
 
 class Window : public QWebView
 {
@@ -18,15 +25,17 @@ class Window : public QWebView
         explicit Window(FrameContextBuilder &contextBuilder);
 
         void moveToScreenCenter();
-        void setUrl(const char *);
-        void setIcon(const char *);
+
 
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
-
+        void setUrl(const char *);
+        void setIcon(const char *);
+        void loadTemplates();
+        
 
     private slots:
-        void addJSObject();
+        void initObjects();
 
     private:
         FrameContextBuilder &_contextBuilder;
