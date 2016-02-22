@@ -4,19 +4,17 @@
 
 bool UnderscoreCompiler::compile(const QString &src, const QString &dest)
 {
-    QDirIterator it(src);
+    QDirIterator it(src, QDir::Files);
     while(it.hasNext())
     {
-        QFileInfo info = it.fileInfo();
-        if(info.isFile() && info.suffix()=="tpl")
+        QFileInfo info(it.next());
+        QString out = dest;
+        out += QDir::separator();
+        out += info.fileName();
+        if(!compileFile(info.filePath(), out))
         {
-            if(!compileFile(info.filePath(), dest+info.fileName()))
-            {
-                return false;
-            }
-
+            return false;
         }
-        it.next();
     }
     return true;
 }
@@ -46,9 +44,7 @@ bool UnderscoreCompiler::compileFile(const QString &src, const QString &dest)
     js += "').source;";
     QString result = _invoker.execute(js).toString();
     outStream<<result;
-
-    qDebug<<src<<" compiled";
-
+    qDebug()<<dest<<" compiled";
     input.close();
     output.close();
     return true;
