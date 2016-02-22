@@ -10,7 +10,7 @@ var Progress = Backbone.Model.extend({
     },
 
     fetch:function(){
-        this.set({"sync": progress.getSync(), "scan":progress.getScan()});
+        this.set({"sync": XETH_progress.getSync(), "scan":XETH_progress.getScan()});
     },
 
     updateScan:function(value){
