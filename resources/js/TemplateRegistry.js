@@ -8,10 +8,13 @@ function TemplateRegistry(){
             var name = $(this).attr("id").replace(/_tpl/, "");
             registry.register(name, $(this).html());
         });
+        return true;
     }
 
     this.register = function(name, content){
         templates[name] = (content instanceof Function) ? content : _.template(content);
+
+        return true;
     }
 
     this.get = function(name){
@@ -20,3 +23,4 @@ function TemplateRegistry(){
 
     return this;
 }
+
