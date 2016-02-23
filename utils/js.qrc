@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="js/jquery-1.11.0.min.js">../resources/js/lib/jquery-1.11.0.min.js</file>
-        <file alias="js/underscore-min.js">../resources/js/lib/underscore-min.js</file>
+        <file alias="js/jquery-1.11.0.min.js">../resources/js/vendor/jquery-1.11.0.min.js</file>
+        <file alias="js/underscore-min.js">../resources/js/vendor/underscore-min.js</file>
         <file>index.html</file>
     </qresource>
 </RCC>
