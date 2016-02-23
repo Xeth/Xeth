@@ -1,6 +1,32 @@
 #include "DataBaseDirectory.hpp"
+#include <QDebug>
 
 namespace Xeth{
+
+DataBaseDirectory::DataBaseDirectory(const Settings &settings, bool create)
+{
+    boost::filesystem::path path;
+    if(settings.has("database"))
+    {
+        path = boost::filesystem::absolute(settings.get("database"));
+    }
+    else
+    {
+        path = GetDefaultPath();
+    }
+
+    if(settings.get<bool>("testnet", false))
+    {
+        path /= "testnet";
+    }
+    _path = path.string() + "/";
+
+    if(create)
+    {
+        createIfNotExists();
+    }
+}
+
 
 DataBaseDirectory::DataBaseDirectory(const char *path, bool create) :
     _path(path ? ResolvePath(path) : GetDefaultPath())

@@ -8,6 +8,7 @@
 
 #include <QDebug>
 
+#include "Settings.hpp"
 
 namespace Xeth{
 
@@ -16,6 +17,7 @@ namespace Xeth{
 class DataBaseDirectory
 {
     public:
+        DataBaseDirectory(const Settings &, bool create=false);
         DataBaseDirectory(const char *path, bool create=false);
         DataBaseDirectory(bool create=false);
 

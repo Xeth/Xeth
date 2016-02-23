@@ -5,14 +5,14 @@ namespace Xeth{
 
 EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 {
-    if(!settings.has("attach"))
+    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("attach")? settings.get("attach") : GetDefaultPath());
+
+    if(settings.get("testnet", false))
     {
-        _path = GetDefaultPath();
+        path /= "testnet";
     }
-    else
-    {
-        _path = MakePath(settings.get("attach"));
-    }
+
+    _path = MakePath(path);
 }
 
 
@@ -37,6 +37,11 @@ std::string EthereumKeyStorePath::GetDefaultPath()
 std::string EthereumKeyStorePath::MakePath(const std::string &dir)
 {
     boost::filesystem::path path = boost::filesystem::absolute(dir);
+    return MakePath(path);
+}
+
+std::string EthereumKeyStorePath::MakePath(boost::filesystem::path &path)
+{
     path /= "keystore";
     return path.string();
 }

@@ -50,6 +50,7 @@ class DataBase
         const StealthKeyStore & getStealthKeys() const;
         const EthereumKeyStore & getEthereumKeys() const;
 
+
     private:
         DataBaseDirectory _directory;
         EthereumKeyStorePath _ethereumKeysPath;

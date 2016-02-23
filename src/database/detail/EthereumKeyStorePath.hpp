@@ -24,6 +24,7 @@ class EthereumKeyStorePath
 
     private:
         static std::string MakePath(const std::string &);
+        static std::string MakePath(boost::filesystem::path &);
 
     private:
         std::string _path;

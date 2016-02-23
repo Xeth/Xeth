@@ -6,9 +6,9 @@ namespace Xeth{
 
 
 DataBase::DataBase(const Settings &settings) :
-    _directory(settings.get("database", (const char *)NULL), true),
+    _directory(settings, true),
     _ethereumKeysPath(settings),
-    _transactions(_directory.getPath().c_str()),
+    _transactions(_directory.getPath()+"transactions"),
     _scanIndex(_directory.getPath() + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
@@ -19,7 +19,7 @@ DataBase::DataBase(const Settings &settings) :
 
 DataBase::DataBase(const DataBaseDirectory &directory) :
     _directory(directory),
-    _transactions(_directory.getPath().c_str()),
+    _transactions(_directory.getPath()+"transactions"),
     _scanIndex(_directory.getPath() + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
@@ -32,7 +32,7 @@ DataBase::DataBase(const DataBaseDirectory &directory) :
 DataBase::DataBase(const DataBaseDirectory &directory, const EthereumKeyStorePath &ethPath) :
     _directory(directory),
     _ethereumKeysPath(ethPath),
-    _transactions(_directory.getPath().c_str()),
+    _transactions(_directory.getPath()+"transactions"),
     _scanIndex(_directory.getPath() + "scanindex"),
     _addressbook(_directory.getPath() + "addressbook"),
     _config(_directory.getPath() + "config"),
@@ -40,6 +40,8 @@ DataBase::DataBase(const DataBaseDirectory &directory, const EthereumKeyStorePat
     _stealthKeys(_directory.getPath()+"keys"),
     _ethereumKeys(_ethereumKeysPath.toString())
 {}
+
+
 
 
 
