@@ -7,18 +7,28 @@
 #include "LevelDbIterator.hpp"
 #include "LevelDbReverseIterator.hpp"
 #include "DataSerializer.hpp"
+#include "KeySerializer.hpp"
 
 
 namespace Xeth{
 
+class DefaultKeyComparator
+{};
 
 
-template<class Value, class Serializer=DataSerializer<Value> >
+template
+<
+    class Value, 
+    class ValueSerializer=Xeth::DataSerializer<Value>, 
+    class Key=const char*, 
+    class KeySerializer=Xeth::KeySerializer<Key>,
+    class KeyComparator = DefaultKeyComparator
+>
 class LevelDbStore
 {
     public:
-        typedef LevelDbIterator<Serializer, Value> Iterator;
-        typedef LevelDbReverseIterator<Serializer, Value> ReverseIterator;
+        typedef LevelDbIterator<ValueSerializer, Value> Iterator;
+        typedef LevelDbReverseIterator<ValueSerializer, Value> ReverseIterator;
         typedef Value DataType;
 
     public:
@@ -40,29 +50,41 @@ class LevelDbStore
 
         Iterator begin() const;
         Iterator end() const;
-        Iterator find(const char *) const;
+        Iterator find(const Key &) const;
 
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 
-        bool get(const char *, Value &) const;
-        Value get(const char *) const;
+        bool get(const Key &, Value &) const;
+        Value get(const Key &) const;
 
-        bool insert(const char *key, const Value &);
-        bool remove(const char *key);
-        bool move(const char *oldKey, const char *newKey);
-        bool replace(const char *key, const Value &);
+        bool insert(const Key &, const Value &);
+        bool remove(const Key &);
+        bool move(const Key &oldKey, const Key &newKey);
+        bool replace(const Key &key, const Value &);
 
     protected:
-        bool insert(const char *key, const char *value);
-        bool replace(const char *key, const char *value);
+        bool insert(const leveldb::Slice &, const leveldb::Slice &);
+        bool replace(const leveldb::Slice &, const leveldb::Slice &);
+        bool move(const leveldb::Slice &, const leveldb::Slice &);
+        bool remove(const leveldb::Slice &);
 
     private:
         Iterator makeIterator(leveldb::Iterator *) const;
+
+        template<class Comparator>
+        leveldb::Options makeOptions(const Comparator &);
+
+        leveldb::Options makeOptions(const DefaultKeyComparator &);
+
         ReverseIterator makeReverseIterator(leveldb::Iterator *) const;
+
+        leveldb::Slice makeKey(const Key &) const;
+        std::string makeValue(const Value &) const;
 
 
    private:
+        KeyComparator _comparator;
         std::string _path;
         leveldb::DB *_db;
 };

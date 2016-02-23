@@ -2,28 +2,28 @@
 
 namespace Xeth{
 
-template<class Value, class Serializer>
-LevelDbStore<Value, Serializer>::LevelDbStore(const char *path) :
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDbStore(const char *path) :
     _db(NULL)
 {
     open(path);
 }
 
-template<class Value, class Serializer>
-LevelDbStore<Value, Serializer>::LevelDbStore(const std::string &path) :
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDbStore(const std::string &path) :
     _db(NULL)
 {
     open(path);
 }
 
 
-template<class Value, class Serializer>
-LevelDbStore<Value, Serializer>::LevelDbStore() :
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDbStore() :
     _db(NULL)
 {}
 
-template<class Value, class Serializer>
-void LevelDbStore<Value, Serializer>::close()
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+void LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::close()
 {
     if(_db)
     {
@@ -31,9 +31,9 @@ void LevelDbStore<Value, Serializer>::close()
     }
 }
 
-template<class Value, class Serializer>
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
 template<class String>
-void LevelDbStore<Value, Serializer>::open(const String &path)
+void LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::open(const String &path)
 {
     if(!openNoThrow(path))
     {
@@ -42,13 +42,13 @@ void LevelDbStore<Value, Serializer>::open(const String &path)
 
 }
 
-template<class Value, class Serializer>
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
 template<class String>
-bool LevelDbStore<Value, Serializer>::openNoThrow(const String &path)
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::openNoThrow(const String &path)
 {
     _path = path;
 
-    leveldb::Options options;
+    leveldb::Options options = makeOptions(_comparator);
     options.create_if_missing = true;
 
     close();
@@ -60,107 +60,140 @@ bool LevelDbStore<Value, Serializer>::openNoThrow(const String &path)
 
 
 
-template<class Value, class Serializer>
-LevelDbStore<Value, Serializer>::~LevelDbStore()
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::~LevelDbStore()
 {
     close();
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::begin() const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::Iterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::begin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToFirst();
     return makeIterator(it);
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::end() const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::Iterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::end() const
 {
     return Iterator();
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::rbegin() const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ReverseIterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::rbegin() const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
     it->SeekToLast();
     return makeReverseIterator(it);
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::rend() const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ReverseIterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::rend() const
 {
     return ReverseIterator();
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::find(const char *key) const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::Iterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::find(const Key &key) const
 {
     leveldb::Iterator *it = _db->NewIterator(leveldb::ReadOptions());
-    it->Seek(key);
+    it->Seek(makeKey(key));
     return makeIterator(it);
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::Iterator LevelDbStore<Value, Serializer>::makeIterator(leveldb::Iterator *it) const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::Iterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeIterator(leveldb::Iterator *it) const
 {
     return Iterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
-template<class Value, class Serializer>
-typename LevelDbStore<Value, Serializer>::ReverseIterator LevelDbStore<Value, Serializer>::makeReverseIterator(leveldb::Iterator *it) const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ReverseIterator 
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeReverseIterator(leveldb::Iterator *it) const
 {
     return ReverseIterator(boost::shared_ptr<leveldb::Iterator>(it));
 }
 
-template<class Value, class Serializer>
-Value LevelDbStore<Value, Serializer>::get(const char *key) const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+Value LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::get(const Key &key) const
 {
-    Value result;
+    Value result = Value();
     get(key, result);
     return result;
 }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::get(const char *key, Value &result) const
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::get(const Key &key, Value &result) const
 {
     std::string data;
-    leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &data);
+
+    leveldb::Status status = _db->Get(leveldb::ReadOptions(), makeKey(key), &data);
     if(!status.ok())
     {
         return false;
     }
 
-    Serializer serializer;
+    ValueSerializer serializer;
     serializer(key, data.c_str(), result);
     return true;
 }
 
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::insert(const char *key, const Value &value)
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::insert(const Key &key, const Value &value)
 {
-    Serializer serializer;
-    return insert(key, serializer(value).c_str());
+    return insert(makeKey(key), makeValue(value).c_str());
 }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::insert(const char *key, const char *value)
-{
-    std::string oldValue;
-    leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &oldValue);
-    if(status.ok())
-    {
-        return false;
-    }
 
-    status = _db->Put(leveldb::WriteOptions(), key, value);
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::move(const Key &oldKey, const Key &newKey)
+{
+    return move(makeKey(oldKey), makeKey(newKey));
+}
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::replace(const Key &key, const Value &value)
+{
+    return replace(makeKey(key), makeValue(value).c_str());
+}
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::remove(const Key &key)
+{
+    return remove(makeKey(key));
+}
+
+
+////
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::replace(const leveldb::Slice &key, const leveldb::Slice &value)
+{
+    leveldb::Status status = _db->Put(leveldb::WriteOptions(), key, value);
     return status.ok();
 }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::move(const char *oldKey, const char *newKey)
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::remove(const leveldb::Slice &key)
+{
+    leveldb::Status status = _db->Delete(leveldb::WriteOptions(), key);
+    return status.ok();
+}
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::move(const leveldb::Slice &oldKey, const leveldb::Slice &newKey)
 {
     std::string data;
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), oldKey, &data);
@@ -180,26 +213,52 @@ bool LevelDbStore<Value, Serializer>::move(const char *oldKey, const char *newKe
     return status.ok();
 }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::replace(const char *key, const Value &value)
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::insert(const leveldb::Slice &key, const leveldb::Slice &value)
 {
-    Serializer serializer;
-    return replace(key, serializer(value).c_str());
-}
+    std::string oldValue;
+    leveldb::Status status = _db->Get(leveldb::ReadOptions(), key, &oldValue);
+    if(status.ok())
+    {
+        return false;
+    }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::replace(const char *key, const char *value)
-{
-    leveldb::Status status = _db->Put(leveldb::WriteOptions(), key, value);
+    status = _db->Put(leveldb::WriteOptions(), key, value);
     return status.ok();
 }
 
-template<class Value, class Serializer>
-bool LevelDbStore<Value, Serializer>::remove(const char *key)
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+template<class Comparator>
+leveldb::Options LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeOptions(const Comparator &comparator)
 {
-    leveldb::Status status = _db->Delete(leveldb::WriteOptions(), key);
-    return status.ok();
+    leveldb::Options options;
+    options.comparator = &comparator;
+    return options;
 }
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+leveldb::Options LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeOptions(const DefaultKeyComparator &comparator)
+{
+    return leveldb::Options();
+}
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+std::string LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeValue(const Value &value) const
+{
+    ValueSerializer serializer;
+    return serializer(value);
+}
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+leveldb::Slice LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeKey(const Key &key) const
+{
+    KeySerializer serializer;
+    return serializer(key);
+}
+
 
 
 
