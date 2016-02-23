@@ -3,7 +3,7 @@
 
         <file>js/lib/jquery-1.11.0.min.js</file>
         <file>js/lib/jquery.mousewheel.min.js</file>
-        <file>js/lib/jquery-ui.js</file>
+        <file>js/lib/jquery-ui.min.js</file>
         <file>js/lib/notie.js</file>
         <file>js/lib/qrcode.js</file>
         <file>js/lib/daterangepicker.js</file>

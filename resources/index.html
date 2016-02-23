@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>XETH</title>
+
+<script type="text/javascript">
+window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + errorMessage + ' Script: ' + errorUrl + ' Line: ' + errorLine);}
+</script>
+
 <link href="CSS/daterangepicker.css" rel="stylesheet" type="text/css">
 <link href="CSS/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
 <link href="CSS/main.css" rel="stylesheet" type="text/css">
@@ -37,7 +42,7 @@
 
 
 <div class="mainNav menu">
-    <a class="profile myProfile" page="page_bitprofile">BitProfile</a>
+    <a class="profile myProfile" href="javascript:void(0)" page="page_bitprofile">BitProfile</a>
     <ul class="nav">
         <li class="send active"><a page="page_send">send</a></li>
         <li class="receive"><a page="page_receive">receive</a></li>
@@ -105,6 +110,43 @@
 <script type="text/javascript" src="js/view/MenuView.js"></script>
 <script type="text/javascript" src="js/view/SettingsPage.js"></script>
 <script type="text/javascript" src="js/view/MainWindow.js"></script>
+
+<script type="text/javascript">
+var accounts = new AccountCollection;
+var transactions = new TransactionCollection;
+var addressbook = new AddressBook;
+var progress = new Progress;
+
+
+
+XETH_event.Ready.connect(this, function(){
+
+    accounts.fetch();
+    accounts.observe();
+    transactions.fetch();
+    transactions.observe();
+    addressbook.fetch();
+    addressbook.resolve(transactions);
+    addressbook.observe();
+    progress.fetch();
+    progress.observe();
+    var view = new MainWindowView
+    ({
+        accounts:accounts,
+        transactions:transactions,
+        addressbook:addressbook,
+        progress:progress, 
+        filesystem: XETH_filesystem,
+        clipboard: XETH_clipboard,
+        templates: XETH_templates
+    });
+
+    view.render();
+
+
+});
+
+</script>
 
 
 </body>
