@@ -79,13 +79,13 @@ var GeneratePageView = Backbone.View.extend({
             request.entropy = this.entropy;
         }
 
-        var account = this.accounts.generate(request);
-        if(account){
+        var address = this.accounts.generate(request);
+        if(address){
             var msg = request.type!=undefined ? request.type : "";
             msg += " account generated";
             notifySuccess(msg);
             this.entropy = "";
-            this.router.redirect("receive", {address:account.get("address")});
+            this.router.redirect("receive", {address:address});
         }else{
             notifyError("failed to generate account");
         }

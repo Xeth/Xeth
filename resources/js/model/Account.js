@@ -71,7 +71,7 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     generate:function(request){
-        return XETH_wallet.generateAccount(request);
+        return XETH_wallet.generateKey(request);
     },
 
     modelId: function(attrs){
