@@ -25,7 +25,7 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
             range.setOffset(request["offset"].toInt());
         }
 
-        for(DataRange<TransactionStore>::Iterator it = range.begin(), end = range.end(); it!=end; ++it)
+        for(DataRange<TransactionStore>::ReverseIterator it = range.rbegin(), end = range.rend(); it!=end; ++it)
         {
             result.push_back(*it);
         }
@@ -33,7 +33,7 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
     }
     else
     {
-        for(TransactionStore::Iterator  it = store.begin(), end = store.end(); it!=end; ++it)
+        for(TransactionStore::ReverseIterator  it = store.rbegin(), end = store.rend(); it!=end; ++it)
         {
             result.push_back(*it);
         }
