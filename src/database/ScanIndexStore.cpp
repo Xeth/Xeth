@@ -7,8 +7,14 @@ namespace Xeth{
 ScanIndexStore::ScanIndexStore(const char *path) : Base(path)
 {}
 
+
 ScanIndexStore::ScanIndexStore(const std::string &path) : Base(path)
 {}
+
+
+ScanIndexStore::ScanIndexStore(const boost::filesystem::path &path) : Base(path)
+{}
+
 
 ScanIndexStore::ScanIndexStore()
 {}

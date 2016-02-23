@@ -49,9 +49,13 @@ class TransactionStore : public QObject
     public:
         TransactionStore();
         TransactionStore(const std::string &path);
+        TransactionStore(const boost::filesystem::path &);
 
         void open(const std::string &);
         bool openNoThrow(const std::string &);
+
+        void open(const boost::filesystem::path &);
+        bool openNoThrow(const boost::filesystem::path &);
 
         bool insert
         (

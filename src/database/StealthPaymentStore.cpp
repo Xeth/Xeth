@@ -13,6 +13,11 @@ StealthPaymentStore::StealthPaymentStore(const std::string &path) :
 {}
 
 
+StealthPaymentStore::StealthPaymentStore(const boost::filesystem::path &path) : 
+    Base(path)
+{}
+
+
 bool StealthPaymentStore::insert(const char *address, const char *stealth, const char *secret, const char *txid)
 {
     QJsonObject object;

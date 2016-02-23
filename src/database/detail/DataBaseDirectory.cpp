@@ -5,21 +5,19 @@ namespace Xeth{
 
 DataBaseDirectory::DataBaseDirectory(const Settings &settings, bool create)
 {
-    boost::filesystem::path path;
     if(settings.has("database"))
     {
-        path = boost::filesystem::absolute(settings.get("database"));
+        _path = boost::filesystem::absolute(settings.get("database"));
     }
     else
     {
-        path = GetDefaultPath();
+        _path = GetDefaultPath();
     }
 
     if(settings.get<bool>("testnet", false))
     {
-        path /= "testnet";
+        _path /= "testnet";
     }
-    _path = path.string() + "/";
 
     if(create)
     {
@@ -37,6 +35,15 @@ DataBaseDirectory::DataBaseDirectory(const char *path, bool create) :
     }
 }
 
+DataBaseDirectory::DataBaseDirectory(const boost::filesystem::path &path, bool create) :
+    _path(path)
+{
+    if(create)
+    {
+        createIfNotExists();
+    }
+}
+
 
 DataBaseDirectory::DataBaseDirectory(bool create) :
     _path(GetDefaultPath())
@@ -47,9 +54,14 @@ DataBaseDirectory::DataBaseDirectory(bool create) :
     }
 }
 
-const std::string & DataBaseDirectory::getPath() const
+const boost::filesystem::path & DataBaseDirectory::getPath() const
 {
     return _path;
+}
+
+std::string DataBaseDirectory::toString() const
+{
+    return _path.string();
 }
 
 void DataBaseDirectory::createIfNotExists()
@@ -64,17 +76,16 @@ void DataBaseDirectory::createIfNotExists()
 
 bool DataBaseDirectory::createIfNotExistsNoThrow()
 {
-    boost::filesystem::path path(_path);
 
-    if(!boost::filesystem::exists(path))
+    if(!boost::filesystem::exists(_path))
     {
-        return boost::filesystem::create_directory(path);
+        return boost::filesystem::create_directories(_path);
     }
 
     return true;
 }
 
-std::string DataBaseDirectory::GetDefaultPath()
+boost::filesystem::path DataBaseDirectory::GetDefaultPath()
 {
     std::string path;
 #if  defined(__APPLE__)
@@ -90,10 +101,9 @@ std::string DataBaseDirectory::GetDefaultPath()
     return path;
 }
 
-std::string DataBaseDirectory::ResolvePath(const char *path)
+boost::filesystem::path DataBaseDirectory::ResolvePath(const char *path)
 {
-    boost::filesystem::path result =  boost::filesystem::absolute(path);
-    return result.string() + "/";
+    return boost::filesystem::absolute(path);
 }
 
 

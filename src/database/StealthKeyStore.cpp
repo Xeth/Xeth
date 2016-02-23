@@ -6,6 +6,10 @@ StealthKeyStore::StealthKeyStore(const std::string &path) :
     Base(path, "skey")
 {}
 
+StealthKeyStore::StealthKeyStore(const boost::filesystem::path &path) : 
+    Base(path, "skey")
+{}
+
 
 bool StealthKeyStore::insert(const std::string &id, const StealthKey &key)
 {

@@ -3,7 +3,7 @@
 
 StealthKeyImporterTest::StealthKeyImporterTest() :
     _directory(true),
-    _store(_directory.getPath()+"keys")
+    _store(_directory.getPath() / "keys")
 {}
 
 

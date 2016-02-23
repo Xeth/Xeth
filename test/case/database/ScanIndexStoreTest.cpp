@@ -7,7 +7,7 @@ void ScanIndexStoreTest::initTestCase()
 
 void ScanIndexStoreTest::testOpen()
 {
-    QVERIFY(_store.openNoThrow(_directory.getPath() + "scanindex"));
+    QVERIFY(_store.openNoThrow(_directory.getPath() / "scanindex"));
 }
 
 void ScanIndexStoreTest::testInsert()

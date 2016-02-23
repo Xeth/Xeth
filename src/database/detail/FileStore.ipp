@@ -1,3 +1,4 @@
+#include <QDebug>
 namespace Xeth{
 
 
@@ -7,6 +8,17 @@ FileStore<Value, Serializer>::FileStore(const std::string &path, const std::stri
     _ext("."+ext)
 {
     _directory.createIfNotExists();
+    qDebug()<<"filestore path : "<<_directory.toString().c_str();
+}
+
+
+template<class Value, class Serializer>
+FileStore<Value, Serializer>::FileStore(const boost::filesystem::path &path, const std::string &ext) : 
+    _directory(path, false),
+    _ext("."+ext)
+{
+    _directory.createIfNotExists();
+    qDebug()<<"filestore path : "<<_directory.toString().c_str();
 }
 
 
@@ -21,9 +33,9 @@ bool FileStore<Value, Serializer>::write(const std::string &path, const Value &v
 template<class Value, class Serializer>
 std::string FileStore<Value, Serializer>::makePath(const char *id) const
 {
-    std::string name = _directory.getPath();
-    name += boost::filesystem::path::preferred_separator;
-    name += id;
+    boost::filesystem::path path = _directory.getPath();
+    path /= id;
+    std::string name = path.string();
     if(_ext.size())
     {
         name += _ext;
@@ -87,7 +99,7 @@ Value FileStore<Value, Serializer>::get(const char *id) const
 template<class Value, class Serializer>
 typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::begin() const
 {
-    return Iterator(_directory.getPath(), _ext);
+    return Iterator(_directory.toString(), _ext);
 }
 
 
@@ -101,7 +113,7 @@ typename FileStore<Value, Serializer>::Iterator FileStore<Value, Serializer>::en
 template<class Value, class Serializer>
 const std::string & FileStore<Value, Serializer>::getPath() const
 {
-    return _directory.getPath();
+    return _directory.toString();
 }
 
 

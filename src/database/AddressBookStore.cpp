@@ -23,12 +23,17 @@ std::string AddressBookDataSerializer::operator ()(const QJsonObject &object) co
 }
 
 
-
 AddressBookStore::AddressBookStore()
 {}
 
+
 AddressBookStore::AddressBookStore(const std::string &path) : Base(path)
 {}
+
+
+AddressBookStore::AddressBookStore(const boost::filesystem::path &path) : Base(path)
+{}
+
 
 bool AddressBookStore::insert(const char *alias, const char *address)
 {

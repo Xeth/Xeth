@@ -19,19 +19,21 @@ class DataBaseDirectory
     public:
         DataBaseDirectory(const Settings &, bool create=false);
         DataBaseDirectory(const char *path, bool create=false);
+        DataBaseDirectory(const boost::filesystem::path &, bool create=false);
         DataBaseDirectory(bool create=false);
 
-        const std::string & getPath() const;
+        const boost::filesystem::path & getPath() const;
+        std::string toString() const;
 
         void createIfNotExists();
         bool createIfNotExistsNoThrow();
 
     public:
-        static std::string GetDefaultPath();
-        static std::string ResolvePath(const char *);
+        static boost::filesystem::path GetDefaultPath();
+        static boost::filesystem::path ResolvePath(const char *);
 
     private:
-        std::string _path;
+        boost::filesystem::path _path;
 
 };
 

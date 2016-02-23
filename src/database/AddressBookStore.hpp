@@ -33,6 +33,7 @@ class AddressBookStore :
     public:
         AddressBookStore();
         AddressBookStore(const std::string &);
+        AddressBookStore(const boost::filesystem::path &);
 
         bool insert(const char *, const char *);
         bool insert(const char *, const QJsonObject &);

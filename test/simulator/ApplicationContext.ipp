@@ -2,9 +2,9 @@
 template<class KeyStore, class BlockChain>
 ApplicationContext<KeyStore, BlockChain>::ApplicationContext() :
     _dir(true),
-    _database(_dir, Xeth::EthereumKeyStorePath(_dir.getPath())),
+    _database(_dir, Xeth::EthereumKeyStorePath(_dir.toString())),
     _keys(_database), 
-    _gethPath(_dir.getPath() + "geth.ipc"),
+    _gethPath((_dir.getPath() / "geth.ipc").string()),
     _geth(_keys, _chain, _gethPath),
     _synchronizer(_provider, _database)
 {

@@ -58,7 +58,7 @@ void Settings::set(const boost::program_options::parsed_options &parsed)
 {
     BOOST_FOREACH(const option &opt, parsed.options)
     {
-        _data[opt.string_key] = *opt.value.begin();
+        _data[opt.string_key] = opt.value.size() ? *opt.value.begin() : "1";
     }
 }
 

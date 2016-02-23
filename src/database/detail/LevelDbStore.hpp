@@ -3,6 +3,7 @@
 #include <leveldb/db.h>
 
 #include <boost/make_shared.hpp>
+#include <boost/filesystem.hpp>
 
 #include "LevelDbIterator.hpp"
 #include "LevelDbReverseIterator.hpp"
@@ -35,6 +36,7 @@ class LevelDbStore
         LevelDbStore();
         LevelDbStore(const char *path);
         LevelDbStore(const std::string &);
+        LevelDbStore(const boost::filesystem::path &path);
 
         ~LevelDbStore();
 
@@ -43,6 +45,9 @@ class LevelDbStore
 
         template<class String>
         bool openNoThrow(const String &);
+
+        bool openNoThrow(const boost::filesystem::path &);
+        void open(const boost::filesystem::path &);
 
         void close();
 

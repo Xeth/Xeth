@@ -21,7 +21,7 @@ std::string DataBaseDirectory::GenerateRandomPath()
 
 bool DataBaseDirectory::remove()
 {
-    const std::string & path = getPath();
+    std::string path = toString();
     if(path.size())
     {
         return boost::filesystem::remove_all(path);

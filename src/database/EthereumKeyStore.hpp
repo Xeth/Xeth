@@ -2,6 +2,7 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/regex.hpp> 
+#include <boost/filesystem.hpp>
 
 #include <QObject>
 
@@ -29,6 +30,7 @@ class EthereumKeyStore :
 
     public:
         EthereumKeyStore(const std::string &path);
+        EthereumKeyStore(const boost::filesystem::path &path);
 
         bool insert(const EthereumKey &);
         bool insert(const char *id, const EthereumKey &);

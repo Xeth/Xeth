@@ -18,14 +18,21 @@ bool TransactionDataSerializer::operator()(int key, const char *value, QJsonObje
 }
 
 
-
 TransactionStore::TransactionStore()
 {}
+
 
 TransactionStore::TransactionStore(const std::string &path )
 {
     open(path);
 }
+
+
+TransactionStore::TransactionStore(const boost::filesystem::path &path)
+{
+    open(path.string());
+}
+
 
 bool TransactionStore::openNoThrow(const std::string &path)
 {
@@ -58,6 +65,18 @@ void TransactionStore::open(const std::string &path)
         stream<<"failed to open transactions DB : "<<path;
         throw std::runtime_error(stream.str());
     }
+}
+
+
+bool TransactionStore::openNoThrow(const boost::filesystem::path &path)
+{
+    return openNoThrow(path.string());
+}
+
+
+void TransactionStore::open(const boost::filesystem::path &path)
+{
+    return open(path.string());
 }
 
 

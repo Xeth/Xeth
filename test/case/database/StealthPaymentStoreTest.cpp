@@ -10,7 +10,7 @@ void StealthPaymentStoreTest::initTestCase()
 
 void StealthPaymentStoreTest::testOpen()
 {
-    QVERIFY(_store.openNoThrow(_directory.getPath()+"payments"));
+    QVERIFY(_store.openNoThrow(_directory.getPath() / "payments"));
 }
 
 void StealthPaymentStoreTest::testInsert()

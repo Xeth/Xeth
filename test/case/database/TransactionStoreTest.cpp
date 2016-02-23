@@ -10,7 +10,7 @@ void TransactionStoreTest::initTestCase()
 
 void TransactionStoreTest::testOpen()
 {
-    QVERIFY(_store.openNoThrow(_directory.getPath()+"transactions"));
+    QVERIFY(_store.openNoThrow(_directory.getPath() / "transactions"));
 }
 
 void TransactionStoreTest::testInsert()

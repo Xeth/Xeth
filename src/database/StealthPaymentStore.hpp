@@ -23,6 +23,7 @@ class StealthPaymentStore :
     public:
         StealthPaymentStore();
         StealthPaymentStore(const std::string &);
+        StealthPaymentStore(const boost::filesystem::path &);
 
         bool insert(const char *address, const char *stealth, const char *secret, const char *txid);
         bool insert(const QJsonObject &);

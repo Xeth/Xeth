@@ -18,6 +18,7 @@ class ScanIndexStore : private LevelDbStore<size_t>
         ScanIndexStore();
         ScanIndexStore(const char *);
         ScanIndexStore(const std::string &);
+        ScanIndexStore(const boost::filesystem::path &);
 
         using Base::open;
         using Base::openNoThrow;

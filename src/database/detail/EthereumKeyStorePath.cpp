@@ -5,7 +5,7 @@ namespace Xeth{
 
 EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 {
-    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("attach")? settings.get("attach") : GetDefaultPath());
+    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("attach")? settings.get("attach") : Ethereum::Connector::DefaultGethPath::RootDirectory());
 
     if(settings.get("testnet", false))
     {

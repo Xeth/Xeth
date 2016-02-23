@@ -16,6 +16,13 @@ LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDb
     open(path);
 }
 
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDbStore(const boost::filesystem::path &path) :
+    _db(NULL)
+{
+    open(path.string());
+}
+
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
 LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::LevelDbStore() :
@@ -58,6 +65,18 @@ bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::op
     return status.ok();
 }
 
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+void LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::open(const boost::filesystem::path &path)
+{
+    open(path.string());
+}
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::openNoThrow(const boost::filesystem::path &path)
+{
+    return openNoThrow(path.string());
+}
 
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>

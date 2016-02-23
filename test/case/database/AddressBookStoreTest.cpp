@@ -12,7 +12,7 @@ void AddressBookStoreTest::cleanupTestCase()
 
 void AddressBookStoreTest::testOpen()
 {
-    QVERIFY(_store.openNoThrow(_directory.getPath()+"addressbook"));
+    QVERIFY(_store.openNoThrow(_directory.getPath() / "addressbook"));
 }
 
 void AddressBookStoreTest::testInsert()

@@ -7,6 +7,10 @@ EthereumKeyStore::EthereumKeyStore(const std::string &path) :
     Base(path, "")
 {}
 
+EthereumKeyStore::EthereumKeyStore(const boost::filesystem::path &path) : 
+    Base(path, "")
+{}
+
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {

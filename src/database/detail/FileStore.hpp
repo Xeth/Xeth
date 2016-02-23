@@ -27,6 +27,7 @@ class FileStore
     public:
 
         FileStore(const std::string &path, const std::string &ext);
+        FileStore(const boost::filesystem::path &, const std::string &ext);
 
         bool replace(const char *id, const Value &);
         bool insert(const char *id, const Value &);
