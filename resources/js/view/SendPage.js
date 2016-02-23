@@ -7,7 +7,6 @@ var SendPageView = Backbone.View.extend({
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
         this.clipboard = options.clipboard;
-
         this.$el.html(this.template());
         this.gas = this.$el.find('.section_fee .slider');
         this.gas.slider({value:50});
@@ -121,7 +120,7 @@ var SendPageView = Backbone.View.extend({
             return false;
         }
 
-        request[type] = this.destination.val();
+        request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
         var gas = this.gas.slider("value");
         if(gas!=50) request.gas = gas/50; //in percents
 

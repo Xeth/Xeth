@@ -1,6 +1,6 @@
 var ListView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("reset","append","prepend","resize","hide","show","focusFirst");
+        _(this).bindAll("reset","append","prepend","resize","hide","show");
         if(options.scroll!==false){
             this.scroll = this.$el.mCustomScrollbar({advanced:{updateOnContentResize:true},scrollInertia:300,autoHideScrollbar:true,mouseWheel:{ normalizeDelta: false}});
             this.container = this.$el.find(".mCSB_container");
@@ -38,20 +38,10 @@ var ListView = Backbone.View.extend({
     },
     show:function(){
         this.$el.show();
-    },
-    focusFirst:function(){
-        if(this.scroll){
-            this.$el.mCustomScrollbar("update");
-            this.$el.mCustomScrollbar("scrollTo", "last");
-        }
     }
 });
 
 var ReversedListView = ListView.extend({
-    initialize:function(options){
-        ListView.prototype.initialize.call(this, options);
-        _(this).bindAll("focusFirst");
-    },
     reset:function(data){
         ListView.prototype.reset.call(this,data.reverse());
         if(data.length){
@@ -69,10 +59,6 @@ var ReversedListView = ListView.extend({
     },
     resize:function(size){
         ListView.prototype.resize.call(this, size);
-    },
-    focusFirst:function(){
-        this.$el.mCustomScrollbar("update");
-        this.$el.mCustomScrollbar("scrollTo",(this.container.height()+1000)+"px");
     }
 });
 
@@ -83,10 +69,10 @@ var CollectionView = Backbone.View.extend({
         this.assigned = [];
         this.factory = options.factory;
         _(this).bindAll("reset","remove","insert", "add");
-        this.container = options.reverse ? new ReversedListView({el:this.$el}) : new ListView({el:this.$el});
-
+        this.container = options.reversed ? new ReversedListView({el:this.$el}) : new ListView({el:this.$el});
+        this.emplace = options.ordered ? this.insert : this.add;
         this.reset();
-        this.collection.on("add", options.ordered?this.insert:this.add);
+        this.collection.on("add", this.emplace);
         this.collection.on("remove", this.remove);
         this.collection.on("reset", this.reset);
     },
@@ -141,7 +127,7 @@ var CollectionView = Backbone.View.extend({
             this.items[i].undelegateEvents().remove();
         }
         this.items = {};
-        this.collection.each(this.add);
+        this.collection.each(this.emplace);
     },
 
     add:function(model){
@@ -149,7 +135,7 @@ var CollectionView = Backbone.View.extend({
     },
 
     insert:function(model){
-        var indx = this.model.indexOf(model);
+        var indx = this.collection.indexOf(model);
         var view = this.register(this.create(model));
         this.container.insert(view.$el, indx);
 

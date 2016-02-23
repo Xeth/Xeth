@@ -129,7 +129,6 @@ var AccountSelect = Backbone.View.extend({
         this.collection.assign(empty);
         this.collection.render();
         this.update();
-
     },
 
     style:function(style){

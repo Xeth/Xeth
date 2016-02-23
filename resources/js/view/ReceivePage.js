@@ -80,10 +80,12 @@ var ReceivePageView = Backbone.View.extend({
 
     copyAddressToClipboard:function(){
         this.clipboard.setText(this.getSelectedAddress());
+        notifySuccess("address copied");
     },
 
     copyUriToClipboard:function(){
         this.clipboard.setText(this.getURI());
+        notifySuccess("uri copied");
     }
 
 })

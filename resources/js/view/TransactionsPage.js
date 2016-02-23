@@ -21,12 +21,14 @@ var TransactionsPageView = Backbone.View.extend({
 
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
+        this.totalSent = 0;
+        this.totalReceived = 0;
         this.template = options.templates.get("transactions");
         this.$el.html(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"));
-        this.collection = new CollectionView({reverse:true, el:this.$el.find(".transactionList"), collection:options.transactions, factory:this.factory});
+        this.collection = new CollectionView({scroll:true, reversed:false, ordered:true, el:this.$el.find(".transactionList"), collection:options.transactions, factory:this.factory});
         this.$sent = this.$el.find(".transactions_total .sent .txtBalance");
         this.$received = this.$el.find(".transactions_total .received .txtBalance");
 
@@ -58,7 +60,9 @@ var TransactionsPageView = Backbone.View.extend({
         this.$el.find("#filterTransactionType").change(this.setTypeFilter);
 
         this.listenTo(this.accounts, "change", this.setAddressFilter);
-
+        this.listenTo(options.transactions, "add", this.updateTotal);
+        this.listenTo(options.transactions, "reset", this.computeTotals);
+        this.computeTotals();
     },
 
     render:function(){
@@ -67,7 +71,6 @@ var TransactionsPageView = Backbone.View.extend({
         this.accounts.attach(this.$el.find("#filterTransactionAddress"));
         this.accounts.filter(function(){return true;}); //show all rows
         this.accounts.style("mini");
-        this.updateTotals();
     },
 
     setTimeFilter:function(start, end, label){
@@ -98,7 +101,7 @@ var TransactionsPageView = Backbone.View.extend({
         this.collection.filter(function(model){
 
             if(filters.timeStart&&filters.timeEnd){
-                var time = model.get("time");
+                var time = model.get("timestamp") * 1000;
                 if(time<filters.timeStart||time>filters.timeEnd) return false;
             }
 
@@ -107,22 +110,38 @@ var TransactionsPageView = Backbone.View.extend({
 
             return true;
         });
-        this.updateTotals();
+        this.computeTotals();
     },
 
-    updateTotals: function(){
+    computeTotals: function(){
         var sent = 0;
         var received = 0;
         this.collection.each(function(view){
             if(view.$el.is(":hidden")) return;
             var model = view.model;
-            if(model.get("type")=="sent")
+            if(model.get("type")=="Sent")
                 sent += model.get("amount");
             else
                 received += model.get("amount"); //including mined
         });
-        sent = splitAmount(sent);
-        received = splitAmount(received);
+        this.totalSent = sent;
+        this.totalReceived = received;
+        console.log("total sent: ",sent);
+        console.log("total received : ",received);
+        this.renderTotals();
+    },
+
+    updateTotal: function(model){
+        if(model.get("type")=="Sent")
+            this.totalSent += model.get("amount");
+        else
+            this.totalReceived += model.get("amount"); //including mined
+        this.renderTotals();
+    },
+
+    renderTotals:function(){
+        var sent = splitAmount(this.totalSent);
+        var received = splitAmount(this.totalReceived);
         this.$sent.find(".int").html(sent.int);
         this.$sent.find(".dec").html(sent.dec);
         this.$received.find(".int").html(received.int);

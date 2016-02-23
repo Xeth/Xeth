@@ -3,6 +3,7 @@ var PageRouter = function(master){
     this.redirect = function(name, args){
         master.open(name, args);
     }
+    return this;
 }
 
 var MainWindowView = Backbone.View.extend({
@@ -11,10 +12,8 @@ var MainWindowView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("open");
         this.templates = options.templates;
-
-        this.accounts = new AccountSelect({collection:options.accounts, templates:templates});
+        this.accounts = new AccountSelect({collection:options.accounts, templates:this.templates});
         this.router = new PageRouter(this);
-
         this.menuAlias = {default: "receive"};
         this.subpages = {};
         this.subpages.send = new SendPageView
@@ -84,29 +83,30 @@ var MainWindowView = Backbone.View.extend({
             router:this.router,
             templates:this.templates
         });
-
         this.subpages["default"] = this.subpages.receive;
-
         this.menu = new MenuView({el:this.$el.find(".mainNav")});
         this.menu.on("change", this.open);
-        this.progress = new ProgressView({el:this.$el.find(".footer"), progress:options.progress});
+        this.progress = new ProgressView({el:this.$el.find(".footer"), model:options.progress});
     },
 
     open: function(name, args){
-        this.$el.find(".page.active").removeClass("active");
         if(!name || name instanceof Object){
             args = name;
             name = "default";
         }
         var view =  this.subpages[name];
-        view.$el.removeClass("off").addClass("active");
-        this.menu.setCursor(this.menuAlias[name]||name);
-        view.render(args);
+        if(view!=undefined){
+            this.$el.find(".page.active").removeClass("active");
+            view.$el.removeClass("off").addClass("active");
+            this.menu.setCursor(this.menuAlias[name]||name);
+            view.render(args);
+        }
     },
 
     render: function(){
         this.$el.find("#page_splash").removeClass("active").addClass("off");
         this.$el.addClass("loaded");
+        this.progress.render();
         setTimeout(this.open, 800);
     }
 
