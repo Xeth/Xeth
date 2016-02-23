@@ -5,7 +5,8 @@
 #include <QWebElementCollection>
 #include <QAction>
 #include <QDebug>
-
+#include <QWebSettings>
+#include <QWebInspector>
 
 namespace Xeth{
 
@@ -13,10 +14,13 @@ namespace Xeth{
 Window::Window(FrameContextBuilder &contextBuilder) :
     _contextBuilder(contextBuilder)
 {
-
+//    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+//    QWebInspector *inspector = new QWebInspector;
+//    inspector->setPage(page());
+//    inspector->show();
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
     setContextMenuPolicy(Qt::NoContextMenu);
-    setMinimumSize(960, 600);
+    setFixedSize(960, 600);
     setUrl("qrc:/index.html");
     setIcon(":/icon/ethereum.ico");
 
@@ -67,9 +71,8 @@ void Window::loadTemplates()
         QString js = "XETH_templates.register('";
         js+=name;
         js+="',";
-        js+=content.replace("\n","").replace("\r","");
+        js+=content;
         js+=");";
-//        qDebug()<<"js : "<<js;
         qDebug()<<"registering template "<<name<<" : "<<page()->mainFrame()->evaluateJavaScript(js);
         file.close();
     }

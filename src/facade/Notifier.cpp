@@ -36,6 +36,7 @@ void Notifier::emitMessage(const QString &msg)
 
 void Notifier::emitReady()
 {
+    qDebug()<<"emitting ready signal";
     emit Ready();
 }
 

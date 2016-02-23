@@ -63,7 +63,7 @@ void AccountScanCriterion::saveTransaction
     }
     obj.insert("to", to.c_str());
     obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
-    obj.insert("timestamp", (int)timestamp);
+    obj.insert("timestamp", (qint64)timestamp);
 
     result.transactions.push_back(obj);
 }
