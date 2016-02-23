@@ -102,6 +102,13 @@ QVariant WalletFacade::generateEthereumKey(const QVariantMap &request)
 }
 
 
+QVariant WalletFacade::generateKey(const QVariantMap &request)
+{
+    GenerateKeyCommand command(_database, _synchronizer);
+    return _invoker.invoke(command, request);
+}
+
+
 QVariant WalletFacade::generateStealthKey(const QVariantMap &request)
 {
     GenerateStealthKeyCommand command(_database, _synchronizer);
