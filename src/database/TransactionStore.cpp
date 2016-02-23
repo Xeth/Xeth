@@ -1,5 +1,4 @@
 #include "TransactionStore.hpp"
-#include <QDebug>
 
 namespace Xeth{
 
@@ -11,10 +10,10 @@ QJsonObject TransactionDataSerializer::operator()(const char *key, const char *v
     return result;
 }
 
-bool TransactionDataSerializer::operator()(const char *key, const char *value, QJsonObject &result) const
+bool TransactionDataSerializer::operator()(int key, const char *value, QJsonObject &result) const
 {
-    DataSerializer<QJsonObject>::operator()(key, value, result);
-    result.insert("index", boost::lexical_cast<int>(key));
+    DataSerializer<QJsonObject>::operator()(NULL, value, result);
+    result.insert("index", key);
     return true;
 }
 
@@ -44,7 +43,7 @@ bool TransactionStore::openNoThrow(const std::string &path)
     }
     else
     {
-        _lastIndex = -1;
+        _lastIndex = 0;
     }
 
     return true;
@@ -62,44 +61,47 @@ void TransactionStore::open(const std::string &path)
 }
 
 
-
-
-
 QJsonObject TransactionStore::get(const char *hash) const
 {
-    std::string index = _indexStore.get(hash);
-    if(!index.length())
+    int index = _indexStore.get(hash);
+    if(!index)
     {
         return QJsonObject();
     }
 
-    return _dataStore.get(index.c_str());
+    return _dataStore.get(index);
 }
+
 
 TransactionStore::Iterator TransactionStore::begin() const
 {
     return _dataStore.begin();
 }
 
+
 TransactionStore::Iterator TransactionStore::end() const
 {
     return _dataStore.end();
 }
 
-TransactionStore::Iterator TransactionStore::at(int index) const
+
+TransactionStore::Iterator TransactionStore::at(int index, bool reverse) const
 {
-    return _dataStore.find(boost::lexical_cast<std::string>(index).c_str());
+    return _dataStore.find(reverse ? (_lastIndex - index -1) : (index + 1));
 }
+
 
 TransactionStore::ReverseIterator TransactionStore::rbegin() const
 {
     return _dataStore.rbegin();
 }
 
+
 TransactionStore::ReverseIterator TransactionStore::rend() const
 {
     return _dataStore.rend();
 }
+
 
 bool TransactionStore::insert
 (
@@ -151,14 +153,14 @@ bool TransactionStore::insert
 
 bool TransactionStore::insert(const QJsonObject &obj)
 {
-    std::string index = getNextIndex();
+    int index = getNextIndex();
 
     if(!_indexStore.replace(obj["hash"].toString().toStdString().c_str(), index))
     {
         return false;
     }
 
-    if(_dataStore.replace(index.c_str(), obj))
+    if(_dataStore.replace(index, obj))
     {
         emit NewItem(obj);
         return true;
@@ -166,9 +168,9 @@ bool TransactionStore::insert(const QJsonObject &obj)
     return false;
 }
 
-std::string TransactionStore::getNextIndex()
+int TransactionStore::getNextIndex()
 {
-    return boost::lexical_cast<std::string>(++_lastIndex);
+    return ++_lastIndex;
 }
 
 

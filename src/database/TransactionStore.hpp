@@ -9,6 +9,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "detail/LevelDbStore.hpp"
+#include "detail/NumericKeyComparator.hpp"
 #include "types/TransactionCategory.hpp"
 #include "types/BigInt.hpp"
 #include "types/StealthKey.hpp"
@@ -21,7 +22,7 @@ class TransactionDataSerializer : public DataSerializer<QJsonObject>
 {
     public:
         QJsonObject operator()(const char *, const char *) const;
-        bool operator()(const char *, const char *, QJsonObject &) const;
+        bool operator()(int, const char *, QJsonObject &) const;
 
         using DataSerializer::operator(); //for serialization
 };
@@ -29,8 +30,8 @@ class TransactionDataSerializer : public DataSerializer<QJsonObject>
 
 
 
-typedef LevelDbStore<QJsonObject, TransactionDataSerializer> TransactionDataStore;
-typedef LevelDbStore<std::string> TransactionIndexStore;
+typedef LevelDbStore<QJsonObject, TransactionDataSerializer, int, Xeth::KeySerializer<int>, NumericKeyComparator<int> > TransactionDataStore;
+typedef LevelDbStore<int> TransactionIndexStore;
 
 
 
@@ -79,7 +80,7 @@ class TransactionStore : public QObject
         QJsonObject get(const char *hash) const;
         Iterator begin() const;
         Iterator end() const;
-        Iterator at(int ) const;
+        Iterator at(int , bool reverse=false) const;
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 
@@ -87,12 +88,12 @@ class TransactionStore : public QObject
         void NewItem(const QJsonObject &) const;
 
     private:
-        std::string getNextIndex();
+        int getNextIndex();
 
     private:
         TransactionDataStore _dataStore;
         TransactionIndexStore _indexStore;
-        size_t _lastIndex;
+        int _lastIndex;
 
 };
 
