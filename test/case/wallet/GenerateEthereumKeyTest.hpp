@@ -7,11 +7,11 @@
 #include "simulator/BlockChainSimulator.hpp"
 #include "simulator/ApplicationContext.hpp"
 
-#include "command/wallet/GenerateKeyCommand.hpp"
+#include "command/wallet/GenerateEthereumKeyCommand.hpp"
 
 
 
-class GenerateKeyTest : public QObject
+class GenerateEthereumKeyTest : public QObject
 {
     Q_OBJECT
 
@@ -20,7 +20,7 @@ class GenerateKeyTest : public QObject
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
 
     public:
-        GenerateKeyTest();
+        GenerateEthereumKeyTest();
 
     private slots:
         void testGenerate();

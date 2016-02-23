@@ -1,15 +1,15 @@
-#include "GenerateKeyTest.hpp"
+#include "GenerateEthereumKeyTest.hpp"
 
 
-GenerateKeyTest::GenerateKeyTest()
+GenerateEthereumKeyTest::GenerateEthereumKeyTest()
 {}
 
 
-void GenerateKeyTest::testGenerate()
+void GenerateEthereumKeyTest::testGenerate()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateKeyCommand command(database, synchronizer);
+    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("password","asdasd123");
     QVariant result = command(request);
@@ -22,11 +22,11 @@ void GenerateKeyTest::testGenerate()
 }
 
 
-void GenerateKeyTest::testGenerateFromEntropy()
+void GenerateEthereumKeyTest::testGenerateFromEntropy()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateKeyCommand command(database, synchronizer);
+    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("password", "asdasd123");
     request.insert("entropy", "asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd");
@@ -37,13 +37,12 @@ void GenerateKeyTest::testGenerateFromEntropy()
     QVERIFY(getSize(criteria.begin(), criteria.end())==2);
     QVERIFY(getSize(keys.begin(), keys.end())==2);
 }
-#include "GenerateKeyTest.hpp"
 
-void GenerateKeyTest::testInvalidEntropy()
+void GenerateEthereumKeyTest::testInvalidEntropy()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateKeyCommand command(database, synchronizer);
+    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("password", "adsasd123");
     request.insert("entropy", "asdas");
@@ -56,11 +55,11 @@ void GenerateKeyTest::testInvalidEntropy()
 }
 
 
-void GenerateKeyTest::testInvalidPassword()
+void GenerateEthereumKeyTest::testInvalidPassword()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateKeyCommand command(database, synchronizer);
+    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("entropy", "asdas");
     QVariant result = command(request);
@@ -71,13 +70,13 @@ void GenerateKeyTest::testInvalidPassword()
     QVERIFY(getSize(keys.begin(), keys.end())==2);
 }
 
-void GenerateKeyTest::cleanupTestCase()
+void GenerateEthereumKeyTest::cleanupTestCase()
 {
     _context.getGeth().stop();
 }
 
 template<class Iterator>
-size_t GenerateKeyTest::getSize(Iterator begin, Iterator end)
+size_t GenerateEthereumKeyTest::getSize(Iterator begin, Iterator end)
 {
     size_t size = 0;
     for(;begin!=end; ++begin)

@@ -6,14 +6,14 @@
 namespace Xeth{
 
 
-class GenerateKeyCommand : 
+class GenerateEthereumKeyCommand : 
     public GenericGenerateKeyCommand<EthereumKeyStore, Ethereum::KeyGenerator, CipherFactory>
 {
     public:
         typedef GenericGenerateKeyCommand<EthereumKeyStore, Ethereum::KeyGenerator, CipherFactory> Base;
 
     public:
-        GenerateKeyCommand(DataBase &, Synchronizer &);
+        GenerateEthereumKeyCommand(DataBase &, Synchronizer &);
 
 };
 

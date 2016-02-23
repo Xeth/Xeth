@@ -22,7 +22,7 @@
 #include "command/wallet/ExportKeyCommand.hpp"
 #include "command/wallet/ImportStealthKeyCommand.hpp"
 #include "command/wallet/ExportStealthKeyCommand.hpp"
-#include "command/wallet/GenerateKeyCommand.hpp"
+#include "command/wallet/GenerateEthereumKeyCommand.hpp"
 #include "command/wallet/GenerateStealthKeyCommand.hpp"
 #include "command/wallet/ValidateAddressCommand.hpp"
 #include "command/wallet/ValidateStealthAddressCommand.hpp"
@@ -54,7 +54,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
         Q_INVOKABLE QVariant importStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant exportStealthKey(const QVariantMap &);
-        Q_INVOKABLE QVariant generateKey(const QVariantMap &);
+        Q_INVOKABLE QVariant generateEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
         Q_INVOKABLE QVariant validateStealthAddress(const QVariantMap &);

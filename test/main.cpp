@@ -26,7 +26,7 @@
 #include "case/wallet/AddressValidatorTest.hpp"
 #include "case/wallet/SendToAddressTest.hpp"
 #include "case/wallet/StealthPaymentTest.hpp"
-#include "case/wallet/GenerateKeyTest.hpp"
+#include "case/wallet/GenerateEthereumKeyTest.hpp"
 #include "case/wallet/GenerateStealthKeyTest.hpp"
 #include "case/wallet/ImportKeyTest.hpp"
 #include "case/wallet/ImportStealthKeyTest.hpp"
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
         StealthPaymentStoreTest,
         SendToAddressTest,
         StealthPaymentTest,
-        GenerateKeyTest,
+        GenerateEthereumKeyTest,
         GenerateStealthKeyTest,
         ImportKeyTest,
         ImportStealthKeyTest,
