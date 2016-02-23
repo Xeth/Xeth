@@ -11,19 +11,17 @@ SendCommand::SendCommand(Ethereum::Connector::Provider &provider, DataBase &data
 
 QVariant SendCommand::operator()(const QVariantMap &request)
 {
-    std::string to = request["to"].toString().toStdString();
+    std::string to = request["address"].toString().toStdString();
     std::string from = request["from"].toString().toStdString();
     std::string password = request["password"].toString().toStdString();
     const QVariant & gas = request["gas"];
     BigInt amount(request["amount"].toString().toStdString());
     size_t addrSize = to.size();
-
     if(addrSize==40||addrSize==42)
     {
         SendToAddressCommand command(_provider, _database);
         return send(command, from, to, password, amount, gas);
     }
-
     SendToStealthCommand command(_provider, _database);
     return send(command, from, to, password, amount, gas);
 
