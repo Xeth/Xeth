@@ -23,10 +23,24 @@ include_directories(
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
+file(GLOB RESOURCE_FILES "resources/*")
+file(GLOB TEMPLATE_DIR "resources/template")
+list(REMOVE_ITEM RESOURCE_FILES ${TEMPLATE_DIR})
+
+file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/resources/template)
+
+add_custom_command(TARGET compiler POST_BUILD COMMAND compiler ${PROJECT_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template)
 
 
-#add_executable(xeth ${APP_SOURCES} resources/xeth.qrc)
-add_executable(xeth ${APP_SOURCES} resources/icon.qrc resources/template.qrc resources/css.qrc resources/js.qrc resources/html.qrc)
+add_executable(xeth ${APP_SOURCES} 
+    ${PROJECT_BINARY_DIR}/resources/icon.qrc 
+    ${PROJECT_BINARY_DIR}/resources/template.qrc 
+    ${PROJECT_BINARY_DIR}/resources/css.qrc 
+    ${PROJECT_BINARY_DIR}/resources/js.qrc 
+    ${PROJECT_BINARY_DIR}/resources/html.qrc)
+
+add_dependencies(xeth compiler)
 
 target_link_libraries(xeth
     xethlib
