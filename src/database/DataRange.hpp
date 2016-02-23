@@ -12,6 +12,7 @@ class DataRange
 {
     public:
         typedef RangeIterator<typename Store::Iterator, typename Store::DataType> Iterator;
+        typedef RangeIterator<typename Store::ReverseIterator, typename Store::DataType> ReverseIterator;
 
     public:
 
@@ -22,6 +23,8 @@ class DataRange
 
         Iterator begin() const;
         Iterator end() const;
+        ReverseIterator rbegin() const;
+        ReverseIterator rend() const;
 
 
     private:
