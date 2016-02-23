@@ -11,7 +11,14 @@ var TransactionCollection = Backbone.Collection.extend({
     },
 
     observe:function(){
-        XETH_event.Transaction.connect(this, this.push);
+        XETH_event.Transaction.connect(this, this.add);
+    },
+
+    model: function(data){
+        data.amount = parseFloat(XETH_convert.fromWei(data.amount));
+        data.timestamp = parseInt(data.timestamp) * 1000;
+        if(data.amount<0.00000001) data.amount = 0;
+        return new Backbone.Model(data);
     }
 
 });

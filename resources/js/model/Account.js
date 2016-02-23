@@ -9,7 +9,7 @@ var Account = Backbone.Model.extend({
     },
 
     update:function(){
-        this.set("balance", XETH_wallet.getBalance(this.get("address")));
+        this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(this.get("address"))));
     },
 
     autoUpdate:function(interval){
@@ -21,6 +21,7 @@ var Account = Backbone.Model.extend({
 
     send:function(request){
         request.from = this.get("address");
+        request.amount = XETH_convert.toWei(""+request.amount);
         var txid = XETH_wallet.send(request);
         if(txid){
             this.update();
