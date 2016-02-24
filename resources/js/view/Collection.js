@@ -1,7 +1,7 @@
 var ListView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("reset","append","prepend","resize","hide","show");
-        if(options.scroll!==false){
+        if(options.scroll===true){
             this.scroll = this.$el.mCustomScrollbar({advanced:{updateOnContentResize:true},scrollInertia:300,autoHideScrollbar:true,mouseWheel:{ normalizeDelta: false}});
             this.container = this.$el.find(".mCSB_container");
         }else{
@@ -68,13 +68,23 @@ var CollectionView = Backbone.View.extend({
         this.items = {};
         this.assigned = [];
         this.factory = options.factory;
-        _(this).bindAll("reset","remove","insert", "add");
-        this.container = options.reversed ? new ReversedListView({el:this.$el}) : new ListView({el:this.$el});
+        _(this).bindAll("reset","remove","insert", "add", "hideEmpty", "updateEmpty");
+        this.container = options.reversed ? new ReversedListView({el:this.$el, scroll:options.scroll}) : new ListView({el:this.$el, scroll:options.scroll});
         this.emplace = options.ordered ? this.insert : this.add;
+
         this.reset();
+
         this.collection.on("add", this.emplace);
         this.collection.on("remove", this.remove);
         this.collection.on("reset", this.reset);
+        if(options.empty){
+            this.$empty = $(options.empty);
+            this.collection.on("reset", this.updateEmpty);
+            this.collection.on("remove", this.updateEmpty);
+            this.collection.on("add", this.hideEmpty);
+            this.updateEmpty();
+        }
+
     },
     hide:function(){this.$el.hide();},
     show:function(){this.$el.show();},
@@ -138,7 +148,6 @@ var CollectionView = Backbone.View.extend({
         var indx = this.collection.indexOf(model);
         var view = this.register(this.create(model));
         this.container.insert(view.$el, indx);
-
     },
 
     register:function(view){
@@ -162,6 +171,14 @@ var CollectionView = Backbone.View.extend({
                 view.remove();
             });
         }
+    },
+
+    hideEmpty:function(){
+        this.$empty.hide();
+    },
+
+    updateEmpty:function(){
+        if(this.collection.length) this.$empty.hide(); else this.$empty.show();
     }
 
 });
