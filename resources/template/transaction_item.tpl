@@ -18,7 +18,7 @@
 <%}else{%>
 <div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%> style="display: block;">
     <div class="header icon">
-        <span class="detail s_titled userAddress"><%=(transaction.category=="Received")?transaction.to:transaction.from%></span>
+        <span class="detail s_titled userAddress"><%=transaction.from%></span>
     </div>
     <span class="avatar">
         <span class="img"><img src="<%=(transaction.contact && transaction.contact.avatar)?transaction.contact.avatar:'img/avatarEmpty.png'%>" onerror="errorAvatar($(this))"></span>
@@ -35,7 +35,7 @@
             </span>
         </div>
         <div class="detailsRow">
-            <span class="address"><%=(transaction.category=="Received")?transaction.from:transaction.to%></span><span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
+            <span class="address"><%=transaction.to%></span><span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
         </div>
     </div>
 </div>
