@@ -101,7 +101,7 @@ var TransactionsPageView = Backbone.View.extend({
         this.collection.filter(function(model){
 
             if(filters.timeStart&&filters.timeEnd){
-                var time = model.get("timestamp") * 1000;
+                var time = model.get("timestamp");
                 if(time<filters.timeStart||time>filters.timeEnd) return false;
             }
 
@@ -119,15 +119,13 @@ var TransactionsPageView = Backbone.View.extend({
         this.collection.each(function(view){
             if(view.$el.is(":hidden")) return;
             var model = view.model;
-            if(model.get("type")=="Sent")
+            if(model.get("category")=="Sent")
                 sent += model.get("amount");
             else
                 received += model.get("amount"); //including mined
         });
         this.totalSent = sent;
         this.totalReceived = received;
-        console.log("total sent: ",sent);
-        console.log("total received : ",received);
         this.renderTotals();
     },
 

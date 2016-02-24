@@ -1,5 +1,4 @@
 
-
 var TransactionCollection = Backbone.Collection.extend({
 
     initialize:function(){
