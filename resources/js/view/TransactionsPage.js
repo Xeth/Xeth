@@ -28,7 +28,16 @@ var TransactionsPageView = Backbone.View.extend({
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"));
-        this.collection = new CollectionView({scroll:true, reversed:false, ordered:true, el:this.$el.find(".transactionList"), collection:options.transactions, factory:this.factory});
+        this.collection = new CollectionView({
+            collection:options.transactions,
+            factory:this.factory,
+            scroll:true,
+            reversed:false,
+            ordered:true,
+            el:this.$el.find(".transactionList"),
+            empty:this.$el.find(".empty")
+        });
+
         this.$sent = this.$el.find(".transactions_total .sent .txtBalance");
         this.$received = this.$el.find(".transactions_total .received .txtBalance");
 
@@ -86,7 +95,7 @@ var TransactionsPageView = Backbone.View.extend({
 
     setTypeFilter:function(ev){
         var type = (!ev.target)? ev : $(ev.target).val();
-        this.filters.type = type=="all"?null:type;
+        this.filters.type = type=="All"?null:type;
         this.applyFilters();
     },
 
@@ -106,7 +115,7 @@ var TransactionsPageView = Backbone.View.extend({
             }
 
             if(filters.address && filters.address != model.get("from") && filters.address != model.get("to")) return false;
-            if(filters.type && filters.type!=model.get("type")) return false;
+            if(filters.type && filters.type!=model.get("category")) return false;
 
             return true;
         });
