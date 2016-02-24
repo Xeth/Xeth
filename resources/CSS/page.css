@@ -661,7 +661,9 @@
 	bottom: 0px;
 	right: 0;/*-30px;*/
 	/*padding-right: 30px;*/
-	overflow: hidden;
+/*	overflow: hidden;*/
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 .page .scrollpage .empty {
 	padding: 30px 0;
