@@ -1,3 +1,4 @@
+#include <QDebug>
 
 
 namespace Xeth{
@@ -156,9 +157,10 @@ bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ge
     leveldb::Status status = _db->Get(leveldb::ReadOptions(), makeKey(key), &data);
     if(!status.ok())
     {
+        qDebug()<<"failed to fetch data ";
         return false;
     }
-
+    qDebug()<<"data fetched : "<<data.c_str();
     ValueSerializer serializer;
     serializer(key, data.c_str(), result);
     return true;

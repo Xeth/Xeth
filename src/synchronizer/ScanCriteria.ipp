@@ -59,7 +59,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
 
     progress.setRange(minBlock, height);
 
-    size_t blockIndex = minIndex;
+    result.lastBlock = minIndex;
 
 
     try
@@ -68,10 +68,10 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
         for(std::map<size_t, Container::iterator>::iterator it=mappedCriteria.begin(), end=mappedCriteria.end(); it!=end; ++it)
         {
 
-            for(; blockIndex <= it->first; blockIndex++)
+            for(; result.lastBlock <= it->first; result.lastBlock++)
             {
-                Block block = blockchain.getBlock(blockIndex);
-                processBlock(blockIndex, block, it->second, result);
+                Block block = blockchain.getBlock(result.lastBlock);
+                processBlock(result.lastBlock, block, it->second, result);
                 progress.next();
                 InterruptionPoint interruption;
             }
@@ -88,12 +88,10 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
 
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
     {
-        it->first = blockIndex;
+        it->first = result.lastBlock;
     }
 
-    result.lastBlock = blockIndex;
-
-    return blockIndex;
+    return result.lastBlock;
 
 }
 

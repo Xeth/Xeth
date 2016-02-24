@@ -9,6 +9,8 @@
 #include "LevelDbReverseIterator.hpp"
 #include "DataSerializer.hpp"
 #include "KeySerializer.hpp"
+#include "NumericKeySerializer.hpp"
+#include "NumericKeyComparator.hpp"
 
 
 namespace Xeth{

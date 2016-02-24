@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <leveldb/slice.h>
 
@@ -7,7 +7,7 @@ namespace Xeth{
 
 
 template<class Key>
-class KeySerializer
+class NumericKeySerializer
 {
     public:
         leveldb::Slice operator()(const Key &) const;
@@ -19,4 +19,4 @@ class KeySerializer
 
 }
 
-#include "KeySerializer.ipp"
+#include "NumericKeySerializer.ipp"

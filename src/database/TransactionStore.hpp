@@ -9,7 +9,6 @@
 #include <boost/lexical_cast.hpp>
 
 #include "detail/LevelDbStore.hpp"
-#include "detail/NumericKeyComparator.hpp"
 #include "types/TransactionCategory.hpp"
 #include "types/BigInt.hpp"
 #include "types/StealthKey.hpp"
@@ -30,7 +29,7 @@ class TransactionDataSerializer : public DataSerializer<QJsonObject>
 
 
 
-typedef LevelDbStore<QJsonObject, TransactionDataSerializer, int, Xeth::KeySerializer<int>, NumericKeyComparator<int> > TransactionDataStore;
+typedef LevelDbStore<QJsonObject, TransactionDataSerializer, int, NumericKeySerializer<int>, NumericKeyComparator<int> > TransactionDataStore;
 typedef LevelDbStore<int> TransactionIndexStore;
 
 
