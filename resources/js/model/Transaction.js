@@ -14,6 +14,10 @@ var TransactionCollection = Backbone.Collection.extend({
         XETH_event.Transaction.connect(this, this.add);
     },
 
+    comparator:function(model){
+        return -model.get("timestamp");
+    },
+
     model: function(data){
         data.amount = parseFloat(XETH_convert.fromWei(data.amount));
         data.timestamp = parseInt(data.timestamp) * 1000;
