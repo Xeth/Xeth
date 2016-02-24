@@ -12,12 +12,12 @@ RenameConactCommand::RenameConactCommand(DataBase &database):
 
 QVariant RenameConactCommand::operator ()(const QVariantMap &request)
 {
-    if(!request.contains("oldAlias")||!request.contains("newAlias"))
+    if(!request.contains("previous")||!request.contains("alias"))
     {
         return QVariant::fromValue(false);
     }
 
-    return QVariant::fromValue(_database.getAddressBook().move(request["oldAlias"].toString().toStdString().c_str(), request["newAlias"].toString().toStdString().c_str()));
+    return QVariant::fromValue(_database.getAddressBook().move(request["previous"].toString().toStdString().c_str(), request["alias"].toString().toStdString().c_str()));
 
 }
 
