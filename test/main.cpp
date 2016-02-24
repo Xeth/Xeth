@@ -28,7 +28,7 @@
 #include "case/wallet/StealthPaymentTest.hpp"
 #include "case/wallet/GenerateEthereumKeyTest.hpp"
 #include "case/wallet/GenerateStealthKeyTest.hpp"
-#include "case/wallet/ImportKeyTest.hpp"
+#include "case/wallet/ImportEthereumKeyTest.hpp"
 #include "case/wallet/ImportStealthKeyTest.hpp"
 #include "case/converter/WeiConversionTest.hpp"
 #include "case/converter/SzaboConversionTest.hpp"
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
         StealthPaymentTest,
         GenerateEthereumKeyTest,
         GenerateStealthKeyTest,
-        ImportKeyTest,
+        ImportEthereumKeyTest,
         ImportStealthKeyTest,
         WeiConversionTest,
         SzaboConversionTest,

@@ -14,12 +14,12 @@ namespace Xeth{
 Window::Window(FrameContextBuilder &contextBuilder) :
     _contextBuilder(contextBuilder)
 {
-//    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
-//    QWebInspector *inspector = new QWebInspector;
-//    inspector->setPage(page());
-//    inspector->show();
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    QWebInspector *inspector = new QWebInspector;
+    inspector->setPage(page());
+    inspector->show();
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
-    setContextMenuPolicy(Qt::NoContextMenu);
+//    setContextMenuPolicy(Qt::NoContextMenu);
     setFixedSize(960, 600);
     setUrl("qrc:/index.html");
     setIcon(":/icon/ethereum.ico");

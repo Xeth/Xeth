@@ -69,9 +69,9 @@ QVariant WalletFacade::importPresaleKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant WalletFacade::importKey(const QVariantMap &request)
+QVariant WalletFacade::importEthereumKey(const QVariantMap &request)
 {
-    ImportKeyCommand command(_database, _synchronizer);
+    ImportEthereumKeyCommand command(_database, _synchronizer);
     return _invoker.invoke(command, request);
 }
 

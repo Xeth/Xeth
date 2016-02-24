@@ -1,15 +1,15 @@
-#include "ImportKeyTest.hpp"
+#include "ImportEthereumKeyTest.hpp"
 
 
-ImportKeyTest::ImportKeyTest()
+ImportEthereumKeyTest::ImportEthereumKeyTest()
 {}
 
 
-void ImportKeyTest::testImport()
+void ImportEthereumKeyTest::testImport()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::ImportKeyCommand command(database, synchronizer);
+    Xeth::ImportEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("file", "data/key/UTC--2016-02-09T04:33:27.433427--8a3015660bca082f81e53b2036bea9d41a8f79a8");
     QVariant result = command(request);
@@ -21,11 +21,11 @@ void ImportKeyTest::testImport()
     QVERIFY(getSize(keys.begin(), keys.end())==1);
 }
 
-void ImportKeyTest::testInvalidRequest()
+void ImportEthereumKeyTest::testInvalidRequest()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::ImportKeyCommand command(database, synchronizer);
+    Xeth::ImportEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     QVariant result = command(request);
     QVERIFY(!result.toBool());
@@ -37,11 +37,11 @@ void ImportKeyTest::testInvalidRequest()
 }
 
 
-void ImportKeyTest::testRenamedFile()
+void ImportEthereumKeyTest::testRenamedFile()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::ImportKeyCommand command(database, synchronizer);
+    Xeth::ImportEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("file", "data/key/ethbackup");
     QVariant result = command(request);
@@ -53,11 +53,11 @@ void ImportKeyTest::testRenamedFile()
     QVERIFY(getSize(keys.begin(), keys.end())==2);
 }
 
-void ImportKeyTest::testMalformedFile()
+void ImportEthereumKeyTest::testMalformedFile()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::ImportKeyCommand command(database, synchronizer);
+    Xeth::ImportEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("file", "data/key/UTC--2016-02-09T04:33:27.436497--7420f23ff3e5c9d713f87d9db5a0a18bb9bfb6d0");
     QVariant result = command(request);
@@ -70,11 +70,11 @@ void ImportKeyTest::testMalformedFile()
 }
 
 
-void ImportKeyTest::testImportNonExistendFile()
+void ImportEthereumKeyTest::testImportNonExistendFile()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::ImportKeyCommand command(database, synchronizer);
+    Xeth::ImportEthereumKeyCommand command(database, synchronizer);
     QVariantMap request;
     request.insert("file", "data/key/nonexistentkey");
     QVariant result = command(request);
@@ -86,13 +86,13 @@ void ImportKeyTest::testImportNonExistendFile()
     QVERIFY(getSize(keys.begin(), keys.end())==2);
 }
 
-void ImportKeyTest::cleanupTestCase()
+void ImportEthereumKeyTest::cleanupTestCase()
 {
     _context.getGeth().stop();
 }
 
 template<class Iterator>
-size_t ImportKeyTest::getSize(Iterator begin, Iterator end)
+size_t ImportEthereumKeyTest::getSize(Iterator begin, Iterator end)
 {
     size_t size = 0;
     for(;begin!=end; ++begin)

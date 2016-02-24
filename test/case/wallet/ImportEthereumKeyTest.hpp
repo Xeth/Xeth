@@ -7,11 +7,11 @@
 #include "simulator/BlockChainSimulator.hpp"
 #include "simulator/ApplicationContext.hpp"
 
-#include "command/wallet/ImportKeyCommand.hpp"
+#include "command/wallet/ImportEthereumKeyCommand.hpp"
 
 
 
-class ImportKeyTest : public QObject
+class ImportEthereumKeyTest : public QObject
 {
     Q_OBJECT
 
@@ -20,7 +20,7 @@ class ImportKeyTest : public QObject
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
 
     public:
-        ImportKeyTest();
+        ImportEthereumKeyTest();
 
     private slots:
         void testImport();

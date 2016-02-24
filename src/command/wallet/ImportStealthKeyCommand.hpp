@@ -8,14 +8,15 @@
 #include "database/KeyAttributesReader.hpp"
 
 #include "detail/GenericImportKeyCommand.hpp"
+#include "detail/StealthKeyValidator.hpp"
 
 namespace Xeth{
 
 
-class ImportStealthKeyCommand : public GenericImportKeyCommand<StealthKeyStore>
+class ImportStealthKeyCommand : public GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator>
 {
     public:
-        typedef GenericImportKeyCommand<StealthKeyStore> Base;
+        typedef GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator> Base;
 
     public:
         ImportStealthKeyCommand(DataBase &db, Synchronizer &);

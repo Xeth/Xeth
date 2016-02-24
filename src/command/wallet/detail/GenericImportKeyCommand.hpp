@@ -15,7 +15,7 @@
 namespace Xeth{
 
 
-template<class Store>
+template<class Store, class Validator>
 class GenericImportKeyCommand
 {
     public:

@@ -11,7 +11,16 @@
 namespace Xeth{
 
 
-template<class Store>
+class NullValidator
+{
+    public:
+        template<class Item>
+        bool operator()(const Item &) const;
+};
+
+
+
+template<class Store, class Validator=NullValidator>
 class FileImporter
 {
     public:
@@ -21,6 +30,7 @@ class FileImporter
     public:
 
         FileImporter(Store &);
+        FileImporter(Store &, const Validator &);
 
         bool import(const std::string &);
         bool import(const std::string &, Json::Value &result);
@@ -29,6 +39,7 @@ class FileImporter
 
     private:
         Store &_store;
+        Validator _validator;
 
 };
 

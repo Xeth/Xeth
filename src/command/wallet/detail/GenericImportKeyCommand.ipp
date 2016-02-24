@@ -1,16 +1,21 @@
 namespace Xeth{
 
 
-template<class Store>
-GenericImportKeyCommand<Store>::GenericImportKeyCommand(Store &store, Synchronizer &synchronizer) : 
+template<class Store, class Validator>
+GenericImportKeyCommand<Store, Validator>::GenericImportKeyCommand(Store &store, Synchronizer &synchronizer) : 
     _store(store),
     _synchronizer(synchronizer)
 {}
 
 
-template<class Store>
-bool GenericImportKeyCommand<Store>::import(const QVariantMap &request, std::string &address)
+template<class Store, class Validator>
+bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &request, std::string &address)
 {
+
+    if(!request.contains("file")||!request.contains("password"))
+    {
+        return false;
+    }
 
     std::string file = request["file"].toString().toStdString();
 
@@ -22,7 +27,7 @@ bool GenericImportKeyCommand<Store>::import(const QVariantMap &request, std::str
     typename Store::Data key;
     Json::Value json;
 
-    FileImporter<Store> importer(_store);
+    FileImporter<Store, Validator> importer(_store, Validator(request["password"].toString().toStdString()));
 
     if(!importer.import(file, json, key))
     {
@@ -38,8 +43,8 @@ bool GenericImportKeyCommand<Store>::import(const QVariantMap &request, std::str
 }
 
 
-template<class Store>
-QVariant GenericImportKeyCommand<Store>::operator()(const QVariantMap &request)
+template<class Store, class Validator>
+QVariant GenericImportKeyCommand<Store, Validator>::operator()(const QVariantMap &request)
 {
     std::string address;
     if(!import(request, address))
