@@ -7,21 +7,12 @@ ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synch
     _synchronizer(synchronizer)
 {}
 
-QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
+
+bool ImportPresaleKeyCommand::import(const QString &path, const QString &password, QString &address)
 {
-    QString path = request["path"].toString();
-    QString password = request["password"].toString();
-
-    QVariantMap result;
-
-    if(!path.length() || !password.length())
-    {
-        return QVariant::fromValue(false);
-    }
 
     QStringList args;
     Json::Value json;
-    std::string address;
 
     args.push_back("--password");
     args.push_back(password);
@@ -36,7 +27,7 @@ QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
 
     if(_process.exitStatus() != 0)
     {
-        return QVariant::fromValue(false);
+        return false;
     }
     else
     {
@@ -44,17 +35,39 @@ QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
 
         if(!reader.read(path.toStdString().c_str(), json))
         {
-            return QVariant::fromValue(false);
+            return false;
         }
         else
         {
-            address = json["ethaddr"].asString();
-            _synchronizer.watchAddress(address);
+            std::string addr = json["ethaddr"].asString();
+            _synchronizer.watchAddress(addr);
+            address = addr.c_str();
         }
     }
 
-    return QVariant::fromValue(QString(address.c_str()));
+    return true;
+}
 
+
+bool ImportPresaleKeyCommand::import(const QVariantMap &request, QString &address)
+{
+    if(!request.contains("file")||!request.contains("password"))
+    {
+        return false;
+    }
+
+    return import(request["file"].toString(),  request["password"].toString(), address);
+}
+
+
+QVariant ImportPresaleKeyCommand::operator ()(const QVariantMap &request)
+{
+    QString address;
+    if(!import(request, address))
+    {
+        return QVariant::fromValue(false);
+    }
+    return QVariant::fromValue(address);
 }
 
 

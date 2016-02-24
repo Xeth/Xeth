@@ -62,6 +62,11 @@ QVariant WalletFacade::getTransaction(const QString &hash)
     return _invoker.invoke(command, hash);
 }
 
+QVariant WalletFacade::importKey(const QVariantMap &request)
+{
+    ImportKeyCommand command(_settings, _database, _synchronizer);
+    return _invoker.invoke(command, request);
+}
 
 QVariant WalletFacade::importPresaleKey(const QVariantMap &request)
 {

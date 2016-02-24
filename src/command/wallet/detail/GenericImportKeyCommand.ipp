@@ -9,7 +9,30 @@ GenericImportKeyCommand<Store, Validator>::GenericImportKeyCommand(Store &store,
 
 
 template<class Store, class Validator>
-bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &request, std::string &address)
+bool GenericImportKeyCommand<Store, Validator>::import(const QString &file, const QString &password, QString &address)
+{
+
+    typename Store::Data key;
+    Json::Value json;
+
+    FileImporter<Store, Validator> importer(_store, Validator(password.toStdString()));
+
+    std::string path = file.toStdString();
+
+    if(!importer.import(path.c_str(), json, key))
+    {
+        return false;
+    }
+
+    KeyAttributesReader<Store> attr(path, json);
+    _synchronizer.watch(key, attr.getCreationTime());
+    AddressBuilder builder;
+    address = builder.build(key).c_str();
+    return true;
+}
+
+template<class Store, class Validator>
+bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &request, QString &address)
 {
 
     if(!request.contains("file")||!request.contains("password"))
@@ -17,41 +40,19 @@ bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &reques
         return false;
     }
 
-    std::string file = request["file"].toString().toStdString();
-
-    if(!file.size())
-    {
-        return false;
-    }
-
-    typename Store::Data key;
-    Json::Value json;
-
-    FileImporter<Store, Validator> importer(_store, Validator(request["password"].toString().toStdString()));
-
-    if(!importer.import(file, json, key))
-    {
-        return false;
-    }
-
-    KeyAttributesReader<Store> attr(file, json);
-    _synchronizer.watch(key, attr.getCreationTime());
-    AddressBuilder builder;
-    address = builder.build(key);
-
-    return true;
+    return import(request["file"].toString(), request["password"].toString(), address);
 }
 
 
 template<class Store, class Validator>
 QVariant GenericImportKeyCommand<Store, Validator>::operator()(const QVariantMap &request)
 {
-    std::string address;
+    QString address;
     if(!import(request, address))
     {
         return QVariant::fromValue(false);
     }
-    return QVariant::fromValue(QString(address.c_str()));
+    return QVariant::fromValue(address);
 }
 
 

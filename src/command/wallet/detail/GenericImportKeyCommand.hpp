@@ -23,8 +23,8 @@ class GenericImportKeyCommand
 
         QVariant operator ()(const QVariantMap &request);
 
-    private:
-        bool import(const QVariantMap &request, std::string &address);
+        bool import(const QVariantMap &request, QString &address);
+        bool import(const QString &file, const QString &password, QString &address);
 
     private:
         Store &_store;

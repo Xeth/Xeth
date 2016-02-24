@@ -20,6 +20,9 @@ class ImportPresaleKeyCommand
 
         QVariant operator()(const QVariantMap &);
 
+        bool import(const QVariantMap &, QString &address);
+        bool import(const QString &path, const QString &password, QString &address);
+
     private:
         EthProcess _process;
         Synchronizer &_synchronizer;
