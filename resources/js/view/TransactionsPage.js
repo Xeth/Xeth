@@ -74,12 +74,13 @@ var TransactionsPageView = Backbone.View.extend({
         this.computeTotals();
     },
 
-    render:function(){
+    render:function(options){
         this.accounts.resize(21);
         this.accounts.compact(true);
         this.accounts.attach(this.$el.find("#filterTransactionAddress"));
         this.accounts.filter(function(){return true;}); //show all rows
         this.accounts.style("mini");
+        if(options && options.focusFirst) this.collection.focusFirst();
     },
 
     setTimeFilter:function(start, end, label){

@@ -141,7 +141,7 @@ var SendPageView = Backbone.View.extend({
         this.destination.val("");
         this.amount.val("");
 
-        this.router.redirect("transactions");
+        this.router.redirect("transactions", {focusFirst:true});
         return true;
 
     }

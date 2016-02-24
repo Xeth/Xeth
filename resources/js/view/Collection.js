@@ -38,6 +38,18 @@ var ListView = Backbone.View.extend({
     },
     show:function(){
         this.$el.show();
+    },
+    focusLast:function(){
+        if(this.scroll){
+            this.$el.mCustomScrollbar("update");
+            this.$el.mCustomScrollbar("scrollTo", "last");
+        }
+    },
+    focusFirst:function(){
+        if(this.scroll){
+            this.$el.mCustomScrollbar("update");
+            this.$el.mCustomScrollbar("scrollTo", "first");
+        }
     }
 });
 
@@ -59,6 +71,12 @@ var ReversedListView = ListView.extend({
     },
     resize:function(size){
         ListView.prototype.resize.call(this, size);
+    },
+    focusLast:function(){
+        ListView.prototype.focusFirst.call(this);
+    },
+    focusFirst:function(){
+        ListView.prototype.focusLast.call(this);
     }
 });
 
@@ -148,6 +166,14 @@ var CollectionView = Backbone.View.extend({
         var indx = this.collection.indexOf(model);
         var view = this.register(this.create(model));
         this.container.insert(view.$el, indx);
+    },
+
+    focusLast:function(){
+        this.container.focusLast();
+    },
+
+    focusFirst:function(){
+        this.container.focusFirst();
     },
 
     register:function(view){
