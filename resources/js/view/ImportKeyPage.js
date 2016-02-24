@@ -27,12 +27,13 @@ var ImportKeyPageView = Backbone.View.extend({
             notifyError("password is required");
             return false;
         }
-        if(!this.wallet.importKey({password: password, file:this.filename})){
+        var address = this.wallet.importKey(this.filename, password.val());
+        if(!address){
             notifyError("failed to import key, file is corrupted or invalid password");
             return false;
         }
         notifySuccess("key imported");
-        router.redirect();
+        this.router.redirect("receive", {address: address});
         return true;
     }
 
