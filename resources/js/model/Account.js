@@ -1,7 +1,17 @@
-
-var Account = Backbone.Model.extend({
+var AccountBase = Backbone.Model.extend({
 
     idAttribute: "address",
+
+    backup:function(path){
+        return XETH_wallet.exportKey({address:this.get("address")||this.get("stealth"), path:path});
+    },
+
+    changePassword:function(previous, password){
+        return XETH_wallet.changePassword({previous: previous, password:password});
+    }
+});
+
+var Account = AccountBase.extend({
 
     initialize:function(){
         _(this).bindAll("update");
@@ -27,21 +37,12 @@ var Account = Backbone.Model.extend({
             this.update();
         }
         return txid;
-    },
-    
-    backup:function(path){
-        return XETH_wallet.exportKey({address:this.get("address")||this.get("stealth"), path:path});
-    },
-
-    changePassword:function(previous, password){
-        return XETH_wallet.changePassword({previous: previous, password:password});
     }
-
 });
 
 
-var StealthAccount = Backbone.Model.extend({
-    idAttribute: "address",
+var StealthAccount = AccountBase.extend({
+
     initialize:function(){
         this.set("balance",0);
     },
