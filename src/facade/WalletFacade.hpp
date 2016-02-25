@@ -19,7 +19,7 @@
 #include "command/wallet/SendToStealthCommand.hpp"
 #include "command/wallet/ImportPresaleKeyCommand.hpp"
 #include "command/wallet/ImportEthereumKeyCommand.hpp"
-#include "command/wallet/ExportKeyCommand.hpp"
+#include "command/wallet/ExportEthereumKeyCommand.hpp"
 #include "command/wallet/ImportKeyCommand.hpp"
 #include "command/wallet/ImportStealthKeyCommand.hpp"
 #include "command/wallet/ExportStealthKeyCommand.hpp"
@@ -29,6 +29,7 @@
 #include "command/wallet/ValidateAddressCommand.hpp"
 #include "command/wallet/ValidateStealthAddressCommand.hpp"
 #include "command/wallet/SendCommand.hpp"
+#include "command/wallet/ExportKeyCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -52,6 +53,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
         Q_INVOKABLE QVariant getTransaction(const QString &hash);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
+        Q_INVOKABLE QVariant exportEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
         Q_INVOKABLE QVariant importPresaleKey(const QVariantMap &);
         Q_INVOKABLE QVariant importEthereumKey(const QVariantMap &);

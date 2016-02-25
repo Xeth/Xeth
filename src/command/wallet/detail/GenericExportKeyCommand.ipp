@@ -11,25 +11,34 @@ template<class Store>
 QVariant GenericExportKeyCommand<Store>::operator()(const QVariantMap &request)
 {
     QString address = request["address"].toString();
-    QString destinationPath = request["destination"].toString();
+    QString destination = request["path"].toString();
 
-    if(!address.length() || !destinationPath.length())
+    if(!address.length() || !destination.length())
     {
         return QVariant::fromValue(false);
     }
+
+    return QVariant::fromValue(execute(address, destination));
+
+}
+
+
+template<class Store>
+bool GenericExportKeyCommand<Store>::execute(const QString &address, const QString &destination)
+{
 
     typename Store::Iterator it = _store.find(address.toStdString().c_str());
 
     if(it==_store.end())
     {
-        return QVariant::fromValue(false);
+        return false;
     }
 
     const boost::filesystem::path & path = it.path();
-    QString destinationFile = destinationPath;
-    destinationFile +=  QDir::separator();
-    destinationFile += path.filename().c_str();
-    return QVariant::fromValue(QFile::copy(path.string().c_str(), destinationFile));
+    QString file = destination;
+    file +=  QDir::separator();
+    file += path.filename().c_str();
+    return QFile::copy(path.string().c_str(), file);
 }
 
 

@@ -17,6 +17,8 @@ class GenericExportKeyCommand
         GenericExportKeyCommand(const Store &);
         QVariant operator()(const QVariantMap &);
 
+        bool execute(const QString &, const QString &);
+
     private:
         const Store &_store;
 

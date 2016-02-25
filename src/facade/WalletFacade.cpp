@@ -92,6 +92,12 @@ QVariant WalletFacade::exportKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::exportEthereumKey(const QVariantMap &request)
+{
+    ExportEthereumKeyCommand command(_database);
+    return _invoker.invoke(command, request);
+}
+
 
 QVariant WalletFacade::exportStealthKey(const QVariantMap &request)
 {

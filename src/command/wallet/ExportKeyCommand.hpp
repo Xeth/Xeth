@@ -1,17 +1,27 @@
-#pragma once
+#pragma once 
 
 #include "database/DataBase.hpp"
-#include "detail/GenericExportKeyCommand.hpp"
+
+#include "ExportEthereumKeyCommand.hpp"
+#include "ExportStealthKeyCommand.hpp"
 
 
 namespace Xeth{
 
 
-class ExportKeyCommand : public GenericExportKeyCommand<EthereumKeyStore>
+class ExportKeyCommand
 {
     public:
-        ExportKeyCommand(const DataBase &);
+        ExportKeyCommand(DataBase &database);
+        QVariant operator()(const QVariantMap &);
 
+
+    private:
+        QVariant exportStealthKey(const QString &, const QString &);
+        QVariant exportEthereumKey(const QString &, const QString &);
+
+    private:
+        DataBase &_database;
 };
 
 
