@@ -23,7 +23,6 @@ QVariant ExportKeyCommand::operator()(const QVariantMap &request)
     {
         return exportEthereumKey(address, path);
     }
-
     return exportStealthKey(address, path);
 }
 

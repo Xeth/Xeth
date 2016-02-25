@@ -1,5 +1,5 @@
 #include "EthereumKeyStore.hpp"
-
+#include <cctype>
 
 namespace Xeth{
 
@@ -60,9 +60,18 @@ bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)
 
 EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
 {
-    std::string pattern = "\\-\\-";
-    pattern += address;
-    pattern += "$";
+    std::string pattern = "--";
+    if(address[0]=='0'&&address[1]=='x')
+    {
+        address += 2;
+    }
+
+    std::string addr = address;
+    std::transform(addr.begin(), addr.end(), addr.begin(), ::tolower);
+
+    pattern += addr;
+    pattern += '$';
+
     boost::smatch match;
 
     boost::regex regex(pattern);
@@ -70,12 +79,12 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
 
     for(; it!=e; ++it)
     {
-        std::string filename = it.path().stem().string();
+        std::string filename = it.path().filename().string();
         if(boost::regex_search(filename, match, regex))
         {
             //extra check
             EthereumKey key = *it;
-            if(it->getAddress().toString() == address)
+            if(it->getAddress().toString() == addr)
             {
                 break;
             }

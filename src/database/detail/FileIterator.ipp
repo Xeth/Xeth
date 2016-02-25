@@ -31,7 +31,7 @@ fs::directory_iterator FileIterator<Value, Parser>::findValid(const fs::director
 
     while(it!=end)
     {
-        if(fs::is_regular_file(it->status()) && it->path().extension().string() == _ext)
+        if(fs::is_regular_file(it->status()) &&  (!_ext.size() || it->path().extension().string() == _ext))
         {
             break;
         }

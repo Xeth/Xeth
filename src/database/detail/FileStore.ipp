@@ -1,24 +1,21 @@
-#include <QDebug>
 namespace Xeth{
 
 
 template<class Value, class Serializer>
 FileStore<Value, Serializer>::FileStore(const std::string &path, const std::string &ext) : 
     _directory(path.c_str(), false),
-    _ext("."+ext)
+    _ext(ext.size()?("."+ext):"")
 {
     _directory.createIfNotExists();
-    qDebug()<<"filestore path : "<<_directory.toString().c_str();
 }
 
 
 template<class Value, class Serializer>
 FileStore<Value, Serializer>::FileStore(const boost::filesystem::path &path, const std::string &ext) : 
     _directory(path, false),
-    _ext("."+ext)
+    _ext(ext.size()?("."+ext):"")
 {
     _directory.createIfNotExists();
-    qDebug()<<"filestore path : "<<_directory.toString().c_str();
 }
 
 
