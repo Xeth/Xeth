@@ -4,7 +4,7 @@
 namespace Xeth{
 
 
-ChangeEthereumKeyPasswordCommnad::ChangeEthereumKeyPasswordCommnad(DataBase &database) :
+ChangeEthereumKeyPasswordCommand::ChangeEthereumKeyPasswordCommand(DataBase &database) :
     Base(database.getEthereumKeys())
 {}
 

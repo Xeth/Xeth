@@ -14,14 +14,14 @@
 namespace Xeth{
 
 
-class ChangeEthereumKeyPasswordCommnad : 
+class ChangeEthereumKeyPasswordCommand : 
     public GenericChangePasswordCommand<EthereumKeyStore, ChangeEthereumKeyPasswordOperation>
 {
     public:
         typedef GenericChangePasswordCommand<EthereumKeyStore, ChangeEthereumKeyPasswordOperation> Base;
 
     public:
-        ChangeEthereumKeyPasswordCommnad(DataBase &);
+        ChangeEthereumKeyPasswordCommand(DataBase &);
 
 };
 
