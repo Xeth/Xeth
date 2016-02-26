@@ -27,6 +27,8 @@ class StealthKeyStore :
         StealthKeyStore(const std::string &path);
         StealthKeyStore(const boost::filesystem::path &path);
 
+        bool replace(const StealthKey &);
+
         bool insert(const StealthKey &);
         bool insert(const std::string &, const StealthKey &);
         bool insert(const char *, const StealthKey &);

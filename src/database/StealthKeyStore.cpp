@@ -11,6 +11,12 @@ StealthKeyStore::StealthKeyStore(const boost::filesystem::path &path) :
 {}
 
 
+bool StealthKeyStore::replace(const StealthKey &key)
+{
+    return Base::replace(makeAddress(key).c_str(), key);
+}
+
+
 bool StealthKeyStore::insert(const std::string &id, const StealthKey &key)
 {
     //ignore suggested id
