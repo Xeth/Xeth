@@ -30,6 +30,8 @@
 #include "command/wallet/ValidateStealthAddressCommand.hpp"
 #include "command/wallet/SendCommand.hpp"
 #include "command/wallet/ExportKeyCommand.hpp"
+#include "command/wallet/ChangeEthereumKeyPasswordCommand.hpp"
+#include "command/wallet/ChangeStealthKeyPasswordCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -64,6 +66,8 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
         Q_INVOKABLE QVariant validateStealthAddress(const QVariantMap &);
+        Q_INVOKABLE QVariant changeEthereumKeyPassword(const QVariantMap &);
+        Q_INVOKABLE QVariant changeStealthKeyPassword(const QVariantMap &);
 
     private:
         const Settings &_settings;

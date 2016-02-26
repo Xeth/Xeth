@@ -138,4 +138,18 @@ QVariant WalletFacade::validateStealthAddress(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+
+QVariant WalletFacade::changeEthereumKeyPassword(const QVariantMap &request)
+{
+    ChangeEthereumKeyPasswordCommand command(_database);
+    return _invoker.invoke(command, request);
+}
+
+
+QVariant WalletFacade::changeStealthKeyPassword(const QVariantMap &request)
+{
+    ChangeStealthKeyPasswordCommand command(_database);
+    return _invoker.invoke(command, request);
+}
+
 }
