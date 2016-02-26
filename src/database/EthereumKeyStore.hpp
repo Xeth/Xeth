@@ -32,6 +32,7 @@ class EthereumKeyStore :
         EthereumKeyStore(const std::string &path);
         EthereumKeyStore(const boost::filesystem::path &path);
 
+        bool replace(const EthereumKey &);
         bool insert(const EthereumKey &);
         bool insert(const char *id, const EthereumKey &);
         bool insert(const std::string &, const EthereumKey &);
@@ -47,6 +48,7 @@ class EthereumKeyStore :
         void NewItem(const QString &) const;
 
     private:
+        std::string makeFileName(const EthereumKey &) const;
         std::string makeFileName(const EthereumKey &, const boost::posix_time::ptime &time) const;
         bool validateId(const std::string &id, const EthereumKey &);
 };

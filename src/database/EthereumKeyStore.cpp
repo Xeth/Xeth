@@ -14,7 +14,7 @@ EthereumKeyStore::EthereumKeyStore(const boost::filesystem::path &path) :
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
-    if(Base::insert(makeFileName(key, boost::posix_time::microsec_clock::universal_time()).c_str(), key))
+    if(Base::insert(makeFileName(key).c_str(), key))
     {
         emit NewItem(QString(key.getAddress().toString().c_str()));
         return true;
@@ -23,6 +23,10 @@ bool EthereumKeyStore::insert(const EthereumKey &key)
 }
 
 
+bool EthereumKeyStore::replace(const EthereumKey &key)
+{
+    return Base::replace(makeFileName(key).c_str(), key);
+}
 
 
 bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
@@ -108,6 +112,12 @@ EthereumKey EthereumKeyStore::get(const char *address) const
         throw std::runtime_error("key not found");
     }
     return *it;
+}
+
+
+std::string EthereumKeyStore::makeFileName(const EthereumKey &key) const
+{
+    return makeFileName(key, boost::posix_time::microsec_clock::universal_time());
 }
 
 
