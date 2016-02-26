@@ -127,28 +127,29 @@ var SendPageView = Backbone.View.extend({
         if(gas!=50) request.gas = gas/50; //in percents
 
         this.$form.addClass("waiting");
-        if(!account.send(request)){
-            this.$form.removeClass("waiting");
-            notifyError("invalid password");
-            return false;
-        }
+        var _this = this;
+        setTimeout(function(){
+            if(!account.send(request)){
+                _this.$form.removeClass("waiting");
+                notifyError("invalid password");
+                return false;
+            }
 
-        notifySuccess("sent");
+            notifySuccess("sent");
 
-        if(alias.length){
-            var contact = {alias:alias};
-            contact[type] = request[type];
-            this.addressbook.create(contact);
-        }
+            if(alias.length){
+                var contact = {alias:alias};
+                contact[type] = request[type];
+                _this.addressbook.create(contact);
+            }
 
-        this.$form.removeClass("waiting");
-        this.password.val("");
-        this.destination.val("");
-        this.amount.val("");
+            _this.$form.removeClass("waiting");
+            _this.password.val("");
+            _this.destination.val("");
+            _this.amount.val("");
 
-        this.router.redirect("transactions", {focusFirst:true});
-        return true;
-
+            _this.router.redirect("transactions", {focusFirst:true});
+        }, 0);
     }
 
 })
