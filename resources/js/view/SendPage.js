@@ -31,6 +31,7 @@ var SendPageView = Backbone.View.extend({
         });
         this.$el.find("a.clipboard").click(this.paste);
         this.router = options.router;
+        this.$form = this.$el.find(".formpage.send");
     },
 
     render:function(args){
@@ -41,6 +42,7 @@ var SendPageView = Backbone.View.extend({
         this.accounts.resize(); //default size
         if(args && args.destination){
             this.destination.val(args.destination);
+            this.sendType.val("address");
         }
     },
 
@@ -124,7 +126,9 @@ var SendPageView = Backbone.View.extend({
         var gas = this.gas.slider("value");
         if(gas!=50) request.gas = gas/50; //in percents
 
+        this.$form.addClass("waiting");
         if(!account.send(request)){
+            this.$form.removeClass("waiting");
             notifyError("invalid password");
             return false;
         }
@@ -137,6 +141,7 @@ var SendPageView = Backbone.View.extend({
             this.addressbook.create(contact);
         }
 
+        this.$form.removeClass("waiting");
         this.password.val("");
         this.destination.val("");
         this.amount.val("");
