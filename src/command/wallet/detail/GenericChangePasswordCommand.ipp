@@ -18,7 +18,7 @@ QVariant GenericChangePasswordCommand<Store, ChangePasswordOperation>::operator(
     QString password = request["password"].toString();
     QString newPassword = request["newPassword"].toString();
 
-    return QVariant::fromValue(execute(password, newPassword));
+    return QVariant::fromValue(execute(address, password, newPassword));
 }
 
 
