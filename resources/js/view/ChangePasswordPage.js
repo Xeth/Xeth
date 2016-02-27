@@ -12,6 +12,7 @@ var ChangePasswordPageView = Backbone.View.extend({
     render:function(){
         this.accounts.filter(function(model){ return !!model;});
         this.accounts.resize();
+        this.accounts.style("send");
         this.accounts.attach(this.$el.find("#editAddress_account"));
     },
 
@@ -33,7 +34,7 @@ var ChangePasswordPageView = Backbone.View.extend({
 
 
         var model = this.accounts.selected();
-        if(!model.changePassword({previous: oldPassword.val(), password:newPassword.val()})){
+        if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
             return false;
         }

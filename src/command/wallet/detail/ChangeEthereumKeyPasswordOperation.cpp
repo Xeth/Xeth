@@ -7,7 +7,8 @@ EthereumKey ChangeEthereumKeyPasswordOperation::operator()(const EthereumKey &ke
 {
     Ethereum::PrivateKey secret = key.getPrivateKey().unlock(password.toStdString());
     CipherFactory cipherFactory;
-    return EthereumKey(secret, cipherFactory.create(), newPassword.toStdString());
+    EthereumKey result(secret, cipherFactory.create(), newPassword.toStdString());
+    return result;
 }
 
 

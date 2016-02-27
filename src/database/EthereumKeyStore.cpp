@@ -29,6 +29,28 @@ bool EthereumKeyStore::replace(const EthereumKey &key)
 }
 
 
+bool EthereumKeyStore::replace(const std::string &filename, const EthereumKey &key)
+{
+    return replace(filename.c_str(), key);
+}
+
+
+bool EthereumKeyStore::replace(const char *filename, const EthereumKey &key)
+{
+    if(!validateId(filename, key))
+    {
+        return Base::replace(makeFileName(key).c_str(), key);
+    }
+
+    if(Base::replace(filename, key))
+    {
+        emit NewItem(QString(key.getAddress().toString().c_str()));
+        return true;
+    }
+    return false;
+}
+
+
 bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
 {
     if(!validateId(id, key))

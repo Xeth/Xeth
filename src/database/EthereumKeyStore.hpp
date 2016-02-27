@@ -33,8 +33,11 @@ class EthereumKeyStore :
         EthereumKeyStore(const boost::filesystem::path &path);
 
         bool replace(const EthereumKey &);
+        bool replace(const char *path, const EthereumKey &);
+        bool replace(const std::string &path, const EthereumKey &);
+
         bool insert(const EthereumKey &);
-        bool insert(const char *id, const EthereumKey &);
+        bool insert(const char *, const EthereumKey &);
         bool insert(const std::string &, const EthereumKey &);
 
         Iterator find(const char *address) const;

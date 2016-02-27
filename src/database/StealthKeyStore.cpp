@@ -17,6 +17,18 @@ bool StealthKeyStore::replace(const StealthKey &key)
 }
 
 
+bool StealthKeyStore::replace(const std::string &, const StealthKey &key)
+{
+    return Base::replace(makeAddress(key).c_str(), key);
+}
+
+
+bool StealthKeyStore::replace(const char *, const StealthKey &key)
+{
+    return Base::replace(makeAddress(key).c_str(), key);
+}
+
+
 bool StealthKeyStore::insert(const std::string &id, const StealthKey &key)
 {
     //ignore suggested id

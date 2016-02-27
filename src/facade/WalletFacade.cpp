@@ -152,4 +152,10 @@ QVariant WalletFacade::changeStealthKeyPassword(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant WalletFacade::changePassword(const QVariantMap &request)
+{
+    ChangeKeyPasswordCommand command(_database);
+    return _invoker.invoke(command, request);
+}
+
 }
