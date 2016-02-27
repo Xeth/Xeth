@@ -23,7 +23,6 @@ var Account = AccountBase.extend({
     },
 
     update:function(){
-        alert("updating...");
         this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(this.get("address"))));
     },
 
