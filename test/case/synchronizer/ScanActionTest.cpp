@@ -13,7 +13,7 @@ void ScanActionTest::testStart()
     action.start(chain, criteria, progress);
 
     QVERIFY(action.isActive());
-    sleep(1);
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     QVERIFY(_context.getBlockChain().getTotalFetched() > 0);
     action.stop();
 }
@@ -35,7 +35,7 @@ void ScanActionTest::testStop()
     action.stop();
     size_t fetched = _context.getBlockChain().getTotalFetched();
     QVERIFY(fetched > 0);
-    sleep(1);
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     QVERIFY(fetched == _context.getBlockChain().getTotalFetched());
 }
 
@@ -57,7 +57,7 @@ void ScanActionTest::testResume()
     size_t fetched = _context.getBlockChain().getTotalFetched();
     QVERIFY(fetched > 0);
     action.start(chain, criteria, progress);
-    sleep(1);
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     QVERIFY(fetched < _context.getBlockChain().getTotalFetched());
     action.stop();
 }
@@ -74,7 +74,7 @@ void ScanActionTest::testComplete()
     criteria.addCriterion<Xeth::AccountScanCriterion>(0, "asdasd123");
     action.start(chain, criteria, progress);
 
-    sleep(1);
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     QVERIFY(!action.isActive());
     QVERIFY(_context.getBlockChain().getTotalFetched()==6);
 }

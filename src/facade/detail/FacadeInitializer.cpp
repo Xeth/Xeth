@@ -22,7 +22,7 @@ void FacadeInitializer::initialize()
         {
             qDebug()<<"failed to connect, retrying in 1 sec";
             cnt++;
-            sleep(1);
+            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
         }
 
 
