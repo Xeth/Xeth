@@ -3,6 +3,7 @@ find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
 
 include_directories(
+    ${Boost_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5WebKit_INCLUDE_DIRS}
