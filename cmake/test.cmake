@@ -53,7 +53,7 @@ target_link_libraries(xeth-test
     ${Boost_DATE_TIME_LIBRARY}
     ${CRYPTOPP_LIBRARY}
     ${LIBSCRYPT_LIBRARY}
-    ${LEVELDB_LIBRARY}
+    ${LEVELDB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     gmp
 )
