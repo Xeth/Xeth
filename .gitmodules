@@ -1,12 +1,15 @@
 [submodule "libethrpc"]
 	path = libethrpc
-	url = git@github.com:BitProfile/libethrpc.git
+	url = https://github.com/BitProfile/libethrpc.git
+
 [submodule "libethkey"]
 	path = libethkey
-	url = git@github.com:BitProfile/libethkey.git
+	url = https://github.com/BitProfile/libethkey.git
+
 [submodule "libethstealth"]
 	path = libethstealth
-	url = git@github.com:BitProfile/libethstealth.git
+	url = https://github.com/BitProfile/libethstealth.git
+
 [submodule "cmake/modules"]
 	path = cmake/modules
-	url = git@github.com:BitProfile/cmake-modules.git
+	url = https://github.com/BitProfile/cmake-modules.git
