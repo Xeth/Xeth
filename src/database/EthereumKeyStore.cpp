@@ -149,6 +149,7 @@ std::string EthereumKeyStore::makeFileName(const EthereumKey &key, const boost::
     path += boost::posix_time::to_iso_extended_string(time);
     path += "--";
     path += key.getAddress().toString();
+    std::replace(path.begin(), path.end(), ':','-');
     return path;
 }
 
