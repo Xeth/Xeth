@@ -92,7 +92,7 @@ class ScanCriteria::Iterator : public boost::iterator_adaptor<
       const ScanCriterion & >
 {
     public:
-        typedef public boost::iterator_adaptor<
+        typedef boost::iterator_adaptor<
           ScanCriteria::Iterator,
           ScanCriteria::Container::const_iterator,
           const ScanCriterion &,
