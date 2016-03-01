@@ -92,9 +92,16 @@ class ScanCriteria::Iterator : public boost::iterator_adaptor<
       const ScanCriterion & >
 {
     public:
-        Iterator();
+        typedef public boost::iterator_adaptor<
+          ScanCriteria::Iterator,
+          ScanCriteria::Container::const_iterator,
+          const ScanCriterion &,
+          boost::forward_traversal_tag,
+          const ScanCriterion & > Base;
 
-    explicit Iterator(const Iterator::iterator_adaptor_::base_type & p);
+    public:
+        Iterator();
+        explicit Iterator(const ScanCriteria::Container::const_iterator &);
 
     private:
         friend class boost::iterator_core_access;

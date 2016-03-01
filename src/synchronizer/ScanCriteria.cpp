@@ -115,10 +115,10 @@ bool ScanCriteria::CriterionCompare::operator ()(const std::pair<size_t, ScanCri
 }
 
 
-ScanCriteria::Iterator::Iterator() : iterator_adaptor_() {}
+ScanCriteria::Iterator::Iterator() : Base() {}
 
-ScanCriteria::Iterator::Iterator(const iterator_adaptor_::base_type & p) :
-    iterator_adaptor_(p) {}
+ScanCriteria::Iterator::Iterator(const ScanCriteria::Container::const_iterator & p) :
+    Base(p) {}
 
 const ScanCriterion & ScanCriteria::Iterator::dereference() const
 {
