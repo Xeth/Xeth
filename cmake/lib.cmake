@@ -1,6 +1,7 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
+find_package(GMP)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
@@ -16,6 +17,10 @@ include_directories(
     ${PROJECT_BINARY_DIR}/libethkey/include
     ${PROJECT_SOURCE_DIR}/libethstealth
 )
+
+if(GMP_LIBRARY)
+    add_definitions(-D__HAS_GMP__)
+endif()
 
 set(CMAKE_CXX_FLAGS "-fPIC")
 

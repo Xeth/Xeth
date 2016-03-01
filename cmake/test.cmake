@@ -5,6 +5,7 @@ find_package(LevelDB REQUIRED)
 
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
+find_package(GMP)
 
 add_definitions ("-Wall")
 
@@ -55,5 +56,9 @@ target_link_libraries(xeth-test
     ${CRYPTOPP_LIBRARY}
     ${LEVELDB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
-    gmp
 )
+
+if(GMP_LIBRARY)
+    target_link_libraries(xeth-test ${GMP_LIBRARY})
+endif()
+
