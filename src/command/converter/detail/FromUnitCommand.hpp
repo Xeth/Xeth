@@ -9,7 +9,7 @@
 namespace Xeth{
 
 
-template<uint64_t unit>
+template<size_t unit>
 class FromUnitCommand
 {
     public:

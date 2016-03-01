@@ -2,7 +2,7 @@ namespace Xeth{
 
 
 
-template<uint64_t unit>
+template<size_t unit>
 QVariant FromUnitCommand<unit>::operator()(const QVariant &request)
 {
     try
