@@ -19,6 +19,7 @@ class GenerateStealthKeyTest : public QObject
         typedef ::ApplicationContext<KeyStoreSimulator, BlockChainSimulator> ApplicationContext;
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
 
+#if __GETH_SIMULATOR_ENABLED__
     public:
         GenerateStealthKeyTest();
 
@@ -35,5 +36,6 @@ class GenerateStealthKeyTest : public QObject
 
     private:
         ApplicationContext _context;
+#endif
 };
 

@@ -1,8 +1,9 @@
 #include "StealthPaymentTest.hpp"
 
-
+#if __GETH_SIMULATOR_ENABLED__
 
 StealthPaymentTest::StealthPaymentTest() :
+    _context(true),
     _command(_context.getProvider(), _context.getDataBase())
 {}
 
@@ -197,3 +198,5 @@ void StealthPaymentTest::cleanupTestCase()
 {
     _context.getGeth().stop();
 }
+
+#endif

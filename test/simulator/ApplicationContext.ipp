@@ -1,6 +1,6 @@
 
 template<class KeyStore, class BlockChain>
-ApplicationContext<KeyStore, BlockChain>::ApplicationContext() :
+ApplicationContext<KeyStore, BlockChain>::ApplicationContext(bool connect) :
     _dir(true),
     _database(_dir, Xeth::EthereumKeyStorePath(_dir.toString())),
     _keys(_database), 
@@ -8,11 +8,19 @@ ApplicationContext<KeyStore, BlockChain>::ApplicationContext() :
     _geth(_keys, _chain, _gethPath),
     _synchronizer(_provider, _database)
 {
-    sleep(1);
-    if(!_provider.connect(std::string("ipc:" + _gethPath).c_str()))
+    if(connect)
     {
-        throw std::runtime_error("provider failed to connect");
+        if(!_provider.connect(std::string("ipc:" + _gethPath).c_str()))
+        {
+            throw std::runtime_error("provider failed to connect");
+        }
     }
+}
+
+template<class KeyStore, class BlockChain>
+bool ApplicationContext<KeyStore, BlockChain>::connectProvider()
+{
+    return _provider.connect(std::string("ipc:" + _gethPath).c_str());
 }
 
 

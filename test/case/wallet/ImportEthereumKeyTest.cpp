@@ -1,7 +1,10 @@
 #include "ImportEthereumKeyTest.hpp"
 
+#if __GETH_SIMULATOR_ENABLED__
 
-ImportEthereumKeyTest::ImportEthereumKeyTest()
+
+ImportEthereumKeyTest::ImportEthereumKeyTest() :
+    _context(true)
 {}
 
 
@@ -102,4 +105,4 @@ size_t ImportEthereumKeyTest::getSize(Iterator begin, Iterator end)
     return size;
 }
 
-
+#endif

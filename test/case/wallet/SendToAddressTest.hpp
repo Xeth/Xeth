@@ -18,7 +18,7 @@ class SendToAddressTest : public QObject
     public:
         typedef ::ApplicationContext<KeyStoreSimulator, BlockChainSimulator> ApplicationContext;
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
-
+#if __GETH_SIMULATOR_ENABLED__
     public:
         SendToAddressTest();
 
@@ -34,5 +34,6 @@ class SendToAddressTest : public QObject
     private:
         ApplicationContext _context;
         Xeth::SendToAddressCommand _command;
+#endif
 };
 

@@ -22,6 +22,7 @@ class StealthPaymentTest : public QObject
         typedef BlockChainSimulator::TransactionCollection TransactionCollection;
         typedef Ethereum::Connector::Transaction Transaction;
 
+#if __GETH_SIMULATOR_ENABLED__
     public:
         StealthPaymentTest();
 
@@ -49,5 +50,6 @@ class StealthPaymentTest : public QObject
     private:
         ApplicationContext _context;
         Xeth::SendToStealthCommand _command;
+#endif
 };
 

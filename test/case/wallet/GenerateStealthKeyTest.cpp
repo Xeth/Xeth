@@ -1,7 +1,9 @@
 #include "GenerateStealthKeyTest.hpp"
 
+#if __GETH_SIMULATOR_ENABLED__
 
-GenerateStealthKeyTest::GenerateStealthKeyTest()
+GenerateStealthKeyTest::GenerateStealthKeyTest() :
+    _context(true)
 {}
 
 
@@ -87,4 +89,4 @@ size_t GenerateStealthKeyTest::getSize(Iterator begin, Iterator end)
     return size;
 }
 
-
+#endif

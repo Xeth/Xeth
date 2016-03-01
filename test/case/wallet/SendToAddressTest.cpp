@@ -1,7 +1,8 @@
 #include "SendToAddressTest.hpp"
 
-
+#if __GETH_SIMULATOR_ENABLED__
 SendToAddressTest::SendToAddressTest() :
+    _context(true),
     _command(_context.getProvider(), _context.getDataBase())
 {}
 
@@ -107,3 +108,5 @@ void SendToAddressTest::cleanupTestCase()
 {
     _context.getGeth().stop();
 }
+
+#endif

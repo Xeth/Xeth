@@ -1,7 +1,8 @@
 #include "GenerateEthereumKeyTest.hpp"
 
-
-GenerateEthereumKeyTest::GenerateEthereumKeyTest()
+#if __GETH_SIMULATOR_ENABLED__
+GenerateEthereumKeyTest::GenerateEthereumKeyTest() :
+    _context(true)
 {}
 
 
@@ -85,5 +86,5 @@ size_t GenerateEthereumKeyTest::getSize(Iterator begin, Iterator end)
     }
     return size;
 }
-
+#endif
 

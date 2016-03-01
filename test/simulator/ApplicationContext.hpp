@@ -18,7 +18,9 @@ class ApplicationContext
         typedef Ethereum::Connector::Provider Provider;
 
     public:
-        ApplicationContext();
+        ApplicationContext(bool connect);
+
+        bool connectProvider();
 
         Xeth::DataBase & getDataBase();
         KeyStore & getKeyStore();

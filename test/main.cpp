@@ -68,17 +68,14 @@ int main(int argc, char** argv)
         StealthPaymentStoreTest,
         WeiConversionTest,
         SzaboConversionTest,
-        FinneyConversionTest
-
-#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
-        ,GenerateEthereumKeyTest
-        ,GenerateStealthKeyTest
-        ,SendToAddressTest
-        ,StealthPaymentTest
-        ,ScanActionTest
-        ,ImportEthereumKeyTest
-        ,ImportStealthKeyTest
-#endif
+        FinneyConversionTest,
+        GenerateEthereumKeyTest,
+        GenerateStealthKeyTest,
+        SendToAddressTest,
+        StealthPaymentTest,
+        ScanActionTest,
+        ImportEthereumKeyTest,
+        ImportStealthKeyTest
 
     );
 

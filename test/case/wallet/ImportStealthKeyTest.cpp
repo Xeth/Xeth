@@ -1,7 +1,9 @@
 #include "ImportStealthKeyTest.hpp"
 
+#if __GETH_SIMULATOR_ENABLED__
 
-ImportStealthKeyTest::ImportStealthKeyTest()
+ImportStealthKeyTest::ImportStealthKeyTest() :
+    _context(true)
 {}
 
 
@@ -102,4 +104,4 @@ size_t ImportStealthKeyTest::getSize(Iterator begin, Iterator end)
     return size;
 }
 
-
+#endif

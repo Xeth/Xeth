@@ -19,6 +19,7 @@ class ImportStealthKeyTest : public QObject
         typedef ::ApplicationContext<KeyStoreSimulator, BlockChainSimulator> ApplicationContext;
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
 
+#if __GETH_SIMULATOR_ENABLED__
     public:
         ImportStealthKeyTest();
 
@@ -36,5 +37,6 @@ class ImportStealthKeyTest : public QObject
 
     private:
         ApplicationContext _context;
+#endif
 };
 

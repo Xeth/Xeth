@@ -19,6 +19,8 @@ class ImportEthereumKeyTest : public QObject
         typedef ::ApplicationContext<KeyStoreSimulator, BlockChainSimulator> ApplicationContext;
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
 
+#if __GETH_SIMULATOR_ENABLED__
+
     public:
         ImportEthereumKeyTest();
 
@@ -36,5 +38,6 @@ class ImportEthereumKeyTest : public QObject
 
     private:
         ApplicationContext _context;
+#endif
 };
 

@@ -2,7 +2,9 @@
 
 #include <boost/asio.hpp>
 
-#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
+#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS) && BOOST_ASIO_HAS_LOCAL_SOCKETS
+
+#define __GETH_SIMULATOR_ENABLED__ 1
 
 #include <map>
 #include <cstdio>
@@ -71,5 +73,17 @@ class GethSimulator : public boost::noncopyable
 
 
 #include "GethSimulator.ipp"
+
+#else
+
+#define __GETH_SIMULATOR_ENABLED__ 0
+
+template<class KeyStore, class BlockChain>
+class GethSimulator
+{
+    public:
+        GethSimulator(KeyStore &, BlockChain &){}
+        GethSimulator(KeyStore &, BlockChain &, const std::string &){}
+};
 
 #endif

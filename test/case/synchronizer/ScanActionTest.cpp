@@ -1,5 +1,10 @@
 #include "ScanActionTest.hpp"
 
+#if __GETH_SIMULATOR_ENABLED__
+
+ScanActionTest::ScanActionTest() :
+    _context(true)
+{}
 
 void ScanActionTest::testStart()
 {
@@ -78,3 +83,5 @@ void ScanActionTest::testComplete()
     QVERIFY(!action.isActive());
     QVERIFY(_context.getBlockChain().getTotalFetched()==6);
 }
+
+#endif

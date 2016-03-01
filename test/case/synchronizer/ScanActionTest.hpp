@@ -24,6 +24,10 @@ class ScanActionTest : public QObject
         typedef ::ApplicationContext<KeyStoreSimulator, RandomBlockChain> ApplicationContext;
         typedef Ethereum::Connector::BlockChain BlockChain;
 
+#if __GETH_SIMULATOR_ENABLED__
+    public:
+        ScanActionTest();
+
     private slots:
         void testStart();
         void testStop();
@@ -33,6 +37,8 @@ class ScanActionTest : public QObject
 
     private:
         ApplicationContext _context;
+
+#endif
 
 };
 
