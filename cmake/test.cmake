@@ -59,6 +59,6 @@ target_link_libraries(xeth-test
 )
 
 if(GMP_LIBRARIES)
-    target_link_libraries(xeth-test ${GMP_LIBRARY})
+    target_link_libraries(xeth-test ${GMP_LIBRARIES})
 endif()
 
