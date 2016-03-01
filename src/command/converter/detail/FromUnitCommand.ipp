@@ -7,7 +7,7 @@ QVariant FromUnitCommand<unit>::operator()(const QVariant &request)
 {
     try
     {
-#if __HAS_GMP__
+#ifdef __HAS_GMP__
         boost::multiprecision::number<boost::multiprecision::gmp_float<50> > result(request.toString().toStdString());
 #else
         boost::multiprecision::cpp_dec_float_50 result(request.toString().toStdString());
