@@ -4,15 +4,26 @@
 
 #include <QDebug>
 
+#include <stdexcept>
+#include <iostream>
+
 #include "Application.hpp"
 
 
 int main(int argc, char* argv[])
 {
-    Xeth::Settings settings;
-    settings.readCommandLineArgs(argc, argv);
+    try
+    {
+        Xeth::Settings settings;
+        settings.readCommandLineArgs(argc, argv);
 
-    Xeth::Application app(settings, argc, argv);
-    return app.exec();
+        Xeth::Application app(settings, argc, argv);
+        return app.exec();
+    }
+    catch(const std::exception &e)
+    {
+        std::cerr<<"exception : "<<e.what()<<std::endl<<std::flush;
+        return 1;s
+    }
 }
 
