@@ -17,7 +17,7 @@ add_subdirectory(libethrpc)
 add_subdirectory(libethkey)
 
 set(ETHKEY_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethkey/include")
-set(ETHKEY_LIBRARY "${PROJECT_BINARY_DIR}/libethkey/libethkey.a")
+set(ETHKEY_LIBRARY "ethkey")
 
 add_subdirectory(libethstealth)
 
