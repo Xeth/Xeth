@@ -60,22 +60,26 @@ int main(int argc, char** argv)
         AddressValidatorTest,
         BlockChainProgressTest,
         StealthScanCriterionTest,
-        ScanActionTest,
         StealthKeyStoreTest,
         EthereumKeyStoreTest,
         KeyAttributesReaderTest,
         StealthKeyImporterTest,
         EthereumKeyImporterTest,
         StealthPaymentStoreTest,
-        SendToAddressTest,
-        StealthPaymentTest,
-        GenerateEthereumKeyTest,
-        GenerateStealthKeyTest,
-        ImportEthereumKeyTest,
-        ImportStealthKeyTest,
         WeiConversionTest,
         SzaboConversionTest,
         FinneyConversionTest
+
+#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
+        ,GenerateEthereumKeyTest
+        ,GenerateStealthKeyTest
+        ,SendToAddressTest
+        ,StealthPaymentTest
+        ,ScanActionTest
+        ,ImportEthereumKeyTest
+        ,ImportStealthKeyTest
+#endif
+
     );
 
     if(status)

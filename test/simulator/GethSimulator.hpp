@@ -2,7 +2,7 @@
 
 #include <boost/asio.hpp>
 
-//#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
+#if defined(BOOST_ASIO_HAS_LOCAL_SOCKETS)
 
 #include <map>
 #include <cstdio>
@@ -72,4 +72,4 @@ class GethSimulator : public boost::noncopyable
 
 #include "GethSimulator.ipp"
 
-//#endif
+#endif
