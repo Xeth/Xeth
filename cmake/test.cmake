@@ -58,7 +58,7 @@ target_link_libraries(xeth-test
     ${CMAKE_THREAD_LIBS_INIT}
 )
 
-if(GMP_LIBRARY)
+if(GMP_LIBRARIES)
     target_link_libraries(xeth-test ${GMP_LIBRARY})
 endif()
 

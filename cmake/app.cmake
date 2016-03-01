@@ -66,7 +66,7 @@ target_link_libraries(xeth
 )
 
 
-if(GMP_LIBRARY)
+if(GMP_LIBRARIES)
     target_link_libraries(xeth ${GMP_LIBRARY})
 endif()
 

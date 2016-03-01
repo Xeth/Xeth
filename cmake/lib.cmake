@@ -18,7 +18,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/libethstealth
 )
 
-if(GMP_LIBRARY)
+if(GMP_LIBRARIES)
     add_definitions(-D__HAS_GMP__)
 endif()
 
