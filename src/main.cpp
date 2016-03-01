@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     catch(const std::exception &e)
     {
         std::cerr<<"exception : "<<e.what()<<std::endl<<std::flush;
-        return 1;s
+        return 1;
     }
 }
 
