@@ -37,7 +37,7 @@ bool GenericExportKeyCommand<Store>::execute(const QString &address, const QStri
     const boost::filesystem::path & path = it.path();
     QString file = destination;
     file +=  QDir::separator();
-    file += path.filename().c_str();
+    file += (const char *)path.filename().c_str();
     return QFile::copy(path.string().c_str(), file);
 }
 
