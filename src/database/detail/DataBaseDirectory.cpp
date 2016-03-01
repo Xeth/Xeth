@@ -88,15 +88,23 @@ bool DataBaseDirectory::createIfNotExistsNoThrow()
 boost::filesystem::path DataBaseDirectory::GetDefaultPath()
 {
     std::string path;
-#if  defined(__APPLE__)
+#if  defined(__APPLE_OS__)
     path = getenv("HOME");
-    path += "/Library/Xeth/";
-#elif defined(__linux__)
+    path += "/Library/Xeth";
+#elif defined(__LINUX_OS__)
     path = getenv("HOME");
-    path += "/.xeth/";
-#elif defined(__MINGW32__)
-    path = getenv("HOMEPATH");
-    path += "\\AppData\\Roaming\\Xeth\\";
+    path += "/.xeth";
+#elif defined(__WINDOWS_OS__)
+    char appdata[1024] = "";
+    if (SHGetSpecialFolderPathA(NULL, appdata, CSIDL_APPDATA, true))
+    {
+        path = appdata
+    }
+    else
+    {
+        path = getenv("HOMEPATH");
+    }
+    path += "\\Xeth";
 #endif
     return path;
 }
