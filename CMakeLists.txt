@@ -11,7 +11,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-include("${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake")
+include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
 
 add_subdirectory(libethrpc)
 add_subdirectory(libethkey)
