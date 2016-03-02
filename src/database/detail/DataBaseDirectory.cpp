@@ -102,7 +102,7 @@ boost::filesystem::path DataBaseDirectory::GetDefaultPath()
     char appdata[1024] = "";
     if (SHGetSpecialFolderPathA(NULL, appdata, CSIDL_APPDATA, true))
     {
-        path = appdata
+        path = appdata;
     }
     else
     {
