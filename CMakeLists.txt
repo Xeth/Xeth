@@ -8,7 +8,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTORCC ON)
 
 include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
 
@@ -25,4 +25,7 @@ add_dependencies(ethstealth ethkey)
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
+
+if(ENABLE_TEST)
 include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
+endif()
