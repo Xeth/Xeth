@@ -79,14 +79,7 @@ void HtmlMerger::save()
 
 void HtmlMerger::saveTo(const QString &path)
 {
-    QFile file(MakePath(path));
-    if(!file.open(QFile::WriteOnly | QFile::Text| QFile::Truncate))
-    {
-        qDebug()<<"failed to open file: "<<path;
-    }
-    QTextStream stream(&file);
-    stream<<getContent();
-    file.close();
+    WriteFile(path, getContent());
 }
 
 

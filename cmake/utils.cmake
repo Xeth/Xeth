@@ -34,6 +34,7 @@ target_link_libraries(compiler
 add_executable(templatewizard
     ${PROJECT_SOURCE_DIR}/utils/templatewizard.cpp 
     ${PROJECT_SOURCE_DIR}/utils/HtmlMerger.cpp 
+    ${PROJECT_SOURCE_DIR}/utils/HtmlExtractor.cpp
     ${PROJECT_SOURCE_DIR}/utils/utils.cpp 
     ${PROJECT_SOURCE_DIR}/utils/SyncWebView.cpp 
 )
