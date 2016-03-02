@@ -6,8 +6,8 @@
 
 #include <iostream>
 
-#include "HtmlMerger.hpp"
-#include "HtmlExtractor.hpp"
+#include "lib/HtmlMerger.hpp"
+#include "lib/HtmlExtractor.hpp"
 
 int main(int argc, char **argv)
 {
@@ -15,8 +15,8 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     QCommandLineParser parser;
 
-    QCommandLineOption unpackOpt("u", QCoreApplication::translate("main", "unpack templates"));
-    QCommandLineOption packOpt("p", QCoreApplication::translate("main", "pack templates"));
+    QCommandLineOption unpackOpt("e", QCoreApplication::translate("main", "unpack templates"));
+    QCommandLineOption packOpt("m", QCoreApplication::translate("main", "pack templates"));
 
     parser.addOption(unpackOpt);
     parser.addOption(packOpt);

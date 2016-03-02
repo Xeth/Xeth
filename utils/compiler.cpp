@@ -6,7 +6,7 @@
 #include <QFileInfo>
 #include <QDebug>
 
-#include "UnderscoreCompiler.hpp"
+#include "lib/UnderscoreCompiler.hpp"
 
 int main(int argc, char **argv)
 {

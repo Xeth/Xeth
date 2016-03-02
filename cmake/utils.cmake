@@ -11,17 +11,19 @@ include_directories(
 )
 
 
+file(GLOB UTILS_SOURCES ${PROJECT_SOURCE_DIR}/utils/lib/*.cpp)
+
+
+add_library(utils-lib STATIC ${UTILS_SOURCES})
 
 add_executable(compiler 
     ${PROJECT_SOURCE_DIR}/utils/compiler.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/JavascriptInvoker.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/SyncWebView.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/UnderscoreCompiler.cpp 
     ${PROJECT_SOURCE_DIR}/utils/js.qrc
 )
 
 
 target_link_libraries(compiler
+    utils-lib
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}
@@ -31,16 +33,13 @@ target_link_libraries(compiler
 
 
 
-add_executable(templatewizard
-    ${PROJECT_SOURCE_DIR}/utils/templatewizard.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/HtmlMerger.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/HtmlExtractor.cpp
-    ${PROJECT_SOURCE_DIR}/utils/utils.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/SyncWebView.cpp 
+add_executable(editor
+    ${PROJECT_SOURCE_DIR}/utils/editor.cpp 
 )
 
 
-target_link_libraries(templatewizard
+target_link_libraries(editor
+    utils-lib
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}
