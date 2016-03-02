@@ -2,25 +2,27 @@
 #include <QDebug>
 
 HtmlMerger::HtmlMerger(const QString &file) : 
-    SyncWebView(QUrl::fromLocalFile(MakePath(file))),
-    _path(MakePath(file))
+    _path(MakePath(file)),
+    _content(getFileContent(_path))
 {}
 
 
-QString HtmlMerger::escapeText(const QString &text)
+QString HtmlMerger::parseText(const QString &text)
 {
-    QString parsed = text;
-    parsed.replace("\"", "\\\"").replace("\n","\\n").replace("\r","\\r");
+    QString parsed = "\r\n";
+    parsed += text;
+    parsed += "\r\n";
     return parsed;
 }
 
 
 void HtmlMerger::appendText(const QString &text)
 {
-    QString js = "document.body.innerHTML += (\"\\r\\n\"+\"";
-    js += escapeText(text);
-    js += "\"+\"\\r\\n\")";
-    getHandle().page()->mainFrame()->evaluateJavaScript(js);
+    int index = _content.indexOf("</body>");
+    if(index >= 0)
+    {
+        _content.insert(index+7, parseText(text));
+    }
 }
 
 
@@ -90,5 +92,5 @@ void HtmlMerger::saveTo(const QString &path)
 
 QString HtmlMerger::getContent()
 {
-    return getHandle().page()->mainFrame()->toHtml();
+    return _content;
 }

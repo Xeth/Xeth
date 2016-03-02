@@ -5,13 +5,13 @@
 #include <QFile>
 #include <QWebSettings>
 #include <QDirIterator>
+#include <QWebElement>
 
-#include "SyncWebView.hpp"
 #include "utils.hpp"
 
 
 
-class HtmlMerger : private SyncWebView
+class HtmlMerger
 {
     public:
         HtmlMerger(const QString &file);
@@ -31,11 +31,12 @@ class HtmlMerger : private SyncWebView
         void saveTo(const QString &);
 
     private:
-        QString escapeText(const QString &);
+        QString parseText(const QString &);
         QString getFileContent(const QString &);
 
 
     private:
         QString _path;
+        QString _content;
 
 };
