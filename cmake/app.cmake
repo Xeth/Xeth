@@ -53,7 +53,7 @@ add_custom_target(xeth_templates_qrc COMMAND  ${CMAKE_COMMAND} -E copy ${TEMPLAT
 add_custom_target(xeth_templates  COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name template -o ${COMPILED_TEMPALTES_CPP} ${PROJECT_BINARY_DIR}/resources/template.qrc DEPENDS xeth_templates_qrc)
 
 
-add_executable(xeth ${APP_SOURCES} ${COMPILED_TEMPALTES_CPP} ${PROJECT_BINARY_DIR}/resources/css.qrc ${PROJECT_BINARY_DIR}/resources/js.qrc ${PROJECT_BINARY_DIR}/resources/html.qrc)
+add_executable(xeth ${APP_SOURCES} ${COMPILED_TEMPALTES_CPP} ${PROJECT_BINARY_DIR}/resources/icon.qrc ${PROJECT_BINARY_DIR}/resources/css.qrc ${PROJECT_BINARY_DIR}/resources/js.qrc ${PROJECT_BINARY_DIR}/resources/html.qrc)
 add_dependencies(xeth xeth_templates)
 
 
