@@ -22,7 +22,9 @@ if(GMP_LIBRARIES)
     add_definitions(-D__HAS_GMP__)
 endif()
 
-set(CMAKE_CXX_FLAGS "-fPIC")
+if(NOT MSVC)
+    set(CMAKE_CXX_FLAGS "-fPIC")
+endif()
 
 file(GLOB_RECURSE LIBRARY_SOURCES
     "src/*.cpp"
