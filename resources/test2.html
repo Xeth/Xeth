@@ -1,0 +1,611 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>XETH</title>
+
+<link href="CSS/vendor/daterangepicker.css" rel="stylesheet" type="text/css">
+<link href="CSS/vendor/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css">
+<link href="CSS/main.css" rel="stylesheet" type="text/css">
+<link href="CSS/page.css" rel="stylesheet" type="text/css">
+<link href="CSS/form.css" rel="stylesheet" type="text/css">
+<link href="CSS/send.css" rel="stylesheet" type="text/css">
+<link href="CSS/receive.css" rel="stylesheet" type="text/css">
+<link href="CSS/addressbook.css" rel="stylesheet" type="text/css">
+<link href="CSS/transactions.css" rel="stylesheet" type="text/css">
+<link href="CSS/bitprofile.css" rel="stylesheet" type="text/css">
+<link href="CSS/newAddress.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+<div id="page_splash" class="page active">
+    <div class="logo">
+        Loading...
+    </div>
+</div>
+</body>
+
+<script type="text/template" id="transaction_item_tpl">
+
+<%if(transaction.category=="Mined"){%>
+<div class="listItem mined" style="display: block;">
+    <div class="header icon">
+        <span class="detail s_titled userAddress"><%=transaction.to%></span>
+    </div>
+    <div class="data">
+        <div class="detailsRow">
+            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 45)%></span>
+            <span class="detail txtBalance">
+                <span class="int"><%=transaction.amount.int%></span><span class="dec"><%=transaction.amount.dec%></span>
+            </span>
+        </div>
+        <div class="detailsRow">
+            <span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
+        </div>
+    </div>
+</div>
+<%}else{%>
+<div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%> style="display: block;">
+    <div class="header icon">
+        <span class="detail s_titled userAddress"><%=transaction.from%></span>
+    </div>
+    <span class="avatar">
+        <span class="img"><img src="<%=(transaction.contact && transaction.contact.avatar)?transaction.contact.avatar:'img/avatarEmpty.png'%>" onerror="errorAvatar($(this))"></span>
+    </span>
+    <div class="data">
+        <div class="detailsRow">
+            <span class="userProfile">
+                <span class="name editableTxt" tabindex="-1" title=""><%=((transaction.contact && transaction.contact.alias)?transaction.contact.alias:"unnamed")%></span>
+                <span class="bitprofileIcon" title="<%=(transaction.contact && transaction.contact.bitprofile)?'on':'no'%> bitprofile"></span>
+            </span>
+            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 20)%></span>
+            <span class="detail txtBalance">
+                <span class="int"><%=transaction.amount.int%></span><span class="dec"><%=transaction.amount.dec%></span>
+            </span>
+        </div>
+        <div class="detailsRow">
+            <span class="address"><%=transaction.to%></span><span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
+        </div>
+    </div>
+</div>
+<%}%>
+
+
+</script>
+
+
+
+<script type="text/template" id="transactions_tpl">
+
+<div class="head">
+    <div class="controls left">
+        <div id="filterTransactionType" class="input" value="0">
+            <select>
+                <option value="All">All transactions</option>
+                <option value="Received">Received</option>
+                <option value="Sent">Sent</option>
+            </select>
+        </div>
+        <div class="input date"><input type="text" id="filterTransactionTime" class="daterange" placeholder="date" /></div>
+    </div>
+    <div class="controls">
+        <div id="filterTransactionAddress" ></div>
+    </div>
+</div>
+
+<div class="transactions">
+    <div class="empty">no transactions to display</div>
+    <div class="scrollpage holder transactionList">
+    </div>
+</div>
+<div class="transactions_total">
+    <div class="total sent right">
+        <span class="detail txtBalance">
+            <span class="int"></span><span class="dec"></span>
+        </span>
+    </div>
+    <div class="total received">
+        <span class="detail txtBalance">
+            <span class="int"></span><span class="dec"></span>
+        </span>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="settings_tpl">
+
+<div class="formpage">
+	<h1>Address settings:</h1>
+    <div class="btns x2">
+        <a href="javascript:void(0);" rel="export" class="btn">Backup Key</a>
+        <a href="javascript:void(0);" rel="password" class="btn">Change Password</a>
+    </div>
+    <div class="btns x2">
+        <a href="javascript:void(0);" rel="import" class="btn">Import Key</a>
+        <a href="javascript:void(0);" rel="generate" class="btn">New Address</a>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="send_tpl">
+
+<div class="formpage send">
+    <h1>From:</h1>
+    <div id="sendFrom"></div>
+    <div class="group section_to">
+        <h1 error="invalid">To:</h1>
+        <a class="btn addressbook" title="addressbook" href="javascript:void(0)"></a>
+        <a class="btn clipboard" title="paste" href="javascript:javascript:void(0)"></a>
+        <div id="sendToType" class="input type" value="1">
+            <select name="sendType">
+                <option value="address">Address</option>
+                <option value="bitprofile">BitProfile</option>
+            </select>
+        </div>
+        <input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
+    </div>
+    <div class="half_left section_amount">
+        <h1 error="required">Amount:</h1>
+        <div class="input amount">
+            <input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
+        </div>
+    </div>
+    <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">
+        <h1>Fee:<span class="fee"><span class="gas"></span><span class="eth"></span></span></h1>
+        <div class="slider">
+            <div class="handle ui-slider-handle" style="left:20%;"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <div class="half_left headless_section section_saveContact">
+        <input id="saveContact" type="checkbox" />save contact to addressbook
+    </div>
+    <div class="half_right headless_section section_alias">
+        <div class="input">
+            <input id="sendAlias" class="mandatory" type="text" placeholder="alias" />
+        </div>
+    </div>
+    <div class="section_submit">
+        <div class="half_left section_password">
+            <h1 error="incorrect">Password:</h1>
+            <div class="input">
+                <input id="sendPassword" class="mandatory" type="password" />
+            </div>
+        </div>
+        
+        <div class="submit half_right">
+            <a href="javascript:void(0);" id="submitSend" class="btnSubmit btnSend"><span class="txt">Send</span></a>
+        </div>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="receive_tpl">
+
+<div class="formpage receive">
+    <h1>To:<span class="controls"><a href="javascript:void(0);" class="generate">New address</a></span></h1>
+    <div id="receiveTo" ></div>
+    <div class="half_right controls">
+        <div id="receiveQR" class="QR"></div>
+        <div class="btns x2">
+            <a href="javascript:void(0);" id="copyReceiveAddress" class="btn">Copy Address</a>
+            <a href="javascript:void(0);" id="copyReceiveURI" class="btn highlight">Copy URI</a>
+        </div>
+    </div>
+    <div class="half_left">
+        <h1>Amount:</h1>
+        <div class="input amount"><input id="receiveAmount" type="number" min="0" placeholder="0.00000000" /></div>
+        <h1>Message:</h1>
+        <textarea id="receiveMessage" name="" cols="" rows=""></textarea>
+        <h1>URI:</h1>
+        <textarea readonly class="txtURI" name="" cols="" rows=""></textarea>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="main_page_tpl">
+
+<div id="page_send" class="page off"></div>
+<div id="page_receive" class="page off"></div>
+<div id="page_addressbook" class="page off"></div>
+<div id="page_transactions" class="page off"></div>
+<div id="page_newAddress" class="page off"></div>
+<div id="page_editAddress" class="page off"></div>
+<div id="page_importAddress" class="page off"></div>
+<div id="page_exportAddress" class="page off"></div>
+<div id="page_settings" class="page off"></div>
+<div id="page_bitprofile" class="page navpage off"></div>
+
+
+<div class="mainNav menu">
+    <a class="profile myProfile" href="javascript:void(0)" page="page_bitprofile">BitProfile</a>
+    <ul class="nav">
+        <li class="send active"><a page="page_send">send</a></li>
+        <li class="receive"><a page="page_receive">receive</a></li>
+        <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
+        <li class="transactions"><a page="page_transactions">transactions</a></li>
+        <li class="settings"><a page="page_settings">settings</a></li>
+    </ul>
+    <div class="footer">
+        <div class="preloader status" loader="50">
+            <div class="message">
+                Loading...
+            </div>
+            <div class="loader">
+                <div class="value" style="width:01%;"></div>
+                <span class="txt"></span>
+            </div>
+        </div>
+        <div class="icons">
+            <div class="icon secure ok">&nbsp;</div>
+            <div class="icon network ok">&nbsp;</div>
+            <div class="icon updated">&nbsp;</div>
+        </div>
+    </div>
+</div>
+
+<div class="subnavBg"></div>
+
+
+</script>
+
+
+
+<script type="text/template" id="import_tpl">
+
+<div class="formpage">
+    <h1>Import address:<span class="controls browse"><a href="javascript:void(0)">Change source file</a></span></h1>
+    <input id="importAddress_address" disabled type="text" />
+    <div class="section_submit">
+        <div class="half_left section_password">
+            <h1 error="incorrect">Password:</h1>
+            <div class="input">
+                <input id="importAddress_password" class="mandatory" type="password" />
+            </div>
+        </div>
+        <div class="submit half_right">
+            <a href="javascript:void(0);" id="importAddress_submit" class="btnSubmit"><span class="txt">Import</span></a>
+        </div>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="generate_tpl">
+
+<h1>New Address</h1>
+<div id="newAddressSeedLoader" class="preloader" loader="0">
+    <div class="loader">
+        <div class="value" style="width:0%;"></div>
+        <span class="txt">generating seed... <span class="percent">0</span>%</span>
+    </div>
+</div>
+
+<div id="page_newAddress_seed" class="page subpage innerpage">
+    <p>randomly move the mouse / click / press keyboard keys to generate the random seed</p>
+    
+    <div class="formpage">
+        <div class="skip">
+            <a href="javascript:void(0);" id="skipNewAddressSeed" class="btnSubmit"><span class="txt">Skip</span></a>
+    		<p>continue with the system random generator</p>
+        </div>
+    </div>
+</div>
+<div id="page_newAddress_create" class="page subpage innerpage">
+	<div class="formpage">
+        <div class="section_stealth">
+            <input id="newAddress_stealth" type="checkbox" class="checkbox" /> Stealth Address (for private exchange of funds)
+        </div>
+    	<div class="half_left half_equal section_password">
+            <h1 error="required">Create Password:</h1>
+            <div class="input">
+                <input id="newAddressPassword" class="password mandatory" type="password" />
+            </div>
+        </div>
+    	<div class="half_right half_equal section_repassword">
+            <h1 error="doesn't match">Repeat Password:</h1>
+            <div class="input">
+                <input id="newAddressRepassword" class="repassword mandatory" type="password" />
+            </div>
+        </div>
+        <div class="submit">
+            <a href="javascript:void(0);" id="createNewAddress" class="btnSubmit"><span class="txt">Create</span></a>
+        </div>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="export_tpl">
+
+<div class="formpage">
+    <h1>Backup address:</h1>
+    <div id="exportAddress_account"></div>
+    <div class="section_submit">
+        <div class="submit">
+            <a href="javascript:void(0);" id="exportAddress_submit" class="btnSubmit"><span class="txt">Backup</span></a>
+        </div>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="contact_item_tpl">
+
+<div class="listItem">
+	<span class="avatar"><span class="img"><img src="<%=contact.avatar?contact.avatar:'img/avatarEmpty.png'%>" /></span></span>
+    <div class="data">
+        <div class="detailsRow">
+            <a class="userProfile" href="javascript:void(0);">
+                <span class="name editableTxt"><%=contact.alias%></span>
+                <span class="bitprofileIcon <%if(contact.bitprofile){%>on<%}%>"></span>
+            </a>
+            <a class="detail s_titled transactions" href="javascript:void(0);"><%=contact.transactions?contact.transactions:"0"%></a>
+        </div>
+        <div class="detailsRow">
+            <div class="controls">
+            	<a class="btn send" href="javascript:void(0);"></a>
+            	<a class="btn remove" href="javascript:void(0);"></a>
+            </div>
+            <a class="address" href="javascript:void(0);"><%=contact.address%></a>
+        </div>
+    </div>
+    <div class="controls removing">
+        <div class="txt s_title">removing contact (<span class="time">5</span>)</div>
+        <a class="btn btntxt cancel" href="javascript:void(0);"></a>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="change_password_tpl">
+
+<div class="formpage">
+    <h1>Change password:</h1>
+    <div id="editAddress_account"></div>
+    
+    <div class="half_left half_equal section_newpassword">
+        <h1 error="required">New Password:</h1>
+        <div class="input">
+            <input id="editAddress_newPassword" class="password mandatory" type="password" />
+        </div>
+    </div>
+    <div class="half_right half_equal section_newrepassword">
+        <h1 error="doesn't match">Repeat Password:</h1>
+        <div class="input">
+            <input id="editAddress_newRepassword" class="repassword mandatory" type="password" />
+        </div>
+    </div>
+    
+    <div class="section_submit">
+        <div class="half_left section_password">
+            <h1 error="incorrect">Password:</h1>
+            <div class="input">
+                <input id="editAddress_password" class="mandatory" type="password" />
+            </div>
+        </div>
+        
+        <div class="submit half_right">
+            <a href="javascript:void(0);" id="editAddress_submit" class="btnSubmit"><span class="txt">Save</span></a>
+        </div>
+    </div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="addressbook_tpl">
+
+<div class="head">
+	<div class="controls left">
+      	<div id="filterContacts" class="input" value="0">
+      	    <select>
+                <option value="all">All contacts</option>
+                <option value="bitprofile">With bitprofile</option>
+                <option value="local">Without bitprofile</option>
+            </select>
+        </div>
+    </div>
+	<div class="controls">
+        <input id="inputSearchContacts" class="search" type="text" placeholder="search bitprofile" />
+        <a id="btnSearchContacts" class="inputBtnSearch" href="javascript:void(0);"></a>
+	</div>
+</div>
+
+<div class="scrollpage addressbook">
+    <div class="empty">no contacts to display</div>
+    <div class="holder contactList"></div>
+</div>
+
+
+</script>
+
+
+
+<script type="text/template" id="account_null_tpl">
+
+<div class="item"><a><%=msg%></a></div>
+
+
+</script>
+
+
+
+<script type="text/template" id="account_item_tpl">
+
+<%if(!account.address){%>
+<div class="item" stealth="true">
+    <a title="<%=account.stealth%>">
+        <%if(account.bitprofile){%>
+        <span class="account bitprofile">
+            <span class="id"><%=account.bitprofile%></span>
+        <%}else{%>
+        <span class="account stealth">
+        <%}%>
+            <span class="address"><%=shortify(account.stealth, width-(""+account.bitprofile).length)%></span>
+        </span>
+    </a>
+</div>
+<%}else{%>
+<div class ="item">
+    <a title="<%=account.address%>">
+        <span class="amount txtBalance">
+            <span class="int"><%=account.balance.int%></span><span class="dec"><%=account.balance.dec%></span>
+        </span>
+        <%if(account.bitprofile){%>
+        <span class="account originated originBitprofile">
+            <span class="address"><%=account.address%></span>
+            <span class="origin bitprofile">
+                <span class="id"><%=account.bitprofile%></span>
+                <%if(account.stealth){%>
+                <span class="address"><%=shortify(account.stealth, width-account.bitprofile.length)%></span>
+                <%}%>
+            </span>
+        </span>
+        <%}else if(account.stealth){%>
+        <span class="account originated originStealth">
+            <span class="address"><%=account.address%></span>
+            <span class="origin stealth"><span class="address"><%=shortify(account.stealth, width)%></span></span>
+        </span>
+        <%}else{%>
+        <span class="account"><span class="address"><%=account.address%></span></span>
+        <%}%>
+    </a>
+</div>
+<%}%>
+
+
+</script>
+
+
+
+<script type="text/template" id="accounts_tpl">
+
+<div class="input accountList" value="0">
+    <div class="select"></div>
+    <div class="dropdownBox dropdown3"><div class="holder"></div></div>
+</div>
+
+
+</script>
+
+
+
+
+<script type="text/javascript" src="js/vendor/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.timeago.js"></script>
+<script type="text/javascript" src="js/vendor/jquery-editable-poshytip.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="js/vendor/cryptojs.js"></script>
+<script type="text/javascript" src="js/vendor/cryptojs.sha256.js"></script>
+<script type="text/javascript" src="js/vendor/securerandom.js"></script>
+<script type="text/javascript" src="js/vendor/ninja.seeder.js"></script>
+<script type="text/javascript" src="js/vendor/qrcode.js"></script>
+<script type="text/javascript" src="js/vendor/moment.js"></script>
+<script type="text/javascript" src="js/vendor/daterangepicker.js"></script>
+<script type="text/javascript" src="js/vendor/notie.js"></script>
+
+<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
+<script type="text/javascript" src="js/vendor/backbone-min.js"></script>
+
+<script type="text/javascript" src="js/model/Account.js"></script>
+<script type="text/javascript" src="js/model/Transaction.js"></script>
+<script type="text/javascript" src="js/model/AddressBook.js"></script>
+<script type="text/javascript" src="js/model/Progress.js"></script>
+
+
+<script type="text/javascript" src="js/TemplateRegistry.js"></script>
+<script type="text/javascript" src="js/view/validate.js"></script>
+<script type="text/javascript" src="js/view/utils.js"></script>
+<script type="text/javascript" src="js/view/Collection.js"></script>
+<script type="text/javascript" src="js/view/Account.js"></script>
+<script type="text/javascript" src="js/view/ReceivePage.js"></script>
+<script type="text/javascript" src="js/view/SendPage.js"></script>
+<script type="text/javascript" src="js/view/GeneratePage.js"></script>
+<script type="text/javascript" src="js/view/TransactionsPage.js"></script>
+<script type="text/javascript" src="js/view/AddressBookPage.js"></script>
+<script type="text/javascript" src="js/view/ImportKeyPage.js"></script>
+<script type="text/javascript" src="js/view/ExportKeyPage.js"></script>
+<script type="text/javascript" src="js/view/ChangePasswordPage.js"></script>
+<script type="text/javascript" src="js/view/ProgressView.js"></script>
+<script type="text/javascript" src="js/view/MenuView.js"></script>
+<script type="text/javascript" src="js/view/SettingsPage.js"></script>
+<script type="text/javascript" src="js/view/MainWindow.js"></script>
+
+<script type="text/javascript" src="simulator/model/Account.js"></script>
+<script type="text/javascript" src="simulator/model/Transaction.js"></script>
+<script type="text/javascript" src="simulator/model/AddressBook.js"></script>
+<script type="text/javascript" src="simulator/model/Progress.js"></script>
+<script type="text/javascript" src="simulator/model/ClipBoard.js"></script>
+<script type="text/javascript" src="simulator/model/FileSystem.js"></script>
+
+<script type="text/javascript">
+    var templates = new TemplateRegistry();
+    templates.load();
+
+    var accounts = new AccountCollectionSimulator;
+    var addressbook = new AddressBookSimulator;
+    var transactions = new TransactionCollectionSimulator;
+    var progress = new ProgressSimulator;
+
+    accounts.add({address: "0x9fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:5.1});
+    accounts.add({address: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", bitprofile: "tester", balance:2.7});
+    accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
+
+    addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+    addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+
+    addressbook.resolve(transactions);
+
+    transactions.add({category:"Sent", from: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", amount:1, timestamp: (Date.now()-1800000)/1000});
+    transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
+	transactions.add({category:"Mined", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
+	transactions.add({category:"Sent", from: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-250000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326"} });
+    
+
+    var filesystem = new FileSystem();
+    var clipboard = new ClipBoard();
+
+    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard:clipboard});
+
+    setTimeout(function(){
+        view.render();
+    },1000);
+
+</script>
+
+</html>
+

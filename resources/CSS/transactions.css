@@ -1,6 +1,7 @@
 @charset "utf-8";
 
-.listItem.received {
+.listItem.received,
+.listItem.mined {
 	background-color: #DEE5E0;
 	background-color: rgba(236, 247, 236, 0.4);
 }
@@ -8,7 +9,8 @@
 	background-color: #DBE4E8;
 	background-color: rgba(226, 247, 255, 0.4);
 }
-.listItem.received .header {
+.listItem.received .header,
+.listItem.mined .header {
 	background-color: #D7E1D9;
 	background-color: rgba(91, 148, 91, 0.05);
 }
@@ -27,6 +29,11 @@
 	color: #3D8AAB;
 	content:'sent to:';
 }
+.listItem.mined .header .title,
+.listItem.mined .header:before {
+	color: #5B945B;
+	content:'mined';
+}
 .listItem.received .header.icon .title,
 .listItem.received .header.icon:before {
 	background-position-y: -286px;
@@ -35,15 +42,22 @@
 .listItem.sent .header.icon:before {
 	background-position-y: -160px;
 }
+.listItem.mined .header.icon .title,
+.listItem.mined .header.icon:before {
+	background-position-y: -985px;
+}
 
-.listItem.received .avatar {
+.listItem.received .avatar,
+.listItem.mined .avatar {
 	border-color: #5B945B;
 }
 .listItem.sent .avatar {
 	border-color: #3D8AAB;
 }
 .received .txtBalance .int,
-.received .txtBalance .dec {
+.received .txtBalance .dec, 
+.mined .txtBalance .int,
+.mined .txtBalance .dec {
 	color: #5B945B;
 }
 .sent .txtBalance .int,
@@ -51,7 +65,8 @@
 	color: #3D8AAB;
 }
 
-.received .txtBalance .int:before {
+.received .txtBalance .int:before,
+.mined .txtBalance .int:before {
 	content: "+";
 }
 .sent .txtBalance .int:before {
@@ -59,7 +74,9 @@
 }
 
 .listItem.received .s_title,
-.listItem.received .s_titled:before {
+.listItem.received .s_titled:before,
+.listItem.mined .s_title,
+.listItem.mined .s_titled:before {
 	color:#5B945B;
 }
 .listItem.sent .s_title,
@@ -71,7 +88,8 @@
 	content: "hash:";
 }
 
-.listItem.received .s_titled.userAddress:before {
+.listItem.received .s_titled.userAddress:before,
+.listItem.mined .s_titled.userAddress:before {
 	content: "to:";
 }
 .listItem.sent .s_titled.userAddress:before {

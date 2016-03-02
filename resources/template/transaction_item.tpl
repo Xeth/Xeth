@@ -1,11 +1,11 @@
 <%if(transaction.category=="Mined"){%>
 <div class="listItem mined" style="display: block;">
     <div class="header icon">
-        <span class="detail s_titled userAddress"><%transaction.to%></span>
+        <span class="detail s_titled userAddress"><%=transaction.to%></span>
     </div>
     <div class="data">
         <div class="detailsRow">
-            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 80)%></span>
+            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 45)%></span>
             <span class="detail txtBalance">
                 <span class="int"><%=transaction.amount.int%></span><span class="dec"><%=transaction.amount.dec%></span>
             </span>
