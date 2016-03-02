@@ -36,7 +36,7 @@ var MainWindowView = Backbone.View.extend({
         }
     },
 
-    bind:function(object){
+    bindModels:function(object){
         for(var i in object){
             if(i=="templates") this.templates = object[i];
             else this.models[i] = object[i];
