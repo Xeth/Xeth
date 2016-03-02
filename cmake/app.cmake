@@ -35,9 +35,12 @@ file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/resources/template)
 #add_custom_command(TARGET compiler POST_BUILD COMMAND compiler ${PROJECT_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template)
 add_custom_target(xeth_compiled_templates COMMAND compiler ${PROJECT_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template DEPENDS compiler)
 
-add_executable(xeth ${APP_SOURCES} )
+add_executable(xeth ${APP_SOURCES} ${PROJECT_SOURCE_DIR}/resources/template.qrc ${PROJECT_SOURCE_DIR}/resources/css.qrc ${PROJECT_SOURCE_DIR}/resources/js.qrc ${PROJECT_SOURCE_DIR}/resources/html.qrc)
 add_dependencies(xeth xeth_compiled_templates)
 
+
+
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib;.so;.dll")
 
 
 target_link_libraries(xeth
