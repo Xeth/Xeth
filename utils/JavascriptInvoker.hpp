@@ -1,16 +1,11 @@
 #pragma once 
 
-#include <QWebView>
-#include <QApplication>
-#include <QWebFrame>
+#include "SyncWebView.hpp"
 
 
-class JavascriptInvoker
+class JavascriptInvoker : private SyncWebView
 {
     public:
         JavascriptInvoker();
         QVariant execute(const QString &);
-
-    private:
-        QWebView _window;
 };
