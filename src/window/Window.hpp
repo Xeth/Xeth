@@ -31,11 +31,10 @@ class Window : public QWebView
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
         void setUrl(const char *);
         void setIcon(const char *);
-        void loadTemplates();
-        
 
     private slots:
         void initObjects();
+        void loadTemplates();
 
     private:
         FrameContextBuilder &_contextBuilder;

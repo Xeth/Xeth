@@ -18,6 +18,7 @@ Window::Window(FrameContextBuilder &contextBuilder) :
 //    QWebInspector *inspector = new QWebInspector;
 //    inspector->setPage(page());
 //    inspector->show();
+    QObject::connect(page()->mainFrame(), &QWebFrame::loadFinished, this, &Window::loadTemplates);
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
     setContextMenuPolicy(Qt::NoContextMenu);
     setFixedSize(960, 600);
@@ -45,7 +46,6 @@ void Window::javaScriptConsoleMessage ( const QString & message, int lineNumber,
 
 void Window::initObjects()
 {
-    QObject::connect(page()->mainFrame(), &QWebFrame::loadFinished, this, &Window::loadTemplates);
     _contextBuilder.buildContext(page()->mainFrame());
 }
 
