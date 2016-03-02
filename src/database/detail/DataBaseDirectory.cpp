@@ -1,6 +1,10 @@
 #include "DataBaseDirectory.hpp"
 #include <QDebug>
 
+#ifdef __WINDOWS_OS__
+#include <shlobj.h>
+#endif
+
 namespace Xeth{
 
 DataBaseDirectory::DataBaseDirectory(const Settings &settings, bool create)

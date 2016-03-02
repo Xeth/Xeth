@@ -8,9 +8,6 @@
 
 #include <QDebug>
 
-#ifdef __WINDOWS_OS__
-#include <shlobj.h>
-#endif
 
 #include "Settings.hpp"
 
