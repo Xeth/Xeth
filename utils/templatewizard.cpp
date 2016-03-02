@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "HtmlMerger.hpp"
+#include "HtmlExtractor.hpp"
 
 int main(int argc, char **argv)
 {
@@ -45,8 +46,16 @@ int main(int argc, char **argv)
     }
     else
     {
-        std::cerr<<"not implemented"<<std::endl<<std::flush;
-        return 2;
+        HtmlExtractor extractor(args[0]);
+        extractor.moveTemplates(args[1]);
+        if(args.size() > 2)
+        {
+            extractor.saveTo(args[2]);
+        }
+        else
+        {
+            extractor.save();
+        }
     }
 
     return 0;
