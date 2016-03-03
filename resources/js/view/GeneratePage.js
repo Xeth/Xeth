@@ -10,6 +10,7 @@ var GeneratePageView = Backbone.View.extend({
         this.formPage = this.$el.find("#page_newAddress_create");
         this.password = this.$el.find("#newAddressPassword");
         this.stealth = this.$el.find("#newAddress_stealth");
+        this.stealth.button({text:false});
         this.repeatPassword = this.$el.find("#newAddressRepassword");
         this.$el.find("#skipNewAddressSeed").click(this.skipSeed);
         this.$el.find("#createNewAddress").click(this.submitForm);
@@ -71,7 +72,7 @@ var GeneratePageView = Backbone.View.extend({
 
         var request = {password: password};
 
-        if(this.stealth.is(":checked")){
+        if(this.stealth.prop("checked")){
             request.type = "stealth";
         }
 

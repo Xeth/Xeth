@@ -1,3 +1,5 @@
+
+
 <h1>New Address</h1>
 <div id="newAddressSeedLoader" class="preloader" loader="0">
     <div class="loader">
@@ -19,7 +21,8 @@
 <div id="page_newAddress_create" class="page subpage innerpage">
 	<div class="formpage">
         <div class="section_stealth">
-            <input id="newAddress_stealth" type="checkbox" class="checkbox" /> Stealth Address (for private exchange of funds)
+            <input id="newAddress_stealth" type="checkbox" />
+			<label for="newAddress_stealth">Stealth Address (for private exchange of funds)</label>
         </div>
     	<div class="half_left half_equal section_password">
             <h1 error="required">Create Password:</h1>
@@ -38,3 +41,5 @@
         </div>
     </div>
 </div>
+
+
