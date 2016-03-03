@@ -1,3 +1,5 @@
+
+
 <div class="formpage send">
     <h1>From:</h1>
     <div id="sendFrom"></div>
@@ -5,12 +7,10 @@
         <h1 error="invalid">To:</h1>
         <a class="btn addressbook" title="addressbook" href="javascript:void(0)"></a>
         <a class="btn clipboard" title="paste" href="javascript:javascript:void(0)"></a>
-        <div id="sendToType" class="input type" value="1">
-            <select name="sendType">
-                <option value="address">Address</option>
-                <option value="bitprofile">BitProfile</option>
-            </select>
-        </div>
+		<select name="sendType" id="sendToType">
+			<option value="address">Address</option>
+			<option value="bitprofile">BitProfile</option>
+		</select>
         <input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
     </div>
     <div class="half_left section_amount">
@@ -27,7 +27,8 @@
         </div>
     </div>
     <div class="half_left headless_section section_saveContact">
-        <input id="saveContact" type="checkbox" />save contact to addressbook
+        <input id="saveContact" type="checkbox" />
+		<label for="saveContact">save contact to addressbook</label>
     </div>
     <div class="half_right headless_section section_alias">
         <div class="input">
@@ -47,3 +48,5 @@
         </div>
     </div>
 </div>
+
+

@@ -1,7 +1,7 @@
 var SendPageView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "updatePlaceholder", "submit", "paste");
+        _(this).bindAll("toggleAlias", "updateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
@@ -12,7 +12,9 @@ var SendPageView = Backbone.View.extend({
         this.gas.slider({value:50});
 
         this.saveOption = this.$el.find("#saveContact");
-        this.sendType = this.$el.find("#sendToType select");
+        this.saveOption.button({text:false});
+        this.sendType = this.$el.find("#sendToType");
+		this.sendType.selectmenu().selectmenu( "widget" ).addClass( "type" );
         this.aliasHolder = this.$el.find(".section_alias .input");
         this.alias = this.aliasHolder.find("input");
         this.destination = this.$el.find("#sendToInput");
@@ -23,7 +25,7 @@ var SendPageView = Backbone.View.extend({
         this.aliasHolder.hide();
         this.accounts.render();
         this.saveOption.change(this.toggleAlias);
-        this.sendType.change(this.updatePlaceholder);
+        this.sendType.on("selectmenuchange",this.updateSendType);
         this.updatePlaceholder();
         this.$el.find("#submitSend").click(this.submit);
         this.$el.find("a.addressbook").click(function(){
@@ -41,8 +43,7 @@ var SendPageView = Backbone.View.extend({
         this.accounts.compact(false);
         this.accounts.resize(); //default size
         if(args && args.destination){
-            this.destination.val(args.destination);
-            this.sendType.val("address");
+            this.setDestination(args.destination);
         }
     },
 
@@ -57,11 +58,20 @@ var SendPageView = Backbone.View.extend({
             }
         }else{
             this.destination.val(address);
+			this.sendType.val("address");
         }
+		this.sendType.selectmenu( "refresh" );
+		this.updatePlaceholder();
+		this.updateContact();
     },
 
     setAmount:function(amount){
         this.amount.val(amount);
+    },
+
+    updateSendType:function(){
+        this.updatePlaceholder();
+		if(this.destination.val()) this.updateContact();
     },
 
     updatePlaceholder:function(){
@@ -73,16 +83,17 @@ var SendPageView = Backbone.View.extend({
         var address = this.destination.val();
         var contact = this.addressbook.find(function(model) { return model.get(type) === address; });
         if(contact){
-            this.saveOption.attr("checked", 1).attr("disabled",1);
-            this.alias.val(contact.get("alias")).attr("disabled",1);
+			this.saveOption.prop("checked",true).prop("disabled",true);
+            this.alias.val(contact.get("alias")).prop("disabled",true);
             this.aliasHolder.show();
         }else{
-            if(this.saveOption.is(":disabled")){
-                this.alias.removeAttr("disabled").val("");
-                this.saveOption.removeAttr("checked").removeAttr("disabled");
+            if(this.saveOption.prop("disabled")){
+                this.alias.val("").prop("disabled",false);
+                this.saveOption.prop("checked",false).prop("disabled",false);
                 this.aliasHolder.hide();
             }
         }
+		this.saveOption.button( "refresh" );
     },
 
     toggleAlias:function(){
@@ -96,7 +107,7 @@ var SendPageView = Backbone.View.extend({
     submit:function(){
         var toValidate = [this.amount, this.destination, this.password];
 
-        if(!this.saveOption.is(":disabled")&&this.saveOption.is(":checked")){
+        if(!this.saveOption.prop("disabled")&&this.saveOption.prop("checked")){
             toValidate.push(this.alias);
         }
 

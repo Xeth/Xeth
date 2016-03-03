@@ -11,14 +11,15 @@
 	margin-right: 86px;
 }
 
-.page .formpage.send .section_to .input.type {
-	width: 110px;
+.page .formpage.send .section_to .type {
+	width: 110px !important;
 	font-family: Bold, Arial, Helvetica, sans-serif;
 	color:#3D8AAB;
 	float:left;
 	margin-right:10px;
 }
-.page .formpage.send .section_to .input.type a{
+.page .formpage.send .section_to .type a,
+.page .formpage.send .section_to .type .ui-selectmenu-text {
 	color:#3D8AAB;
 }
 
