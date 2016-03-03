@@ -2,7 +2,7 @@
 
 (function ( $ ) {
     $.fn.error = function(){
-        $(this).focus(function(){$(this).parent().removeClass("error")}).parent().addClass("error");
+        $(this).focus(function(){$(this).closest(".section_mandatory").removeClass("error")}).closest(".section_mandatory").addClass("error");
     }
     $.fn.validate = function(callback) {
         var result = true;

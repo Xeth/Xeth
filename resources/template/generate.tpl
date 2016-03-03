@@ -24,13 +24,13 @@
             <input id="newAddress_stealth" type="checkbox" />
 			<label for="newAddress_stealth">Stealth Address (for private exchange of funds)</label>
         </div>
-    	<div class="half_left half_equal section_password">
+    	<div class="half_left half_equal section_password section_mandatory">
             <h1 error="required">Create Password:</h1>
             <div class="input">
                 <input id="newAddressPassword" class="password mandatory" type="password" />
             </div>
         </div>
-    	<div class="half_right half_equal section_repassword">
+    	<div class="half_right half_equal section_repassword section_mandatory">
             <h1 error="doesn't match">Repeat Password:</h1>
             <div class="input">
                 <input id="newAddressRepassword" class="repassword mandatory" type="password" />

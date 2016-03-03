@@ -3,7 +3,7 @@
 <div class="formpage send">
     <h1>From:</h1>
     <div id="sendFrom"></div>
-    <div class="group section_to">
+    <div class="group section_to section_mandatory">
         <h1 error="invalid">To:</h1>
         <a class="btn addressbook" title="addressbook" href="javascript:void(0)"></a>
         <a class="btn clipboard" title="paste" href="javascript:javascript:void(0)"></a>
@@ -13,7 +13,7 @@
 		</select>
         <input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
     </div>
-    <div class="half_left section_amount">
+    <div class="half_left section_amount section_mandatory">
         <h1 error="required">Amount:</h1>
         <div class="input amount">
             <input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="section_submit">
-        <div class="half_left section_password">
+        <div class="half_left section_password section_mandatory">
             <h1 error="incorrect">Password:</h1>
             <div class="input">
                 <input id="sendPassword" class="mandatory" type="password" />
