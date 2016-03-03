@@ -22,9 +22,11 @@
     <div class="header icon">
         <span class="detail s_titled userAddress"><%=((transaction.category=="Sent")?transaction.from:transaction.to)%></span>
     </div>
+	<%if(transaction.contact && transaction.contact.avatar){%>
     <span class="avatar">
-        <span class="img"><img src="<%=(transaction.contact && transaction.contact.avatar)?transaction.contact.avatar:'img/avatarEmpty.png'%>" onerror="errorAvatar($(this))"></span>
+        <span class="img"><img src="<%=transaction.contact.avatar%>" onerror="errorAvatar($(this))"></span>
     </span>
+	<%}%>
     <div class="data">
         <div class="detailsRow">
             <span class="userProfile">

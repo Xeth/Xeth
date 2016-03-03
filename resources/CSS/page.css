@@ -553,6 +553,9 @@
 	-webkit-transform: translate(-50%, 0%);
 	transform: translate(-50%, 0%);
 }
+.listItem .data {
+	margin: 0 9px;
+}
 .listItem .detailsRow {
 	padding: 5px 0px;
 	line-height: 16px;

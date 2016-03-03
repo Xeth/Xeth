@@ -104,7 +104,6 @@
 .transactions .listItem .txtBalance,
 .transactions .listItem .time {
 	float:right;
-	margin-right: 10px;
 }
 
 .transactions .listItem .time {
