@@ -399,7 +399,7 @@
 
 .innerpage .formpage .submit {
 	bottom: 60px;
-	width:100%;
+	width:580px;
 }
 .subpage .formpage .submit input[type=password] {
 	margin-bottom:30px;
@@ -457,7 +457,7 @@
 .formpage .section_submit {
 	position:absolute;
 	bottom: 0px;
-	width: 100%;
+	width: 580px;
 }
 
 .formpage .section_submit .section_password h1 {
