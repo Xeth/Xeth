@@ -180,7 +180,7 @@ var AccountSelect = Backbone.View.extend({
 
     hide:function(ev){
         this.collection.hide();
-        if(ev!=undefined) ev.stopPropagation();
+        //if(ev!=undefined) ev.stopPropagation();
     },
 
     selected:function(){
