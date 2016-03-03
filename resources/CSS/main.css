@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+.ui-helper-hidden-accessible {
+	display: none;
+}
+
 @font-face {
     font-family: Regular;
     src: local(Regular), url('../fonts/Ubuntu-Regular.ttf') format('opentype');
@@ -265,7 +269,7 @@ input.search {
 	text-transform: uppercase;
 }
 
-
+label.ui-button,
 .checkbox {
 	display: inline-block;
 	line-height: 20px;
@@ -278,6 +282,7 @@ input.search {
 	cursor:pointer;
 }
 
+label.ui-button:before,
 .checkbox:before {
 	content: "";
 	display: block;
@@ -293,11 +298,13 @@ input.search {
 	transition: background-color 300ms ease-in-out;
 }
 
+label.ui-button:hover:before,
 .checkbox:hover:before {
 	background-color: #c1c6c6;
 	background-color: rgba(119, 130, 131, 0.2);
 }
 
+label.ui-button.ui-state-active:before,
 .checkbox.on:before {
 	background-color: #778283;
 	background-color: rgba(119, 130, 131, 1);
