@@ -1,7 +1,7 @@
 var SendPageView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
+        _(this).bindAll("toggleAlias", "updateContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
@@ -21,6 +21,8 @@ var SendPageView = Backbone.View.extend({
         this.amount = this.$el.find("#sendAmount");
         this.password = this.$el.find("#sendPassword");
         this.destination.change(this.updateContact);
+        this.destination.on("input", this.scheduleUpdateContact);
+		this.addressbook.on("remove", this.updateContact);
 
         this.aliasHolder.hide();
         this.accounts.render();
@@ -79,6 +81,7 @@ var SendPageView = Backbone.View.extend({
     },
 
     updateContact: function(){
+        this.timer = undefined;
         var type = this.sendType.val();
         var address = this.destination.val();
         var contact = this.addressbook.find(function(model) { return model.get(type) === address; });
@@ -94,6 +97,12 @@ var SendPageView = Backbone.View.extend({
             }
         }
 		this.saveOption.button( "refresh" );
+    },
+
+    scheduleUpdateContact:function(){
+        if(this.timer==undefined){
+            this.timer = setTimeout(this.updateContact, 1000);
+        }
     },
 
     toggleAlias:function(){
