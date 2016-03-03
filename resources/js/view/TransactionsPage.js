@@ -66,8 +66,10 @@ var TransactionsPageView = Backbone.View.extend({
                 $(this).val("All Time");
         }).trigger('change.daterangepicker');
 
-        this.$el.find("#filterTransactionType").change(this.setTypeFilter);
-
+        this.typeFilter = this.$el.find("#filterTransactionType");
+		this.typeFilter.selectmenu();
+		this.typeFilter.on("selectmenuchange",this.setTypeFilter);
+		
         this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.listenTo(options.transactions, "add", this.updateTotal);
         this.listenTo(options.transactions, "reset", this.computeTotals);

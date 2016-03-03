@@ -447,6 +447,7 @@
 	margin: 0px -2.5px;
 }
 
+.page .head .controls .ui-selectmenu-button,
 .page .head .controls .input,
 .page .head .controls input[type="text"],
 .page .head .controls input[type="password"] {
@@ -458,8 +459,9 @@
 	width:170px;
 }
 
+.page .head #filterContacts-button,
 .page .head #filterContacts {
-	width:170px;
+	width:170px !important;
 }
 
 .page h1 {
