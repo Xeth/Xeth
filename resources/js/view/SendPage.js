@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
 		SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
@@ -87,17 +87,23 @@ var SendPageView = SubPageView.extend({
         var address = this.destination.val();
         var contact = this.addressbook.find(function(model) { return model.get(type) === address; });
         if(contact){
+			this.destination.noerror();
 			this.saveOption.prop("checked",true).prop("disabled",true);
-            this.alias.val(contact.get("alias")).prop("disabled",true);
+            this.alias.val(contact.get("alias")).prop("disabled",true).noerror();
             this.aliasHolder.show();
+			this.saveOption.button( "refresh" );
         }else{
             if(this.saveOption.prop("disabled")){
-                this.alias.val("").prop("disabled",false);
-                this.saveOption.prop("checked",false).prop("disabled",false);
-                this.aliasHolder.hide();
+                this.resetContact();
             }
         }
-		this.saveOption.button( "refresh" );
+    },
+
+    resetContact: function(){
+        this.alias.val("").prop("disabled",false);
+		this.saveOption.prop("checked",false).prop("disabled",false);
+		this.aliasHolder.hide();
+        this.saveOption.button( "refresh" );
     },
 
     scheduleUpdateContact:function(){
@@ -132,7 +138,8 @@ var SendPageView = SubPageView.extend({
             this.alias.error();
             return false;
         }
-
+		this.alias.noerror();
+		
         var type = this.sendType.val();
         var request = {amount:this.amount.val(), password:this.password.val()};
         var account = this.accounts.selected();
@@ -152,10 +159,11 @@ var SendPageView = SubPageView.extend({
         setTimeout(function(){
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
+				_this.password.error();
                 notifyError("invalid password");
                 return false;
             }
-
+			
             notifySuccess("sent");
 
             if(alias.length){
@@ -164,6 +172,7 @@ var SendPageView = SubPageView.extend({
                 _this.addressbook.create(contact);
             }
 
+			_this.resetContact();
             _this.$form.removeClass("waiting");
             _this.password.val("");
             _this.destination.val("");

@@ -30,7 +30,7 @@
         <input id="saveContact" type="checkbox" />
 		<label for="saveContact">save contact to addressbook</label>
     </div>
-    <div class="half_right headless_section section_alias">
+    <div class="half_right headless_section section_alias section_mandatory">
         <div class="input">
             <input id="sendAlias" class="mandatory" type="text" placeholder="alias" />
         </div>
