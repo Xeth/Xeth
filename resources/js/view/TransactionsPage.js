@@ -17,10 +17,11 @@ function TransactionViewFactory(template){
 }
 
 
-var TransactionsPageView = Backbone.View.extend({
+var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
+		SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
         this.template = options.templates.get("transactions");

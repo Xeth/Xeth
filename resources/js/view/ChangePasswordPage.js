@@ -1,7 +1,8 @@
-var ChangePasswordPageView = Backbone.View.extend({
+var ChangePasswordPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("submit");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.template = options.templates.get("change_password");
         this.$el.html(this.template());

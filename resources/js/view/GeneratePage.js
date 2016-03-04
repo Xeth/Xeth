@@ -1,7 +1,8 @@
-var GeneratePageView = Backbone.View.extend({
+var GeneratePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("updateProgress", "submitEntropy", "skipSeed", "submitForm");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.template = options.templates.get("generate");
         this.$el.html(this.template());

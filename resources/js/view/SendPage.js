@@ -1,7 +1,8 @@
-var SendPageView = Backbone.View.extend({
+var SendPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("toggleAlias", "updateContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
+		SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");

@@ -1,7 +1,8 @@
-var ReceivePageView = Backbone.View.extend({
+var ReceivePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.clipboard = options.clipboard;
         this.template = options.templates.get("receive");

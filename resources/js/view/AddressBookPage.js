@@ -93,10 +93,11 @@ function ContactViewFactory(template, router){
 }
 
 
-var AddressBookPageView = Backbone.View.extend({
+var AddressBookPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("applyFilter");
+		SubPageView.prototype.initialize.call(this,options);
 
         this.template = options.templates.get("addressbook");
         this.$el.html(this.template())

@@ -1,7 +1,8 @@
-var ImportKeyPageView = Backbone.View.extend({
+var ImportKeyPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("render", "submit");
+		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import");
         this.$el.html(this.template());
         this.filesystem = options.filesystem;
