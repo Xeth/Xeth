@@ -28,7 +28,6 @@ var ChangePasswordPageView = SubPageView.extend({
 
         if(newPassword.val()!=repeatPassword.val()){
             notifyError("password doesn't match");
-            newPassword.error();
             repeatPassword.error();
             return false;
         }
@@ -37,6 +36,7 @@ var ChangePasswordPageView = SubPageView.extend({
         var model = this.accounts.selected();
         if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
+            newPassword.error();
             return false;
         }
         notifySuccess("password changed");
