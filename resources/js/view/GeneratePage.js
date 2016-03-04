@@ -67,6 +67,7 @@ var GeneratePageView = SubPageView.extend({
 
         var password = this.password.val();
         if(password!=this.repeatPassword.val()){
+			this.repeatPassword.error();
             notifyError("password doesn't match");
             return false;
         }
