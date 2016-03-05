@@ -1,12 +1,13 @@
+
+
 <div class="head">
     <div class="controls left">
-        <div id="filterTransactionType" class="input" value="0">
-            <select>
-                <option value="All">All transactions</option>
-                <option value="Received">Received</option>
-                <option value="Sent">Sent</option>
-            </select>
-        </div>
+		<select id="filterTransactionType">
+			<option value="All">All transactions</option>
+			<option value="Received">Received</option>
+			<option value="Sent">Sent</option>
+			<option value="Mined">Mined</option>
+		</select>
         <div class="input date"><input type="text" id="filterTransactionTime" class="daterange" placeholder="date" /></div>
     </div>
     <div class="controls">
@@ -14,9 +15,9 @@
     </div>
 </div>
 
-<div class="transactions">
+<div class="transactions scrollpage">
     <div class="empty">no transactions to display</div>
-    <div class="scrollpage holder transactionList">
+    <div class="holder transactionList">
     </div>
 </div>
 <div class="transactions_total">
@@ -31,3 +32,5 @@
         </span>
     </div>
 </div>
+
+

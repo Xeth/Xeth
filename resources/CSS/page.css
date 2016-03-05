@@ -395,7 +395,7 @@
 }
 
 .page textarea {
-	overflow:hidden;
+	resize: none;
 }
 
 .page:target,
@@ -447,6 +447,7 @@
 	margin: 0px -2.5px;
 }
 
+.page .head .controls .ui-selectmenu-button,
 .page .head .controls .input,
 .page .head .controls input[type="text"],
 .page .head .controls input[type="password"] {
@@ -458,8 +459,9 @@
 	width:170px;
 }
 
+.page .head #filterContacts-button,
 .page .head #filterContacts {
-	width:170px;
+	width:170px !important;
 }
 
 .page h1 {
@@ -553,6 +555,9 @@
 	-webkit-transform: translate(-50%, 0%);
 	transform: translate(-50%, 0%);
 }
+.listItem .data {
+	margin: 0 9px;
+}
 .listItem .detailsRow {
 	padding: 5px 0px;
 	line-height: 16px;
@@ -603,6 +608,7 @@
 
 .listItem .controls {
 	float: right;
+	margin-right: -9px;
 }
 .listItem .controls .btn {
 	background-image: url(../img/icons-01.png);
@@ -659,11 +665,8 @@
 	left: 0px;
 	top: 48px;
 	bottom: 0px;
-	right: 0;/*-30px;*/
-	/*padding-right: 30px;*/
-/*	overflow: hidden;*/
-    overflow-y:auto;
-    overflow-x:hidden;
+	right: 0;
+	overflow: hidden;
 }
 .page .scrollpage .empty {
 	padding: 30px 0;

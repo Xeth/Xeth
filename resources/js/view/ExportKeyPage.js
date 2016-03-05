@@ -1,7 +1,8 @@
-var ExportKeyPageView = Backbone.View.extend({
+var ExportKeyPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("submit");
+		SubPageView.prototype.initialize.call(this,options);
         this.filesystem = options.filesystem;
         this.accounts = options.accounts;
         this.template = options.templates.get("export");

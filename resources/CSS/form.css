@@ -93,6 +93,7 @@
 	font-size: 0.65rem;
 	font-family: Regular, Arial, Helvetica, sans-serif;
 	line-height: 10px;
+	height: 10px;
 	display:block;
 }
 
@@ -307,8 +308,8 @@
 }
 
 .page .input.date input {
-	padding-left: 35px;
-	width: 95px;
+	padding-left: 30px;
+	width: 100px;
 }
 
 .page .input.date:after {
@@ -399,7 +400,7 @@
 
 .innerpage .formpage .submit {
 	bottom: 60px;
-	width:100%;
+	width:580px;
 }
 .subpage .formpage .submit input[type=password] {
 	margin-bottom:30px;
@@ -457,7 +458,7 @@
 .formpage .section_submit {
 	position:absolute;
 	bottom: 0px;
-	width: 100%;
+	width: 580px;
 }
 
 .formpage .section_submit .section_password h1 {

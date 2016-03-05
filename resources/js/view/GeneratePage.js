@@ -1,7 +1,8 @@
-var GeneratePageView = Backbone.View.extend({
+var GeneratePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("updateProgress", "submitEntropy", "skipSeed", "submitForm");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.template = options.templates.get("generate");
         this.$el.html(this.template());
@@ -10,6 +11,7 @@ var GeneratePageView = Backbone.View.extend({
         this.formPage = this.$el.find("#page_newAddress_create");
         this.password = this.$el.find("#newAddressPassword");
         this.stealth = this.$el.find("#newAddress_stealth");
+        this.stealth.button({text:false});
         this.repeatPassword = this.$el.find("#newAddressRepassword");
         this.$el.find("#skipNewAddressSeed").click(this.skipSeed);
         this.$el.find("#createNewAddress").click(this.submitForm);
@@ -65,13 +67,14 @@ var GeneratePageView = Backbone.View.extend({
 
         var password = this.password.val();
         if(password!=this.repeatPassword.val()){
+			this.repeatPassword.error();
             notifyError("password doesn't match");
             return false;
         }
 
         var request = {password: password};
 
-        if(this.stealth.is(":checked")){
+        if(this.stealth.prop("checked")){
             request.type = "stealth";
         }
 

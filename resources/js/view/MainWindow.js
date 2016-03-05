@@ -10,7 +10,7 @@ var MainWindowView = Backbone.View.extend({
     el: "body",
 
     initialize:function(options){
-        _(this).bindAll("open");
+        _(this).bindAll("open","show","loaded");
         this.models = {};
         this.models.addressbook = options.addressbook;
         this.models.accounts = options.accounts;
@@ -20,6 +20,7 @@ var MainWindowView = Backbone.View.extend({
         this.models.progress = options.progress;
 
         this.templates = options.templates;
+		this.active = null;
     },
 
     open: function(name, args){
@@ -29,10 +30,10 @@ var MainWindowView = Backbone.View.extend({
         }
         var view =  this.subpages[name];
         if(view!=undefined){
-            this.$el.find(".page.active").removeClass("active");
-            view.$el.removeClass("off").addClass("active");
+			if(this.active) this.active.hide();
+			this.active = view;
             this.menu.setCursor(this.menuAlias[name]||name);
-            view.render(args);
+            view.show(args);
         }
     },
 
@@ -45,9 +46,7 @@ var MainWindowView = Backbone.View.extend({
 
     render: function(){
 
-        this.$el.find("#page_splash").removeClass("active").addClass("off");
-        this.$el.html(this.templates.get("main_page")());
-        this.$el.addClass("loaded");
+        this.$el.prepend(this.templates.get("main_page")());
 
         this.accounts = new AccountSelect({collection:this.models.accounts, templates:this.templates});
         this.router = new PageRouter(this);
@@ -126,7 +125,18 @@ var MainWindowView = Backbone.View.extend({
         this.progress = new ProgressView({el:this.$el.find(".footer"), model:this.models.progress});
 
         this.progress.render();
-        setTimeout(this.open, 800);
-    }
+        this.show();
+    },
+	
+	loaded:function(){
+		this.$el.addClass("loaded");
+        this.$el.find("#page_splash").addClass("off");
+	},
+	
+	show:function(){
+        this.$el.find("#page_splash").removeClass("active");
+		setTimeout(this.loaded, 150);
+        setTimeout(this.open, 1000);
+	}
 
 });

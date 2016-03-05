@@ -1,7 +1,8 @@
-var ReceivePageView = Backbone.View.extend({
+var ReceivePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.clipboard = options.clipboard;
         this.template = options.templates.get("receive");
@@ -10,8 +11,8 @@ var ReceivePageView = Backbone.View.extend({
         this.amount = this.$el.find("#receiveAmount");
         this.uri = this.$el.find(".txtURI");
         this.qr = new QRCode(this.$el.find("#receiveQR").get(0), {
-            width : 480,
-            height : 480,
+            width : 240,
+            height : 240,
             colorDark: "#1C2E30",
             colorLight: "rgba(255,255,255,0)",
             correctLevel : QRCode.CorrectLevel.M

@@ -1,7 +1,8 @@
-var ChangePasswordPageView = Backbone.View.extend({
+var ChangePasswordPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("submit");
+		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.template = options.templates.get("change_password");
         this.$el.html(this.template());
@@ -27,7 +28,6 @@ var ChangePasswordPageView = Backbone.View.extend({
 
         if(newPassword.val()!=repeatPassword.val()){
             notifyError("password doesn't match");
-            newPassword.error();
             repeatPassword.error();
             return false;
         }
@@ -36,6 +36,7 @@ var ChangePasswordPageView = Backbone.View.extend({
         var model = this.accounts.selected();
         if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
+            newPassword.error();
             return false;
         }
         notifySuccess("password changed");

@@ -2,7 +2,10 @@
 
 (function ( $ ) {
     $.fn.error = function(){
-        $(this).focus(function(){$(this).parent().removeClass("error")}).parent().addClass("error");
+        $(this).focus(function(){$(this).noerror()}).closest(".section_mandatory").addClass("error");
+    }
+    $.fn.noerror = function(){
+        $(this).closest(".section_mandatory").removeClass("error");
     }
     $.fn.validate = function(callback) {
         var result = true;
@@ -15,6 +18,7 @@
                 }
                 result = false;
             }
+			else input.noerror();
         });
         return result;
     };

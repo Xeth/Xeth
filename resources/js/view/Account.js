@@ -120,7 +120,8 @@ var AccountSelect = Backbone.View.extend({
         var template = options.templates.get("accounts");
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
-        this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.$el.find(".dropdownBox>div")});
+		this.dropdownBox = this.$el.find(".dropdownBox");
+        this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.dropdownBox.find(">div")});
         this.active = new AccountViewReflection({el:this.$el.find(".select")});
         this.active.click(this.toggle);
         $('html').click(this.hide);
@@ -170,17 +171,19 @@ var AccountSelect = Backbone.View.extend({
 
     select:function(view){
         this.active.reset(view);
-        this.collection.hide();
+        this.hide();
         this.trigger("change", view?view.model:null);
     },
 
     toggle:function(){
-        this.collection.toggle();
+		this.dropdownBox.toggleClass("off");
+        //this.collection.toggle();
     },
 
     hide:function(ev){
-        this.collection.hide();
-        if(ev!=undefined) ev.stopPropagation();
+		this.dropdownBox.addClass("off");
+        //this.collection.hide();
+        //if(ev!=undefined) ev.stopPropagation();
     },
 
     selected:function(){

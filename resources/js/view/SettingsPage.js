@@ -1,6 +1,7 @@
-var SettingsPageView = Backbone.View.extend({
+var SettingsPageView = SubPageView.extend({
 
     initialize:function(options){
+		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("settings");
         this.$el.html(this.template());
         this.menu = new MenuView({el: this.$el.find(".btns")});

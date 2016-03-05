@@ -17,7 +17,13 @@ var ContactView = Backbone.View.extend({
             clear: false,
             validate: this.editName,
             display: false
-        });
+        }).attr('title','edit alias');
+		
+		this.$el.tooltip({
+			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
 
         this.$el.find(".remove").click(this.removeLater);
         this.$el.find(".removing .cancel").click(this.cancelRemove);
@@ -45,6 +51,7 @@ var ContactView = Backbone.View.extend({
             if(!icon.hasClass("on")) icon.addClass("on");
             icon.attr("title", bitprofile);
         }else{
+            icon.attr("title", "no bitprofile");
             icon.removeClass("on");
         }
     },
@@ -93,18 +100,26 @@ function ContactViewFactory(template, router){
 }
 
 
-var AddressBookPageView = Backbone.View.extend({
+var AddressBookPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("applyFilter");
+		SubPageView.prototype.initialize.call(this,options);
 
         this.template = options.templates.get("addressbook");
         this.$el.html(this.template())
         this.factory = new ContactViewFactory(options.templates.get("contact_item"), options.router);
-        this.collection = new CollectionView({el: this.$el.find(".addressbook .holder"), collection: options.addressbook, factory:this.factory});
+        this.collection = new CollectionView({
+			collection: options.addressbook, 
+			factory:this.factory,
+			scroll:{scrollPage: this.$el.find(".scrollpage"), step: 71},
+			el: this.$el.find(".contactList"), 
+            empty:this.$el.find(".empty")
+		});
         this.collection.render();
-        this.$filter = this.$el.find("#filterContacts select");
-        this.$filter.change(this.applyFilter);
+        this.$filter = this.$el.find("#filterContacts");
+		this.$filter.selectmenu();
+		this.$filter.on("selectmenuchange",this.applyFilter);
     },
 
     applyFilter:function(){

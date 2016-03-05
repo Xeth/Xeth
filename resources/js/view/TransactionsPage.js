@@ -4,6 +4,12 @@ var TransactionView = Backbone.View.extend({
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
+		
+		this.$el.tooltip({
+			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
     }
 });
 
@@ -17,10 +23,11 @@ function TransactionViewFactory(template){
 }
 
 
-var TransactionsPageView = Backbone.View.extend({
+var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
+		SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
         this.template = options.templates.get("transactions");
@@ -31,9 +38,9 @@ var TransactionsPageView = Backbone.View.extend({
         this.collection = new CollectionView({
             collection:options.transactions,
             factory:this.factory,
-            scroll:true,
             reversed:false,
             ordered:true,
+            scroll: {scrollPage: this.$el.find(".scrollpage"), step: 106},
             el:this.$el.find(".transactionList"),
             empty:this.$el.find(".empty")
         });
@@ -66,8 +73,10 @@ var TransactionsPageView = Backbone.View.extend({
                 $(this).val("All Time");
         }).trigger('change.daterangepicker');
 
-        this.$el.find("#filterTransactionType").change(this.setTypeFilter);
-
+        this.typeFilter = this.$el.find("#filterTransactionType");
+		this.typeFilter.selectmenu();
+		this.typeFilter.on("selectmenuchange",this.setTypeFilter);
+		
         this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.listenTo(options.transactions, "add", this.updateTotal);
         this.listenTo(options.transactions, "reset", this.computeTotals);

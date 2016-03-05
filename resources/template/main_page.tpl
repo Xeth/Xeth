@@ -1,3 +1,5 @@
+
+
 <div id="page_send" class="page off"></div>
 <div id="page_receive" class="page off"></div>
 <div id="page_addressbook" class="page off"></div>
@@ -13,7 +15,7 @@
 <div class="mainNav menu">
     <a class="profile myProfile" href="javascript:void(0)" page="page_bitprofile">BitProfile</a>
     <ul class="nav">
-        <li class="send active"><a page="page_send">send</a></li>
+        <li class="send"><a page="page_send">send</a></li>
         <li class="receive"><a page="page_receive">receive</a></li>
         <li class="addressbook"><a page="page_addressbook">addressbook</a></li>
         <li class="transactions"><a page="page_transactions">transactions</a></li>
@@ -38,3 +40,5 @@
 </div>
 
 <div class="subnavBg"></div>
+
+

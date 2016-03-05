@@ -35,7 +35,12 @@ var AccountCollectionSimulator = AccountCollection.extend({
     fetch:function(){},
 
     generate:function(request){
-        this.add(request);
+		console.log(request);
+		var account = {balance:0};
+		var address = Math.random();
+		account[(request.type=="stealth")? "stealth":"address"] = address;
+		this.add(account);
+		return address;
     },
 
     importKey:function(file, password){

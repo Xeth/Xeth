@@ -1,7 +1,6 @@
 @charset "utf-8";
 
-.listItem.received,
-.listItem.mined {
+.listItem.received {
 	background-color: #DEE5E0;
 	background-color: rgba(236, 247, 236, 0.4);
 }
@@ -9,8 +8,7 @@
 	background-color: #DBE4E8;
 	background-color: rgba(226, 247, 255, 0.4);
 }
-.listItem.received .header,
-.listItem.mined .header {
+.listItem.received .header {
 	background-color: #D7E1D9;
 	background-color: rgba(91, 148, 91, 0.05);
 }
@@ -22,12 +20,12 @@
 .listItem.received .header .title,
 .listItem.received .header:before {
 	color: #5B945B;
-	content:'received from:';
+	content:'received';
 }
 .listItem.sent .header .title,
 .listItem.sent .header:before {
 	color: #3D8AAB;
-	content:'sent to:';
+	content:'sent';
 }
 .listItem.mined .header .title,
 .listItem.mined .header:before {
@@ -88,9 +86,11 @@
 	content: "hash:";
 }
 
-.listItem.received .s_titled.userAddress:before,
+.listItem.received .s_titled.userAddress:before {
+	content: "on:";
+}
 .listItem.mined .s_titled.userAddress:before {
-	content: "to:";
+	content: "with:";
 }
 .listItem.sent .s_titled.userAddress:before {
 	content: "from:";
@@ -104,7 +104,6 @@
 .transactions .listItem .txtBalance,
 .transactions .listItem .time {
 	float:right;
-	margin-right: 10px;
 }
 
 .transactions .listItem .time {
