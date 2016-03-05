@@ -17,7 +17,13 @@ var ContactView = Backbone.View.extend({
             clear: false,
             validate: this.editName,
             display: false
-        });
+        }).attr('title','edit alias');
+		
+		this.$el.tooltip({
+			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
 
         this.$el.find(".remove").click(this.removeLater);
         this.$el.find(".removing .cancel").click(this.cancelRemove);
@@ -45,6 +51,7 @@ var ContactView = Backbone.View.extend({
             if(!icon.hasClass("on")) icon.addClass("on");
             icon.attr("title", bitprofile);
         }else{
+            icon.attr("title", "no bitprofile");
             icon.removeClass("on");
         }
     },

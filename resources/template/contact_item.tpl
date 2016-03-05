@@ -1,17 +1,19 @@
+
+
 <div class="listItem">
 	<span class="avatar"><span class="img"><img src="<%=contact.avatar?contact.avatar:'img/avatarEmpty.png'%>" /></span></span>
     <div class="data">
         <div class="detailsRow">
             <a class="userProfile" href="javascript:void(0);">
                 <span class="name editableTxt"><%=contact.alias%></span>
-                <span class="bitprofileIcon <%if(contact.bitprofile){%>on<%}%>"></span>
+                <span class="bitprofileIcon <%if(contact.bitprofile){%>on<%}%>" title="<%=contact.bitprofile?contact.bitprofile:'no bitprofile'%>"></span>
             </a>
             <a class="detail s_titled transactions" href="javascript:void(0);"><%=contact.transactions?contact.transactions:"0"%></a>
         </div>
         <div class="detailsRow">
             <div class="controls">
-            	<a class="btn send" href="javascript:void(0);"></a>
-            	<a class="btn remove" href="javascript:void(0);"></a>
+            	<a class="btn send" title="send payment" href="javascript:void(0);"></a>
+            	<a class="btn remove" title="remove contact" href="javascript:void(0);"></a>
             </div>
             <a class="address" href="javascript:void(0);"><%=contact.address%></a>
         </div>
@@ -21,3 +23,5 @@
         <a class="btn btntxt cancel" href="javascript:void(0);"></a>
     </div>
 </div>
+
+
