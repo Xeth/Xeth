@@ -31,7 +31,7 @@
         <div class="detailsRow">
             <span class="userProfile">
                 <span class="name editableTxt" tabindex="-1" title=""><%=((transaction.contact && transaction.contact.alias)?transaction.contact.alias:"unnamed")%></span>
-                <span class="bitprofileIcon" title="<%=(transaction.contact && transaction.contact.bitprofile)?'on':'no'%> bitprofile"></span>
+                <span class="bitprofileIcon<%if(transaction.contact && transaction.contact.bitprofile){%> on<%}%>" title="<%=(transaction.contact && transaction.contact.bitprofile)?transaction.contact.bitprofile:'no bitprofile'%>"></span>
             </span>
             <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 20)%></span>
             <span class="detail txtBalance">

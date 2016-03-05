@@ -4,6 +4,12 @@ var TransactionView = Backbone.View.extend({
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
+		
+		this.$el.tooltip({
+			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
     }
 });
 
