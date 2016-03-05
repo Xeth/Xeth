@@ -395,7 +395,7 @@
 }
 
 .page textarea {
-	overflow:hidden;
+	resize: none;
 }
 
 .page:target,
