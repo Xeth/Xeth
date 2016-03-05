@@ -608,6 +608,7 @@
 
 .listItem .controls {
 	float: right;
+	margin-right: -9px;
 }
 .listItem .controls .btn {
 	background-image: url(../img/icons-01.png);

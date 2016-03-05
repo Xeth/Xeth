@@ -13,6 +13,7 @@
 	display:none;
 	text-align: right;
 	margin-top: -52px;
+	margin-right: 0;
 }
 
 .listItem .controls.removing .txt {
