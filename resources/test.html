@@ -76,12 +76,21 @@
     accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
     addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
     addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	addressbook.add({alias: "Harap Alb", bitprofile: "harap01", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+    addressbook.add({alias: "Stramba Lemne", bitprofile: "stramba_lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+    addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+    addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	
     addressbook.resolve(transactions);
     transactions.add({category:"Sent", from: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", amount:1, timestamp: (Date.now()-1800000)/1000});
     transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
 	transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
 	transactions.add({category:"Sent", from: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-250000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
-    
+    transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
+	transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
+	
     var filesystem = new FileSystem();
     var clipboard = new ClipBoard();
     var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard:clipboard});

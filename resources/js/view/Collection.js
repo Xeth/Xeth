@@ -1,13 +1,27 @@
 var ListView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("reset","append","prepend","resize","hide","show");
-        if(options.scroll===true){
-            this.scroll = this.$el.mCustomScrollbar({advanced:{updateOnContentResize:true},scrollInertia:300,autoHideScrollbar:true,mouseWheel:{ normalizeDelta: false}});
-            this.container = this.$el.find(".mCSB_container");
-        }else{
-            this.container = this.$el;
+        _(this).bindAll("setScroll","reset","append","prepend","resize","hide","show");
+        if(options.scroll){
+			this.setScroll(options.scroll);
         }
+        this.container = this.$el;
     },
+	setScroll:function(data){
+		var scrollPage = ((data.scrollPage)? data.scrollPage : this.$el);
+		var scrollbar = {	advanced:{updateOnContentResize:true},
+							scrollButtons:{enable:true},
+							theme:"light-thick",
+							scrollbarPosition:"outside",
+							scrollInertia:200
+						};
+		if(data.step){
+			scrollbar.scrollButtons.scrollType="stepped";
+			scrollbar.keyboard={scrollType:"stepped"};
+			scrollbar.mouseWheel={scrollAmount:data.step};
+			scrollbar.snapAmount=data.step;
+		}
+		this.scroll = scrollPage.mCustomScrollbar(scrollbar);
+	},
     reset:function(data){
         this.container.html("");
         if(data!=undefined){

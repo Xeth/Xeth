@@ -32,9 +32,9 @@ var TransactionsPageView = SubPageView.extend({
         this.collection = new CollectionView({
             collection:options.transactions,
             factory:this.factory,
-            scroll:true,
             reversed:false,
             ordered:true,
+            scroll: {scrollPage: this.$el.find(".scrollpage"), step: 106},
             el:this.$el.find(".transactionList"),
             empty:this.$el.find(".empty")
         });

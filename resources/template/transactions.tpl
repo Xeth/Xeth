@@ -15,9 +15,9 @@
     </div>
 </div>
 
-<div class="transactions">
+<div class="transactions scrollpage">
     <div class="empty">no transactions to display</div>
-    <div class="scrollpage holder transactionList">
+    <div class="holder transactionList">
     </div>
 </div>
 <div class="transactions_total">
