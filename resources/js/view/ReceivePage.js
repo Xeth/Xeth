@@ -11,8 +11,8 @@ var ReceivePageView = SubPageView.extend({
         this.amount = this.$el.find("#receiveAmount");
         this.uri = this.$el.find(".txtURI");
         this.qr = new QRCode(this.$el.find("#receiveQR").get(0), {
-            width : 480,
-            height : 480,
+            width : 240,
+            height : 240,
             colorDark: "#1C2E30",
             colorLight: "rgba(255,255,255,0)",
             correctLevel : QRCode.CorrectLevel.M
