@@ -38,6 +38,7 @@ body {
     user-select: none;
 	
 	cursor: default;
+	overflow: hidden;
 }
 
 a {
