@@ -308,8 +308,8 @@
 }
 
 .page .input.date input {
-	padding-left: 35px;
-	width: 95px;
+	padding-left: 30px;
+	width: 100px;
 }
 
 .page .input.date:after {
