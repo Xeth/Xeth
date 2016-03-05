@@ -6,7 +6,7 @@
         <div class="detailsRow">
             <a class="userProfile" href="javascript:void(0);">
                 <span class="name editableTxt"><%=contact.alias%></span>
-                <span class="bitprofileIcon <%if(contact.bitprofile){%>on<%}%>" title="<%=contact.bitprofile?contact.bitprofile:'no bitprofile'%>"></span>
+                <span class="bitprofileIcon<%if(contact.bitprofile){%> on<%}%>" title="<%=(contact.bitprofile)?contact.bitprofile:'no bitprofile'%>"></span>
             </a>
             <a class="detail s_titled transactions" href="javascript:void(0);"><%=contact.transactions?contact.transactions:"0"%></a>
         </div>
