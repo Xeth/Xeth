@@ -120,6 +120,13 @@ var AddressBookPageView = SubPageView.extend({
         this.$filter = this.$el.find("#filterContacts");
 		this.$filter.selectmenu();
 		this.$filter.on("selectmenuchange",this.applyFilter);
+        
+        this.collection.collection.on("add", this.applyFilter);
+        this.collection.collection.on("insert", this.applyFilter);
+    },
+
+    render:function(options){
+        this.applyFilter();
     },
 
     applyFilter:function(){
