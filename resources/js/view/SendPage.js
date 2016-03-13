@@ -37,6 +37,18 @@ var SendPageView = SubPageView.extend({
         this.$el.find("a.clipboard").click(this.paste);
         this.router = options.router;
         this.$form = this.$el.find(".formpage.send");
+        
+		this.$el.tooltip({
+			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
+        
+        this.$el.find('.section_fee').tooltip({	
+            position: { my: "center top", at: "center bottom" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
     },
 
     render:function(args){
