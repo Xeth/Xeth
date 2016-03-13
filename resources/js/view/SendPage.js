@@ -38,7 +38,7 @@ var SendPageView = SubPageView.extend({
         this.router = options.router;
         this.$form = this.$el.find(".formpage.send");
         
-		this.$el.tooltip({
+		this.$el.find('.btn').tooltip({
 			position: { my: "center bottom", at: "center top-5" },
 			show: { duration: 200 },
 			hide: { duration: 200 }
