@@ -199,7 +199,9 @@ var CollectionView = Backbone.View.extend({
     create:function(model){
         var view = this.factory.create(model);
         view.render();
-        view.$el.fadeIn(300);
+        setTimeout(function(){
+            view.$el.removeClass("off");
+        },50);
         return view;
     },
 
@@ -208,20 +210,19 @@ var CollectionView = Backbone.View.extend({
         if(view!=undefined){
             delete this.items[model.cid];
             view.unbind();
-            view.$el.fadeOut(300,function(){
+            view.$el.addClass("off");
+            setTimeout(function(){
                 view.remove();
-            });
+            },300);
         }
     },
 
     showEmpty:function(){
         this.$empty.addClass("on");
-        //this.$empty.show();
     },
 
     hideEmpty:function(){
         this.$empty.removeClass("on");
-        //this.$empty.hide();
     },
 
     updateEmpty:function(val){

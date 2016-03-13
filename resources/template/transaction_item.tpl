@@ -1,7 +1,7 @@
 
 
 <%if(transaction.category=="Mined"){%>
-<div class="listItem mined" style="display: block;">
+<div class="listItem off mined" style="display: block;">
     <div class="header icon">
         <span class="detail s_titled userAddress"><%=transaction.to%></span>
     </div>
@@ -18,7 +18,7 @@
     </div>
 </div>
 <%}else{%>
-<div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%> style="display: block;">
+<div class="listItem off <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%> style="display: block;">
     <div class="header icon">
         <span class="detail s_titled userAddress"><%=((transaction.category=="Sent")?transaction.from:transaction.to)%></span>
     </div>

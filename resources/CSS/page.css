@@ -491,15 +491,22 @@
 	background-color: #E4E6E6;
 	background-color: rgba(255, 255, 255, 0.4);
 	padding: 9px;
-	/*border-top: 1px solid #AEB4B5;*/
 	color: #778283;
 	font-size: 0.9rem;
-	/*height: 52px;*/
 	margin: 1px 0px;
+    overflow: hidden;
+    opacity: 1;
+    max-height: 200px;
+    
+	transition: opacity 300ms, max-height 300ms, padding 300ms;
 }
 
-.listItem:first-child {
-	border-top: none;
+.listItem.off {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 9px;
+    margin-bottom: -1px;
+    pointer-events: none;
 }
 
 .listItem .header {
