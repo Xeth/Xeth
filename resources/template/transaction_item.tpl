@@ -1,7 +1,7 @@
 
 
 <%if(transaction.category=="Mined"){%>
-<div class="listItem mined" style="display: block;">
+<div class="listItem off mined">
     <div class="header icon">
         <span class="detail s_titled userAddress"><%=transaction.to%></span>
     </div>
@@ -13,12 +13,12 @@
             </span>
         </div>
         <div class="detailsRow">
-            <span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
+            <span class="detail time"><%=moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss')%></span>
         </div>
     </div>
 </div>
 <%}else{%>
-<div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%> style="display: block;">
+<div class="listItem off <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
     <div class="header icon">
         <span class="detail s_titled userAddress"><%=((transaction.category=="Sent")?transaction.from:transaction.to)%></span>
     </div>
@@ -39,7 +39,7 @@
             </span>
         </div>
         <div class="detailsRow">
-            <span class="address"><%=((transaction.category=="Sent")?transaction.to:transaction.from)%></span><span class="detail time"><%=$.timeago(transaction.timestamp)%></span>
+            <span class="address"><%=((transaction.category=="Sent")?transaction.to:transaction.from)%></span><span class="detail time"><%=moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss')%></span>
         </div>
     </div>
 </div>

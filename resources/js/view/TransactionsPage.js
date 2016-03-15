@@ -1,6 +1,7 @@
 
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
+        _(this).bindAll("setTimeago");
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
@@ -10,6 +11,19 @@ var TransactionView = Backbone.View.extend({
 			show: { duration: 200 },
 			hide: { duration: 200 }
 		});
+        
+        setTimeout(this.setTimeago, 50);
+    },
+
+    setTimeago:function(){
+        this.time = this.$el.find('.detail.time');
+        this.time.attr("title",this.time.text());
+        this.time.timeago();
+        this.time.tooltip({ 
+            position: { my: "right bottom", at: "right+5 top-5" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
     }
 });
 

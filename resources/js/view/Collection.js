@@ -100,7 +100,7 @@ var CollectionView = Backbone.View.extend({
         this.items = {};
         this.assigned = [];
         this.factory = options.factory;
-        _(this).bindAll("reset","remove","insert", "add", "hideEmpty", "updateEmpty");
+        _(this).bindAll("reset","remove","insert", "add", "showEmpty", "hideEmpty", "updateEmpty");
         this.container = options.reversed ? new ReversedListView({el:this.$el, scroll:options.scroll}) : new ListView({el:this.$el, scroll:options.scroll});
         this.emplace = options.ordered ? this.insert : this.add;
 
@@ -113,7 +113,7 @@ var CollectionView = Backbone.View.extend({
             this.$empty = $(options.empty);
             this.collection.on("reset", this.updateEmpty);
             this.collection.on("remove", this.updateEmpty);
-            this.collection.on("add", this.hideEmpty);
+            this.collection.on("add", this.updateEmpty);
             this.updateEmpty();
         }
 
@@ -135,6 +135,7 @@ var CollectionView = Backbone.View.extend({
             else
                 view.$el.hide();
         });
+        this.updateEmpty();
     },
 
     each:function(callback){
@@ -173,7 +174,7 @@ var CollectionView = Backbone.View.extend({
     },
 
     add:function(model){
-         this.container.append(this.register(this.create(model)).$el);
+        this.container.append(this.register(this.create(model)).$el);
     },
 
     insert:function(model){
@@ -198,7 +199,9 @@ var CollectionView = Backbone.View.extend({
     create:function(model){
         var view = this.factory.create(model);
         view.render();
-        view.$el.fadeIn(300);
+        setTimeout(function(){
+            view.$el.removeClass("off");
+        },50);
         return view;
     },
 
@@ -207,18 +210,34 @@ var CollectionView = Backbone.View.extend({
         if(view!=undefined){
             delete this.items[model.cid];
             view.unbind();
-            view.$el.fadeOut(300,function(){
+            view.$el.addClass("off");
+            setTimeout(function(){
                 view.remove();
-            });
+            },300);
         }
     },
 
-    hideEmpty:function(){
-        this.$empty.hide();
+    showEmpty:function(){
+        this.$empty.addClass("on");
     },
 
-    updateEmpty:function(){
-        if(this.collection.length) this.$empty.hide(); else this.$empty.show();
+    hideEmpty:function(){
+        this.$empty.removeClass("on");
+    },
+
+    updateEmpty:function(val){
+        var empty = true;
+        if(this.collection.length)
+        {
+            this.each(function(view){
+                if(!view.$el.is(":hidden"))
+                {
+                    empty = false;
+                }
+            });
+            (empty)?this.showEmpty():this.hideEmpty();
+        }
+        else this.showEmpty();
     }
 
 });
