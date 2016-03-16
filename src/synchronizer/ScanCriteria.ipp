@@ -85,6 +85,10 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
         const char * msg = e.what();
         qDebug()<<"invalid response : "<<msg;
     }
+    catch(...)
+    {
+        qDebug()<<"scan exception, interrupting";
+    }
 
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
     {
