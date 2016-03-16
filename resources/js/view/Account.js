@@ -24,7 +24,8 @@ var AccountView = AccountBaseView.extend({
         this.$el = $(this.template({account: data, width:this.width}));
 
         this.$balance = this.$el.find(".amount");
-        this.model.on("change:balance", this.update);
+        this.model.on("change:balance",this.update);
+        this.model.on("change:unconfirmed", this.update);
     },
 
     shortify:function(size, force){
@@ -48,14 +49,15 @@ var AccountView = AccountBaseView.extend({
     update:function(){
         var amount = this.model.get("balance");
         var unconfirmed = this.model.get("unconfirmed");
-        var balance = splitAmount(amount>unconfirmed?amount:unconfirmed);
-        this.$balance.find(".int").html(balance.int);
-        this.$balance.find(".dec").html(balance.dec);
         if(amount!=unconfirmed){
             this.$balance.addClass("pending");
+            amount = unconfirmed;
         }else{
             this.$balance.removeClass("pending");
         }
+        var balance = splitAmount(amount);
+        this.$balance.find(".int").html(balance.int);
+        this.$balance.find(".dec").html(balance.dec);
     }
 });
 

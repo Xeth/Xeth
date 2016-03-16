@@ -13,7 +13,7 @@
 
 #include "command/wallet/GetAccountsCommand.hpp"
 #include "command/wallet/GetBalanceCommand.hpp"
-#include "command/wallet/GetPendingBalance.hpp"
+#include "command/wallet/GetPendingBalanceCommand.hpp"
 #include "command/wallet/GetTransactionCommand.hpp"
 #include "command/wallet/ListTransactionsCommand.hpp"
 #include "command/wallet/SendToAddressCommand.hpp"

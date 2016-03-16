@@ -31,3 +31,5 @@ class GenericGetBalanceCommand
 
 
 }
+
+#include "GenericGetBalanceCommand.ipp"
