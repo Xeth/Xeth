@@ -1,21 +1,18 @@
 #pragma once 
 
-#include <QTextStream>
-#include <QDirIterator>
-#include <QFile>
-#include <QFileInfo>
-#include <QDebug>
-
 #include "JavascriptInvoker.hpp"
+#include "FileParser.hpp"
 
-
-class UnderscoreCompiler
+class UnderscoreParser
 {
     public:
-
-        bool compile(const QString &src, const QString &dest);
-        bool compileFile(const QString &src, const QString &dest);
+        QString operator()(const QString &);
 
     private:
         JavascriptInvoker _invoker;
 };
+
+
+typedef FileParser<UnderscoreParser> UnderscoreCompiler;
+
+
