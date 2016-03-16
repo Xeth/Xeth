@@ -361,6 +361,15 @@ input[type="number"]:focus {
 	line-height:16px;
 	color:#1C2E30;
 }
+.txtBalance.pending .int {
+    color: #BE6469;
+}
+.txtBalance.pending .dec {
+    color: #BB874E;
+}
+.txtBalance.pending .dec:after {
+    color: #BE6469;
+}
 
 /******************************************************/
 
