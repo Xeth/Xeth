@@ -4,6 +4,7 @@
 #include <QThread>
 
 #include "ethrpc/Provider.hpp"
+#include "ethrpc/Network.hpp"
 
 #include "../Settings.hpp"
 

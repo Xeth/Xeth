@@ -18,7 +18,7 @@ Facade::Facade(const Settings &settings) :
     _clipboard(_notifier),
     _filesystem(_notifier)
 {
-    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process);
+    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _process.moveToThread(thread);
