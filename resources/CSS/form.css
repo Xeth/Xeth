@@ -46,6 +46,7 @@
 .page .input .account .address,
 .page .input .account .shortAddress {
 	display:block;
+    text-transform: none;
 }
 .page .input .account.stealth:before,
 .page .input .account.bitprofile:before {
