@@ -1,5 +1,8 @@
 #include "EthereumKeyStorePath.hpp"
 
+#ifdef __WINDOWS_OS__
+#include <shlobj.h>
+#endif
 
 namespace Xeth{
 
