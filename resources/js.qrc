@@ -26,6 +26,7 @@
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>
         <file>js/view/validate.js</file>
+        <file>js/view/SubPageView.js</file>
         <file>js/view/Collection.js</file>
         <file>js/view/Account.js</file>
         <file>js/view/ReceivePage.js</file>
