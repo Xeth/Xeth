@@ -30,7 +30,7 @@ var Account = AccountBase.extend({
         if(typeof interval==undefined||!interval){
             interval = 10000;
         }
-        setTimeout(this.update, interval);
+        setInterval(this.update, interval);
     },
 
     send:function(request){
