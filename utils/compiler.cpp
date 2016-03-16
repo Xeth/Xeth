@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     UnderscoreCompiler compiler;
-    compiler.compile(argv[1], argv[2]);
+    compiler.parseDirectory(argv[1], argv[2]);
 
 //    return app.exec();
 
