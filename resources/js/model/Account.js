@@ -23,7 +23,9 @@ var Account = AccountBase.extend({
     },
 
     update:function(){
-        this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(this.get("address"))));
+        var address = this.get("address");
+        this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(address)));
+        this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
     },
 
     autoUpdate:function(interval){
@@ -51,6 +53,7 @@ var StealthAccount = AccountBase.extend({
 
     initialize:function(){
         this.set("balance",0);
+        this.set("unconfirmed", 0);
     },
 
     update:function(){},

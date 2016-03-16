@@ -13,6 +13,7 @@
 
 #include "command/wallet/GetAccountsCommand.hpp"
 #include "command/wallet/GetBalanceCommand.hpp"
+#include "command/wallet/GetPendingBalance.hpp"
 #include "command/wallet/GetTransactionCommand.hpp"
 #include "command/wallet/ListTransactionsCommand.hpp"
 #include "command/wallet/SendToAddressCommand.hpp"
@@ -50,6 +51,7 @@ class WalletFacade :public QObject
 
         Q_INVOKABLE QVariant getAccounts() ;
         Q_INVOKABLE QVariant getBalance(const QString &);
+        Q_INVOKABLE QVariant getPendingBalance(const QString &);
         Q_INVOKABLE QVariant send(const QVariantMap &);
         Q_INVOKABLE QVariant sendToAddress(const QVariantMap &);
         Q_INVOKABLE QVariant sendToStealth(const QVariantMap &);

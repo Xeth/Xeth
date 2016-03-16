@@ -31,6 +31,12 @@ QVariant WalletFacade::getBalance(const QString &address)
     return _invoker.invoke(command, address);
 }
 
+QVariant WalletFacade::getPendingBalance(const QString &address)
+{
+    GetPendingBalance command(_provider);
+    return _invoker.invoke(command, address);
+}
+
 QVariant WalletFacade::send(const QVariantMap &request)
 {
     SendCommand command(_provider, _database);

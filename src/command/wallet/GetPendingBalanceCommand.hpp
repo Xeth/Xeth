@@ -5,7 +5,7 @@
 namespace Xeth{
 
 
-typedef GenericGetBalanceCommand<BalanceType::latest> GetBalanceCommand;
+typedef GenericGetBalanceCommand<BalanceType::pending> GetBalanceCommand;
 
 
 }

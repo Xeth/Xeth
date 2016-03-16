@@ -46,9 +46,16 @@ var AccountView = AccountBaseView.extend({
     },
 
     update:function(){
-        var balance = splitAmount(this.model.get("balance"));
+        var amount = this.model.get("balance");
+        var unconfirmed = this.model.get("unconfirmed");
+        var balance = splitAmount(amount>unconfirmed?amount:unconfirmed);
         this.$balance.find(".int").html(balance.int);
         this.$balance.find(".dec").html(balance.dec);
+        if(amount!=unconfirmed){
+            this.$balance.addClass("pending");
+        }else{
+            this.$balance.removeClass("pending");
+        }
     }
 });
 
