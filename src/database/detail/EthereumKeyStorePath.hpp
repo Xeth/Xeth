@@ -20,7 +20,7 @@ class EthereumKeyStorePath
 
         const std::string & toString() const;
 
-        static std::string GetDefaultPath();
+        static std::string GetDefaultPath(bool testnet=false);
 
     private:
         static std::string MakePath(const std::string &);

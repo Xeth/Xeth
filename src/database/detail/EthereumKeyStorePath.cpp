@@ -5,8 +5,7 @@ namespace Xeth{
 
 EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 {
-    Ethereum::Connector::Network net = settings.get("testnet", false) ? Ethereum::Connector::Test_Net : Ethereum::Connector::Main_Net;
-    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("attach")? settings.get("attach") : Ethereum::Connector::Path::GethRootPath(net).toString());
+    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("keystore")? settings.get("keystore") : GetDefaultPath(settings.get("testnet", false)));
     _path = MakePath(path);
 }
 
@@ -23,9 +22,33 @@ EthereumKeyStorePath::EthereumKeyStorePath() :
 {}
 
 
-std::string EthereumKeyStorePath::GetDefaultPath()
+std::string EthereumKeyStorePath::GetDefaultPath(bool testnet)
 {
-    return MakePath(Ethereum::Connector::Path::GethRootPath().toString());
+    boost::filesystem::path path;
+#if  defined(__APPLE_OS__)
+    path = getenv("HOME");
+    path /= "Library/Ethereum";
+#elif defined(__LINUX_OS__)
+    path = getenv("HOME");
+    path /= ".ethereum";
+#elif defined(__WINDOWS_OS__)
+    char appdata[1024] = "";
+    if (SHGetSpecialFolderPathA(NULL, appdata, CSIDL_APPDATA, true))
+    {
+        path = appdata;
+    }
+    else
+    {
+        path = getenv("HOMEPATH");
+    }
+    path /= "Ethereum";
+#endif
+    if(testnet)
+    {
+        path /= "testnet";
+    }
+
+    return MakePath(path);
 }
 
 
