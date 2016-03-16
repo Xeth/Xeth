@@ -8,8 +8,15 @@ namespace Xeth{
 
 EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 {
-    boost::filesystem::path  path = boost::filesystem::absolute(settings.has("keystore")? settings.get("keystore") : GetDefaultPath(settings.get("testnet", false)));
-    _path = MakePath(path);
+    if(settings.has("keystore"))
+    {
+        boost::filesystem::path  path = boost::filesystem::absolute(settings.get("keystore") );
+        _path = MakePath(path);
+    }
+    else
+    {
+        _path = GetDefaultPath(settings.get("testnet", false));
+    }
 }
 
 
