@@ -1,17 +1,8 @@
 #pragma once 
 
 #include <boost/multiprecision/cpp_int.hpp>
-
-#if __HAS_GMP__
-
-#include <boost/multiprecision/number.hpp>
-#include <boost/multiprecision/gmp.hpp>
-
-#else
-
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-#endif
 
 #include <QVariant>
 #include <QVariantMap>
