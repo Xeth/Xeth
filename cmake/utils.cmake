@@ -32,6 +32,21 @@ target_link_libraries(compiler
 )
 
 
+add_executable(minifier 
+    ${PROJECT_SOURCE_DIR}/utils/minifier.cpp 
+)
+
+
+target_link_libraries(minifier
+    utils-lib
+    ${Qt5WebKitWidgets_LIBRARIES}
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5WebKit_LIBRARIES}
+    ${Qt5Concurrent_LIBRARIES}
+    ${Qt5Core_LIBRARIES}
+)
+
+
 
 add_executable(editor
     ${PROJECT_SOURCE_DIR}/utils/editor.cpp 
