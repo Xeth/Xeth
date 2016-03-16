@@ -80,10 +80,10 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
     }
     catch(const InterruptionException &)
     {}
-    catch(const Json::LogicError &e)
+    catch(const std::exception &e)
     {
         const char * msg = e.what();
-        qDebug()<<"invalid response : "<<msg;
+        qDebug()<<"exception : "<<msg;
     }
     catch(...)
     {
