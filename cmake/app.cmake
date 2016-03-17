@@ -61,47 +61,8 @@ PARSE_RESOURCES(RESOURCE_FILES js js jsmin )
 PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
 
 
-#file(GLOB TEMPLATE_DIR "resources/template")
-#file(GLOB TEMPLATE_QRC "resources/template.qrc")
-#file(GLOB CSS_DIR "resources/CSS")
-#file(GLOB CSS_QRC "resources/css.qrc")
-#file(GLOB JS_DIR "resources/js")
-#file(GLOB JS_QRC "resources/js.qrc")
-#file(GLOB HTML_DIR "resources/index.html")
-#file(GLOB HTML_QRC "resources/html.qrc")
-
-#list(REMOVE_ITEM RESOURCE_FILES ${TEMPLATE_DIR})
-#list(REMOVE_ITEM RESOURCE_FILES ${TEMPLATE_QRC})
-#list(REMOVE_ITEM RESOURCE_FILES ${CSS_DIR})
-#list(REMOVE_ITEM RESOURCE_FILES ${CSS_QRC})
-#list(REMOVE_ITEM RESOURCE_FILES ${JS_DIR})
-#list(REMOVE_ITEM RESOURCE_FILES ${JS_QRC})
-#list(REMOVE_ITEM RESOURCE_FILES ${HTML_DIR})
-#list(REMOVE_ITEM RESOURCE_FILES ${HTML_QRC})
-
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
-#file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/resources/template)
 
-
-
-#file(GLOB TEMPLATE_FILES "${PROJECT_SOURCE_DIR}/resources/template/*.tpl")
-#foreach(TEMPLATE_FILE ${TEMPLATE_FILES})
-#    get_filename_component(TEMPLATE_NAME ${TEMPLATE_FILE} NAME_WE)
-#    set(COMPILED_TEMPALTE_NAME ${PROJECT_BINARY_DIR}/template/${TEMPLATE_NAME}.tpl)
-#    list(APPEND GENERATED_TEMPALTES ${COMPILED_TEMPALTE_NAME})
-#endforeach()
-
-
-
-#set(COMPILED_TEMPALTES_CPP ${PROJECT_BINARY_DIR}/template.cxx)
-
-#set_source_files_properties(${GENERATED_TEMPALTES} PROPERTIES GENERATED TRUE)
-#set_source_files_properties(${COMPILED_TEMPALTES_CPP} PROPERTIES GENERATED TRUE)
-
-
-#add_custom_target(xeth_compiled_templates COMMAND compiler ${PROJECT_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template DEPENDS compiler)
-#add_custom_target(xeth_templates_qrc COMMAND  ${CMAKE_COMMAND} -E copy ${TEMPLATE_QRC} ${CMAKE_BINARY_DIR}/resources DEPENDS xeth_compiled_templates)
-#add_custom_target(xeth_templates  COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name template -o ${COMPILED_TEMPALTES_CPP} ${PROJECT_BINARY_DIR}/resources/template.qrc DEPENDS xeth_templates_qrc)
 
 
 add_executable(xeth ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/resources/icon.qrc ${PROJECT_BINARY_DIR}/resources/html.qrc)
