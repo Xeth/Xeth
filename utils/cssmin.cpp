@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include "lib/FileMinifier.hpp"
+#include "lib/CSSMinifier.hpp"
 
 int main(int argc, char **argv)
 {
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     qDebug()<<"minifying "<<argv[1]<<", output "<<argv[2];
 
 
-    FileMinifier minifier;
+    CSSMinifier minifier;
     minifier.parseDirectory(argv[1], argv[2]);
 
     return 0;

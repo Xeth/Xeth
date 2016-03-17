@@ -57,8 +57,8 @@ endfunction(PARSE_RESOURCES)
 file(GLOB RESOURCE_FILES "resources/*")
 
 PARSE_RESOURCES(RESOURCE_FILES template template compiler)
-PARSE_RESOURCES(RESOURCE_FILES js js minifier )
-PARSE_RESOURCES(RESOURCE_FILES CSS css minifier)
+PARSE_RESOURCES(RESOURCE_FILES js js jsmin )
+PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
 
 
 #file(GLOB TEMPLATE_DIR "resources/template")

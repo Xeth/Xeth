@@ -19,6 +19,10 @@ bool FileParser<Parser>::parseDirectory(const QString &src, const QString &dest)
     {
         QFileInfo info(it.next());
         QString srcFile = info.filePath();
+        if(srcFile.contains("vendor"))
+        {
+            continue;
+        }
         QString destFile = srcFile;
         destFile.replace(0, src.length(), dest);
 

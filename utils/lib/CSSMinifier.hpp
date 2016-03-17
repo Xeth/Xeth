@@ -4,7 +4,7 @@
 #include "FileParser.hpp"
 
 
-class WhitespaceRemover
+class MinifyCSS
 {
     public:
         QString operator()(const QString &);
@@ -12,6 +12,6 @@ class WhitespaceRemover
 };
 
 
-typedef FileParser<WhitespaceRemover> FileMinifier;
+typedef FileParser<MinifyCSS> CSSMinifier;
 
 

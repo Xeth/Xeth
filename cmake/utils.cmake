@@ -16,13 +16,8 @@ file(GLOB UTILS_SOURCES ${PROJECT_SOURCE_DIR}/utils/lib/*.cpp)
 
 add_library(utils-lib STATIC ${UTILS_SOURCES})
 
-add_executable(compiler 
-    ${PROJECT_SOURCE_DIR}/utils/compiler.cpp 
-    ${PROJECT_SOURCE_DIR}/utils/js.qrc
-)
 
-
-target_link_libraries(compiler
+set(UTILS_LIBRARIES 
     utils-lib
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -31,36 +26,19 @@ target_link_libraries(compiler
     ${Qt5Core_LIBRARIES}
 )
 
-
-add_executable(minifier 
-    ${PROJECT_SOURCE_DIR}/utils/minifier.cpp 
-)
+add_executable(compiler ${PROJECT_SOURCE_DIR}/utils/compiler.cpp ${PROJECT_SOURCE_DIR}/utils/js.qrc)
+target_link_libraries(compiler ${UTILS_LIBRARIES})
 
 
-target_link_libraries(minifier
-    utils-lib
-    ${Qt5WebKitWidgets_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5WebKit_LIBRARIES}
-    ${Qt5Concurrent_LIBRARIES}
-    ${Qt5Core_LIBRARIES}
-)
+add_executable(jsmin ${PROJECT_SOURCE_DIR}/utils/jsmin.cpp ${PROJECT_SOURCE_DIR}/utils/js.qrc)
+target_link_libraries(jsmin ${UTILS_LIBRARIES})
+
+add_executable(cssmin ${PROJECT_SOURCE_DIR}/utils/cssmin.cpp)
+target_link_libraries(cssmin ${UTILS_LIBRARIES})
 
 
-
-add_executable(editor
-    ${PROJECT_SOURCE_DIR}/utils/editor.cpp 
-)
-
-
-target_link_libraries(editor
-    utils-lib
-    ${Qt5WebKitWidgets_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5WebKit_LIBRARIES}
-    ${Qt5Concurrent_LIBRARIES}
-    ${Qt5Core_LIBRARIES}
-)
+add_executable(editor ${PROJECT_SOURCE_DIR}/utils/editor.cpp)
+target_link_libraries(editor ${UTILS_LIBRARIES})
 
 
 
