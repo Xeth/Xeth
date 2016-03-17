@@ -557,6 +557,20 @@ input[type="number"]:focus {
 	padding: 10px !important;
 	text-transform: uppercase;
 }
+#notie-confirm-inner .title {
+    display: block;
+    font-size: 2rem;
+	text-transform: uppercase;
+    margin: 30px auto; 
+}
+#notie-confirm-inner .title.warning {
+    color: #FDD089;
+}
+#notie-confirm-inner .question {
+    display: block;
+    font-size: 1.2rem;
+    margin: 30px auto;
+}
 
 .editableTxt {
 	cursor:pointer;
