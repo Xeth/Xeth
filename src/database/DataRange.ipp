@@ -38,7 +38,7 @@ typename DataRange<Store>::Iterator DataRange<Store>::end() const
 template<class Store>
 typename DataRange<Store>::ReverseIterator DataRange<Store>::rbegin() const
 {
-    return ReverseIterator(typename Store::ReverseIterator(_store.at(_offset, true)), _store.rend(), _limit);
+    return ReverseIterator(_store.rbegin(), _store.rend(), _limit);
 }
 
 template<class Store>
