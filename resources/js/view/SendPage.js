@@ -53,7 +53,7 @@ var SendPageView = SubPageView.extend({
 
     render:function(args){
         this.accounts.attach(this.$el.find("#sendFrom"));
-        this.accounts.filter(function(model){return model!=undefined;});
+        this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
         this.accounts.style("send");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
