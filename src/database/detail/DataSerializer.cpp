@@ -48,5 +48,27 @@ std::string DataSerializer<std::string>::operator()(const std::string &value) co
 }
 
 
+/* QString serialization */
+
+QString DataSerializer<QString>::operator()(const char *key, const char *value) const
+{
+    return value;
+}
+
+
+bool DataSerializer<QString>::operator()(const char *key, const char *value, QString &result) const
+{
+    result = value;
+    return true;
+}
+
+
+std::string DataSerializer<QString>::operator()(const QString &value) const
+{
+    return value.toStdString();
+}
+
+
+
 
 }

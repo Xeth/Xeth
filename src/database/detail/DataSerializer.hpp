@@ -6,6 +6,7 @@
 
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QString>
 
 
 namespace Xeth{
@@ -34,6 +35,17 @@ class DataSerializer<QJsonObject>
         std::string operator ()(const QJsonObject &) const;
 };
 
+
+template<>
+class DataSerializer<QString>
+{
+
+    public:
+
+        QString operator()(const char *, const char *) const;
+        bool operator()(const char *, const char *, QString &) const;
+        std::string operator ()(const QString &) const;
+};
 
 
 template<>
