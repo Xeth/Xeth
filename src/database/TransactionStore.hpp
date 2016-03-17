@@ -56,6 +56,8 @@ class TransactionStore : public QObject
         void open(const boost::filesystem::path &);
         bool openNoThrow(const boost::filesystem::path &);
 
+        size_t size() const;
+
         bool insert
         (
             const TransactionCategory &category,
@@ -83,7 +85,7 @@ class TransactionStore : public QObject
         QJsonObject get(const char *hash) const;
         Iterator begin() const;
         Iterator end() const;
-        Iterator at(int , bool reverse=false) const;
+        Iterator at(int) const;
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 

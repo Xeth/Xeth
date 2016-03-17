@@ -45,8 +45,7 @@ bool TransactionStore::openNoThrow(const std::string &path)
     ReverseIterator it = _dataStore.rbegin();
     if(it != _dataStore.rend())
     {
-        QJsonObject lastTransaction = *it;
-        _lastIndex = lastTransaction["index"].toInt();
+        _lastIndex = it.base().key();
     }
     else
     {
@@ -104,9 +103,14 @@ TransactionStore::Iterator TransactionStore::end() const
 }
 
 
-TransactionStore::Iterator TransactionStore::at(int index, bool reverse) const
+size_t TransactionStore::size() const
 {
-    return _dataStore.find(reverse ? (_lastIndex - index -1) : (index + 1));
+    return _lastIndex;
+}
+
+TransactionStore::Iterator TransactionStore::at(int index) const
+{
+    return _dataStore.find(index + 1);
 }
 
 
