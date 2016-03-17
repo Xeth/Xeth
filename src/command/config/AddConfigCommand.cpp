@@ -16,7 +16,7 @@ QVariant AddConfigCommand::operator ()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    return QVariant::fromValue(_database.getConfig().insert(request["name"].toString().toStdString().c_str(), request["value"].toString().toStdString()));
+    return QVariant::fromValue(_database.getConfig().insert(request["name"].toString().toStdString().c_str(), request["value"].toString()));
 }
 
 
