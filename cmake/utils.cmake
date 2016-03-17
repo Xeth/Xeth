@@ -67,8 +67,12 @@ target_link_libraries(dumpdb
     ${CRYPTOPP_LIBRARY}
     ${LEVELDB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT} 
-    ${GMP_LIBRARIES}
 )
+
+if(GMP_LIBRARIES)
+    target_link_libraries(dumpdb ${GMP_LIBRARIES})
+endif()
+
 
 add_executable(editor ${PROJECT_SOURCE_DIR}/utils/editor.cpp)
 target_link_libraries(editor ${UTILS_LIBRARIES})
