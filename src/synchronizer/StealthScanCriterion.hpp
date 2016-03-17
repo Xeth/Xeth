@@ -45,6 +45,19 @@ class StealthScanCriterion : public ScanCriterion
         );
 
     private:
+        void uncoverStealthPayment
+        (
+            const std::string &hash,
+            const std::string &from,
+            const std::string &to,
+            const BigInt &amount,
+            const char *data,
+            size_t dataSize,
+            time_t timestamp,
+            ScanResult &result
+        );
+
+    private:
         StealthKey _key;
 };
 

@@ -1,6 +1,5 @@
 #include "StealthScanCriterion.hpp"
 
-
 namespace Xeth{
 
 using Ethereum::PublicKeySerializer;
@@ -19,6 +18,48 @@ StealthScanCriterion::StealthScanCriterion(const StealthKey &key, const Ethereum
 {}
 
 
+void StealthScanCriterion::uncoverStealthPayment
+(
+    const std::string &hash,
+    const std::string &from,
+    const std::string &to,
+    const BigInt &amount,
+    const char *data,
+    size_t dataSize,
+    time_t timestamp,
+    ScanResult &result
+)
+{
+    PublicKeySerializer serializer;
+    try
+    {
+        Ethereum::PublicKey ephem = serializer.unserialize(data, dataSize);
+        StealthResolver resolver(_key);
+        Ethereum::Stealth::SharedSecret secret;
+        if(resolver.uncover(Ethereum::Address(to), ephem, secret))
+        {
+            QJsonObject tx;
+            tx.insert("category", TransactionCategory::ToString(TransactionCategory::Stealth));
+            tx.insert("hash", hash.c_str());
+            tx.insert("from",  from.c_str());
+            tx.insert("to", to.c_str());
+            tx.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+            tx.insert("timestamp", (int)timestamp);
+            tx.insert("stealth", getAddress());
+            result.transactions.push_back(tx);
+
+            HexEncoder encoder;
+            QJsonObject sp;
+            sp.insert("address", to.c_str());
+            sp.insert("secret", encoder.encode(secret.begin(), secret.end()).c_str());
+            sp.insert("txid", hash.c_str());
+            sp.insert("stealth", getAddress());
+            result.stealthPayments.push_back(sp);
+        }
+    }
+    catch(...)
+    {}
+}
 
 void StealthScanCriterion::processTransaction
 (
@@ -31,37 +72,11 @@ void StealthScanCriterion::processTransaction
     ScanResult &result
 )
 {
-    if(data.size() == 66 || data.size() == 130)
-    {
-        PublicKeySerializer serializer;
-        try
-        {
-            Ethereum::PublicKey ephem = serializer.unserialize(data);
-            StealthResolver resolver(_key);
-            Ethereum::Stealth::SharedSecret secret;
-            if(resolver.uncover(Ethereum::Address(to), ephem, secret))
-            {
-                QJsonObject tx;
-                tx.insert("category", TransactionCategory::ToString(TransactionCategory::Stealth));
-                tx.insert("hash", hash.c_str());
-                tx.insert("from",  from.c_str());
-                tx.insert("to", to.c_str());
-                tx.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
-                tx.insert("timestamp", (int)timestamp);
-                tx.insert("stealth", getAddress());
-                result.transactions.push_back(tx);
+    size_t dataSize = data.size();
 
-                HexEncoder encoder;
-                QJsonObject sp;
-                sp.insert("address", to.c_str());
-                sp.insert("secret", encoder.encode(secret.begin(), secret.end()).c_str());
-                sp.insert("txid", hash.c_str());
-                sp.insert("stealth", getAddress());
-                result.stealthPayments.push_back(sp);
-            }
-        }
-        catch(...)
-        {}
+    if(dataSize == 66 || dataSize == 130 || ((dataSize == 68 || dataSize == 132)&&data[0]=='0'&&(data[1]=='x'||data[1]=='X')))
+    {
+        uncoverStealthPayment(hash, from, to, amount, data.data(), dataSize, timestamp, result);
     }
 }
 
