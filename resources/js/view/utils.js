@@ -16,7 +16,7 @@ function shortify(value, length){
     if(length<4 ||!value) return "";
     value = ""+value;
     if(value.length <= length) return value;
-    if(length<11) return value.substr(0, length-3)+"..."
+    if(length<11) return value.substr(0, length-3)+"...";
     var half = Math.round((length-3)/2);
     var short = value.substr(0,half)+"..."+value.substr(value.length-half, value.length);
     return short;

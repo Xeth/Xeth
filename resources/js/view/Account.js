@@ -30,7 +30,7 @@ var AccountView = AccountBaseView.extend({
 
     shortify:function(size, force){
         if(!size) size = 55;
-        if(size==this.width&&!force) return;
+        if(size==this.width&&!force) return false;
         this.width = size;
         var address = shortify(this.model.get("address"), size);
         var bitprofile = shortify(this.model.get("bitprofile"), size);
@@ -94,7 +94,7 @@ var AccountViewReflection = AccountView.extend({
         this.compact = enable;
         if(this.model){
             if(this.compact)
-                this.$el.find(".amount").hide()
+                this.$el.find(".amount").hide();
             else
                 this.$el.find(".amount").show();
         }
@@ -116,7 +116,7 @@ var AccountSelectItemFactory = function(master, template){
         var view = new AccountView({model:model, template:template});
         view.click(master.select);
         return view;
-    }
+    };
 
     return this;
 };
@@ -161,7 +161,11 @@ var AccountSelect = Backbone.View.extend({
 
     filter:function(callback){
         this.collection.each(function(view){
-            if(!callback(view.model)) view.hide(); else view.show();
+            if(!callback(view.model)){
+                view.hide();
+            }else{
+                view.show();
+            }
         });
         this.update();
     },
