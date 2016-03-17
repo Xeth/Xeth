@@ -13,6 +13,7 @@ class ScanIndexStore : private LevelDbStore<size_t>
 {
     public:
         typedef LevelDbStore<size_t> Base;
+        typedef Base::Iterator Iterator;
 
     public:
         ScanIndexStore();
@@ -24,6 +25,8 @@ class ScanIndexStore : private LevelDbStore<size_t>
         using Base::openNoThrow;
         using Base::remove;
         using Base::getPath;
+        using Base::begin;
+        using Base::end;
 
         bool insert(const char *key, size_t index);
         size_t get(const char *key) const;

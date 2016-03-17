@@ -1,10 +1,10 @@
 #include "detail/LevelDbStore.hpp"
-
+#include <QString>
 
 namespace Xeth {
 
 
-typedef LevelDbStore<std::string> ConfigStore;
+typedef LevelDbStore<QString> ConfigStore;
 
 
 }
