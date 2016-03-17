@@ -29,7 +29,6 @@ QVariant ListTransactionsCommand::operator ()(const QVariantMap &request)
         {
             result.push_back(*it);
         }
-
     }
     else
     {

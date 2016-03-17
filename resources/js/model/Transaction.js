@@ -6,7 +6,7 @@ var TransactionCollection = Backbone.Collection.extend({
     },
 
     fetch:function(){
-        this.reset(XETH_wallet.listTransactions({}));
+        this.reset(XETH_wallet.listTransactions({limit:100}));
     },
 
     observe:function(){
