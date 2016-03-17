@@ -54,7 +54,7 @@ var TransactionsPageView = SubPageView.extend({
             factory:this.factory,
             reversed:false,
             ordered:true,
-            scroll: {scrollPage: this.$el.find(".scrollpage"), step: 106},
+            scroll: {scrollPage: this.$el.find(".scrollpage")/*, step: 106*/},
             el:this.$el.find(".transactionList"),
             empty:this.$el.find(".empty")
         });

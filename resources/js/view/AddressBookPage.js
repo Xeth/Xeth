@@ -112,7 +112,7 @@ var AddressBookPageView = SubPageView.extend({
         this.collection = new CollectionView({
 			collection: options.addressbook, 
 			factory:this.factory,
-			scroll:{scrollPage: this.$el.find(".scrollpage"), step: 71},
+			scroll:{scrollPage: this.$el.find(".scrollpage")/*, step: 71*/},
 			el: this.$el.find(".contactList"), 
             empty:this.$el.find(".empty")
 		});
