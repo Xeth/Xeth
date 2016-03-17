@@ -29,6 +29,7 @@ class LevelDbIterator :
         void increment();
         void decrement();
 
+        Key key() const;
         std::string keyString() const;
         Value dereference() const;
         bool equal(const LevelDbIterator &) const;

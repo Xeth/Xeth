@@ -13,6 +13,8 @@ class NumericKeySerializer
     public:
         leveldb::Slice operator()(const Key &) const;
         std::string toString(const leveldb::Slice &) const;
+        Key operator()(const leveldb::Slice &) const;
+        Key operator()() const;
 
 
 };

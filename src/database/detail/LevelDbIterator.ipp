@@ -15,6 +15,13 @@ LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::LevelDbIterator() :
 
 
 template<class DataDecoder, class Value, class KeyDecoder, class Key>
+Key LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::key() const
+{
+    return _valid ? _keyDecoder(_handle->key()) : _keyDecoder();
+}
+
+
+template<class DataDecoder, class Value, class KeyDecoder, class Key>
 std::string LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::keyString() const
 {
     return _valid ? _keyDecoder.toString(_handle->key()) : "";

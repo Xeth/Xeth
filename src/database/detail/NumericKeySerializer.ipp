@@ -14,4 +14,18 @@ std::string NumericKeySerializer<Key>::toString(const leveldb::Slice &slice) con
 }
 
 
+template<class Key>
+Key NumericKeySerializer<Key>::operator()(const leveldb::Slice &slice) const
+{
+    return *reinterpret_cast<const Key *>(slice.data());
+}
+
+
+template<class Key>
+Key NumericKeySerializer<Key>::operator()() const
+{
+    return Key(0);
+}
+
+
 }
