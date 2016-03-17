@@ -4,9 +4,10 @@
 
 #include <boost/make_shared.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 
 #include "LevelDbIterator.hpp"
-#include "LevelDbReverseIterator.hpp"
+#include "ReverseIterator.hpp"
 #include "DataSerializer.hpp"
 #include "KeySerializer.hpp"
 #include "NumericKeySerializer.hpp"
@@ -30,8 +31,8 @@ template
 class LevelDbStore
 {
     public:
-        typedef LevelDbIterator<ValueSerializer, Value> Iterator;
-        typedef LevelDbReverseIterator<ValueSerializer, Value> ReverseIterator;
+        typedef LevelDbIterator<ValueSerializer, Value, KeySerializer, Key> Iterator;
+        typedef Xeth::ReverseIterator<Iterator> ReverseIterator;
         typedef Value DataType;
 
     public:

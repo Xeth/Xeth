@@ -114,7 +114,7 @@ template<class Value, class ValueSerializer, class Key, class KeySerializer, cla
 typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ReverseIterator 
 LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::rend() const
 {
-    return ReverseIterator();
+    return ReverseIterator(Iterator());
 }
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
@@ -137,7 +137,7 @@ template<class Value, class ValueSerializer, class Key, class KeySerializer, cla
 typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ReverseIterator 
 LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeReverseIterator(leveldb::Iterator *it) const
 {
-    return ReverseIterator(boost::shared_ptr<leveldb::Iterator>(it));
+    return ReverseIterator(Iterator(boost::shared_ptr<leveldb::Iterator>(it)));
 }
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
