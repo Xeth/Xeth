@@ -3,6 +3,8 @@ find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
 find_package(GMP)
 
+add_definitions(-DBOOST_PP_VARIADICS)
+
 include_directories(
     ${Boost_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
