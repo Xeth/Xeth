@@ -7,10 +7,26 @@ namespace Xeth{
 
 ScanCriteria::ScanCriteria() : 
     QObject(),
-    _interrupted(false)
+    _interrupted(false),
+    _limit(0)
+{
+    registerMetaType();
+}
+
+ScanCriteria::ScanCriteria(size_t limit) : 
+    QObject(),
+    _interrupted(false),
+    _limit(limit)
+{
+    registerMetaType();
+}
+
+
+void ScanCriteria::registerMetaType()
 {
     qRegisterMetaType<Xeth::PartialScanResult>("Xeth::PartialScanResult");
 }
+
 
 ScanCriteria::ScanCriteria(const ScanCriteria &) : QObject()
 {}
@@ -19,6 +35,13 @@ ScanCriteria::~ScanCriteria()
 {
     clear();
 }
+
+
+void ScanCriteria::setLimit(size_t limit)
+{
+    _limit = limit;
+}
+
 
 void ScanCriteria::processBlock(size_t blockIndex, Ethereum::Connector::Block &block, Container::iterator end, ScanResult &result)
 {

@@ -8,7 +8,7 @@ Facade::Facade(const Settings &settings) :
     _settings(settings),
     _ready(false),
     _database(settings),
-    _synchronizer(_provider, _database),
+    _synchronizer(_provider, _database, settings),
     _process(settings),
     _wallet(settings, _provider, _database, _notifier, _synchronizer),
     _addressbook(_database, _notifier),

@@ -24,46 +24,48 @@ void ScanCriteria::addCriterion(size_t minBlock, const Arg1 &arg1, const Arg2 &a
 template<class BlockChain, class Progress>
 size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress &progress)
 {
-    emit Test();
+
     if(!_criteria.size())
     {
         progress.setValue(100);
         return 0;
     }
 
-    blockchain.retrieveBlockDetails(true);
-    size_t height = blockchain.getHeight();
-    size_t minBlock = _criteria.begin()->first;
-
-    if(height < minBlock)
-    {
-        progress.setValue(100);
-        return height;
-    }
-
-    std::map<size_t, Container::iterator> mappedCriteria;
-
-    size_t minIndex = minBlock;
-
-    for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
-    {
-        if(minIndex < it->first)
-        {
-            mappedCriteria.insert(std::make_pair(minIndex, it));
-            minIndex = it->first;
-        }
-    }
-
-
-    mappedCriteria.insert(std::make_pair(height, _criteria.end()));
-
-    progress.setRange(minBlock, height);
-
-    result.lastBlock = minIndex;
-
 
     try
     {
+        blockchain.retrieveBlockDetails(true);
+        size_t height = blockchain.getHeight();
+        size_t minBlock = _criteria.begin()->first;
+
+        if(height < minBlock)
+        {
+            progress.setValue(100);
+            return height;
+        }
+
+        std::map<size_t, Container::iterator> mappedCriteria;
+
+        size_t minIndex = minBlock;
+
+        for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
+        {
+            if(minIndex < it->first)
+            {
+                mappedCriteria.insert(std::make_pair(minIndex, it));
+                minIndex = it->first;
+            }
+        }
+
+
+        mappedCriteria.insert(std::make_pair(height, _criteria.end()));
+
+        progress.setRange(minBlock, height);
+
+        result.lastBlock = minIndex;
+
+        size_t processed = 0;
+
 
         for(std::map<size_t, Container::iterator>::iterator it=mappedCriteria.begin(), end=mappedCriteria.end(); it!=end; ++it)
         {
@@ -74,6 +76,10 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
                 processBlock(result.lastBlock, block, it->second, result);
                 progress.next();
                 InterruptionPoint interruption;
+                if(_limit && (++processed > _limit))
+                {
+                    goto SAVE_CRITERIA_RESULT;
+                }
             }
 
         }
@@ -89,6 +95,8 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
     {
         qDebug()<<"scan exception, interrupting";
     }
+
+SAVE_CRITERIA_RESULT:
 
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
     {

@@ -16,16 +16,17 @@ ScopedScanPause::~ScopedScanPause()
 {
     if(_active)
     {
-        _scanner->scheduleScan();
+        _scanner->scheduleScan(100);
     }
 }
 
 
-ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &database):
+ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &database, size_t scanChunk, size_t scanInterval):
     _provider(provider),
     _blockchain(_provider),
     _database(database),
-    _scanInterval(10000)
+    _scanCriteria(scanChunk),
+    _scanInterval(scanInterval)
 {
     if(!QObject::connect(&_scanTimer, SIGNAL(timeout()), this, SLOT(scan())))
     {
@@ -45,6 +46,12 @@ ChainScanner::ChainScanner(const ChainScanner &copy) : /*is private, copy is not
     _blockchain(copy._blockchain),
     _database(copy._database)
 {}
+
+
+void ChainScanner::setScanChunkSize(size_t limit)
+{
+    _scanCriteria.setLimit(limit);
+}
 
 void ChainScanner::addAddress(const Ethereum::Address &address)
 {
@@ -143,12 +150,8 @@ void ChainScanner::syncScan()
     }
 }
 
-bool ChainScanner::processTest()
-{
-    return true;
-}
 
-bool ChainScanner::processData(const PartialScanResult &result)
+void ChainScanner::processData(const PartialScanResult &result)
 {
     ScanIndexStore & indexStore = _database.getScanIndex();
     TransactionStore & transactionStore = _database.getTransactions();
@@ -164,7 +167,7 @@ bool ChainScanner::processData(const PartialScanResult &result)
     {
         if(!stealthPaymentStore.insert(it->toObject()))
         {
-            return true;
+            return;
         }
     }
 
@@ -173,8 +176,6 @@ bool ChainScanner::processData(const PartialScanResult &result)
         indexStore.insert(sIt->getAddress(), result.lastBlock);
     }
 
-
-    return true;
 }
 
 const ScanCriteria & ChainScanner::getScanCriteria() const
@@ -182,12 +183,11 @@ const ScanCriteria & ChainScanner::getScanCriteria() const
     return _scanCriteria;
 }
 
-void ChainScanner::scheduleScan()
+
+
+void ChainScanner::scheduleScan(size_t interval)
 {
-    if(_scanInterval)
-    {
-        _scanTimer.start(_scanInterval);
-    }
+    _scanTimer.start(interval);
 }
 
 void ChainScanner::autoScan(size_t scanInterval)
@@ -199,9 +199,15 @@ void ChainScanner::autoScan(size_t scanInterval)
     }
     else
     {
-        QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(scheduleScan()));
+        QObject::connect(&_scanAction, SIGNAL(Done()), this, SLOT(handleScanComplete()));
     }
     scan();
+}
+
+
+void ChainScanner::handleScanComplete()
+{
+    scheduleScan((_scanProgress.getValue() >= 100) ? _scanInterval : 100);
 }
 
 

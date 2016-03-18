@@ -21,6 +21,7 @@ class Synchronizer : public QObject
 
     public:
         Synchronizer(Ethereum::Connector::Provider &, DataBase &);
+        Synchronizer(Ethereum::Connector::Provider &, DataBase &, const Settings &);
 
         void scan();
 

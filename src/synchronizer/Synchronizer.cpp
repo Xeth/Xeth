@@ -9,6 +9,11 @@ Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &da
     _scanner(provider, database)
 {}
 
+Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &database, const Settings &settings):
+    _syncProgress(provider),
+    _scanner(provider, database, settings.get("scan_chunk", 500), settings.get("scan_interval", 10000))
+{}
+
 void Synchronizer::watchAddress(const std::string &address)
 {
     _scanner.addAddress(address);

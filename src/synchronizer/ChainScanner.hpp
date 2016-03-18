@@ -26,8 +26,9 @@ class ChainScanner : public QObject
     Q_OBJECT
 
     public:
-        ChainScanner(Ethereum::Connector::Provider &, DataBase &);
+        ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=1000, size_t scanInterval=10000);
 
+        void setScanChunkSize(size_t limit);
         void autoScan(size_t interval);
 
         const ScanProgress & getProgress() const;
@@ -53,16 +54,16 @@ class ChainScanner : public QObject
 
     public slots:
         void scan();
-        void scheduleScan();
 
-    public slots:
-        bool processData(const PartialScanResult &);
-        bool processTest();
+    private slots:
+        void processData(const PartialScanResult &);
+        void handleScanComplete();
 
     private:
         ChainScanner(const ChainScanner &);
         size_t estimateHeight(time_t);
         size_t getChainHeight();
+        void scheduleScan(size_t );
 
     private:
         Ethereum::Connector::Provider &_provider;
@@ -74,6 +75,7 @@ class ChainScanner : public QObject
         QTimer _scanTimer;
         size_t _scanInterval;
 
+    friend class ScopedScanPause;
 };
 
 

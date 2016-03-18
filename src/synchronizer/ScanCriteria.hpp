@@ -33,8 +33,12 @@ class ScanCriteria : public QObject
         class Iterator;
 
     public:
+
+        ScanCriteria(size_t limit);
         ScanCriteria();
         ~ScanCriteria();
+
+        void setLimit(size_t);
 
         template<class Criterion, class Arg>
         void addCriterion(size_t minBlock, const Arg &);
@@ -69,10 +73,12 @@ class ScanCriteria : public QObject
         ScanCriteria(const ScanCriteria &);
         void processBlock(size_t index, Ethereum::Connector::Block &, Container::iterator, ScanResult &);
         void addCriterion(size_t minBlock, ScanCriterion *);
+        void registerMetaType();
 
     private:
         Container _criteria;
         bool _interrupted;
+        size_t _limit;
 
 };
 
