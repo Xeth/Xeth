@@ -367,9 +367,6 @@ input[type="number"]:focus {
 .txtBalance.pending .dec {
     color: #BB874E;
 }
-.txtBalance.pending .dec:after {
-    color: #BE6469;
-}
 
 /******************************************************/
 
