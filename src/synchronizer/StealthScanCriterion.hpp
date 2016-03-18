@@ -2,7 +2,7 @@
 
 #include <QJsonObject>
 
-#include "ethkey/PublicKey.hpp"
+#include "ethkey/key/PublicKey.hpp"
 #include "ethkey/serialization/PublicKeySerializer.hpp"
 #include "ethkey/encoding/HexEncoder.hpp"
 
