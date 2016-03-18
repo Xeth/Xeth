@@ -7,6 +7,7 @@ namespace Xeth{
 Facade::Facade(const Settings &settings) :
     _settings(settings),
     _ready(false),
+    _provider(settings.get("rpc_retry", 1), settings.get("rpc_retry_interval", 10)),
     _database(settings),
     _synchronizer(_provider, _database, settings),
     _process(settings),
