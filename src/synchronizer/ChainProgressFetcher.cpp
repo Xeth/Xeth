@@ -1,5 +1,6 @@
 
 #include "ChainProgressFetcher.hpp"
+#include <QDebug>
 
 namespace Xeth{
 
@@ -21,9 +22,20 @@ void ChainProgressFetcher::autoUpdate(size_t interval)
 
 void ChainProgressFetcher::update()
 {
-    if(_progress.update())
+    try
     {
-        emit Progress(_progress.getValue());
+        if(_progress.update())
+        {
+            emit Progress(_progress.getValue());
+        }
+    }
+    catch(const std::exception &e)
+    {
+        qDebug()<<"failed to fetch progress : "<<e.what();
+    }
+    catch(...)
+    {
+        qDebug()<<"failed to fetch progress";
     }
 
 }
