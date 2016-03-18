@@ -1,16 +1,25 @@
 
 var TransactionCollection = Backbone.Collection.extend({
 
-    initialize:function(){
-        _(this).bindAll("push");
+    initialize:function(options){
+        _(this).bindAll("add");
+        this.limit = (options&&options.limit)?options.limit:100;
     },
 
     fetch:function(){
-        this.reset(XETH_wallet.listTransactions({limit:100}));
+        this.reset(XETH_wallet.listTransactions({limit:this.limit}));
     },
 
     observe:function(){
         XETH_event.Transaction.connect(this, this.add);
+    },
+
+    add:function(model){
+        Backbone.Collection.prototype.add.call(this, model);
+        while(this.length>this.limit)
+        {
+            this.pop();
+        }
     },
 
     comparator:function(model){
