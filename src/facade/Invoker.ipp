@@ -16,8 +16,10 @@ QVariant Invoker::invoke(Command &command, const Request &request)
     {
         _notifier.emitError(e.what());
     }
+    catch(...)
+    {}
 
-    return QVariant::fromValue(NULL);
+    return QVariant::fromValue(false);
 }
 
 template<class Command, class Request>
