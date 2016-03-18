@@ -2,10 +2,16 @@
 
 #include <QDebug>
 
+
 namespace Xeth{
 
+
 EthProcess::EthProcess(const Settings &settings) :
+#ifdef __WINDOWS_OS__
+    _command(settings.get("eth-command", "geth.exe"))
+#else
     _command(settings.get("eth-command", "geth"))
+#endif
 {
     if(settings.get<bool>("testnet", false))
     {
@@ -14,7 +20,11 @@ EthProcess::EthProcess(const Settings &settings) :
 }
 
 EthProcess::EthProcess() :
+#ifdef __WINDOWS_OS__
+    _command("geth.exe")
+#else
     _command("geth")
+#endif
 {}
 
 
