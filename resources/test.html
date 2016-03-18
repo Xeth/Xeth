@@ -64,6 +64,7 @@
 <script type="text/javascript" src="simulator/model/Progress.js"></script>
 <script type="text/javascript" src="simulator/model/ClipBoard.js"></script>
 <script type="text/javascript" src="simulator/model/FileSystem.js"></script>
+<script type="text/javascript" src="simulator/model/AddressValidator.js"></script>
 <script type="text/javascript">
     var templates = new TemplateRegistry();
     templates.load();
@@ -71,10 +72,12 @@
     var addressbook = new AddressBookSimulator;
     var transactions = new TransactionCollectionSimulator;
     var progress = new ProgressSimulator;
+    var addressValidator = new AddressValidator;
     accounts.add({address: "0x9fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:5.1});
     accounts.add({address: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", bitprofile: "tester", balance:2.7});
     accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:370.25});
     accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
+    accounts.add({stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp"});
     addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
     addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
 	//addressbook.add({alias: "Harap Alb", bitprofile: "harap01", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:205});
@@ -99,7 +102,7 @@
 	
     var filesystem = new FileSystem();
     var clipboard = new ClipBoard();
-    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard:clipboard});
+    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator});
     setTimeout(function(){
         view.render();
     },1000);
