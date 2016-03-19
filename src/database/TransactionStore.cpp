@@ -176,19 +176,31 @@ bool TransactionStore::insert
 
 bool TransactionStore::insert(const QJsonObject &obj)
 {
-    int index = getNextIndex();
-
-    if(!_indexStore.replace(obj["hash"].toString().toStdString().c_str(), index))
+    std::string hash = obj["hash"].toString().toStdString();
+    int index = _indexStore.get(hash.c_str());
+    if(!index)
     {
-        return false;
+        index = getNextIndex();
+        if(!_indexStore.insert(hash.c_str(), index))
+        {
+            return false;
+        }
+        if(!_dataStore.insert(index, obj))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if(!_dataStore.insert(index, obj))
+        {
+            return false;
+        }
     }
 
-    if(_dataStore.replace(index, obj))
-    {
-        emit NewItem(obj);
-        return true;
-    }
-    return false;
+    emit NewItem(obj);
+    return true;
+
 }
 
 int TransactionStore::getNextIndex()
