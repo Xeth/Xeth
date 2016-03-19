@@ -135,23 +135,24 @@ var SendPageView = SubPageView.extend({
     
     checkSubmit:function(){
         var toValidate = [this.amount, this.destination, this.password];
-
-        if(!this.saveOption.prop("disabled")&&this.saveOption.prop("checked")){
-            toValidate.push(this.alias);
-        }
+        var saveAlias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked");
+        if(saveAlias) toValidate.push(this.alias);
 
         if(!$(toValidate).validate()){
             notifyError("please fill all mandatory fields correctly");
             return false;
         }
 
-        var alias = this.alias.val();
-        if(alias.length && this.addressbook.get(alias)){
-            notifyError("alias already registered");
-            this.alias.error();
-            return false;
+        if(saveAlias)
+        {
+            var alias = this.alias.val();
+            if(alias.length && this.addressbook.get(alias)){
+                notifyError("alias already registered");
+                this.alias.error();
+                return false;
+            }
+            this.alias.noerror();
         }
-        this.alias.noerror();
         
         var account = this.accounts.selected();
         if(account.get("balance")<this.amount.val()){
@@ -194,7 +195,7 @@ var SendPageView = SubPageView.extend({
     submit:function(){
         this.$form.addClass("waiting");
         
-        var alias = this.alias.val();
+        var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
         var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();

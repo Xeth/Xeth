@@ -64,6 +64,7 @@ var Contact = Backbone.Model.extend({
 var AddressBook = Backbone.Collection.extend({
 
     initialize:function(models, options){
+        _(this).bindAll("upsert");
         this.transactions = options?options.transactions:null;
     },
 
@@ -95,8 +96,23 @@ var AddressBook = Backbone.Collection.extend({
         }
     },
 
+    upsert:function(data){
+        var old = this.get(data.alias);
+        if(old)
+        {
+            for(var i in data)
+            {
+                old.set(i, data[i]);
+            }
+        }
+        else
+        {
+            this.add(data);
+        }
+    },
+
     observe:function(){
-        XETH_event.Contact.connect(this, Backbone.Collection.prototype.add);
+        XETH_event.Contact.connect(this, this.upsert);
     },
 
     model: function(data, options){
