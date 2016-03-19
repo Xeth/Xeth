@@ -62,12 +62,6 @@ QVariant WalletFacade::listTransactions(const QVariantMap &request)
 }
 
 
-QVariant WalletFacade::getTransaction(const QString &hash)
-{
-    GetTransactionCommand command(_database);
-    return _invoker.invoke(command, hash);
-}
-
 QVariant WalletFacade::importKey(const QVariantMap &request)
 {
     ImportKeyCommand command(_settings, _database, _synchronizer);

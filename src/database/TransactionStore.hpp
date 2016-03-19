@@ -82,7 +82,6 @@ class TransactionStore : public QObject
 
         bool insert(const QJsonObject &);
 
-        QJsonObject get(const char *hash) const;
         Iterator begin() const;
         Iterator end() const;
         Iterator at(int) const;
@@ -94,6 +93,9 @@ class TransactionStore : public QObject
 
     private:
         int getNextIndex();
+        bool insert(const std::string &, const QJsonObject &);
+        std::string makeID(const TransactionCategory &, const std::string &);
+        std::string makeID(const QJsonObject &);
 
     private:
         TransactionDataStore _dataStore;
