@@ -11,7 +11,7 @@ QVariant ValidateAddressCommand::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
     AddressValidator validator;
-    return QVariant::fromValue(validator.validateAddress(request["address"].toString().toStdString()));
+    return QVariant::fromValue(validator.validateAddress(request["address"].toString().toStdString(), true));
 }
 
 

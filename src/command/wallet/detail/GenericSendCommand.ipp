@@ -16,6 +16,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         std::string to = request["to"].toString().toStdString();
         std::string password = request["password"].toString().toStdString();
         BigInt amount(request["amount"].toString().toStdString());
+        bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
 
         if(request.contains("gas"))
         {
@@ -23,7 +24,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
              return this->operator()(from, to, password, amount, gas);
         }
 
-        return this->operator()(from, to, password, amount);
+        return this->operator()(from, to, password, amount, strict);
 
     }
     catch(...)
@@ -38,10 +39,11 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &from,
     const std::string &to,
     const std::string &password,
-    const BigInt &amount
+    const BigInt &amount,
+    bool strict
 )
 {
-    if(validateDestination(to)&&unlockSender(from, password, amount))
+    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
     {
         return QVariant::fromValue(QString(send(from, to, amount).c_str()));
     }
@@ -56,10 +58,11 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &to,
     const std::string &password,
     const BigInt &amount,
-    const BigInt &gas
+    const BigInt &gas,
+    bool strict
 )
 {
-    if(validateDestination(to)&&unlockSender(from, password, amount))
+    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
     {
         return QVariant::fromValue(QString(send(from, to, amount, gas).c_str()));
     }
@@ -68,10 +71,10 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
 
 
 template<class Sender, class Validator>
-bool GenericSendCommand<Sender, Validator>::validateDestination(const std::string &to)
+bool GenericSendCommand<Sender, Validator>::validateDestination(const std::string &to, bool strict)
 {
     Validator validator;
-    return validator(to);
+    return validator(to, strict);
 }
 
 

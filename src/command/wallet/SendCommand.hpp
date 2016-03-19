@@ -29,7 +29,8 @@ class SendCommand
             const std::string &to,
             const std::string &password,
             const BigInt &,
-            const QVariant &gas
+            const QVariant &gas,
+            bool strict
         );
 
     private:
