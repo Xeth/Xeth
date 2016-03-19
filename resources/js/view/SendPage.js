@@ -2,7 +2,7 @@ var SendPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste");
-		SubPageView.prototype.initialize.call(this,options);
+        SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
@@ -16,7 +16,7 @@ var SendPageView = SubPageView.extend({
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
         this.sendType = this.$el.find("#sendToType");
-		this.sendType.selectmenu().selectmenu( "widget" ).addClass( "type" );
+        this.sendType.selectmenu().selectmenu( "widget" ).addClass( "type" );
         this.aliasHolder = this.$el.find(".section_alias .input");
         this.alias = this.aliasHolder.find("input");
         this.destination = this.$el.find("#sendToInput");
@@ -24,7 +24,7 @@ var SendPageView = SubPageView.extend({
         this.password = this.$el.find("#sendPassword");
         this.destination.change(this.updateContact);
         this.destination.on("input", this.scheduleUpdateContact);
-		this.addressbook.on("remove", this.updateContact);
+        this.addressbook.on("remove", this.updateContact);
 
         this.aliasHolder.hide();
         this.accounts.render();
@@ -39,13 +39,13 @@ var SendPageView = SubPageView.extend({
         this.router = options.router;
         this.$form = this.$el.find(".formpage.send");
         
-		this.$el.find('.btn').tooltip({
-			position: { my: "center bottom", at: "center top-5" },
-			show: { duration: 200 },
-			hide: { duration: 200 }
-		});
+        this.$el.find('.btn').tooltip({
+            position: { my: "center bottom", at: "center top-5" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
         
-        this.$el.find('.section_fee').tooltip({	
+        this.$el.find('.section_fee').tooltip({    
             position: { my: "center top", at: "center bottom" },
             show: { duration: 200 },
             hide: { duration: 200 }
@@ -74,11 +74,11 @@ var SendPageView = SubPageView.extend({
             }
         }else{
             this.destination.val(address);
-			this.sendType.val("address");
+            this.sendType.val("address");
         }
-		this.sendType.selectmenu( "refresh" );
-		this.updatePlaceholder();
-		this.updateContact();
+        this.sendType.selectmenu( "refresh" );
+        this.updatePlaceholder();
+        this.updateContact();
     },
 
     setAmount:function(amount){
@@ -87,7 +87,7 @@ var SendPageView = SubPageView.extend({
 
     updateSendType:function(){
         this.updatePlaceholder();
-		if(this.destination.val()) this.updateContact();
+        if(this.destination.val()) this.updateContact();
     },
 
     updatePlaceholder:function(){
@@ -100,11 +100,11 @@ var SendPageView = SubPageView.extend({
         var address = this.destination.val();
         var contact = this.addressbook.find(function(model) { return model.get(type) === address; });
         if(contact){
-			this.destination.noerror();
-			this.saveOption.prop("checked",true).prop("disabled",true);
+            this.destination.noerror();
+            this.saveOption.prop("checked",true).prop("disabled",true);
             this.alias.val(contact.get("alias")).prop("disabled",true).noerror();
             this.aliasHolder.show();
-			this.saveOption.button( "refresh" );
+            this.saveOption.button( "refresh" );
         }else{
             if(this.saveOption.prop("disabled")){
                 this.resetContact();
@@ -114,8 +114,8 @@ var SendPageView = SubPageView.extend({
 
     resetContact: function(){
         this.alias.val("").prop("disabled",false);
-		this.saveOption.prop("checked",false).prop("disabled",false);
-		this.aliasHolder.hide();
+        this.saveOption.prop("checked",false).prop("disabled",false);
+        this.aliasHolder.hide();
         this.saveOption.button( "refresh" );
     },
 
@@ -151,28 +151,43 @@ var SendPageView = SubPageView.extend({
             this.alias.error();
             return false;
         }
-		this.alias.noerror();
-		
+        this.alias.noerror();
+        
         var account = this.accounts.selected();
         if(account.get("balance")<this.amount.val()){
             this.amount.error();
             notifyError("not enough funds");
             return false;
         }
-        
-        if(this.addressValidator.hasChecksum(this.destination.val()))
+        var destination = this.destination.val();
+        if(destination.length==40||destination.length==42)
+        {
+            if(this.addressValidator.hasChecksum(destination))
+            {
+                if(this.addressValidator.validate(destination))
+                {
+                    this.submit();
+                }
+                else
+                {
+                    notifyError("Invalid address checksum");
+                    this.destination.error();
+                }
+            } 
+            else 
+            {
+                notie.confirm('<span class="title warning">WARNING!</span>'+
+                              'Destination address has no checksum!<br>'+
+                              'You can send a small test amount first or continue with the transaction<br>'+
+                              '<span class="question">Proceed with this transaction?<span>', 
+                              'Yes, Send it anyway', 
+                              'No, I will try small test amount first', 
+                              this.submit);
+            }
+        }
+        else
         {
             this.submit();
-        } 
-        else 
-        {
-            notie.confirm('<span class="title warning">WARNING!</span>'+
-                          'The address has no checksum!<br>'+
-                          'You can send a small test amount first or continue with the transaction<br>'+
-                          '<span class="question">Proceed with this transaction?<span>', 
-                          'Yes, I trust this address', 
-                          'No, try small test amount first', 
-                          this.submit);
         }
     },
 
@@ -181,7 +196,7 @@ var SendPageView = SubPageView.extend({
         
         var alias = this.alias.val();
         var type = this.sendType.val();
-        var request = {amount:this.amount.val(), password:this.password.val()};
+        var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();
         
         request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
@@ -193,11 +208,11 @@ var SendPageView = SubPageView.extend({
         setTimeout(function(){
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
-				_this.password.error();
+                _this.password.error();
                 notifyError("invalid password");
                 return false;
             }
-			
+            
             notifySuccess("sent");
 
             if(alias.length){
@@ -206,7 +221,7 @@ var SendPageView = SubPageView.extend({
                 _this.addressbook.create(contact);
             }
 
-			_this.resetContact();
+            _this.resetContact();
             _this.$form.removeClass("waiting");
             _this.password.val("");
             _this.destination.val("");
