@@ -12,7 +12,7 @@ namespace Xeth{
 class ValidateStealthAddressCommand
 {
     public:
-        QVariant operator()(const QVariantMap &);
+        QVariant operator()(const QString &);
 };
 
 

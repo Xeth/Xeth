@@ -67,8 +67,8 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant generateKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
-        Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
-        Q_INVOKABLE QVariant validateStealthAddress(const QVariantMap &);
+        Q_INVOKABLE QVariant validateAddress(const QString &);
+        Q_INVOKABLE QVariant validateStealthAddress(const QString &);
         Q_INVOKABLE QVariant changeEthereumKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changeStealthKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changePassword(const QVariantMap &);
