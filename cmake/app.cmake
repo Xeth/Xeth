@@ -19,7 +19,7 @@ include_directories(
     ${JSONCPP_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${PROJECT_BINARY_DIR}/libethkey/include
+    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
@@ -80,7 +80,7 @@ target_link_libraries(xeth
     xethlib
     ethstealth
     ethrpc
-    ethkey
+    ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}

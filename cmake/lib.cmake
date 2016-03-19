@@ -16,7 +16,7 @@ include_directories(
     ${LEVELDB_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${PROJECT_BINARY_DIR}/libethkey/include
+    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_SOURCE_DIR}/libethstealth
 )
 
@@ -44,5 +44,5 @@ list(REMOVE_ITEM LIBRARY_SOURCES ${WINDOW_CPP})
 
 add_library(xethlib STATIC ${LIBRARY_SOURCES})
 add_dependencies(xethlib ethrpc)
-add_dependencies(xethlib ethkey)
+add_dependencies(xethlib ethcrypto)
 add_dependencies(xethlib ethstealth)

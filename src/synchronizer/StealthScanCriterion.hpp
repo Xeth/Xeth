@@ -2,9 +2,9 @@
 
 #include <QJsonObject>
 
-#include "ethkey/key/PublicKey.hpp"
-#include "ethkey/serialization/PublicKeySerializer.hpp"
-#include "ethkey/encoding/HexEncoder.hpp"
+#include "ethcrypto/key/PublicKey.hpp"
+#include "ethcrypto/serialization/PublicKeySerializer.hpp"
+#include "ethcrypto/encoding/HexEncoder.hpp"
 
 #include "ethstealth/Literal.hpp"
 

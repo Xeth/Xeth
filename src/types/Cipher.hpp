@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ethkey/cipher/Scrypt.hpp"
-#include "ethkey/cipher/AesCipher.hpp"
-#include "ethkey/cipher/CipherFactory.hpp"
+#include "ethcrypto/cipher/Scrypt.hpp"
+#include "ethcrypto/cipher/AesCipher.hpp"
+#include "ethcrypto/cipher/CipherFactory.hpp"
 
 namespace Xeth{
 

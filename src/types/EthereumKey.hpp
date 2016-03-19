@@ -1,11 +1,11 @@
 #pragma once 
 
-#include "ethkey/key/SecuredKey.hpp"
-#include "ethkey/key/Address.hpp"
-#include "ethkey/key/KeyGenerator.hpp"
+#include "ethcrypto/key/SecuredKey.hpp"
+#include "ethcrypto/key/Address.hpp"
+#include "ethcrypto/key/KeyGenerator.hpp"
 
-#include "ethkey/serialization/KeySerializer.hpp"
-#include "ethkey/serialization/Literal.hpp"
+#include "ethcrypto/serialization/KeySerializer.hpp"
+#include "ethcrypto/serialization/Literal.hpp"
 
 
 #include "Cipher.hpp"
