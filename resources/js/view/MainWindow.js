@@ -18,6 +18,7 @@ var MainWindowView = Backbone.View.extend({
         this.models.filesystem = options.filesystem;
         this.models.transactions = options.transactions;
         this.models.progress = options.progress;
+        this.models.addressValidator = options.addressValidator;
 
         this.templates = options.templates;
 		this.active = null;
@@ -59,6 +60,7 @@ var MainWindowView = Backbone.View.extend({
             el:this.$el.find("#page_send"), 
             router:this.router, 
             clipboard: this.models.clipboard,
+            addressValidator: this.models.addressValidator,
             templates:this.templates
         });
         this.subpages.receive = new ReceivePageView

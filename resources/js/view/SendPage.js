@@ -1,13 +1,14 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "paste");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste");
 		SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
         this.clipboard = options.clipboard;
+        this.addressValidator = options.addressValidator;
         this.$el.html(this.template());
         this.gas = this.$el.find('.section_fee .slider');
         this.gas.slider({value:50});
@@ -30,7 +31,7 @@ var SendPageView = SubPageView.extend({
         this.saveOption.change(this.toggleAlias);
         this.sendType.on("selectmenuchange",this.updateSendType);
         this.updatePlaceholder();
-        this.$el.find("#submitSend").click(this.submit);
+        this.$el.find("#submitSend").click(this.checkSubmit);
         this.$el.find("a.addressbook").click(function(){
             options.router.redirect("addressbook");
         });
@@ -131,8 +132,8 @@ var SendPageView = SubPageView.extend({
     paste:function(){
         this.destination.val(this.clipboard.getText());
     },
-
-    submit:function(){
+    
+    checkSubmit:function(){
         var toValidate = [this.amount, this.destination, this.password];
 
         if(!this.saveOption.prop("disabled")&&this.saveOption.prop("checked")){
@@ -152,21 +153,42 @@ var SendPageView = SubPageView.extend({
         }
 		this.alias.noerror();
 		
-        var type = this.sendType.val();
-        var request = {amount:this.amount.val(), password:this.password.val()};
         var account = this.accounts.selected();
-
-        if(account.get("balance")<request.amount){
+        if(account.get("balance")<this.amount.val()){
             this.amount.error();
             notifyError("not enough funds");
             return false;
         }
+        
+        if(this.addressValidator.hasChecksum(this.destination.val()))
+        {
+            this.submit();
+        } 
+        else 
+        {
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+                          'The address has no checksum!<br>'+
+                          'You can send a small test amount first or continue with the transaction<br>'+
+                          '<span class="question">Proceed with this transaction?<span>', 
+                          'Yes, I trust this address', 
+                          'No, try small test amount first', 
+                          this.submit);
+        }
+    },
 
+    submit:function(){
+        this.$form.addClass("waiting");
+        
+        var alias = this.alias.val();
+        var type = this.sendType.val();
+        var request = {amount:this.amount.val(), password:this.password.val()};
+        var account = this.accounts.selected();
+        
         request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
+        
         var gas = this.gas.slider("value");
         if(gas!=50) request.gas = gas/50; //in percents
 
-        this.$form.addClass("waiting");
         var _this = this;
         setTimeout(function(){
             if(!account.send(request)){
