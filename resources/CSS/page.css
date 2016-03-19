@@ -508,11 +508,11 @@
     margin-bottom: -1px;
     pointer-events: none;
 }
-
+/*
 .listItem:first-child {
 	margin-top: 0;
 }
-
+*/
 .listItem .header {
 	min-height: 16px;
 	line-height: 16px;
