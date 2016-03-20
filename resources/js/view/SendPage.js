@@ -51,8 +51,8 @@ var SendPageView = SubPageView.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
-        this.fee = this.$el.find(".fee .eth");
-        this.gas = this.$el.find(".fee .gas");
+        this.feeHolder = this.$el.find(".fee .eth");
+        this.gasHolder = this.$el.find(".fee .gas");
 
         this.amount.on("input", this.computeFee);
         this.amount.on("change", this.computeFee);
@@ -131,13 +131,14 @@ var SendPageView = SubPageView.extend({
         if(result){
             this.gasAmount = result["gas"];
             this.gasPrice = result["price"];
-            this.fee.html(result["fee"].substr(0, 15));
-            this.gas.html(this.gasAmount);
+            this.fee = result["fee"];
+            this.feeHolder.html(this.fee.substr(0, 15));
+            this.gasHolder.html(this.gasAmount);
         }else
         {
             this.gasAmount = this.gasPrice = undefined;
-            this.fee.html("0");
-            this.gas.html("0");
+            this.feeHolder.html("0");
+            this.gasHolder.html("0");
         }
     },
 
@@ -184,7 +185,7 @@ var SendPageView = SubPageView.extend({
         }
         
         var account = this.accounts.selected();
-        if(account.get("balance")<this.amount.val()){
+        if(account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee))){
             this.amount.error();
             notifyError("not enough funds");
             return false;
