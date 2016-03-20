@@ -8,6 +8,9 @@ function AddressValidator(){
         return lowerCase.test(address) && upperCase.test(address);
     };
 
+    this.validateNoChecksum = function(address){
+        return XETH_wallet.validateAddress({address: address, checksum: false});
+    };
 
     this.validate = function(address){
         return XETH_wallet.validateAddress(address);

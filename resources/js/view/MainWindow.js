@@ -10,7 +10,7 @@ var MainWindowView = Backbone.View.extend({
     el: "body",
 
     initialize:function(options){
-        _(this).bindAll("open","show","loaded");
+        _(this).bindAll("open","show","loaded", "notifyError");
         this.models = {};
         this.models.addressbook = options.addressbook;
         this.models.accounts = options.accounts;
@@ -20,7 +20,7 @@ var MainWindowView = Backbone.View.extend({
         this.models.progress = options.progress;
         this.models.addressValidator = options.addressValidator;
         this.models.fee = options.fee;
-//        alert(this.models.fee);
+        this.models.events = options.events;
         this.templates = options.templates;
         this.active = null;
     },
@@ -50,7 +50,7 @@ var MainWindowView = Backbone.View.extend({
 
         this.$el.prepend(this.templates.get("main_page")());
 
-        this.models.events.Error.connect(this, this.notifyError);
+        this.models.events.onError(this.notifyError);
 
         this.accounts = new AccountSelect({collection:this.models.accounts, templates:this.templates});
         this.router = new PageRouter(this);

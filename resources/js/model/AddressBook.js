@@ -52,7 +52,7 @@ var Contact = Backbone.Model.extend({
     },
 
     _resolve:function(address, bitprofile, transaction){
-        if(address==transaction.get("from")||address==transaction.get("to")||(bitprofile &&bitprofile==transaction.get("bitprofile"))){
+        if(address==transaction.get("from")||address==transaction.get("to")||address==transaction.get("stealth")||(bitprofile &&bitprofile==transaction.get("bitprofile"))){
             transaction.set("contact", this);
             return true;
         }

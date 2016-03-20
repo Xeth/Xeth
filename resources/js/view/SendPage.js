@@ -194,25 +194,17 @@ var SendPageView = SubPageView.extend({
         {
             if(this.addressValidator.hasChecksum(destination))
             {
-                if(this.addressValidator.validate(destination))
-                {
-                    this.submit();
-                }
-                else
-                {
-                    notifyError("Invalid address checksum");
-                    this.destination.error();
-                }
+                this.submit(true);
             } 
             else 
             {
                 notie.confirm('<span class="title warning">WARNING!</span>'+
-                              'Destination address has no checksum!<br>'+
-                              'You can send a small test amount first or continue with the transaction<br>'+
-                              '<span class="question">Proceed with this transaction?<span>', 
-                              'Yes, Send it anyway', 
-                              'No, I will try small test amount first', 
-                              this.submit);
+                  'Destination address has no checksum!<br>'+
+                  'You can send a small test amount first or continue with the transaction<br>'+
+                  '<span class="question">Proceed with this transaction?<span>', 
+                  'Yes, Send it anyway', 
+                  'No, I will try small test amount first', 
+                  this.submit);
             }
         }
         else
@@ -226,16 +218,32 @@ var SendPageView = SubPageView.extend({
         return parseInt(gas/50*100); //in percents
     },
 
-    submit:function(){
-        this.$form.addClass("waiting");
-        
+    submit:function(checksum){
+
         var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
         var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();
-        
-        request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
-        
+        var destination = this.destination.val().replace(/^\s+|\s+$/g, '');
+        request[type] = destination;
+
+        if(checksum){
+            if(!this.addressValidator.validate(destination))
+            {
+                notifyError("Invalid address checksum");
+                this.destination.error();
+                return false;
+            }
+        }else{
+            if(!this.addressValidator.validateNoChecksum(destination)){
+                notifyError("Invalid address");
+                this.destination.error();
+                return false;
+            }
+        }
+
+        this.$form.addClass("waiting");
+
         if(this.gasPrice!=undefined && this.gasAmount){
             request.price = this.gasPrice;
             request.gas = this.gasAmount;
