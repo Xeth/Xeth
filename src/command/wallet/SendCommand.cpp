@@ -15,16 +15,17 @@ QVariant SendCommand::operator()(const QVariantMap &request)
     std::string from = request["from"].toString().toStdString();
     std::string password = request["password"].toString().toStdString();
     const QVariant & gas = request["gas"];
+    const QVariant & price = request["price"];
     BigInt amount(request["amount"].toString().toStdString());
     bool strict = request.contains("checksum") ? request["checksum"].toBool() : false;
     size_t addrSize = to.size();
     if(addrSize==40||addrSize==42)
     {
         SendToAddressCommand command(_provider, _database);
-        return send(command, from, to, password, amount, gas, strict);
+        return send(command, from, to, password, amount, gas, price, strict);
     }
     SendToStealthCommand command(_provider, _database);
-    return send(command, from, to, password, amount, gas, strict);
+    return send(command, from, to, password, amount, gas, price, strict);
 
 }
 
@@ -38,15 +39,16 @@ QVariant SendCommand::send
     const std::string &password,
     const BigInt &amount,
     const QVariant &gas,
+    const QVariant &price,
     bool strict
 )
 {
-    if(gas.isNull())
+    if(gas.isNull()||price.isNull())
     {
         return command(from, to, password, amount, strict);
     }
 
-    return command(from, to, password, amount, BigInt(gas.toString().toStdString()), strict);
+    return command(from, to, password, amount, BigInt(gas.toString().toStdString()), BigInt(price.toString().toStdString()), strict);
 }
 
 

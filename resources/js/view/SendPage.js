@@ -11,8 +11,8 @@ var SendPageView = SubPageView.extend({
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
         this.$el.html(this.template());
-        this.gasPrice = this.$el.find('.section_fee .slider');
-        this.gasPrice.slider({value:50, change:this.computeFee});
+        this.feeFactor = this.$el.find('.section_fee .slider');
+        this.feeFactor.slider({value:50, change:this.computeFee});
 
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
@@ -129,10 +129,13 @@ var SendPageView = SubPageView.extend({
 
         var result = this.feeModel.estimate(from, to, amount, factor);
         if(result){
+            this.gasAmount = result["gas"];
+            this.gasPrice = result["price"];
             this.fee.html(result["fee"].substr(0, 15));
-            this.gas.html(result["gas"]);
+            this.gas.html(this.gasAmount);
         }else
         {
+            this.gasAmount = this.gasPrice = undefined;
             this.fee.html("0");
             this.gas.html("0");
         }
@@ -219,7 +222,7 @@ var SendPageView = SubPageView.extend({
     },
 
     getFeeFactor: function(){
-        var gas = this.gasPrice.slider("value");
+        var gas = this.feeFactor.slider("value");
         return parseInt(gas/50*100); //in percents
     },
 
@@ -233,9 +236,9 @@ var SendPageView = SubPageView.extend({
         
         request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
         
-        var factor = this.getFeeFactor();
-        if(factor!=100){
-            request.fee = factor;
+        if(this.gasPrice!=undefined && this.gasAmount){
+            request.price = this.gasPrice;
+            request.gas = this.gasAmount;
         }
 
         var _this = this;

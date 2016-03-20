@@ -39,6 +39,7 @@ class GenericSendCommand
             const std::string &password,
             const BigInt &amount,
             const BigInt &gas,
+            const BigInt &price,
             bool strict = true
         );
 
@@ -46,7 +47,7 @@ class GenericSendCommand
         bool validateDestination(const std::string &, bool strict);
         bool unlockSender(const std::string &, const std::string &, const BigInt &);
         std::string send(const std::string &from, const std::string &to, const BigInt &amount);
-        std::string send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas);
+        std::string send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas, const BigInt &price);
 
     private:
         Ethereum::Connector::Wallet _wallet;

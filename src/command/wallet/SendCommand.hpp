@@ -30,6 +30,7 @@ class SendCommand
             const std::string &password,
             const BigInt &,
             const QVariant &gas,
+            const QVariant &price,
             bool strict
         );
 

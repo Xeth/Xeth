@@ -18,10 +18,11 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         BigInt amount(request["amount"].toString().toStdString());
         bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
 
-        if(request.contains("gas"))
+        if(request.contains("gas") && request.contains("price"))
         {
              BigInt gas(request["gas"].toString().toStdString());
-             return this->operator()(from, to, password, amount, gas);
+             BigInt price(request["price"].toString().toStdString());
+             return this->operator()(from, to, password, amount, gas, price);
         }
 
         return this->operator()(from, to, password, amount, strict);
@@ -59,12 +60,13 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &password,
     const BigInt &amount,
     const BigInt &gas,
+    const BigInt &price,
     bool strict
 )
 {
     if(validateDestination(to, strict)&&unlockSender(from, password, amount))
     {
-        return QVariant::fromValue(QString(send(from, to, amount, gas).c_str()));
+        return QVariant::fromValue(QString(send(from, to, amount, gas, price).c_str()));
     }
     return QVariant::fromValue(false);
 }
@@ -116,10 +118,10 @@ std::string GenericSendCommand<Sender, Validator>::send(const std::string &from,
 
 
 template<class Sender, class Validator>
-std::string GenericSendCommand<Sender, Validator>::send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas)
+std::string GenericSendCommand<Sender, Validator>::send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas, const BigInt &price)
 {
     Sender sender;
-    return sender(_wallet, _database, from, to, amount, gas);
+    return sender(_wallet, _database, from, to, amount, gas, price);
 }
 
 
