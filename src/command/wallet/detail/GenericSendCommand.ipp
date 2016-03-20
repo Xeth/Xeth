@@ -10,28 +10,21 @@ GenericSendCommand<Sender, Validator>::GenericSendCommand(Ethereum::Connector::P
 template<class Sender, class Validator>
 QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &request)
 {
-    try
+    std::string from = request["from"].toString().toStdString();
+    std::string to = request["to"].toString().toStdString();
+    std::string password = request["password"].toString().toStdString();
+    BigInt amount(request["amount"].toString().toStdString());
+    bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
+
+    if(request.contains("gas") && request.contains("price"))
     {
-        std::string from = request["from"].toString().toStdString();
-        std::string to = request["to"].toString().toStdString();
-        std::string password = request["password"].toString().toStdString();
-        BigInt amount(request["amount"].toString().toStdString());
-        bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
-
-        if(request.contains("gas") && request.contains("price"))
-        {
-             BigInt gas(request["gas"].toString().toStdString());
-             BigInt price(request["price"].toString().toStdString());
-             return this->operator()(from, to, password, amount, gas, price);
-        }
-
-        return this->operator()(from, to, password, amount, strict);
-
+         BigInt gas(request["gas"].toString().toStdString());
+         BigInt price(request["price"].toString().toStdString());
+         return this->operator()(from, to, password, amount, gas, price);
     }
-    catch(...)
-    {}
 
-    return QVariant::fromValue(false);
+    return this->operator()(from, to, password, amount, strict);
+
 }
 
 template<class Sender, class Validator>
@@ -44,11 +37,18 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     bool strict
 )
 {
-    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
+
+    if(!validateDestination(to, strict))
     {
-        return QVariant::fromValue(QString(send(from, to, amount).c_str()));
+        throw std::runtime_error("invalid address");
     }
-    return QVariant::fromValue(false);
+
+    if(!unlockSender(from, password, amount))
+    {
+        throw std::runtime_error("invalid password");
+    }
+
+    return QVariant::fromValue(QString(send(from, to, amount).c_str()));
 }
 
 
@@ -64,11 +64,16 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     bool strict
 )
 {
-    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
+    if(!validateDestination(to, strict))
     {
-        return QVariant::fromValue(QString(send(from, to, amount, gas, price).c_str()));
+        throw std::runtime_error("invalid address");
     }
-    return QVariant::fromValue(false);
+
+    if(!unlockSender(from, password, amount))
+    {
+        throw std::runtime_error("invalid password");
+    }
+    return QVariant::fromValue(QString(send(from, to, amount, gas, price).c_str()));
 }
 
 
