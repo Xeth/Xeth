@@ -40,7 +40,7 @@ function TransactionViewFactory(template){
 var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter");
+        _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters");
 		SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
@@ -95,6 +95,9 @@ var TransactionsPageView = SubPageView.extend({
         this.listenTo(options.transactions, "add", this.updateTotal);
         this.listenTo(options.transactions, "reset", this.computeTotals);
         this.computeTotals();
+        
+        this.collection.collection.on("add", this.applyFilters);
+        this.collection.collection.on("insert", this.applyFilters);
     },
 
     render:function(options){

@@ -198,6 +198,7 @@ var CollectionView = Backbone.View.extend({
 
     create:function(model){
         var view = this.factory.create(model);
+        view.$el.hide();
         view.render();
         setTimeout(function(){
             view.$el.removeClass("off");

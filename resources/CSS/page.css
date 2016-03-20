@@ -508,11 +508,11 @@
     margin-bottom: -1px;
     pointer-events: none;
 }
-
+/*
 .listItem:first-child {
 	margin-top: 0;
 }
-
+*/
 .listItem .header {
 	min-height: 16px;
 	line-height: 16px;
@@ -670,10 +670,10 @@
 .listItem .controls .btntxt.cancel:after {
 	content:"cancel";
 }
-
+/*
 .mCSB_container {
     min-height: 100%;
-}
+}*/
 
 .page .scrollpage {
 	position: absolute;
@@ -684,7 +684,7 @@
 	overflow: hidden;
 }
 .page .scrollpage .empty {
-    position: absolute;
+    /*position: absolute;*/
     pointer-events: none;
 	padding: 0;
 	line-height:20px;
@@ -696,7 +696,7 @@
 	height:0;
 	visibility:hidden;
     opacity:0;
-	transition: opacity 0ms ease-in-out 0ms;
+	transition: all 0ms ease-in-out 0ms;
 	
 }
 .page .scrollpage .empty.on {
@@ -704,7 +704,7 @@
 	height: 30%;
 	visibility:visible;
     opacity:1;
-	transition: opacity 150ms ease-in-out 300ms;
+	transition: all 150ms ease-in-out 300ms;
 	
 }
 .page .scrollpage.empty .holder {
