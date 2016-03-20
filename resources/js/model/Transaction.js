@@ -1,3 +1,14 @@
+var Transaction = Backbone.Model.extend({
+
+    toJSON:function(){
+        var obj = Backbone.Model.prototype.toJSON.call(this);
+        if(this.get("contact")){
+            obj.contact = Backbone.Model.prototype.toJSON.call(this.get("contact"));
+        }
+        return obj;
+    }
+})
+
 
 var TransactionCollection = Backbone.Collection.extend({
 
@@ -30,7 +41,7 @@ var TransactionCollection = Backbone.Collection.extend({
         data.amount = parseFloat(XETH_convert.fromWei(data.amount));
         data.timestamp = parseInt(data.timestamp) * 1000;
         if(data.amount<0.00000001) data.amount = 0;
-        return new Backbone.Model(data);
+        return new Transaction(data);
     }
 
 });
