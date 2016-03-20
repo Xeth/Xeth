@@ -50,6 +50,8 @@ var MainWindowView = Backbone.View.extend({
 
         this.$el.prepend(this.templates.get("main_page")());
 
+        this.models.events.Error.connect(this, this.notifyError);
+
         this.accounts = new AccountSelect({collection:this.models.accounts, templates:this.templates});
         this.router = new PageRouter(this);
         this.menuAlias = {default: "receive"};
@@ -131,7 +133,9 @@ var MainWindowView = Backbone.View.extend({
         this.progress.render();
         this.show();
     },
-    
+    notifyError:function(msg){
+        notifyError(msg);
+    },
     loaded:function(){
         this.$el.addClass("loaded");
         this.$el.find("#page_splash").addClass("off");
