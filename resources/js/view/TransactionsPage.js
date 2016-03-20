@@ -141,7 +141,7 @@ var TransactionsPageView = SubPageView.extend({
                 if(time<filters.timeStart||time>filters.timeEnd) return false;
             }
 
-            if(filters.address && filters.address != model.get("from") && filters.address != model.get("to")) return false;
+            if(filters.address && filters.address != model.get("from") && filters.address != model.get("to") && (filters.address!=model.get("stealth"))) return false;
             if(filters.type && filters.type!=model.get("category")) return false;
 
             return true;
