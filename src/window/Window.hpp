@@ -9,8 +9,13 @@
 #include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
+#include <QSystemTrayIcon>
+#include <QCoreApplication>
+#include <QAction>
+#include <QMenu>
 
 
+#include "facade/Facade.hpp"
 #include "FrameContextBuilder.hpp"
 
 
@@ -22,22 +27,27 @@ class Window : public QWebView
     Q_OBJECT
     
     public:
-        explicit Window(FrameContextBuilder &contextBuilder);
+        explicit Window(Facade &facade);
 
         void moveToScreenCenter();
-
 
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
         void setUrl(const char *);
         void setIcon(const char *);
 
+    private:
+        Window(const Window &);
+
     private slots:
         void initObjects();
         void loadTemplates();
+        void toggle();
 
     private:
-        FrameContextBuilder &_contextBuilder;
+        FrameContextBuilder _contextBuilder;
+        QSystemTrayIcon *_trayIcon;
+        QMenu *_trayMenu;
 
 };
 
