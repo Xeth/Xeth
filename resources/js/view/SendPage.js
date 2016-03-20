@@ -54,8 +54,10 @@ var SendPageView = SubPageView.extend({
         this.fee = this.$el.find(".fee .eth");
         this.gas = this.$el.find(".fee .gas");
 
-        this.amount.change(this.computeFee);
-        this.destination.change(this.computeFee);
+        this.amount.on("input", this.computeFee);
+        this.amount.on("change", this.computeFee);
+        this.destination.on("change", this.computeFee);
+        this.destination.on("input", this.computeFee);
     },
 
     render:function(args){
@@ -66,6 +68,7 @@ var SendPageView = SubPageView.extend({
         this.accounts.resize(); //default size
         if(args && args.destination){
             this.setDestination(args.destination);
+            this.computeFee();
         }
     },
 
