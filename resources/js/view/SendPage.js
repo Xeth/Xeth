@@ -246,7 +246,6 @@ var SendPageView = SubPageView.extend({
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
                 _this.password.error();
-                notifyError("invalid password");
                 return false;
             }
             
