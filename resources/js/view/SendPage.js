@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.feeModel = options.fee;
@@ -12,7 +12,7 @@ var SendPageView = SubPageView.extend({
         this.addressValidator = options.addressValidator;
         this.$el.html(this.template());
         this.feeFactor = this.$el.find('.section_fee .slider');
-        this.feeFactor.slider({value:50, change:this.computeFee});
+        this.feeFactor.slider({value:50, change:this.updateFeeFactor});
 
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
@@ -57,6 +57,15 @@ var SendPageView = SubPageView.extend({
         this.amount.on("input", this.computeFee);
         this.amount.on("change", this.computeFee);
         this.destination.on("change", this.computeFee);
+    },
+
+    updateFeeFactor:function(){
+        this.computeFee();
+        if(this.feeFactor.slider("value")<45){
+            this.feeFactor.addClass("warning");
+        }else{
+            this.feeFactor.removeClass("warning");
+        }
     },
 
     render:function(args){
@@ -250,7 +259,7 @@ var SendPageView = SubPageView.extend({
         }
 
         var _this = this;
-        setTimeout(function(){
+        var sendRequest = function(){
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
                 _this.password.error();
@@ -272,7 +281,19 @@ var SendPageView = SubPageView.extend({
             _this.amount.val("");
 
             _this.router.redirect("transactions", {focusFirst:true});
-        }, 0);
+        };
+        if(this.feeFactor.hasClass("warning")){
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+              'Fee is too low!<br>'+
+              'Transaction may not be mined or even propagated<br>'+
+              '<span class="question">Are you sure you want to send it?<span>', 
+              'Yes, Send it anyway', 
+              'No, I will change fee', 
+             sendRequest);
+        }
+        else{
+            setTimeout(sendRequest, 0);
+        }
     }
 
 })
