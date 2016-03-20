@@ -65,6 +65,7 @@
 <script type="text/javascript" src="simulator/model/ClipBoard.js"></script>
 <script type="text/javascript" src="simulator/model/FileSystem.js"></script>
 <script type="text/javascript" src="simulator/model/AddressValidator.js"></script>
+<script type="text/javascript" src="simulator/model/EventListener.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         var templates = new TemplateRegistry();
@@ -103,7 +104,7 @@
 	
         var filesystem = new FileSystem();
         var clipboard = new ClipBoard();
-        var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator});
+        var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener});
         setTimeout(function(){
             view.render();
         },1000);
