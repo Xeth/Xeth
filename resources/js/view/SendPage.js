@@ -57,7 +57,6 @@ var SendPageView = SubPageView.extend({
         this.amount.on("input", this.computeFee);
         this.amount.on("change", this.computeFee);
         this.destination.on("change", this.computeFee);
-        this.destination.on("input", this.computeFee);
     },
 
     render:function(args){
