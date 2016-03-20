@@ -7,7 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 
-#include "Settings.hpp"
+#include "env/Settings.hpp"
 #include "database/DataBase.hpp"
 
 
