@@ -39,7 +39,7 @@ void StealthScanCriterion::uncoverStealthPayment
         if(resolver.uncover(Ethereum::Address(to), ephem, secret))
         {
             QJsonObject tx;
-            tx.insert("category", TransactionCategory::ToString(TransactionCategory::Stealth));
+            tx.insert("category", TransactionCategory::ToString(TransactionCategory::Received));
             tx.insert("hash", hash.c_str());
             tx.insert("from",  from.c_str());
             tx.insert("to", to.c_str());

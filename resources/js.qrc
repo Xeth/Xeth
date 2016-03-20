@@ -22,6 +22,8 @@
         <file>js/model/Transaction.js</file>
         <file>js/model/AddressBook.js</file>
         <file>js/model/Progress.js</file>
+        <file>js/model/AddressValidator.js</file>
+        <file>js/model/FeeEstimator.js</file>
 
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>

@@ -35,6 +35,7 @@
 <script type="text/javascript" src="js/vendor/notie.min.js"></script>
 <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
+
 <script type="text/javascript" src="js/model/Account.js"></script>
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
@@ -46,7 +47,6 @@
 <script type="text/javascript" src="js/view/Collection.js"></script>
 <script type="text/javascript" src="js/view/Account.js"></script>
 <script type="text/javascript" src="js/view/ReceivePage.js"></script>
-<script type="text/javascript" src="js/view/BitprofilePage.js"></script>
 <script type="text/javascript" src="js/view/SendPage.js"></script>
 <script type="text/javascript" src="js/view/GeneratePage.js"></script>
 <script type="text/javascript" src="js/view/TransactionsPage.js"></script>
@@ -66,46 +66,47 @@
 <script type="text/javascript" src="simulator/model/FileSystem.js"></script>
 <script type="text/javascript" src="simulator/model/AddressValidator.js"></script>
 <script type="text/javascript">
-    var templates = new TemplateRegistry();
-    templates.load();
-    var accounts = new AccountCollectionSimulator;
-    var addressbook = new AddressBookSimulator;
-    var transactions = new TransactionCollectionSimulator;
-    var progress = new ProgressSimulator;
-    var addressValidator = new AddressValidator;
-    accounts.add({address: "0x9fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:5.1});
-    accounts.add({address: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", bitprofile: "tester", balance:2.7});
-    accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:370.25});
-    accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
-    accounts.add({stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp"});
-    addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
-    addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:true});
-	//addressbook.add({alias: "Harap Alb", bitprofile: "harap01", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:205});
-    //addressbook.add({alias: "Stramba Lemne", bitprofile: "stramba_lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:1});
-	addressbook.add({alias: "Fat Frumos", avatar: "myAvatar.png", address: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1"});
-    //addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
-	addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
-    addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+    $(document).ready(function(){
+        var templates = new TemplateRegistry();
+        templates.load();
+        var accounts = new AccountCollectionSimulator;
+        var addressbook = new AddressBookSimulator;
+        var transactions = new TransactionCollectionSimulator;
+        var progress = new ProgressSimulator;
+        var addressValidator = new AddressValidator;
+        accounts.add({address: "0x9fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:5.1});
+        accounts.add({address: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", bitprofile: "tester", balance:2.7});
+        accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:370.25});
+        accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
+        accounts.add({stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp"});
+        addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+        addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	    //addressbook.add({alias: "Harap Alb", bitprofile: "harap01", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:205});
+        //addressbook.add({alias: "Stramba Lemne", bitprofile: "stramba_lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:1});
+	    addressbook.add({alias: "Fat Frumos", avatar: "myAvatar.png", address: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1"});
+        //addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+	    addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
+        addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
 	
-    setTimeout(function(){addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
-	setTimeout(function(){addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
+        setTimeout(function(){addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
+	    setTimeout(function(){addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
 	
-    addressbook.resolve(transactions);
-    transactions.add({category:"Sent", from: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", stealth: "xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8", amount:1, timestamp: (Date.now()-1800000)/1000});
-    transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", stealth: "vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
-	transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
-	transactions.add({category:"Sent", from: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-250000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
-    transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
-    
-	//transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
+        addressbook.resolve(transactions);
+        transactions.add({category:"Sent", from: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", amount:1, timestamp: (Date.now()-1800000)/1000});
+        transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
+	    transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
+	    transactions.add({category:"Sent", from: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-250000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
+        transactions.add({category:"Received", from: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", to: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", amount:0.2, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd', contact: {alias: "Fat Frumos", avatar: "myAvatar.png"} });
+	    //transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
 	
-    setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 8000);
+        setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 8000);
 	
-    var filesystem = new FileSystem();
-    var clipboard = new ClipBoard();
-    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator});
-    setTimeout(function(){
-        view.render();
-    },1000);
+        var filesystem = new FileSystem();
+        var clipboard = new ClipBoard();
+        var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator});
+        setTimeout(function(){
+            view.render();
+        },1000);
+    });
 </script>
 </body></html>

@@ -5,7 +5,7 @@
 namespace Xeth{
 
 
-bool AddressValidator::validateAddress(const std::string &address)
+bool AddressValidator::validateAddress(const std::string &address, bool strict)
 {
     if(!address.compare(0, 2, "0x"))
     {
@@ -22,28 +22,38 @@ bool AddressValidator::validateAddress(const std::string &address)
             return false;
         }
     }
+
+    if(strict)
+    {
+        EthereumCheckSum checksum;
+        if(!checksum.validate(address))
+        {
+            return false;
+        }
+    }
+
     return true;
 }
 
 
-bool AddressValidator::validateStealth(const std::string &)
+bool AddressValidator::validateStealth(const std::string &, bool)
 {
     return true; //its validated when is unserialized
 }
 
 
 
-bool StealthAddressValidator::operator()(const std::string &address)
+bool StealthAddressValidator::operator()(const std::string &address, bool strict)
 {
     AddressValidator validator;
-    return validator.validateStealth(address);
+    return validator.validateStealth(address, strict);
 }
 
 
-bool HexAddressValidator::operator()(const std::string &address)
+bool HexAddressValidator::operator()(const std::string &address, bool strict)
 {
     AddressValidator validator;
-    return validator.validateAddress(address);
+    return validator.validateAddress(address, strict);
 }
 
 

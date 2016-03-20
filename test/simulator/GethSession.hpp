@@ -15,8 +15,8 @@
 #include <json/reader.h>
 #include <json/writer.h>
 
-#include "ethrpc/transport/JsonMatcher.hpp"
-#include "ethrpc/hex.hpp"
+#include "ethrpc/transport/detail/JsonMatcher.hpp"
+#include "ethrpc/detail/hex.hpp"
 
 #include "types/BigInt.hpp"
 

@@ -25,10 +25,11 @@ std::string AddressSender::operator()
     const std::string &from,
     const std::string &to,
     const BigInt &amount,
-    const BigInt &gas
+    const BigInt &gas,
+    const BigInt &price
 )
 {
-    std::string txid = wallet.sendTransaction(from, to, amount, gas);
+    std::string txid = wallet.sendTransaction(from, to, amount, gas, price);
     database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, amount, time(NULL));
     return txid;
 }
@@ -62,7 +63,8 @@ std::string StealthSender::operator()
     const std::string &from,
     const std::string &to,
     const BigInt &amount,
-    const BigInt &gas
+    const BigInt &gas,
+    const BigInt &price
 )
 {
 
@@ -73,7 +75,7 @@ std::string StealthSender::operator()
 
     std::string data =  serializer.serialize(paymentAddr.getEphemPublicKey());
     std::string destination = paymentAddr.getAddresses()[0].toString();
-    std::string txid = wallet.sendTransaction(from, destination, amount, data, gas);
+    std::string txid = wallet.sendTransaction(from, destination, amount, data, gas, price);
     database.getTransactions().insert(TransactionCategory::Sent, txid, from, destination, address, amount, time(NULL));
     return txid;
 }

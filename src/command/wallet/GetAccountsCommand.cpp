@@ -20,7 +20,7 @@ QVariant GetAccountsCommand::operator ()()
     for(StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
     {
         QVariantMap obj;
-        QString address = (*it)["address"].toString();
+        QString address = computeCheckSum((*it)["address"].toString().toStdString());
         obj["address"] = address;
         obj["stealth"] = it->take("stealth");
         accounts.push_back(obj);
@@ -30,11 +30,11 @@ QVariant GetAccountsCommand::operator ()()
 
     for(Ethereum::Connector::Collection<std::string>::Iterator it=addresses.begin(), end=addresses.end(); it!=end; ++it)
     {
-        QString address = it->c_str();
+        QString address = computeCheckSum(*it);
         if(registry.find(address)==registry.end())
         {
             QVariantMap obj;
-            obj["address"] = it->c_str();
+            obj["address"] = address;
             accounts.push_back(obj);
         }
     }
@@ -56,6 +56,12 @@ QVariant GetAccountsCommand::operator ()()
 
 
     return QVariant::fromValue(accounts);
+}
+
+QString GetAccountsCommand::computeCheckSum(const std::string &hex)
+{
+    EthereumCheckSum checksum;
+    return QString(checksum.compute(hex).c_str());
 }
 
 }

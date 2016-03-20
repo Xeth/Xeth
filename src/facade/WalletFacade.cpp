@@ -62,12 +62,6 @@ QVariant WalletFacade::listTransactions(const QVariantMap &request)
 }
 
 
-QVariant WalletFacade::getTransaction(const QString &hash)
-{
-    GetTransactionCommand command(_database);
-    return _invoker.invoke(command, hash);
-}
-
 QVariant WalletFacade::importKey(const QVariantMap &request)
 {
     ImportKeyCommand command(_settings, _database, _synchronizer);
@@ -132,13 +126,13 @@ QVariant WalletFacade::generateStealthKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant WalletFacade::validateAddress(const QVariantMap &request)
+QVariant WalletFacade::validateAddress(const QString &request)
 {
     ValidateAddressCommand command;
     return _invoker.invoke(command, request);
 }
 
-QVariant WalletFacade::validateStealthAddress(const QVariantMap &request)
+QVariant WalletFacade::validateStealthAddress(const QString &request)
 {
     ValidateStealthAddressCommand command;
     return _invoker.invoke(command, request);
@@ -163,5 +157,13 @@ QVariant WalletFacade::changePassword(const QVariantMap &request)
     ChangeKeyPasswordCommand command(_database);
     return _invoker.invoke(command, request);
 }
+
+
+QVariant WalletFacade::estimateFee(const QVariantMap &request)
+{
+    EstimateFeeCommand command(_provider);
+    return _invoker.invoke(command, request);
+}
+
 
 }

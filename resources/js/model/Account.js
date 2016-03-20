@@ -71,6 +71,14 @@ var AccountCollection = Backbone.Collection.extend({
         _(this).bindAll("add");
     },
 
+    add:function(data){
+        var account = this.get(data.address||data.stealth);
+        if(!account)
+        {
+            Backbone.Collection.prototype.add.call(this, data);
+        }
+    },
+
     observe: function(){
         XETH_event.Account.connect(this, this.add);
     },

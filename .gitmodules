@@ -2,9 +2,9 @@
 	path = libethrpc
 	url = https://github.com/BitProfile/libethrpc.git
 
-[submodule "libethkey"]
-	path = libethkey
-	url = https://github.com/BitProfile/libethkey.git
+[submodule "libethcrypto"]
+	path = libethcrypto
+	url = https://github.com/BitProfile/libethcrypto.git
 
 [submodule "libethstealth"]
 	path = libethstealth

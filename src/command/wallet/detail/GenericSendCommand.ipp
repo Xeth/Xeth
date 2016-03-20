@@ -16,14 +16,16 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         std::string to = request["to"].toString().toStdString();
         std::string password = request["password"].toString().toStdString();
         BigInt amount(request["amount"].toString().toStdString());
+        bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
 
-        if(request.contains("gas"))
+        if(request.contains("gas") && request.contains("price"))
         {
              BigInt gas(request["gas"].toString().toStdString());
-             return this->operator()(from, to, password, amount, gas);
+             BigInt price(request["price"].toString().toStdString());
+             return this->operator()(from, to, password, amount, gas, price);
         }
 
-        return this->operator()(from, to, password, amount);
+        return this->operator()(from, to, password, amount, strict);
 
     }
     catch(...)
@@ -38,10 +40,11 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &from,
     const std::string &to,
     const std::string &password,
-    const BigInt &amount
+    const BigInt &amount,
+    bool strict
 )
 {
-    if(validateDestination(to)&&unlockSender(from, password, amount))
+    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
     {
         return QVariant::fromValue(QString(send(from, to, amount).c_str()));
     }
@@ -56,22 +59,24 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &to,
     const std::string &password,
     const BigInt &amount,
-    const BigInt &gas
+    const BigInt &gas,
+    const BigInt &price,
+    bool strict
 )
 {
-    if(validateDestination(to)&&unlockSender(from, password, amount))
+    if(validateDestination(to, strict)&&unlockSender(from, password, amount))
     {
-        return QVariant::fromValue(QString(send(from, to, amount, gas).c_str()));
+        return QVariant::fromValue(QString(send(from, to, amount, gas, price).c_str()));
     }
     return QVariant::fromValue(false);
 }
 
 
 template<class Sender, class Validator>
-bool GenericSendCommand<Sender, Validator>::validateDestination(const std::string &to)
+bool GenericSendCommand<Sender, Validator>::validateDestination(const std::string &to, bool strict)
 {
     Validator validator;
-    return validator(to);
+    return validator(to, strict);
 }
 
 
@@ -113,10 +118,10 @@ std::string GenericSendCommand<Sender, Validator>::send(const std::string &from,
 
 
 template<class Sender, class Validator>
-std::string GenericSendCommand<Sender, Validator>::send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas)
+std::string GenericSendCommand<Sender, Validator>::send(const std::string &from, const std::string &to, const BigInt &amount, const BigInt &gas, const BigInt &price)
 {
     Sender sender;
-    return sender(_wallet, _database, from, to, amount, gas);
+    return sender(_wallet, _database, from, to, amount, gas, price);
 }
 
 

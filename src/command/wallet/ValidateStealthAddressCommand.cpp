@@ -2,16 +2,12 @@
 
 namespace Xeth{
 
-QVariant ValidateStealthAddressCommand::operator()(const QVariantMap &request) 
+QVariant ValidateStealthAddressCommand::operator()(const QString &request) 
 {
-    if(!request.contains("address"))
-    {
-        return QVariant::fromValue(false);
-    }
 
     try
     {
-        Ethereum::Stealth::Address address = Literal<Ethereum::Stealth::Address>(request["address"].toString().toStdString());
+        Ethereum::Stealth::Address address = Literal<Ethereum::Stealth::Address>(request.toStdString());
     }
     catch(...)
     {

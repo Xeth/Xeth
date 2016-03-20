@@ -33,7 +33,8 @@ class AddressSender
             const std::string &from,
             const std::string &to,
             const BigInt &amount,
-            const BigInt &gas
+            const BigInt &gas,
+            const BigInt &price
         );
 
 };
@@ -57,7 +58,8 @@ class StealthSender
             const std::string &from,
             const std::string &to,
             const BigInt &amount,
-            const BigInt &gas
+            const BigInt &gas,
+            const BigInt &price
         );
 
 };

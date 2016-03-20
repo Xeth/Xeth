@@ -49,7 +49,7 @@ target_link_libraries(dumpdb
     xethlib
     ethstealth
     ethrpc
-    ethkey
+    ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}

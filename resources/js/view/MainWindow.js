@@ -19,9 +19,10 @@ var MainWindowView = Backbone.View.extend({
         this.models.transactions = options.transactions;
         this.models.progress = options.progress;
         this.models.addressValidator = options.addressValidator;
-
+        this.models.fee = options.fee;
+//        alert(this.models.fee);
         this.templates = options.templates;
-		this.active = null;
+        this.active = null;
     },
 
     open: function(name, args){
@@ -31,8 +32,8 @@ var MainWindowView = Backbone.View.extend({
         }
         var view =  this.subpages[name];
         if(view!=undefined){
-			if(this.active) this.active.hide();
-			this.active = view;
+            if(this.active) this.active.hide();
+            this.active = view;
             this.menu.setCursor(this.menuAlias[name]||name);
             view.show(args);
         }
@@ -49,6 +50,8 @@ var MainWindowView = Backbone.View.extend({
 
         this.$el.prepend(this.templates.get("main_page")());
 
+        this.models.events.Error.connect(this, this.notifyError);
+
         this.accounts = new AccountSelect({collection:this.models.accounts, templates:this.templates});
         this.router = new PageRouter(this);
         this.menuAlias = {default: "receive"};
@@ -61,6 +64,7 @@ var MainWindowView = Backbone.View.extend({
             router:this.router, 
             clipboard: this.models.clipboard,
             addressValidator: this.models.addressValidator,
+            fee: this.models.fee,
             templates:this.templates
         });
         this.subpages.receive = new ReceivePageView
@@ -129,16 +133,18 @@ var MainWindowView = Backbone.View.extend({
         this.progress.render();
         this.show();
     },
-	
-	loaded:function(){
-		this.$el.addClass("loaded");
+    notifyError:function(msg){
+        notifyError(msg);
+    },
+    loaded:function(){
+        this.$el.addClass("loaded");
         this.$el.find("#page_splash").addClass("off");
-	},
-	
-	show:function(){
+    },
+    
+    show:function(){
         this.$el.find("#page_splash").removeClass("active");
-		setTimeout(this.loaded, 150);
+        setTimeout(this.loaded, 150);
         setTimeout(this.open, 1000);
-	}
+    }
 
 });

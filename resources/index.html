@@ -52,6 +52,9 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
 <script type="text/javascript" src="js/model/Progress.js"></script>
+<script type="text/javascript" src="js/model/AddressValidator.js"></script>
+<script type="text/javascript" src="js/model/FeeEstimator.js"></script>
+
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
 <script type="text/javascript" src="js/view/validate.js"></script>
@@ -71,23 +74,28 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/view/SettingsPage.js"></script>
 <script type="text/javascript" src="js/view/MainWindow.js"></script>
 
+
 <script type="text/javascript">
 
 var accounts = new AccountCollection;
 var transactions = new TransactionCollection;
 var addressbook = new AddressBook;
 var progress = new Progress;
+var validator = new AddressValidator;
+var fee = new FeeEstimator;
+
 
 var view = new MainWindowView
 ({
     accounts:accounts,
     transactions:transactions,
     addressbook:addressbook,
-    progress:progress
+    progress:progress,
+    addressValidator: validator,
+    fee: fee
 });
 
 XETH_event.Ready.connect(this, function(){
-
     accounts.fetch();
     accounts.observe();
     transactions.fetch();
@@ -102,7 +110,8 @@ XETH_event.Ready.connect(this, function(){
     ({
         filesystem: XETH_filesystem,
         clipboard: XETH_clipboard,
-        templates: XETH_templates
+        templates: XETH_templates,
+        events: XETH_event
     });
 
     view.render();

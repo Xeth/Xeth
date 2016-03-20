@@ -7,14 +7,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 
-#include "Settings.hpp"
+#include "env/Settings.hpp"
 #include "database/DataBase.hpp"
 
 
 #include "command/wallet/GetAccountsCommand.hpp"
 #include "command/wallet/GetBalanceCommand.hpp"
 #include "command/wallet/GetPendingBalanceCommand.hpp"
-#include "command/wallet/GetTransactionCommand.hpp"
 #include "command/wallet/ListTransactionsCommand.hpp"
 #include "command/wallet/SendToAddressCommand.hpp"
 #include "command/wallet/SendToStealthCommand.hpp"
@@ -34,6 +33,7 @@
 #include "command/wallet/ChangeEthereumKeyPasswordCommand.hpp"
 #include "command/wallet/ChangeStealthKeyPasswordCommand.hpp"
 #include "command/wallet/ChangeKeyPasswordCommand.hpp"
+#include "command/wallet/EstimateFeeCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -56,7 +56,6 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant sendToAddress(const QVariantMap &);
         Q_INVOKABLE QVariant sendToStealth(const QVariantMap &);
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
-        Q_INVOKABLE QVariant getTransaction(const QString &hash);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
         Q_INVOKABLE QVariant exportEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
@@ -67,11 +66,12 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant generateKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
-        Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
-        Q_INVOKABLE QVariant validateStealthAddress(const QVariantMap &);
+        Q_INVOKABLE QVariant validateAddress(const QString &);
+        Q_INVOKABLE QVariant validateStealthAddress(const QString &);
         Q_INVOKABLE QVariant changeEthereumKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changeStealthKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changePassword(const QVariantMap &);
+        Q_INVOKABLE QVariant estimateFee(const QVariantMap &);
 
     private:
         const Settings &_settings;

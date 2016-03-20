@@ -1,22 +1,23 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee");
+        SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
+        this.feeModel = options.fee;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
         this.$el.html(this.template());
-        this.gas = this.$el.find('.section_fee .slider');
-        this.gas.slider({value:50});
+        this.feeFactor = this.$el.find('.section_fee .slider');
+        this.feeFactor.slider({value:50, change:this.computeFee});
 
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
         this.sendType = this.$el.find("#sendToType");
-		this.sendType.selectmenu().selectmenu( "widget" ).addClass( "type" );
+        this.sendType.selectmenu().selectmenu( "widget" ).addClass( "type" );
         this.aliasHolder = this.$el.find(".section_alias .input");
         this.alias = this.aliasHolder.find("input");
         this.destination = this.$el.find("#sendToInput");
@@ -24,7 +25,7 @@ var SendPageView = SubPageView.extend({
         this.password = this.$el.find("#sendPassword");
         this.destination.change(this.updateContact);
         this.destination.on("input", this.scheduleUpdateContact);
-		this.addressbook.on("remove", this.updateContact);
+        this.addressbook.on("remove", this.updateContact);
 
         this.aliasHolder.hide();
         this.accounts.render();
@@ -39,17 +40,23 @@ var SendPageView = SubPageView.extend({
         this.router = options.router;
         this.$form = this.$el.find(".formpage.send");
         
-		this.$el.find('.btn').tooltip({
-			position: { my: "center bottom", at: "center top-5" },
-			show: { duration: 200 },
-			hide: { duration: 200 }
-		});
+        this.$el.find('.btn').tooltip({
+            position: { my: "center bottom", at: "center top-5" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
         
-        this.$el.find('.section_fee').tooltip({	
+        this.$el.find('.section_fee').tooltip({
             position: { my: "center top", at: "center bottom" },
             show: { duration: 200 },
             hide: { duration: 200 }
         });
+        this.feeHolder = this.$el.find(".fee .eth");
+        this.gasHolder = this.$el.find(".fee .gas");
+
+        this.amount.on("input", this.computeFee);
+        this.amount.on("change", this.computeFee);
+        this.destination.on("change", this.computeFee);
     },
 
     render:function(args){
@@ -60,6 +67,7 @@ var SendPageView = SubPageView.extend({
         this.accounts.resize(); //default size
         if(args && args.destination){
             this.setDestination(args.destination);
+            this.computeFee();
         }
     },
 
@@ -74,11 +82,11 @@ var SendPageView = SubPageView.extend({
             }
         }else{
             this.destination.val(address);
-			this.sendType.val("address");
+            this.sendType.val("address");
         }
-		this.sendType.selectmenu( "refresh" );
-		this.updatePlaceholder();
-		this.updateContact();
+        this.sendType.selectmenu( "refresh" );
+        this.updatePlaceholder();
+        this.updateContact();
     },
 
     setAmount:function(amount){
@@ -87,7 +95,7 @@ var SendPageView = SubPageView.extend({
 
     updateSendType:function(){
         this.updatePlaceholder();
-		if(this.destination.val()) this.updateContact();
+        if(this.destination.val()) this.updateContact();
     },
 
     updatePlaceholder:function(){
@@ -100,11 +108,11 @@ var SendPageView = SubPageView.extend({
         var address = this.destination.val();
         var contact = this.addressbook.find(function(model) { return model.get(type) === address; });
         if(contact){
-			this.destination.noerror();
-			this.saveOption.prop("checked",true).prop("disabled",true);
+            this.destination.noerror();
+            this.saveOption.prop("checked",true).prop("disabled",true);
             this.alias.val(contact.get("alias")).prop("disabled",true).noerror();
             this.aliasHolder.show();
-			this.saveOption.button( "refresh" );
+            this.saveOption.button( "refresh" );
         }else{
             if(this.saveOption.prop("disabled")){
                 this.resetContact();
@@ -112,10 +120,31 @@ var SendPageView = SubPageView.extend({
         }
     },
 
+    computeFee: function(){
+        var factor = this.getFeeFactor();
+        var from = this.accounts.selected().get("address");
+        var to = this.destination.val();
+        var amount = this.amount.val();
+
+        var result = this.feeModel.estimate(from, to, amount, factor);
+        if(result){
+            this.gasAmount = result["gas"];
+            this.gasPrice = result["price"];
+            this.fee = result["fee"];
+            this.feeHolder.html(this.fee.substr(0, 15));
+            this.gasHolder.html(this.gasAmount);
+        }else
+        {
+            this.gasAmount = this.gasPrice = undefined;
+            this.feeHolder.html("0");
+            this.gasHolder.html("0");
+        }
+    },
+
     resetContact: function(){
         this.alias.val("").prop("disabled",false);
-		this.saveOption.prop("checked",false).prop("disabled",false);
-		this.aliasHolder.hide();
+        this.saveOption.prop("checked",false).prop("disabled",false);
+        this.aliasHolder.hide();
         this.saveOption.button( "refresh" );
     },
 
@@ -135,69 +164,91 @@ var SendPageView = SubPageView.extend({
     
     checkSubmit:function(){
         var toValidate = [this.amount, this.destination, this.password];
-
-        if(!this.saveOption.prop("disabled")&&this.saveOption.prop("checked")){
-            toValidate.push(this.alias);
-        }
+        var saveAlias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked");
+        if(saveAlias) toValidate.push(this.alias);
 
         if(!$(toValidate).validate()){
             notifyError("please fill all mandatory fields correctly");
             return false;
         }
 
-        var alias = this.alias.val();
-        if(alias.length && this.addressbook.get(alias)){
-            notifyError("alias already registered");
-            this.alias.error();
-            return false;
+        if(saveAlias)
+        {
+            var alias = this.alias.val();
+            if(alias.length && this.addressbook.get(alias)){
+                notifyError("alias already registered");
+                this.alias.error();
+                return false;
+            }
+            this.alias.noerror();
         }
-		this.alias.noerror();
-		
+        
         var account = this.accounts.selected();
-        if(account.get("balance")<this.amount.val()){
+        if(account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee))){
             this.amount.error();
             notifyError("not enough funds");
             return false;
         }
-        
-        if(this.addressValidator.hasChecksum(this.destination.val()))
+        var destination = this.destination.val();
+        if(destination.length==40||destination.length==42)
+        {
+            if(this.addressValidator.hasChecksum(destination))
+            {
+                if(this.addressValidator.validate(destination))
+                {
+                    this.submit();
+                }
+                else
+                {
+                    notifyError("Invalid address checksum");
+                    this.destination.error();
+                }
+            } 
+            else 
+            {
+                notie.confirm('<span class="title warning">WARNING!</span>'+
+                              'Destination address has no checksum!<br>'+
+                              'You can send a small test amount first or continue with the transaction<br>'+
+                              '<span class="question">Proceed with this transaction?<span>', 
+                              'Yes, Send it anyway', 
+                              'No, I will try small test amount first', 
+                              this.submit);
+            }
+        }
+        else
         {
             this.submit();
-        } 
-        else 
-        {
-            notie.confirm('<span class="title warning">WARNING!</span>'+
-                          'The address has no checksum!<br>'+
-                          'You can send a small test amount first or continue with the transaction<br>'+
-                          '<span class="question">Proceed with this transaction?<span>', 
-                          'Yes, I trust this address', 
-                          'No, try small test amount first', 
-                          this.submit);
         }
+    },
+
+    getFeeFactor: function(){
+        var gas = this.feeFactor.slider("value");
+        return parseInt(gas/50*100); //in percents
     },
 
     submit:function(){
         this.$form.addClass("waiting");
         
-        var alias = this.alias.val();
+        var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
-        var request = {amount:this.amount.val(), password:this.password.val()};
+        var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();
         
         request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
         
-        var gas = this.gas.slider("value");
-        if(gas!=50) request.gas = gas/50; //in percents
+        if(this.gasPrice!=undefined && this.gasAmount){
+            request.price = this.gasPrice;
+            request.gas = this.gasAmount;
+        }
 
         var _this = this;
         setTimeout(function(){
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
-				_this.password.error();
-                notifyError("invalid password");
+                _this.password.error();
                 return false;
             }
-			
+            
             notifySuccess("sent");
 
             if(alias.length){
@@ -206,7 +257,7 @@ var SendPageView = SubPageView.extend({
                 _this.addressbook.create(contact);
             }
 
-			_this.resetContact();
+            _this.resetContact();
             _this.$form.removeClass("waiting");
             _this.password.val("");
             _this.destination.val("");

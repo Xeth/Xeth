@@ -3,9 +3,8 @@
 #include <QApplication>
 
 
-#include "Settings.hpp"
+#include "env/Settings.hpp"
 #include "facade/Facade.hpp"
-#include "window/FrameContextBuilder.hpp"
 #include "window/Window.hpp"
 
 
@@ -24,7 +23,6 @@ class Application : public QObject
     private:
         QApplication _app;
         Facade _facade;
-        FrameContextBuilder _contextBuilder;
         Window _window;
 };
 

@@ -1,4 +1,4 @@
-#include "DataBaseDirectory.hpp"
+#include "Directory.hpp"
 #include <QDebug>
 
 #ifdef __WINDOWS_OS__
@@ -7,11 +7,11 @@
 
 namespace Xeth{
 
-DataBaseDirectory::DataBaseDirectory(const Settings &settings, bool create)
+Directory::Directory(const Settings &settings, bool create)
 {
-    if(settings.has("database"))
+    if(settings.has("datadir"))
     {
-        _path = boost::filesystem::absolute(settings.get("database"));
+        _path = boost::filesystem::absolute(settings.get("datadir"));
     }
     else
     {
@@ -30,7 +30,7 @@ DataBaseDirectory::DataBaseDirectory(const Settings &settings, bool create)
 }
 
 
-DataBaseDirectory::DataBaseDirectory(const char *path, bool create) :
+Directory::Directory(const char *path, bool create) :
     _path(path ? ResolvePath(path) : GetDefaultPath())
 {
     if(create)
@@ -39,7 +39,7 @@ DataBaseDirectory::DataBaseDirectory(const char *path, bool create) :
     }
 }
 
-DataBaseDirectory::DataBaseDirectory(const boost::filesystem::path &path, bool create) :
+Directory::Directory(const boost::filesystem::path &path, bool create) :
     _path(path)
 {
     if(create)
@@ -49,7 +49,7 @@ DataBaseDirectory::DataBaseDirectory(const boost::filesystem::path &path, bool c
 }
 
 
-DataBaseDirectory::DataBaseDirectory(bool create) :
+Directory::Directory(bool create) :
     _path(GetDefaultPath())
 {
     if(create)
@@ -58,17 +58,17 @@ DataBaseDirectory::DataBaseDirectory(bool create) :
     }
 }
 
-const boost::filesystem::path & DataBaseDirectory::getPath() const
+const Directory::Path & Directory::getPath() const
 {
     return _path;
 }
 
-std::string DataBaseDirectory::toString() const
+std::string Directory::toString() const
 {
     return _path.string();
 }
 
-void DataBaseDirectory::createIfNotExists()
+void Directory::createIfNotExists()
 {
     if(!createIfNotExistsNoThrow())
     {
@@ -78,7 +78,7 @@ void DataBaseDirectory::createIfNotExists()
     }
 }
 
-bool DataBaseDirectory::createIfNotExistsNoThrow()
+bool Directory::createIfNotExistsNoThrow()
 {
 
     if(!boost::filesystem::exists(_path))
@@ -89,7 +89,7 @@ bool DataBaseDirectory::createIfNotExistsNoThrow()
     return true;
 }
 
-boost::filesystem::path DataBaseDirectory::GetDefaultPath()
+boost::filesystem::path Directory::GetDefaultPath()
 {
     std::string path;
 #if  defined(__APPLE_OS__)
@@ -113,7 +113,7 @@ boost::filesystem::path DataBaseDirectory::GetDefaultPath()
     return path;
 }
 
-boost::filesystem::path DataBaseDirectory::ResolvePath(const char *path)
+boost::filesystem::path Directory::ResolvePath(const char *path)
 {
     return boost::filesystem::absolute(path);
 }

@@ -79,18 +79,6 @@ void TransactionStore::open(const boost::filesystem::path &path)
 }
 
 
-QJsonObject TransactionStore::get(const char *hash) const
-{
-    int index = _indexStore.get(hash);
-    if(!index)
-    {
-        return QJsonObject();
-    }
-
-    return _dataStore.get(index);
-}
-
-
 TransactionStore::Iterator TransactionStore::begin() const
 {
     return _dataStore.begin();
@@ -146,7 +134,7 @@ bool TransactionStore::insert
     obj.insert("to", to.c_str());
     obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
     obj.insert("timestamp", (int)timestamp);
-    return insert(obj);
+    return insert(makeID(category, hash), obj);
 }
 
 bool TransactionStore::insert
@@ -171,24 +159,51 @@ bool TransactionStore::insert
     obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
     obj.insert("timestamp", (int)timestamp);
     obj.insert("stealth", stealth.toString().c_str());
-    return insert(obj);
+    return insert(makeID(category, hash), obj);
 }
 
 bool TransactionStore::insert(const QJsonObject &obj)
 {
-    int index = getNextIndex();
+    return insert(makeID(obj), obj);
+}
 
-    if(!_indexStore.replace(obj["hash"].toString().toStdString().c_str(), index))
+bool TransactionStore::insert(const std::string &id, const QJsonObject &obj)
+{
+    int index = _indexStore.get(id.c_str());
+    if(!index)
     {
-        return false;
-    }
+        index = getNextIndex();
 
-    if(_dataStore.replace(index, obj))
-    {
-        emit NewItem(obj);
-        return true;
+        if(!_indexStore.insert(id.c_str(), index))
+        {
+            return false;
+        }
+
+        if(!_dataStore.insert(index, obj))
+        {
+            return false;
+        }
     }
-    return false;
+    else
+    {
+        if(!_dataStore.insert(index, obj))
+        {
+            return false;
+        }
+    }
+    emit NewItem(obj);
+    return true;
+}
+
+std::string TransactionStore::makeID(const TransactionCategory &category, const std::string &hash)
+{
+    return hash + category.toString();
+}
+
+
+std::string TransactionStore::makeID(const QJsonObject &obj)
+{
+    return obj["hash"].toString().toStdString()+obj["category"].toString().toStdString();
 }
 
 int TransactionStore::getNextIndex()

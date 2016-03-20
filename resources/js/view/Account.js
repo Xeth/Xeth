@@ -15,7 +15,7 @@ var AccountBaseView = Backbone.View.extend({
 
 var AccountView = AccountBaseView.extend({
     initialize:function(options){
-        _(this).bindAll("update");
+        _(this).bindAll("update", "shortify");
         this.template = options.template;
 
         var data = this.model.toJSON();
@@ -65,7 +65,7 @@ var AccountView = AccountBaseView.extend({
 var AccountViewReflection = AccountView.extend({
 
     initialize:function(options){
-        _(this).bindAll("update");
+        _(this).bindAll("update", "reset");
         this.width = options.width||55;
     },
 
@@ -75,6 +75,7 @@ var AccountViewReflection = AccountView.extend({
         if(!view){
             this.$el.html("");
         }else{
+            if(this.model) this.stopListening(this.model);
             this.model = view.model;
             this.$el.html(view.$el.clone().css("opacity", 1));
             if(this.model!=undefined){
@@ -129,7 +130,7 @@ var AccountSelect = Backbone.View.extend({
         var template = options.templates.get("accounts");
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
-		this.dropdownBox = this.$el.find(".dropdownBox");
+        this.dropdownBox = this.$el.find(".dropdownBox");
         this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.dropdownBox.find(">div")});
         this.active = new AccountViewReflection({el:this.$el.find(".select")});
         this.active.click(this.toggle);
@@ -189,12 +190,12 @@ var AccountSelect = Backbone.View.extend({
     },
 
     toggle:function(){
-		this.dropdownBox.toggleClass("off");
+        this.dropdownBox.toggleClass("off");
         //this.collection.toggle();
     },
 
     hide:function(ev){
-		this.dropdownBox.addClass("off");
+        this.dropdownBox.addClass("off");
         //this.collection.hide();
         //if(ev!=undefined) ev.stopPropagation();
     },
