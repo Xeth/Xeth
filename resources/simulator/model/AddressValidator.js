@@ -10,6 +10,10 @@ function AddressValidator(){
         return lowerCase.test(address) && upperCase.test(address);
     };
 
+    this.validateNoChecksum = function(address){
+        valid = !valid;
+        return valid;
+    };
 
     this.validate = function(address){
         valid = !valid;
