@@ -20,7 +20,14 @@
 <%}else{%>
 <div class="listItem off <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
     <div class="header icon">
-        <span class="detail s_titled userAddress"><%=((transaction.category=="Sent")?transaction.from:transaction.to)%></span>
+        <span class="detail s_titled userAddress">
+            <%if(transaction.category=="Sent"){%>
+                <%=transaction.from%>
+            <%}else{%>
+                <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
+                <%=transaction.to%>
+            <%}%>
+        </span>
     </div>
 	<%if(transaction.contact && transaction.contact.avatar){%>
     <span class="avatar">
@@ -39,7 +46,15 @@
             </span>
         </div>
         <div class="detailsRow">
-            <span class="address"><%=((transaction.category=="Sent")?transaction.to:transaction.from)%></span><span class="detail time"><%=moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss')%></span>
+            <span class="address">
+                <%if(transaction.category=="Sent"){%>
+                    <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
+                    <%=transaction.to%>
+                <%}else{%>
+                    <%=transaction.from%>
+                <%}%>
+            </span>
+            <span class="detail time"><%=moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss')%></span>
         </div>
     </div>
 </div>

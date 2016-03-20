@@ -44,6 +44,12 @@
 .listItem.mined .header.icon:before {
 	background-position-y: -985px;
 }
+.listItem .header .userAddress .stealthIcon,
+.listItem .header .userAddress.stealth:before {
+    float: right;
+    margin-right: 0;
+    margin-left: 5px;
+}
 
 .listItem.received .avatar,
 .listItem.mined .avatar {
