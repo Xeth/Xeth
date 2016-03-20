@@ -670,6 +670,19 @@
 .listItem .controls .btntxt.cancel:after {
 	content:"cancel";
 }
+.listItem .stealthIcon,
+.listItem .address.stealth:before {
+	content:"";
+	display: block;
+	float:left;
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	background-image: url(../img/icons-01.png);
+	background-repeat: no-repeat;
+	background-position-x: center;
+	background-position-y: -310px;
+}
 /*
 .mCSB_container {
     min-height: 100%;

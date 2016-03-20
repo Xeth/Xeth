@@ -15,7 +15,7 @@
             	<a class="btn send" title="send payment" href="javascript:void(0);"></a>
             	<a class="btn remove" title="remove contact" href="javascript:void(0);"></a>
             </div>
-            <a class="address" href="javascript:void(0);"><%=contact.address%></a>
+            <a class="address<%if(contact.stealth){%> stealth<%}%>" href="javascript:void(0);"><%=shortify(contact.address, 55)%></a>
         </div>
     </div>
     <div class="controls removing">
