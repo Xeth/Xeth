@@ -12,11 +12,13 @@
 namespace Xeth{
 
 Window::Window(const Window &wnd) :
-    _contextBuilder(wnd._contextBuilder)
+    _contextBuilder(wnd._contextBuilder),
+    _converter(wnd._converter)
 {}
 
 Window::Window(Facade &facade) :
-    _contextBuilder(facade)
+    _contextBuilder(facade),
+    _converter(facade.getConverter())
 {
 //    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 //    QWebInspector *inspector = new QWebInspector;
@@ -47,6 +49,8 @@ Window::Window(Facade &facade) :
     _trayIcon->setContextMenu(_trayMenu);
     _trayIcon->setVisible(true);
 
+    QObject::connect(&facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+
 }
 
 
@@ -63,6 +67,11 @@ void Window::toggle()
     }
 }
 
+
+void Window::notifyTransaction(const QVariantMap &tx)
+{
+    _trayIcon->showMessage(tx["category"].toString(), _converter.fromWei(tx["amount"]).toString());
+}
 
 void Window::setUrl(const char *uri)
 {

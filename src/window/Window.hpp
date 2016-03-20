@@ -43,9 +43,11 @@ class Window : public QWebView
         void initObjects();
         void loadTemplates();
         void toggle();
+        void notifyTransaction(const QVariantMap &);
 
     private:
         FrameContextBuilder _contextBuilder;
+        ConverterFacade &_converter;
         QSystemTrayIcon *_trayIcon;
         QMenu *_trayMenu;
 
