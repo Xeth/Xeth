@@ -1,17 +1,18 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
+        this.feeModel = options.fee;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
         this.$el.html(this.template());
-        this.gas = this.$el.find('.section_fee .slider');
-        this.gas.slider({value:50});
+        this.gasPrice = this.$el.find('.section_fee .slider');
+        this.gasPrice.slider({value:50, change:this.computeFee});
 
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
@@ -45,11 +46,16 @@ var SendPageView = SubPageView.extend({
             hide: { duration: 200 }
         });
         
-        this.$el.find('.section_fee').tooltip({    
+        this.$el.find('.section_fee').tooltip({
             position: { my: "center top", at: "center bottom" },
             show: { duration: 200 },
             hide: { duration: 200 }
         });
+        this.fee = this.$el.find(".fee .eth");
+        this.gas = this.$el.find(".fee .gas");
+
+        this.amount.change(this.computeFee);
+        this.destination.change(this.computeFee);
     },
 
     render:function(args){
@@ -109,6 +115,23 @@ var SendPageView = SubPageView.extend({
             if(this.saveOption.prop("disabled")){
                 this.resetContact();
             }
+        }
+    },
+
+    computeFee: function(){
+        var factor = this.getFeeFactor();
+        var from = this.accounts.selected().get("address");
+        var to = this.destination.val();
+        var amount = this.amount.val();
+
+        var result = this.feeModel.estimate(from, to, amount, factor);
+        if(result){
+            this.fee.html(result["fee"].substr(0, 15));
+            this.gas.html(result["gas"]);
+        }else
+        {
+            this.fee.html("0");
+            this.gas.html("0");
         }
     },
 
@@ -192,6 +215,11 @@ var SendPageView = SubPageView.extend({
         }
     },
 
+    getFeeFactor: function(){
+        var gas = this.gasPrice.slider("value");
+        return parseInt(gas/50*100); //in percents
+    },
+
     submit:function(){
         this.$form.addClass("waiting");
         
@@ -202,8 +230,10 @@ var SendPageView = SubPageView.extend({
         
         request[type] = this.destination.val().replace(/^\s+|\s+$/g, '');;
         
-        var gas = this.gas.slider("value");
-        if(gas!=50) request.gas = gas/50; //in percents
+        var factor = this.getFeeFactor();
+        if(factor!=100){
+            request.fee = factor;
+        }
 
         var _this = this;
         setTimeout(function(){

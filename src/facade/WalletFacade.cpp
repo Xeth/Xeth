@@ -158,4 +158,12 @@ QVariant WalletFacade::changePassword(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+
+QVariant WalletFacade::estimateFee(const QVariantMap &request)
+{
+    EstimateFeeCommand command(_provider);
+    return _invoker.invoke(command, request);
+}
+
+
 }

@@ -33,6 +33,7 @@
 #include "command/wallet/ChangeEthereumKeyPasswordCommand.hpp"
 #include "command/wallet/ChangeStealthKeyPasswordCommand.hpp"
 #include "command/wallet/ChangeKeyPasswordCommand.hpp"
+#include "command/wallet/EstimateFeeCommand.hpp"
 
 #include "Invoker.hpp"
 #include "Notifier.hpp"
@@ -70,6 +71,7 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant changeEthereumKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changeStealthKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changePassword(const QVariantMap &);
+        Q_INVOKABLE QVariant estimateFee(const QVariantMap &);
 
     private:
         const Settings &_settings;
