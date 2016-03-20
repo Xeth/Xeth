@@ -1,13 +1,22 @@
-
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("setTimeago");
+        _(this).bindAll("setTimeago", "copyHashToClipboard");
+        this.clipboard = options.clipboard;
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
-		
+        
 		this.$el.tooltip({
 			position: { my: "center bottom", at: "center top-5" },
+			show: { duration: 200 },
+			hide: { duration: 200 }
+		});
+        
+		this.$el.find(".hash").click(this.copyHashToClipboard);
+        
+        this.$el.find(".hash").tooltip({
+			position: { my: "center bottom-5", at: "center top" },
+            track: true,
 			show: { duration: 200 },
 			hide: { duration: 200 }
 		});
@@ -24,14 +33,19 @@ var TransactionView = Backbone.View.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
+    },
+    
+    copyHashToClipboard:function(){
+        this.clipboard.setText(this.model.get("hash"));
+        notifySuccess("hash copied");
     }
 });
 
 
-function TransactionViewFactory(template){
+function TransactionViewFactory(template, clipboard){
 
     this.create = function(model){
-        return new TransactionView({model:model, template:template});
+        return new TransactionView({model:model, template:template, clipboard:clipboard});
     }
     return this;
 }
@@ -48,7 +62,7 @@ var TransactionsPageView = SubPageView.extend({
         this.$el.html(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
-        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"));
+        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard);
         this.collection = new CollectionView({
             collection:options.transactions,
             factory:this.factory,
