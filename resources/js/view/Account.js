@@ -75,6 +75,7 @@ var AccountViewReflection = AccountView.extend({
         if(!view){
             this.$el.html("");
         }else{
+            if(this.model) this.stopListening(this.model);
             this.model = view.model;
             this.$el.html(view.$el.clone().css("opacity", 1));
             if(this.model!=undefined){
