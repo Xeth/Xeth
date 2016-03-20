@@ -450,6 +450,10 @@ input[type="number"]:focus {
 	margin: 3px -10px;
 }
 
+.dropdown3.off .holder {
+	overflow-y: hidden;
+}
+
 .ui-selectmenu-menu ul {
 	margin: 3px 0px;
 	line-height: 38px;
