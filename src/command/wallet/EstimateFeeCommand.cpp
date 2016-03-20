@@ -51,7 +51,7 @@ BigInt EstimateFeeCommand::estimateGas(const QString &from, const QString &to, c
 
 BigInt EstimateFeeCommand::estimateStealthGas(const QString &from, const QString &to, const BigInt &amount)
 {
-    return _estimator.estimate(from.toStdString().c_str(), to.toStdString().c_str(), amount, "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+    return _estimator.estimate(from.toStdString().c_str(), "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", amount, "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
 }
 
 
