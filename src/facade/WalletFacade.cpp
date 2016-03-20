@@ -132,9 +132,9 @@ QVariant WalletFacade::validateAddress(const QString &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant WalletFacade::validateStealthAddress(const QString &request)
+QVariant WalletFacade::validateAddress(const QVariantMap &request)
 {
-    ValidateStealthAddressCommand command;
+    ValidateAddressCommand command;
     return _invoker.invoke(command, request);
 }
 
