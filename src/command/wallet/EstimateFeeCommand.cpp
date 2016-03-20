@@ -1,5 +1,4 @@
 #include "EstimateFeeCommand.hpp"
-#include <QDebug>
 
 namespace Xeth{
 
@@ -40,7 +39,6 @@ QVariant EstimateFeeCommand::operator()(const QVariantMap &request)
     fee *= price;
     result["fee"] = fee.str().c_str();
     result["price"] = price.str().c_str();
-    qDebug()<<"result is : "<<result;
     return result;
 }
 
