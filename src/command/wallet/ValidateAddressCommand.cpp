@@ -37,7 +37,7 @@ QVariant ValidateAddressCommand::validateAddress(const QString &request, bool ch
 QVariant ValidateAddressCommand::validateHexAddress(const QString &request, bool checksum)
 {
     AddressValidator validator;
-    return QVariant::fromValue(validator.validateAddress(request.toStdString(), true));
+    return QVariant::fromValue(validator.validateAddress(request.toStdString(), checksum));
 }
 
 
