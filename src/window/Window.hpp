@@ -64,6 +64,8 @@ class Window : public QWebView
         FrameContextBuilder _contextBuilder;
         QSystemTrayIcon *_trayIcon;
         QMenu *_trayMenu;
+        QAction *_activateAction;
+        QAction *_quitAction;
 
 };
 

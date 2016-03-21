@@ -39,13 +39,13 @@ Window::Window(Facade &facade) :
     _trayMenu = new QMenu(this);
     _trayMenu->addSeparator();
 
-    QAction *activate = _trayMenu->addAction("activate");
-    QObject::connect(activate, &QAction::triggered, this, &Window::toggle);
+    _activateAction = _trayMenu->addAction("hide");
+    QObject::connect(_activateAction, &QAction::triggered, this, &Window::toggle);
 
     _trayMenu->addSeparator();
 
-    QAction *quit = _trayMenu->addAction("quit");
-    QObject::connect(quit, &QAction::triggered, this, &Window::close);
+    _quitAction = _trayMenu->addAction("quit");
+    QObject::connect(_quitAction, &QAction::triggered, this, &Window::close);
 
     _trayIcon->setContextMenu(_trayMenu);
 
@@ -138,10 +138,12 @@ void Window::toggle()
 {
     if(isVisible())
     {
+        _activateAction->setText("show");
         hide();
     }
     else
     {
+        _activateAction->setText("hide");
         setWindowState(Qt::WindowActive);
         show();
         activateWindow();
