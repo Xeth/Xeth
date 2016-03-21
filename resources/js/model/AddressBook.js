@@ -40,7 +40,7 @@ var Contact = Backbone.Model.extend({
         var address = this.get("address");
         var bitprofile = this.get("bitprofile");
         if(address==transaction.get("from")||address==transaction.get("to")||address==transaction.get("stealth")||(bitprofile &&bitprofile==transaction.get("bitprofile"))){
-            transaction.set("contact", this);
+            transaction.bindContact(this);
             this.set("transactions", (this.get("transactions")||0)+1);
             return true;
         }
@@ -98,10 +98,8 @@ var AddressBook = Backbone.Collection.extend({
     resolveNewContact:function(contact){
         for(var j in this.transactions.models)
         {
-            var transaction = transactions.models[j];
-            if(!transaction.get("contact")){
-                contact.resolve(transaction);
-            }
+            var transaction = this.transactions.models[j];
+            contact.resolve(transaction);
         }
     },
 

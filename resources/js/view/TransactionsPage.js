@@ -1,27 +1,40 @@
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("setTimeago", "copyHashToClipboard");
+        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar");
         this.clipboard = options.clipboard;
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
         
-		this.$el.tooltip({
-			position: { my: "center bottom", at: "center top-5" },
-			show: { duration: 200 },
-			hide: { duration: 200 }
-		});
+        this.$el.tooltip({
+            position: { my: "center bottom", at: "center top-5" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
         
-		this.$el.find(".hash").click(this.copyHashToClipboard);
+        this.$el.find(".hash").click(this.copyHashToClipboard);
         
         this.$el.find(".hash").tooltip({
-			position: { my: "center bottom-5", at: "center top" },
+            position: { my: "center bottom-5", at: "center top" },
             track: true,
-			show: { duration: 200 },
-			hide: { duration: 200 }
-		});
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
         
+        this.bitprofileIcon = this.$el.find(".bitprofileIcon");
+        this.aliasHolder = this.$el.find(".name");
+        var contact = this.model.contact;
+        if(contact) this.watchContact(contact);
+        this.model.on("change:contact", this.changeContact);
         setTimeout(this.setTimeago, 50);
+    },
+
+    watchContact:function(contact){
+        this.contact = contact;
+        this.listenTo(contact, "change:alias", this.updateAlias);
+        this.listenTo(contact, "change:bitprofile", this.updateBitProfile);
+        this.listenTo(contact, "change:avatar", this.updateAvatar);
+        this.listenTo(contact, "destroy", this.clearContact);
     },
 
     setTimeago:function(){
@@ -36,8 +49,60 @@ var TransactionView = Backbone.View.extend({
     },
     
     copyHashToClipboard:function(){
-        this.clipboard.setText(this.model.get("hash"));
-        notifySuccess("hash copied");
+        if(this.clipboard.setText(this.model.get("hash")))
+        {
+            notifySuccess("hash copied to clipboard");
+        }
+        else
+        {
+            notifyError("failed to copy hash");
+        }
+    },
+
+    updateAlias:function(contact, alias){
+        this.aliasHolder.html(alias);
+    },
+
+    updateBitProfile: function(contact, bitprofile){
+
+        if(bitprofile){
+            if(!this.bitprofileIcon.hasClass("on")) this.bitprofileIcon.addClass("on");
+            this.bitprofileIcon.attr("title", bitprofile);
+        }else{
+            this.bitprofileIcon.removeClass("on");
+            this.bitprofileIcon.attr("title", "");
+        }
+    },
+
+    updateAvatar:function(contact, avatar){
+        var avatarHolder = this.$el.find(".avatar");
+        if(!avatar){
+            avatarHolder.remove();
+        }
+        else{
+            if(avatarHolder.length){
+                avatarHolder.find("img").attr("src", avatar);
+            }else{
+                $('<span class="avatar"><span class="img"><img src="'+avatar+'" onerror="errorAvatar($(this))"></span></span>').insertAfter(this.$el.find(".header"));
+            }
+        }
+    },
+
+    clearContact:function(contact){
+        this.stopListening(contact);
+        this.bitprofileIcon.removeClass("on");
+        this.bitprofileIcon.attr("title", "");
+        this.aliasHolder.html("unnamed");
+        this.$el.find(".avatar").remove();
+    },
+
+    changeContact:function(contact){
+        if(contact){
+            this.watchContact(contact);
+            this.updateAlias(contact, contact.get("alias"));
+            this.updateBitProfile(contact, contact.get("bitprofile"));
+            this.updateAvatar(contact, contact.get("avatar"));
+        }
     }
 });
 
@@ -55,7 +120,7 @@ var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters");
-		SubPageView.prototype.initialize.call(this,options);
+        SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
         this.template = options.templates.get("transactions");
@@ -102,9 +167,9 @@ var TransactionsPageView = SubPageView.extend({
         }).trigger('change.daterangepicker');
 
         this.typeFilter = this.$el.find("#filterTransactionType");
-		this.typeFilter.selectmenu();
-		this.typeFilter.on("selectmenuchange",this.setTypeFilter);
-		
+        this.typeFilter.selectmenu();
+        this.typeFilter.on("selectmenuchange",this.setTypeFilter);
+        
         this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.listenTo(options.transactions, "add", this.updateTotal);
         this.listenTo(options.transactions, "reset", this.computeTotals);
