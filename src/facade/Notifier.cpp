@@ -14,12 +14,18 @@ void Notifier::watch(const DataBase &database)
     QObject::connect(&database.getStealthKeys(), &StealthKeyStore::NewItem, this, &Notifier::emitStealthKey);
     QObject::connect(&database.getStealthPayments(), &StealthPaymentStore::NewItem, this, &Notifier::emitStealthPayment);
     QObject::connect(&database.getAddressBook(), &AddressBookStore::NewItem, this, &Notifier::emitAddressBookItem);
+    QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &Notifier::emitConfig);
 }
 
 void Notifier::watch(const Synchronizer &synchronizer)
 {
     QObject::connect(&synchronizer.getScanner().getProgress(), &Synchronizer::ScanProgress::Progress, this, &Notifier::emitScanProgress);
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
+}
+
+void Notifier::emitConfig(const QString &name, const QString &value)
+{
+    emit Config(name, value);
 }
 
 void Notifier::emitError(const QString &msg)
