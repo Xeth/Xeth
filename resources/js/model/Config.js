@@ -4,6 +4,14 @@ var Config = Backbone.Model.extend({
         return XETH_config.get(name);
     },
 
+    getFlag: function(name){
+        return parseInt(XETH_config.get(name))!=0;
+    },
+
+    setFlag:function(name, val){
+        return this.set(name, val?"1":"0");
+    },
+
     set: function(name, value){
         if(XETH_config.set({name: name, value:value}))
         {
