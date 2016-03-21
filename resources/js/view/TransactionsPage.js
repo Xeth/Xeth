@@ -1,7 +1,8 @@
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar");
+        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar","redirectSend");
         this.clipboard = options.clipboard;
+        this.router = options.router;
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
@@ -27,6 +28,8 @@ var TransactionView = Backbone.View.extend({
         if(contact) this.watchContact(contact);
         this.model.on("change:contact", this.changeContact);
         setTimeout(this.setTimeago, 50);
+        this.$el.find(".data .address a").click(this.redirectSend);
+        
     },
 
     watchContact:function(contact){
@@ -103,14 +106,17 @@ var TransactionView = Backbone.View.extend({
             this.updateBitProfile(contact, contact.get("bitprofile"));
             this.updateAvatar(contact, contact.get("avatar"));
         }
+    },
+    redirectSend:function(){
+        this.router.redirect("send", {destination: (this.model.get("category") == "Sent")?this.model.get("stealth")||this.model.get("to"):this.model.get("from")});
     }
 });
 
 
-function TransactionViewFactory(template, clipboard){
+function TransactionViewFactory(template, clipboard, router){
 
     this.create = function(model){
-        return new TransactionView({model:model, template:template, clipboard:clipboard});
+        return new TransactionView({model:model, template:template, clipboard:clipboard, router:router});
     }
     return this;
 }
@@ -127,7 +133,7 @@ var TransactionsPageView = SubPageView.extend({
         this.$el.html(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
-        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard);
+        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router);
         this.collection = new CollectionView({
             collection:options.transactions,
             factory:this.factory,

@@ -25,7 +25,7 @@
                 <%=transaction.from%>
             <%}else{%>
                 <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                <%=transaction.to%>
+                <a href="javascript:void(0)"><%=transaction.to%></a>
             <%}%>
         </span>
     </div>
@@ -49,9 +49,9 @@
             <span class="address">
                 <%if(transaction.category=="Sent"){%>
                     <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                    <%=transaction.to%>
+                    <a href="javascript:void(0)"><%=transaction.to%></a>
                 <%}else{%>
-                    <%=transaction.from%>
+                    <a href="javascript:void(0)"><%=transaction.from%></a>
                 <%}%>
             </span>
             <span class="detail time"><%=moment(transaction.timestamp).format('YYYY-MM-DD HH:mm:ss')%></span>
