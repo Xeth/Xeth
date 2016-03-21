@@ -61,6 +61,18 @@ var SettingsPageView = SubPageView.extend({
 
     changeShowTray:function(){
         this.changeOption(this.trayToggle, "tray");
+        if(this.trayToggle.prop("checked"))
+        {
+            this.trayMinimize.removeAttr("disabled");
+            this.trayClose.removeAttr("disabled");
+        }
+        else
+        {
+            this.trayMinimize.attr("disabled", true);
+            this.trayClose.attr("disabled", true);
+        }
+        this.trayMinimize.button("refresh");
+        this.trayClose.button("refresh");
     },
 
     changeMinimizeTray:function(){
