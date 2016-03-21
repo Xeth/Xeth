@@ -16,6 +16,7 @@ class AddConfigCommand
         AddConfigCommand(DataBase &);
 
         QVariant operator()(const QVariantMap &);
+        QVariant operator()(const QString &, const QString &);
 
     private:
         DataBase &_database;
