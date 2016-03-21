@@ -55,6 +55,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/AddressValidator.js"></script>
 <script type="text/javascript" src="js/model/FeeEstimator.js"></script>
 <script type="text/javascript" src="js/model/EventListener.js"></script>
+<script type="text/javascript" src="js/model/Config.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -82,7 +83,7 @@ var accounts = new AccountCollection;
 var transactions = new TransactionCollection;
 var addressbook = new AddressBook;
 var progress = new Progress;
-
+var config = new Config;
 
 var view = new MainWindowView
 ({
@@ -92,7 +93,8 @@ var view = new MainWindowView
     progress:progress,
     addressValidator: new AddressValidator,
     fee: new FeeEstimator,
-    events: new EventListener
+    events: new EventListener,
+    config: config
 });
 
 XETH_event.Ready.connect(this, function(){
@@ -105,6 +107,7 @@ XETH_event.Ready.connect(this, function(){
     addressbook.observe();
     progress.fetch();
     progress.observe();
+    config.observe();
 
     view.bindModels
     ({
