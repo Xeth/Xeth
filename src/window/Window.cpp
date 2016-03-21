@@ -160,6 +160,7 @@ void Window::changeEvent(QEvent* event)
 {
     if(_showTrayOpt && _minimizeToTrayOpt && event->type() == QEvent::WindowStateChange && this->windowState() & Qt::WindowMinimized)
     {
+        _activateAction->setText("show");
         QTimer::singleShot(250, this, SLOT(hide()));
         event->ignore();
     }
@@ -174,6 +175,7 @@ void Window::closeEvent(QCloseEvent *event)
 {
     if(!_closing && _showTrayOpt && _closeToTrayOpt)
     {
+        _activateAction->setText("show");
         QTimer::singleShot(250, this, SLOT(hide()));
         event->ignore();
     }
