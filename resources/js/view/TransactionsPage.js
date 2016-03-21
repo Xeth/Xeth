@@ -119,7 +119,7 @@ function TransactionViewFactory(template, clipboard){
 var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters");
+        _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters", "computeTotals", "processNewTransaction", "removeTransaction", "matchFilter");
         SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
@@ -171,12 +171,10 @@ var TransactionsPageView = SubPageView.extend({
         this.typeFilter.on("selectmenuchange",this.setTypeFilter);
         
         this.listenTo(this.accounts, "change", this.setAddressFilter);
-        this.listenTo(options.transactions, "add", this.updateTotal);
-        this.listenTo(options.transactions, "reset", this.computeTotals);
+        this.listenTo(this.collection, "add", this.processNewTransaction);
+        this.listenTo(this.collection, "remove", this.removeTransaction);
+        this.listenTo(this.collection, "reset", this.computeTotals);
         this.computeTotals();
-        
-        this.collection.collection.on("add", this.applyFilters);
-        this.collection.collection.on("insert", this.applyFilters);
     },
 
     render:function(options){
@@ -195,7 +193,6 @@ var TransactionsPageView = SubPageView.extend({
             this.filters.timeStart = start;
             this.filters.timeEnd = end;
         }
-        console.log('New date range selected: ' + start + ' to ' + end );
         this.applyFilters();
     },
 
@@ -212,20 +209,19 @@ var TransactionsPageView = SubPageView.extend({
     },
 
     applyFilters:function(){
-        var filters = this.filters;
-        this.collection.filter(function(model){
-
-            if(filters.timeStart&&filters.timeEnd){
-                var time = model.get("timestamp");
-                if(time<filters.timeStart||time>filters.timeEnd) return false;
-            }
-
-            if(filters.address && filters.address != model.get("from") && filters.address != model.get("to") && (filters.address!=model.get("stealth"))) return false;
-            if(filters.type && filters.type!=model.get("category")) return false;
-
-            return true;
-        });
+        this.collection.filter(this.matchFilter);
         this.computeTotals();
+    },
+
+    matchFilter:function(model){
+        var filters = this.filters;
+        if(filters.timeStart&&filters.timeEnd){
+            var time = model.get("timestamp");
+            if(time<filters.timeStart||time>filters.timeEnd) return false;
+        }
+        if(filters.address && filters.address != model.get("from") && filters.address != model.get("to") && (filters.address!=model.get("stealth"))) return false;
+        if(filters.type && filters.type!=model.get("category")) return false;
+        return true;
     },
 
     computeTotals: function(){
@@ -244,11 +240,30 @@ var TransactionsPageView = SubPageView.extend({
         this.renderTotals();
     },
 
-    updateTotal: function(model){
-        if(model.get("type")=="Sent")
-            this.totalSent += model.get("amount");
+    processNewTransaction: function(view){
+        var model = view.model;
+        if(!this.matchFilter(model))
+        {
+            view.$el.hide();
+        }
         else
-            this.totalReceived += model.get("amount"); //including mined
+        {
+            view.$el.show();
+            if(model.get("type")=="Sent")
+                this.totalSent += model.get("amount");
+            else
+                this.totalReceived += model.get("amount"); //including mined
+            this.renderTotals();
+        }
+    },
+
+    removeTransaction:function(view){
+        if(view.$el.is(":hidden")) return;
+        var model = view.model;
+        if(model.get("type")=="Sent")
+            this.totalSent -= model.get("amount");
+        else
+            this.totalReceived -= model.get("amount"); //including mined
         this.renderTotals();
     },
 
