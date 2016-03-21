@@ -1,0 +1,5 @@
+@charset "utf-8";
+#page_settings .section_tray label.ui-button, 
+#page_settings .section_tray .checkbox {
+	margin-right: 30px;
+}
