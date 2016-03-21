@@ -3,7 +3,7 @@
 <%if(transaction.category=="Mined"){%>
 <div class="listItem off mined">
     <div class="header icon">
-        <span class="detail s_titled userAddress"><%=transaction.to%></span>
+        <span class="detail s_titled userAddress"><a href="javascript:void(0)"><%=transaction.to%></a></span>
     </div>
     <div class="data">
         <div class="detailsRow">
@@ -22,7 +22,7 @@
     <div class="header icon">
         <span class="detail s_titled userAddress">
             <%if(transaction.category=="Sent"){%>
-                <%=transaction.from%>
+                <a href="javascript:void(0)"><%=transaction.from%></a>
             <%}else{%>
                 <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
                 <a href="javascript:void(0)"><%=transaction.to%></a>

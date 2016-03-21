@@ -1,6 +1,6 @@
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar","redirectSend");
+        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar","redirectSend", "redirectReceive");
         this.clipboard = options.clipboard;
         this.router = options.router;
         var data = this.model.toJSON();
@@ -29,7 +29,7 @@ var TransactionView = Backbone.View.extend({
         this.model.on("change:contact", this.changeContact);
         setTimeout(this.setTimeago, 50);
         this.$el.find(".data .address a").click(this.redirectSend);
-        
+        this.$el.find(".header .userAddress a").click(this.redirectReceive);
     },
 
     watchContact:function(contact){
@@ -109,6 +109,9 @@ var TransactionView = Backbone.View.extend({
     },
     redirectSend:function(){
         this.router.redirect("send", {destination: (this.model.get("category") == "Sent")?this.model.get("stealth")||this.model.get("to"):this.model.get("from")});
+    },
+    redirectReceive:function(){
+        this.router.redirect("receive", {address: (this.model.get("category") == "Sent")?this.model.get("from"):this.model.get("stealth")||this.model.get("to")});
     }
 });
 
