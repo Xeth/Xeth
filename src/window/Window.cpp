@@ -12,13 +12,14 @@
 namespace Xeth{
 
 Window::Window(const Window &wnd) :
-    _contextBuilder(wnd._contextBuilder),
-    _converter(wnd._converter)
+    _facade(wnd._facade),
+    _contextBuilder(wnd._contextBuilder)
 {}
 
 Window::Window(Facade &facade) :
-    _contextBuilder(facade),
-    _converter(facade.getConverter())
+    _closing(false),
+    _facade(facade),
+    _contextBuilder(facade)
 {
 //    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 //    QWebInspector *inspector = new QWebInspector;
@@ -47,13 +48,91 @@ Window::Window(Facade &facade) :
     QObject::connect(quit, &QAction::triggered, this, &Window::close);
 
     _trayIcon->setContextMenu(_trayMenu);
-    _trayIcon->setVisible(true);
 
-    QObject::connect(&facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    initConfig();
 
 }
 
+void Window::initConfig()
+{
+    initConfigOpt("tray", _showTrayOpt, true);
+    initConfigOpt("tray_minimize", _minimizeToTrayOpt, false);
+    initConfigOpt("tray_close", _closeToTrayOpt, false);
+    QObject::connect(&_facade.getNotifier(), &Notifier::Config, this, &Window::updateConfig);
+    if(_showTrayOpt)
+    {
+        showTray();
+    }
+}
 
+void Window::updateConfig(const QString &key, const QString &value)
+{
+    try
+    {
+        if(key=="tray")
+        {
+            _showTrayOpt = value.toUInt() > 0;
+            if(_showTrayOpt)
+            {
+                showTray();
+            }
+            else
+            {
+                hideTray();
+            }
+        }
+        else
+        if(key=="tray_minimize")
+        {
+            _minimizeToTrayOpt = value.toUInt() > 0;
+        }
+        else
+        if(key=="tray_close")
+        {
+            _closeToTrayOpt = value.toUInt() > 0;
+        }
+    }
+    catch(...)
+    {}
+}
+
+void Window::initConfigOpt(const char *name, bool &opt, bool defaultVal)
+{
+    try
+    {
+        ConfigFacade & config = _facade.getConfig();
+        QString trayConf = config.get(name).toString();
+        if(!trayConf.length())
+        {
+            opt = defaultVal;
+            QVariantMap request;
+            request["name"] = name;
+            request["value"] = defaultVal?"1":"0";
+            config.set(request);
+        }
+        else
+        {
+            opt = trayConf.toUInt() > 0;
+        }
+    }
+    catch(...)
+    {
+        opt = defaultVal;
+    }
+}
+
+
+void Window::showTray()
+{
+    _trayIcon->setVisible(true);
+    QObject::connect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+}
+
+void Window::hideTray()
+{
+    _trayIcon->setVisible(false);
+    QObject::disconnect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+}
 
 void Window::toggle()
 {
@@ -63,14 +142,44 @@ void Window::toggle()
     }
     else
     {
-        showNormal();
+        setWindowState(Qt::WindowActive);
+        show();
+        activateWindow();
+    }
+}
+
+void Window::close()
+{
+    _closing = true;
+    QWebView::close();
+}
+
+void Window::changeEvent(QEvent* event)
+{
+    if(_showTrayOpt && _minimizeToTrayOpt && event->type() == QEvent::WindowStateChange && this->windowState() & Qt::WindowMinimized)
+    {
+        QTimer::singleShot(250, this, SLOT(hide()));
+        event->ignore();
+    }
+    else
+    {
+        QWebView::changeEvent(event);
     }
 }
 
 
+void Window::closeEvent(QCloseEvent *event)
+{
+    if(!_closing && _showTrayOpt && _closeToTrayOpt)
+    {
+        QTimer::singleShot(250, this, SLOT(hide()));
+        event->ignore();
+    }
+}
+
 void Window::notifyTransaction(const QVariantMap &tx)
 {
-    _trayIcon->showMessage(tx["category"].toString(), _converter.fromWei(tx["amount"]).toString());
+    _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(tx["amount"]).toString());
 }
 
 void Window::setUrl(const char *uri)
