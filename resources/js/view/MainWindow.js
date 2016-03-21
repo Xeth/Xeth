@@ -85,6 +85,7 @@ var MainWindowView = Backbone.View.extend({
         this.subpages.transactions = new TransactionsPageView
         ({
             accounts:this.accounts,
+            clipboard: this.models.clipboard,
             transactions:this.models.transactions,
             el:this.$el.find("#page_transactions"),
             templates:this.templates

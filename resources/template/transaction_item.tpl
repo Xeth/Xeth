@@ -7,7 +7,7 @@
     </div>
     <div class="data">
         <div class="detailsRow">
-            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 45)%></span>
+            <a class="detail s_titled hash" title="copy hash"><%=shortify(transaction.hash, 45)%></a>
             <span class="detail txtBalance">
                 <span class="int"><%=transaction.amount.int%></span><span class="dec"><%=transaction.amount.dec%></span>
             </span>
@@ -40,7 +40,7 @@
                 <span class="name editableTxt" tabindex="-1" title=""><%=((transaction.contact && transaction.contact.alias)?transaction.contact.alias:"unnamed")%></span>
                 <span class="bitprofileIcon<%if(transaction.contact && transaction.contact.bitprofile){%> on<%}%>" title="<%=(transaction.contact && transaction.contact.bitprofile)?transaction.contact.bitprofile:'no bitprofile'%>"></span>
             </span>
-            <span class="detail s_titled hash" title="<%=transaction.hash%>"><%=shortify(transaction.hash, 20)%></span>
+            <a class="detail s_titled hash" title="copy hash"><%=shortify(transaction.hash, 20)%></a>
             <span class="detail txtBalance">
                 <span class="int"><%=transaction.amount.int%></span><span class="dec"><%=transaction.amount.dec%></span>
             </span>

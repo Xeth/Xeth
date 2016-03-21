@@ -1,6 +1,6 @@
 function ClipBoard(){
     var data;
-    this.copyText = function(txt){
+    this.setText = function(txt){
         data = txt;
     }
     this.getText = function(){
