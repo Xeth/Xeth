@@ -1,27 +1,37 @@
 var TransactionView = Backbone.View.extend({
     initialize:function(options){
-        _(this).bindAll("setTimeago", "copyHashToClipboard","updateAlias", "updateBitProfile", "clearContact", "changeContact", "updateAvatar","redirectSend", "redirectReceive");
+        _(this).bindAll(
+            "setTimeago", 
+            "copyHashToClipboard",
+            "updateAlias",
+            "updateBitProfile",
+            "clearContact",
+            "changeContact",
+            "updateAvatar",
+            "redirectSend",
+            "redirectReceive",
+            "editAlias"
+        );
         this.clipboard = options.clipboard;
+        this.addressbook = options.addressbook;
         this.router = options.router;
         var data = this.model.toJSON();
         data.amount = splitAmount(data.amount);
         this.$el = $(options.template({transaction:data}));
-        
         this.$el.tooltip({
             position: { my: "center bottom", at: "center top-5" },
             show: { duration: 200 },
             hide: { duration: 200 }
         });
-        
+
         this.$el.find(".hash").click(this.copyHashToClipboard);
-        
         this.$el.find(".hash").tooltip({
             position: { my: "center bottom-5", at: "center top" },
             track: true,
             show: { duration: 200 },
             hide: { duration: 200 }
         });
-        
+
         this.bitprofileIcon = this.$el.find(".bitprofileIcon");
         this.aliasHolder = this.$el.find(".name");
         var contact = this.model.contact;
@@ -30,6 +40,13 @@ var TransactionView = Backbone.View.extend({
         setTimeout(this.setTimeago, 50);
         this.$el.find(".data .address a").click(this.redirectSend);
         this.$el.find(".header .userAddress a").click(this.redirectReceive);
+        this.$el.find(".data .name.editableTxt").editable({
+            mode: 'inline',
+            autotext: 'always',
+            clear: false,
+            validate: this.editAlias,
+            display: false
+        }).attr('title','edit alias');
     },
 
     watchContact:function(contact){
@@ -110,16 +127,42 @@ var TransactionView = Backbone.View.extend({
     redirectSend:function(){
         this.router.redirect("send", {destination: (this.model.get("category") == "Sent")?this.model.get("stealth")||this.model.get("to"):this.model.get("from")});
     },
+
     redirectReceive:function(){
         this.router.redirect("receive", {address: (this.model.get("category") == "Sent")?this.model.get("from"):this.model.get("stealth")||this.model.get("to")});
+    },
+
+    editAlias:function(name){
+        if(this.model.contact){
+            this.model.contact.set({alias:name});
+            this.model.contact.save();
+        }else{
+            var contact = {alias: name};
+            if(this.model.get("category") == "Sent")
+            {
+                var stealth = this.model.get("stealth");
+                if(stealth){
+                    contact.stealth = stealth;
+                }else{
+                    contact.address = this.model.get("to");
+                }
+            }
+            else
+            {
+                contact.address = this.model.get("from");
+            }
+
+            this.addressbook.create(contact);
+        }
     }
+
 });
 
 
-function TransactionViewFactory(template, clipboard, router){
+function TransactionViewFactory(template, clipboard, router, addressbook){
 
     this.create = function(model){
-        return new TransactionView({model:model, template:template, clipboard:clipboard, router:router});
+        return new TransactionView({model:model, template:template, clipboard:clipboard, router:router, addressbook: addressbook});
     }
     return this;
 }
@@ -136,7 +179,7 @@ var TransactionsPageView = SubPageView.extend({
         this.$el.html(this.template());
         this.accounts = options.accounts;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
-        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router);
+        this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router, options.addressbook);
         this.collection = new CollectionView({
             collection:options.transactions,
             factory:this.factory,
