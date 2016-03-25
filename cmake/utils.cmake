@@ -48,6 +48,7 @@ add_executable(dumpdb ${PROJECT_SOURCE_DIR}/utils/dumpdb.cpp)
 target_link_libraries(dumpdb 
     xethlib
     ethstealth
+    bitprofile
     ethrpc
     ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}
