@@ -25,6 +25,7 @@
         <file>js/model/AddressValidator.js</file>
         <file>js/model/FeeEstimator.js</file>
         <file>js/model/EventListener.js</file>
+        <file>js/model/Config.js</file>
 
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>

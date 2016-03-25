@@ -37,6 +37,7 @@ class Notifier : public QObject
         void SyncProgress(const QVariant &) const;
         void Account(const QVariantMap &) const;
         void Contact(const QVariantMap &) const;
+        void Config(const QString &, const QString &) const;
 
 
     private slots:
@@ -47,6 +48,7 @@ class Notifier : public QObject
         void emitTransaction(const QJsonObject &);
         void emitScanProgress(double);
         void emitSyncProgress(double);
+        void emitConfig(const QString &, const QString &);
 
     private:
         const DataBase *_database;

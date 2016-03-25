@@ -6,7 +6,7 @@ var TransactionCollectionSimulator = TransactionCollection.extend({
     model: function(data){
         data.timestamp = parseInt(data.timestamp) * 1000;
         if(data.amount<0.00000001) data.amount = 0;
-        return new Backbone.Model(data);
+        return new Transaction(data);
     }
 
 });

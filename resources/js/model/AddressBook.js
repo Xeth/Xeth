@@ -8,14 +8,7 @@ var Contact = Backbone.Model.extend({
             var total = 0;
             var address = this.get("address");
             var bitprofile = this.get("bitprofile");
-            var contact = this;
-            options.transactions.each(function(transaction){
-                if(contact._resolve(address, bitprofile, transaction)){
-                    total++;
-                }
-            });
-            this.set("transactions", total);
-            this.listenTo(options.transactions, "add", this.resolve);
+            this.set("transactions", 0);
         }
     },
 
@@ -46,14 +39,9 @@ var Contact = Backbone.Model.extend({
     resolve:function(transaction){
         var address = this.get("address");
         var bitprofile = this.get("bitprofile");
-        if(this._resolve(this.get("address"), this.get("bitprofile"), transaction)){
-            this.set("transactions", (this.get("transactions")||0)+1);
-        }
-    },
-
-    _resolve:function(address, bitprofile, transaction){
         if(address==transaction.get("from")||address==transaction.get("to")||address==transaction.get("stealth")||(bitprofile &&bitprofile==transaction.get("bitprofile"))){
-            transaction.set("contact", this);
+            transaction.bindContact(this);
+            this.set("transactions", (this.get("transactions")||0)+1);
             return true;
         }
         return false;
@@ -64,7 +52,7 @@ var Contact = Backbone.Model.extend({
 var AddressBook = Backbone.Collection.extend({
 
     initialize:function(models, options){
-        _(this).bindAll("upsert");
+        _(this).bindAll("upsert", "resolveTransaction", "resolveNewContact");
         this.transactions = options?options.transactions:null;
     },
 
@@ -87,12 +75,31 @@ var AddressBook = Backbone.Collection.extend({
     },
 
     resolve:function(transactions){
+        for(var j in transactions.models)
+        {
+            this.resolveTransaction(transactions.models[j]);
+        }
         this.transactions = transactions;
-        for(var i in this.models){
-            this.models[i].transactions = transactions;
-            for(var j in transactions.models){
-                this.models[i].resolve(transactions.models[j]);
+        this.transactions.on("add", this.resolveTransaction);
+        this.on("add", this.resolveNewContact);
+    },
+
+    resolveTransaction:function(transaction){
+        for(var i in this.models)
+        {
+            if(this.models[i].resolve(transaction))
+            {
+                return true;
             }
+        }
+        return false;
+    },
+
+    resolveNewContact:function(contact){
+        for(var j in this.transactions.models)
+        {
+            var transaction = this.transactions.models[j];
+            contact.resolve(transaction);
         }
     },
 

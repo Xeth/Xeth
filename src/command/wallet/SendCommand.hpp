@@ -6,11 +6,17 @@
 #include "ethrpc/Provider.hpp"
 #include "database/DataBase.hpp"
 
-#include "SendToAddressCommand.hpp"
-#include "SendToStealthCommand.hpp"
+#include "detail/AddressValidator.hpp"
+#include "detail/Sender.hpp"
+#include "detail/GenericSendCommand.hpp"
+#include "types/StealthKey.hpp"
+
 
 
 namespace Xeth{
+
+typedef GenericSendCommand<AddressSender, HexAddressValidator> SendToAddressCommand;
+typedef GenericSendCommand<StealthSender, StealthAddressValidator> SendToStealthCommand;
 
 
 class SendCommand
