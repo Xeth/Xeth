@@ -4,6 +4,7 @@
 #include "bitprofile/Network.hpp"
 #include "bitprofile/ProfileDescriptor.hpp"
 #include "bitprofile/ProfileStore.hpp"
+#include "bitprofile/Registrar.hpp"
 
 
 namespace Xeth{
@@ -22,6 +23,8 @@ class BitProfileStore : public QObject
         bool remove(const BitProfile::Profile::URI &);
         bool remove(const QString &uri);
 
+        bool rename(const BitProfile::Profile::URI &, const BitProfile::Profile::URI &);
+
         Iterator find(const QString &) const;
         Iterator find(const char *) const;
         Iterator begin() const;
@@ -30,6 +33,7 @@ class BitProfileStore : public QObject
     signals:
         void NewItem(const BitProfile::ProfileDescriptor &) const;
         void Removed(const QString &uri) const;
+        void Renamed(const QString &old, const QString &uri) const;
 
 
     private:

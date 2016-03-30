@@ -32,6 +32,16 @@ BitProfileStore::Iterator BitProfileStore::end() const
     return _store.end();
 }
 
+bool BitProfileStore::rename(const BitProfile::Profile::URI &old, const BitProfile::Profile::URI &uri)
+{
+    if(_store.changeProfileURI(old, uri))
+    {
+        emit Renamed(QString(old.toString().c_str()), QString(uri.toString().c_str()));
+        return true;
+    }
+    return false;
+}
+
 
 bool BitProfileStore::insert(const BitProfile::ProfileDescriptor &descriptor)
 {
