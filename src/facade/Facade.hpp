@@ -19,6 +19,7 @@
 #include "ProgressFacade.hpp"
 #include "ClipboardFacade.hpp"
 #include "FileSystemFacade.hpp"
+#include "BitProfileFacade.hpp"
 
 #include "detail/FacadeInitializer.hpp"
 
@@ -39,6 +40,7 @@ class Facade : public QObject
         typedef Xeth::ProgressFacade Progress;
         typedef Xeth::ClipboardFacade Clipboard;
         typedef Xeth::FileSystemFacade FileSystem;
+        typedef Xeth::BitProfileFacade BitProfile;
 
     public:
         Facade(const Settings &);
@@ -51,6 +53,7 @@ class Facade : public QObject
         Progress & getProgress();
         Clipboard & getClipboard();
         FileSystem & getFileSystem();
+        BitProfile & getBitProfile();
 
         const Notifier & getNotifier() const;
         const AddressBook & getAddressBook() const;
@@ -60,6 +63,7 @@ class Facade : public QObject
         const Progress & getProgress() const;
         const Clipboard & getClipboard() const;
         const FileSystem & getFileSystem() const;
+        const BitProfile & getBitProfile() const;
 
         const Settings & getSettings() const;
         bool isReady() const;
@@ -86,6 +90,7 @@ class Facade : public QObject
         Progress _progress;
         Clipboard _clipboard;
         FileSystem _filesystem;
+        BitProfile _bitprofile;
 };
 
 

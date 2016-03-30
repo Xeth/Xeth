@@ -17,7 +17,8 @@ Facade::Facade(const Settings &settings) :
     _converter(_notifier),
     _progress(_synchronizer, _notifier),
     _clipboard(_notifier),
-    _filesystem(_notifier)
+    _filesystem(_notifier),
+    _bitprofile(_provider, _database, _notifier, _settings)
 {
     FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net);
     QThread *thread = new QThread;
@@ -93,6 +94,11 @@ Facade::FileSystem & Facade::getFileSystem()
 }
 
 
+Facade::BitProfile & Facade::getBitProfile()
+{
+    return _bitprofile;
+}
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -141,6 +147,11 @@ const Facade::FileSystem & Facade::getFileSystem() const
     return _filesystem;
 }
 
+
+const Facade::BitProfile & Facade::getBitProfile() const
+{
+    return _bitprofile;
+}
 
 void Facade::setReady()
 {
