@@ -25,6 +25,14 @@ void Notifier::watch(const Synchronizer &synchronizer)
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
 }
 
+void Notifier::emitProfilePaymentAddress(const QString &uri, const QString &address)
+{
+    QVariantMap event;
+    event["uri"] = uri;
+    event["payments"] = address;
+    emit ProfilePaymentAddress(event);
+}
+
 
 void Notifier::emitProfileUpdate(const QString &old, const BitProfile::ProfileDescriptor &descriptor)
 {

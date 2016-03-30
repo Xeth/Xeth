@@ -25,6 +25,10 @@ void LinkAddressOperation::operator()()
     {
         _notifier.emitError("failed to link stealth address");
     }
+    else
+    {
+        _notifier.emitProfilePaymentAddress(_admin.getProfile().getURI().toString().c_str(), _address);
+    }
 }
 
 }

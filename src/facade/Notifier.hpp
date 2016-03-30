@@ -26,6 +26,8 @@ class Notifier : public QObject
         void emitMessage(const QString &);
         void emitReady();
 
+        void emitProfilePaymentAddress(const QString &uri, const QString &address); //ToDo: move it from here
+
     signals:
         void Ready() const;
         void Error(const QString &) const;
@@ -33,6 +35,7 @@ class Notifier : public QObject
 
         void Profile(const QVariantMap &) const;
         void ProfileUpdate(const QVariantMap &) const;
+        void ProfilePaymentAddress(const QVariantMap &) const;
         void Transaction(const QVariantMap &) const;
         void ScanProgress(const QVariant &) const;
         void SyncProgress(const QVariant &) const;
