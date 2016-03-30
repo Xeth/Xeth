@@ -15,6 +15,7 @@ void Notifier::watch(const DataBase &database)
     QObject::connect(&database.getStealthPayments(), &StealthPaymentStore::NewItem, this, &Notifier::emitStealthPayment);
     QObject::connect(&database.getAddressBook(), &AddressBookStore::NewItem, this, &Notifier::emitAddressBookItem);
     QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &Notifier::emitConfig);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::NewItem, this, &Notifier::emitProfile);
 }
 
 void Notifier::watch(const Synchronizer &synchronizer)
@@ -24,6 +25,14 @@ void Notifier::watch(const Synchronizer &synchronizer)
 }
 
 
+void Notifier::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["name"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    emit Profile(event);
+}
 
 void Notifier::emitConfig(const QString &name, const QString &value)
 {

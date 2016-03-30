@@ -6,7 +6,9 @@ namespace Xeth{
 
 BitProfileStore::BitProfileStore(BitProfile::Network net) :
     _store(net)
-{}
+{
+    qRegisterMetaType<BitProfile::ProfileDescriptor>("BitProfile::ProfileDescriptor");
+}
 
 
 BitProfileStore::Iterator BitProfileStore::begin() const

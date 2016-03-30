@@ -49,6 +49,7 @@ class Notifier : public QObject
         void emitScanProgress(double);
         void emitSyncProgress(double);
         void emitConfig(const QString &, const QString &);
+        void emitProfile(const BitProfile::ProfileDescriptor &);
 
     private:
         const DataBase *_database;
