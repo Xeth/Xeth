@@ -23,6 +23,8 @@ void Notifier::watch(const Synchronizer &synchronizer)
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
 }
 
+
+
 void Notifier::emitConfig(const QString &name, const QString &value)
 {
     emit Config(name, value);

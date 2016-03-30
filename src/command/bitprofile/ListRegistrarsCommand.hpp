@@ -8,8 +8,7 @@
 #include "bitprofile/MasterRegistrar.hpp"
 
 #include "env/Settings.hpp"
-
-#include "detail/GetBitProfileNetwork.hpp"
+#include "env/GetBitProfileNetwork.hpp"
 
 namespace Xeth{
 

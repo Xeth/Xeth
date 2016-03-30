@@ -24,7 +24,6 @@ class Notifier : public QObject
 
         void emitError(const QString &);
         void emitMessage(const QString &);
-
         void emitReady();
 
     signals:
@@ -32,6 +31,7 @@ class Notifier : public QObject
         void Error(const QString &) const;
         void Message(const QString &) const;
 
+        void Profile(const QVariantMap &) const;
         void Transaction(const QVariantMap &) const;
         void ScanProgress(const QVariant &) const;
         void SyncProgress(const QVariant &) const;

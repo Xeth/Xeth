@@ -14,7 +14,8 @@ DataBase::DataBase(const Settings &settings) :
     _config(_directory.getPath() / "config"),
     _stealthPayments(_directory.getPath() / "stealth"),
     _stealthKeys(_directory.getPath() / "keys"),
-    _ethereumKeys(_ethereumKeysPath.toString())
+    _ethereumKeys(_ethereumKeysPath.toString()),
+    _bitprofile(GetBitprofileNetwork(settings))
 {}
 
 DataBase::DataBase(const DataBaseDirectory &directory) :
@@ -25,7 +26,8 @@ DataBase::DataBase(const DataBaseDirectory &directory) :
     _config(_directory.getPath() / "config"),
     _stealthPayments(_directory.getPath() / "stealth"),
     _stealthKeys(_directory.getPath() / "keys"),
-    _ethereumKeys(_ethereumKeysPath.toString())
+    _ethereumKeys(_ethereumKeysPath.toString()),
+    _bitprofile(BitProfile::Main_Net) //ToDo: use custom path
 {}
 
 
@@ -38,7 +40,8 @@ DataBase::DataBase(const DataBaseDirectory &directory, const EthereumKeyStorePat
     _config(_directory.getPath() / "config"),
     _stealthPayments(_directory.getPath() / "stealth"),
     _stealthKeys(_directory.getPath() / "keys"),
-    _ethereumKeys(_ethereumKeysPath.toString())
+    _ethereumKeys(_ethereumKeysPath.toString()),
+    _bitprofile(BitProfile::Main_Net) //ToDo: use custom path
 {}
 
 
@@ -80,6 +83,13 @@ EthereumKeyStore & DataBase::getEthereumKeys()
     return _ethereumKeys;
 }
 
+
+BitProfileStore & DataBase::getBitProfiles()
+{
+    return _bitprofile;
+}
+
+
 const TransactionStore & DataBase::getTransactions() const
 {
     return _transactions;
@@ -114,6 +124,12 @@ const StealthKeyStore & DataBase::getStealthKeys() const
 const EthereumKeyStore & DataBase::getEthereumKeys() const
 {
     return _ethereumKeys;
+}
+
+
+const BitProfileStore & DataBase::getBitProfiles() const
+{
+    return _bitprofile;
 }
 
 }
