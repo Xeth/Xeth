@@ -18,9 +18,8 @@ class MoveProfileOperation
     public:
         MoveProfileOperation
         (
-            Ethereum::Connector::Provider &,
             BitProfileStore &store,
-            const BitProfile::ProfileDescriptor &,
+            const BitProfile::ProfileAdministrator &,
             const BitProfile::Registrar &,
             const QString &name,
             const QString &password,

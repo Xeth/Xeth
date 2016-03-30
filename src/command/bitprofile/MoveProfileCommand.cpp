@@ -26,6 +26,7 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
     }
 
     BitProfile::ProfileDescriptor descriptor = *it;
+    BitProfile::ProfileAdministrator admin = BitProfile::ProfileAdministrator::FromDescriptor(_provider, descriptor);
 
     BitProfile::Resolver resolver(_provider, GetBitprofileNetwork(_settings));
     BitProfile::Registrar registrar = resolver.lookupRegistrar(request["context"].toString().toStdString());
@@ -34,7 +35,14 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_provider, _store, descriptor, registrar, request["name"].toString(), request["password"].toString(), _notifier));
+    if(request.contains("price"))
+    {
+        BigInt price(request["price"].toString().toStdString());
+        admin.setGasPrice(price);
+        registrar.setGasPrice(price);
+    }
+
+    MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, request["name"].toString(), request["password"].toString(), _notifier));
     action->run();
     return QVariant::fromValue(true);
 }

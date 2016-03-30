@@ -24,10 +24,16 @@ QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
+    BitProfile::ProfileAdministrator admin = BitProfile::ProfileAdministrator::FromDescriptor(_provider, *it);
+
+    if(request.contains("price"))
+    {
+        admin.setGasPrice(BigInt(request["price"].toString().toStdString()));
+    }
+
     LinkAddressAction * action = LinkAddressAction::Create(LinkAddressOperation
     (
-        _provider, 
-        *it,
+        admin, 
         request["address"].toString(),
         request["password"].toString(),
         _notifier

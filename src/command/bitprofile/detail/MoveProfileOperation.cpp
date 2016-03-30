@@ -6,15 +6,14 @@ namespace Xeth{
 
 MoveProfileOperation::MoveProfileOperation
 (
-    Ethereum::Connector::Provider &provider,
     BitProfileStore &store,
-    const BitProfile::ProfileDescriptor &descriptor,
+    const BitProfile::ProfileAdministrator &admin,
     const BitProfile::Registrar &registrar,
     const QString &name,
     const QString &password,
     Notifier &notifier
 ) : 
-    _admin(BitProfile::ProfileAdministrator::FromDescriptor(provider, descriptor)),
+    _admin(admin),
     _store(store),
     _registrar(registrar),
     _name(name),

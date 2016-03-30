@@ -16,8 +16,7 @@ class LinkAddressOperation
     public:
         LinkAddressOperation
         (
-            Ethereum::Connector::Provider &,
-            const BitProfile::ProfileDescriptor &,
+            const BitProfile::ProfileAdministrator &,
             const QString &address,
             const QString &password,
             Notifier &

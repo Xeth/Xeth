@@ -6,13 +6,12 @@ namespace Xeth{
 
 LinkAddressOperation::LinkAddressOperation
 (
-    Ethereum::Connector::Provider &provider, 
-    const BitProfile::ProfileDescriptor &descriptor,
+    const BitProfile::ProfileAdministrator &admin,
     const QString &address,
     const QString &password,
     Notifier &notifier
 ) : 
-    _admin(BitProfile::ProfileAdministrator::FromDescriptor(provider, descriptor)),
+    _admin(admin),
     _address(address),
     _password(password),
     _notifier(notifier)
