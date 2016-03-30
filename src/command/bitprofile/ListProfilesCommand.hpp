@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include "bitprofile/ProfileStore.hpp"
+#include "database/BitProfileStore.hpp"
 
 
 namespace Xeth{
@@ -14,12 +14,12 @@ namespace Xeth{
 class ListProfilesCommand
 {
     public:
-        ListProfilesCommand(BitProfile::ProfileStore &);
+        ListProfilesCommand(BitProfileStore &);
 
         QVariant operator()();
 
     private:
-        BitProfile::ProfileStore &_store;
+        BitProfileStore &_store;
 };
 
 

@@ -4,7 +4,7 @@
 namespace Xeth{
 
 
-ListProfilesCommand::ListProfilesCommand(BitProfile::ProfileStore &store) :
+ListProfilesCommand::ListProfilesCommand(BitProfileStore &store) :
     _store(store)
 {}
 
@@ -12,7 +12,7 @@ ListProfilesCommand::ListProfilesCommand(BitProfile::ProfileStore &store) :
 QVariant ListProfilesCommand::operator()()
 {
     QJsonArray result;
-    for(BitProfile::ProfileStore::Iterator it = _store.begin(), end = _store.end(); it!=end; ++it)
+    for(BitProfileStore::Iterator it = _store.begin(), end = _store.end(); it!=end; ++it)
     {
         QJsonObject profile;
         BitProfile::ProfileDescriptor descriptor = *it;
