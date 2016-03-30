@@ -11,6 +11,16 @@ BitProfileStore::BitProfileStore(BitProfile::Network net) :
 }
 
 
+BitProfileStore::Iterator BitProfileStore::find(const QString &uri) const
+{
+    return _store.find(uri.toStdString());
+}
+
+BitProfileStore::Iterator BitProfileStore::find(const char *uri) const
+{
+    return _store.find(uri);
+}
+
 BitProfileStore::Iterator BitProfileStore::begin() const
 {
     return _store.begin();

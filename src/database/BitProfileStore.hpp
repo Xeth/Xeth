@@ -22,6 +22,8 @@ class BitProfileStore : public QObject
         bool remove(const BitProfile::Profile::URI &);
         bool remove(const QString &uri);
 
+        Iterator find(const QString &) const;
+        Iterator find(const char *) const;
         Iterator begin() const;
         Iterator end() const;
 
