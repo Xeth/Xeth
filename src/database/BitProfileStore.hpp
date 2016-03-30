@@ -33,7 +33,7 @@ class BitProfileStore : public QObject
     signals:
         void NewItem(const BitProfile::ProfileDescriptor &) const;
         void Removed(const QString &uri) const;
-        void Renamed(const QString &old, const QString &uri) const;
+        void Renamed(const QString &old, const BitProfile::ProfileDescriptor &) const;
 
 
     private:

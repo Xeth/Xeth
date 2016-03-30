@@ -32,6 +32,7 @@ class Notifier : public QObject
         void Message(const QString &) const;
 
         void Profile(const QVariantMap &) const;
+        void ProfileUpdate(const QVariantMap &) const;
         void Transaction(const QVariantMap &) const;
         void ScanProgress(const QVariant &) const;
         void SyncProgress(const QVariant &) const;
@@ -50,6 +51,7 @@ class Notifier : public QObject
         void emitSyncProgress(double);
         void emitConfig(const QString &, const QString &);
         void emitProfile(const BitProfile::ProfileDescriptor &);
+        void emitProfileUpdate(const QString &old, const BitProfile::ProfileDescriptor &);
 
     private:
         const DataBase *_database;

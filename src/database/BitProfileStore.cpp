@@ -36,7 +36,7 @@ bool BitProfileStore::rename(const BitProfile::Profile::URI &old, const BitProfi
 {
     if(_store.changeProfileURI(old, uri))
     {
-        emit Renamed(QString(old.toString().c_str()), QString(uri.toString().c_str()));
+        emit Renamed(QString(old.toString().c_str()), *_store.find(uri));
         return true;
     }
     return false;

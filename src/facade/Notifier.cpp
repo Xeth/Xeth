@@ -16,6 +16,7 @@ void Notifier::watch(const DataBase &database)
     QObject::connect(&database.getAddressBook(), &AddressBookStore::NewItem, this, &Notifier::emitAddressBookItem);
     QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &Notifier::emitConfig);
     QObject::connect(&database.getBitProfiles(), &BitProfileStore::NewItem, this, &Notifier::emitProfile);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::Renamed, this, &Notifier::emitProfileUpdate);
 }
 
 void Notifier::watch(const Synchronizer &synchronizer)
@@ -24,6 +25,16 @@ void Notifier::watch(const Synchronizer &synchronizer)
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
 }
 
+
+void Notifier::emitProfileUpdate(const QString &old, const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["oldURI"] = old;
+    event["name"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    emit ProfileUpdate(event);
+}
 
 void Notifier::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
 {
