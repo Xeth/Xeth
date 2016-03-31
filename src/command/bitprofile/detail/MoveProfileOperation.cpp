@@ -23,17 +23,28 @@ MoveProfileOperation::MoveProfileOperation
 
 void MoveProfileOperation::operator()()
 {
-    BitProfile::Profile::URI uri = _admin.getProfile().getURI();
-    if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString()))
+    try
     {
-        _notifier.emitError("failed to move profile");
-    }
-    else
-    {
-        if(!_store.rename(uri, BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
+        BitProfile::Profile::URI uri = _admin.getProfile().getURI();
+        if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString()))
         {
-            _notifier.emitError("failed to rename profile file");
+            _notifier.emitError("failed to move profile");
         }
+        else
+        {
+            if(!_store.rename(uri, BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
+            {
+                _notifier.emitError("failed to rename profile file");
+            }
+        }
+    }
+    catch(const std::exception &e)
+    {
+        _notifier.emitError(e.what());
+    }
+    catch(...)
+    {
+        _notifier.emitError("failed to rename profile");
     }
 }
 

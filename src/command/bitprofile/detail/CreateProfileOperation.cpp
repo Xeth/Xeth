@@ -24,17 +24,28 @@ CreateProfileOperation::CreateProfileOperation
 
 void CreateProfileOperation::operator()()
 {
-    BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), _account.toStdString(), _password.toStdString());
-    if(profile.isNull())
+    try
     {
-        emitError("failed to create account ");
-    }
-    else
-    {
-        if(!_store.insert(BitProfile::ProfileDescriptor(profile)))
+        BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), _account.toStdString(), _password.toStdString());
+        if(profile.isNull())
         {
-            emitError("failed to save account ");
+            emitError("failed to create account ");
         }
+        else
+        {
+            if(!_store.insert(BitProfile::ProfileDescriptor(profile)))
+            {
+                emitError("failed to save account ");
+            }
+        }
+    }
+    catch(const std::exception &e)
+    {
+        _notifier.emitError(e.what());
+    }
+    catch(...)
+    {
+        _notifier.emitError("create profile operation failed");
     }
 }
 

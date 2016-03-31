@@ -20,13 +20,24 @@ LinkAddressOperation::LinkAddressOperation
 
 void LinkAddressOperation::operator()()
 {
-    if(!_admin.setPaymentAddress(_address.toStdString(), _password.toStdString()))
+    try
+    {
+        if(!_admin.setPaymentAddress(_address.toStdString(), _password.toStdString()))
+        {
+            _notifier.emitError("failed to link stealth address");
+        }
+        else
+        {
+            _notifier.emitProfilePaymentAddress(_admin.getProfile().getURI().toString().c_str(), _address);
+        }
+    }
+    catch(const std::exception &e)
+    {
+        _notifier.emitError(e.what());
+    }
+    catch(...)
     {
         _notifier.emitError("failed to link stealth address");
-    }
-    else
-    {
-        _notifier.emitProfilePaymentAddress(_admin.getProfile().getURI().toString().c_str(), _address);
     }
 }
 
