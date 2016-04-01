@@ -2,10 +2,10 @@ var BitprofileEditFee = function(profile,fee){
     this.estimate = function(formData){
         var editFee=[];
         if((formData.context!=profile.get("context"))||(formData.id!=profile.get("id")))
-            editFee.push(fee.estimateMoveProfile(profile.get("uri"), formData.context, formData.id));
+            editFee.push(fee.estimateMoveProfile(profile.get("uri"), formData.context, formData.id, formData.feeFactor));
         
         if(formData.stealth!=profile.get("payments"))
-            editFee.push(fee.estimateEditProfile(profile.get("uri"), "payments", formData.stealth));
+            editFee.push(fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor));
         /*
         if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar")))
             editFee.push(fee.estimateEditProfile(profile.get("uri"), "details", {name:formData.name, avatar:formData.avatar}));
@@ -61,7 +61,7 @@ var BitprofileEditPageView = SubPageView.extend({
     submitEditURI:function(){
         var request = this.form.getFormData();
         if((request.context!=this.profile.get("context"))||(request.id!=this.profile.get("id"))){
-            request.gas = this.feeModel.estimateMoveProfile(this.profile.get("uri"), request.context, request.id);
+            request.gas = this.feeModel.estimateMoveProfile(this.profile.get("uri"), request.context, request.id, request.feeFactor);
             if(!this.profile.changeURI(request)){
                 this.form.risePasswordError();
                 this.form.unlockPage();
@@ -80,7 +80,7 @@ var BitprofileEditPageView = SubPageView.extend({
     submitEditStealth:function(skipped){
         var request = this.form.getFormData();
         if(request.stealth!=this.profile.get("payments")){
-            request.gas = this.feeModel.estimateEditProfile(this.profile.get("uri"), "payments", request.stealth);
+            request.gas = this.feeModel.estimateStealthLink(this.profile.get("uri"), request.stealth, request.feeFactor);
             if(!this.profile.changePayments(request)){
                 this.riseError(skipped);
                 return false;

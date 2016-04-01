@@ -12,18 +12,7 @@ var MainWindowView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("open","show","loaded", "notifyError");
         this.models = {};
-        this.models.addressbook = options.addressbook;
-        this.models.accounts = options.accounts;
-        this.models.clipboard = options.clipboard;
-        this.models.filesystem = options.filesystem;
-        this.models.transactions = options.transactions;
-        this.models.progress = options.progress;
-        this.models.addressValidator = options.addressValidator;
-        this.models.fee = options.fee;
-        this.models.events = options.events;
-        this.models.config = options.config;
-        this.models.profiles = options.profiles;
-        this.templates = options.templates;
+        this.bindModels(options);
         this.active = null;
     },
 
@@ -134,6 +123,7 @@ var MainWindowView = Backbone.View.extend({
         this.subpages.bitprofile = new BitprofilePageView
         ({
             filesystem:this.models.filesystem,
+            registrars:this.models.registrars,
             accounts:this.accounts,
             fee: this.models.fee,
             profiles:this.models.profiles,

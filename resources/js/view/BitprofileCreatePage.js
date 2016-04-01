@@ -1,6 +1,6 @@
 var BitprofileCreateFee = function(fee){
     this.estimate = function(formData){
-        return combineFee([fee.estimateCreateProfile(formData.context, formData.id), fee.estimateEditProfile(formData.context+":"+formData.id, "payments", formData.stealth)]);
+        return combineFee([fee.estimateCreateProfile(formData.context, formData.id, formData.feeFactor), fee.estimateStealthLink(null, null, formData.feeFactor)]);
     }
 }
 
@@ -34,7 +34,7 @@ var BitprofileCreatePageView = SubPageView.extend({
 
     submitCreate:function(){
         var request = this.form.getFormData();
-        request.gas = this.feeModel.estimateCreateProfile(request.context, request.id);
+        request.gas = this.feeModel.estimateCreateProfile(request.context, request.id, request.feeFactor);
         if(!this.profiles.create(request)){
             this.form.risePasswordError();
             return false;
@@ -47,7 +47,7 @@ var BitprofileCreatePageView = SubPageView.extend({
     },
     submitStealth:function(){
         var request = this.form.getFormData();
-        request.gas = this.feeModel.estimateEditProfile(request.context+":"+request.id, "payments", request.stealth);
+        request.gas = this.feeModel.estimateStealthLink(request.context+":"+request.id, request.stealth, request.feeFactor);
         this.form.setLockMessage("Linking stealth address...");
         var profile = this.profiles.first();
         if(!profile.linkStealthAddress(request)){

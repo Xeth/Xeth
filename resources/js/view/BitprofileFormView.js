@@ -21,6 +21,11 @@ var BitprofileFormView = SubPageView.extend({
         this.accountSelect_payment = this.$el.find("#bitprofileCreateAccountList");
         this.$form = this.paymentPage.find(".formpage");
         this.bitprofileContext = this.$el.find("#bitporfileCreate_context");
+        for(var i=0; i<options.registrars.length; i++)
+        {
+            var registrar = options.registrars.at(i);
+            this.bitprofileContext.append("<option>"+registrar.get("uri")+"</option>");
+        }
         this.bitprofileContext.selectmenu().selectmenu( "widget" ).addClass( "contextSelect" );
         this.feeFactor.slider({value:50, change:this.updateFeeFactor});
         this.listenTo(this.accounts, "change", this.resetAddressError);
@@ -222,6 +227,7 @@ var BitprofileFormView = SubPageView.extend({
             request.price = this.gasPrice;
             request.gas = this.gasAmount;
         }
+        request.feeFactor = this.getFeeFactor();
         return request;
     },
     inProgress:function(){
