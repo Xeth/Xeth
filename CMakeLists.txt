@@ -24,6 +24,7 @@ set(ETHRPC_LIBRARY "ethrpc")
 add_subdirectory(libbitprofile)
 
 
+add_dependencies(bitprofile ethrpc)
 add_dependencies(ethstealth ethcrypto)
 
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
