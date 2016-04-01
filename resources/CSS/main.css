@@ -331,6 +331,7 @@ input:disabled,
 .input input[type="number"] {
 	background:none;
 	margin-left:-10px !important;
+    width: 100% !important;
 }
 
 textarea:focus, 
