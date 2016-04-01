@@ -33,13 +33,15 @@ QVariant ExportProfileCommand::operator()(const QVariantMap &request)
 
     Json::Value backup;
     backup["profile"] = descriptor.toJSON();
-    backup["key"] = keySerializer.serializeToJson(_ethereumKeys.get(admin.getKey().getAddress().c_str()));
+    backup["key"] = Json::arrayValue;
+    backup["key"].append(keySerializer.serializeToJson(_ethereumKeys.get(admin.getKey().getAddress().c_str())));
 
     std::string stealth = admin.getProfile().get("payments");
     if(stealth.size())
     {
         StealthKeySerializer stealthSerializer;
-        backup["stealth"] = stealthSerializer.serializeToJson(_stealthKeys.get(stealth.c_str()));
+        backup["stealth"] = Json::arrayValue;
+        backup["stealth"].append(stealthSerializer.serializeToJson(_stealthKeys.get(stealth.c_str())));
     }
 
     QString path = request["destination"].toString();
