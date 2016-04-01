@@ -26,6 +26,16 @@
 .page .formpage.send .section_to .input.address,
 .page .formpage.send .section_to input.address {
 	width: 334px;
+    float: left;
+}
+
+.page .formpage.send .section_to .hint {
+    margin-top: -38px;
+    overflow: hidden;
+    color: #BB874E;
+    cursor: pointer;
+    position: absolute;
+    max-width: 280px;
 }
 
 .page .formpage.send .btnSubmit.btnSend {

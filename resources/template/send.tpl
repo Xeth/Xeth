@@ -11,7 +11,10 @@
 			<option value="address">Address</option>
 			<option value="bitprofile">BitProfile</option>
 		</select>
-        <input id="sendToInput" class="address mandatory" type="text" placeholder="bitprofile id" />
+        <div class="input address">
+            <div class="hint" title="copy to clipboard" id="sendToHint"></div>
+            <input id="sendToInput" class="mandatory" type="text" placeholder="bitprofile id" />
+        </div>
     </div>
     <div class="half_left section_amount section_mandatory">
         <h1 error="required">Amount:</h1>
@@ -20,7 +23,7 @@
         </div>
     </div>
     <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">
-        <h1>Fee:<span class="fee"><span class="gas">0</span><span class="eth">0.000000000000000</span></span></h1>
+        <h1>Fee:<span class="fee"><span class="gas"></span><span class="eth"></span></span></h1>
         <div class="slider">
             <div class="handle ui-slider-handle" style="left:20%;"></div>
             <div class="bar"></div>
