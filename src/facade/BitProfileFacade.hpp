@@ -15,6 +15,7 @@
 #include "command/bitprofile/ListRegistrarsCommand.hpp"
 #include "command/bitprofile/MoveProfileCommand.hpp"
 #include "command/bitprofile/ResolvePaymentAddressCommand.hpp"
+#include "command/bitprofile/ExportProfileCommand.hpp"
 
 
 namespace Xeth{
@@ -33,10 +34,12 @@ class BitProfileFacade : public QObject
         Q_INVOKABLE QVariant linkStealthAddress(const QVariantMap &);
         Q_INVOKABLE QVariant moveProfile(const QVariantMap &);
         Q_INVOKABLE QVariant resolvePaymentAddress(const QString &);
+        Q_INVOKABLE QVariant exportProfile(const QVariantMap &);
 
 
     private:
         Ethereum::Connector::Provider &_provider;
+        DataBase &_database;
         BitProfileStore &_store;
         Notifier &_notifier;
         const Settings &_settings;

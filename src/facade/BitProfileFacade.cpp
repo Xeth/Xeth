@@ -6,6 +6,7 @@ namespace Xeth{
 
 BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, DataBase &database, Notifier &notifier, const Settings &settings) :
     _provider(provider),
+    _database(database),
     _store(database.getBitProfiles()),
     _notifier(notifier),
     _settings(settings),
@@ -53,6 +54,13 @@ QVariant BitProfileFacade::moveProfile(const QVariantMap &request)
 QVariant BitProfileFacade::resolvePaymentAddress(const QString &request)
 {
     ResolvePaymentAddressCommand command(_provider, _settings);
+    return _invoker.invoke(command, request);
+}
+
+
+QVariant BitProfileFacade::exportProfile(const QVariantMap &request)
+{
+    ExportProfileCommand command(_provider, _database);
     return _invoker.invoke(command, request);
 }
 
