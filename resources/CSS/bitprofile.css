@@ -9,6 +9,25 @@
 	margin-top: -26px;
 }
 
+#page_bitprofile .navSection {
+    overflow: hidden;
+	transition: all 200ms ease-in-out;
+}
+
+#page_bitprofile .menu .navNew,
+#page_bitprofile .menu.new .navExisting {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+}
+#page_bitprofile .menu.new .navNew {
+    opacity: 1;
+    pointer-events: auto;
+    height: auto;
+}
+#page_bitprofile .menu.pending * {
+    pointer-events: none;
+}
 
 #page_bitprofile .nav.controls li {
 	height: 46px;
@@ -21,7 +40,8 @@
 	
 	background-position-y: -420px;
 }
-#page_bitprofile .nav.controls li.importBitprofile a {
+#page_bitprofile .nav.controls li.import a,
+#page_bitprofile .nav.controls li.export a{
 	background-position-y: -466px;
 }
 
@@ -30,11 +50,22 @@
 	bottom:0px;
 	/*overflow-y:scroll;*/
 }
+#page_bitprofile .menu.single .bitprofileList{
+    position: relative;
+	top:0;
+	bottom:0px;
+}
+#page_bitprofile .menu.single .nav,
 #page_bitprofile .bitprofileList .nav {
 	position:relative;
 }
 #page_bitprofile .bitprofileList li {
 	height: 80px;
+    display: block !important;
+}
+#page_bitprofile .bitprofileList li.off {
+    opacity: 0;
+    pointer-events: none;
 }
 #page_bitprofile .bitprofileList li a {
 	text-transform: none;
@@ -51,8 +82,18 @@
 	display: block;
 	padding-top: 5px;
 }
-#page_bitprofile .bitprofileList .id {
+#page_bitprofile .bitprofileList .uri {
 	color: #BB874E;
+    float: left;
+    overflow: hidden;
+    width: 205px;
+}
+#page_bitprofile .bitprofileList .uri .context {
+	color: #778283;
+}
+#page_bitprofile .bitprofileList .uri .context:after {
+	content: ":";
+    margin-right: 5px;
 }
 
 #page_bitprofile_view .formpage .avatar {
@@ -69,16 +110,19 @@
 	transition-delay: 0ms;
 }
 
-#page_bitprofile_new .formpage .avatar,
-#page_bitprofile_edit .formpage .avatar {
+#page_bitprofile_view .stealthAddress {
+    margin-top: 30px;
+}
+
+#page_bitprofile .bitprofileForm .formpage .avatar {
 	height: 54px;
 	width: 54px;
 	float:right;
 	margin-right: 0;
-	margin-bottom: -5px;
+	/*margin-bottom: -5px;*/
+	margin-bottom: 30px;
 }
-#page_bitprofile_new .formpage .avatarURL,
-#page_bitprofile_edit .formpage .avatarURL {
+#page_bitprofile .bitprofileForm .formpage .avatarURL {
 	width: 166px;
 	float:left;
 }
@@ -100,4 +144,53 @@
 }
 #page_bitprofile .formpage .btnSubmit:hover {
 	background-position-y: -734px;
+}
+
+#page_bitprofile .controls.generate {
+    display: block;
+    float: none;
+    text-align: center;
+}
+#page_bitprofile .contextSelect {
+    width: 63px !important;
+    float: left;
+}
+#page_bitprofile .contextSelect .ui-selectmenu-text,
+#bitporfileCreate_context-menu li {
+    text-transform: none;
+}
+#page_bitprofile .contextSelect input {
+    width: 63px;
+    color: #BB874E;
+}
+
+.bitprofileForm .pending {
+    pointer-events: none;
+    opacity: 0;
+    bottom: -40px;
+    position: absolute;
+    padding: 20px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    background-color: rgba(247, 147, 30, 0.4);
+}
+.bitprofileForm .pending h1 {
+    margin-top: 0;
+}
+
+.bitprofileForm.pending * {
+    pointer-events: none;
+}
+.bitprofileForm.pending #bitporfileCreate_details .submit,
+.bitprofileForm.pending #bitporfileCreate_details .generate {
+    display: none;
+}
+.bitprofileForm.pending .pending,
+.bitprofileForm.pending #bitporfileCreate_details {
+    opacity: 1;
+    transition: 300ms opacity 600ms;
+}
+.bitprofileForm.pending #bitporfileCreate_payment {
+    opacity: 1;
+    top: 300px;
 }

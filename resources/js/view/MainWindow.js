@@ -22,6 +22,7 @@ var MainWindowView = Backbone.View.extend({
         this.models.fee = options.fee;
         this.models.events = options.events;
         this.models.config = options.config;
+        this.models.profiles = options.profiles;
         this.templates = options.templates;
         this.active = null;
     },
@@ -128,6 +129,16 @@ var MainWindowView = Backbone.View.extend({
             el: this.$el.find("#page_settings"),
             router: this.router,
             config: this.models.config,
+            templates:this.templates
+        });
+        this.subpages.bitprofile = new BitprofilePageView
+        ({
+            filesystem:this.models.filesystem,
+            accounts:this.accounts,
+            fee: this.models.fee,
+            profiles:this.models.profiles,
+            el:this.$el.find("#page_bitprofile"),
+            router:this.router,
             templates:this.templates
         });
         this.subpages["default"] = this.subpages.receive;

@@ -288,9 +288,15 @@
 	pointer-events: none;
 }
 
+.page .input.bitprofileID {
+	width: 145px;
+    float: left;
+    margin-left: 2px;
+}
+
 .page .input.bitprofileID input {
 	padding-left: 35px;
-	width: 205px;
+	width: 120px;
 }
 
 .page .input.bitprofileID:after {

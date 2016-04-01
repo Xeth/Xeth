@@ -26,6 +26,7 @@
         <file>js/model/FeeEstimator.js</file>
         <file>js/model/EventListener.js</file>
         <file>js/model/Config.js</file>
+        <file>js/model/Bitprofile.js</file>
 
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>
@@ -45,5 +46,12 @@
         <file>js/view/SettingsPage.js</file>
         <file>js/view/AddressBookPage.js</file>
         <file>js/view/ChangePasswordPage.js</file>
+        <file>js/view/BitprofilePage.js</file>
+        <file>js/view/BitprofileViewPage.js</file>
+        <file>js/view/BitprofileImportPage.js</file>
+        <file>js/view/BitprofileExportPage.js</file>
+        <file>js/view/BitprofileFormView.js</file>
+        <file>js/view/BitprofileCreatePage.js</file>
+        <file>js/view/BitprofileEditPage.js</file>
     </qresource>
 </RCC>

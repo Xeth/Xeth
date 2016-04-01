@@ -50,6 +50,10 @@
 	background-repeat: no-repeat;
 	background-position: 10px -350px;
 }
+
+.mainNav .profile.active {
+	pointer-events: none;
+}
 /*
 .mainNav .profile {
 	line-height: 62px;
