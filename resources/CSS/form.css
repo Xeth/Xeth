@@ -12,6 +12,9 @@
 .innerpage .formpage {
 	width:580px;
 }
+.navpage .innerpage .formpage {
+	width:250px;
+}
 
 .page .formpage.waiting {
 	pointer-events: none;
@@ -402,6 +405,10 @@
 .innerpage .formpage .submit {
 	bottom: 60px;
 	width:580px;
+}
+.navpage .innerpage .formpage .submit {
+	bottom: 10px;
+	width:250px;
 }
 .subpage .formpage .submit input[type=password] {
 	margin-bottom:30px;
