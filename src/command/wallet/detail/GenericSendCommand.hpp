@@ -7,6 +7,7 @@
 #include <QVariant>
 
 #include "database/DataBase.hpp"
+#include "database/TransactionObjectBuilder.hpp"
 #include "types/BigInt.hpp"
 
 #include "AddressValidator.hpp"

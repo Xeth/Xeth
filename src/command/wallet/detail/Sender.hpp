@@ -10,7 +10,7 @@
 #include "types/StealthKey.hpp"
 #include "types/EthereumKey.hpp"
 
-#include "TransactionObjectBuilder.hpp"
+#include "database/TransactionObjectBuilder.hpp"
 
 namespace Xeth{
 
