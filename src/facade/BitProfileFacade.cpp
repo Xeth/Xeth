@@ -64,5 +64,11 @@ QVariant BitProfileFacade::exportProfile(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant BitProfileFacade::importProfile(const QString &path)
+{
+    ImportProfileCommand command(_provider, _database);
+    return _invoker.invoke(command, path);
+}
+
 
 }
