@@ -23,7 +23,7 @@ template<class Iterator>
 QVariant ListRegistrarsCommand::makeList(Iterator begin, Iterator end, size_t limit)
 {
     QStringList result;
-    for(size_t i=0; begin!=end, i<limit; ++i, ++begin)
+    for(size_t i=0; begin!=end && i<limit; ++i, ++begin)
     {
         result.append(begin->toString().c_str());
     }
