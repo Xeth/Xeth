@@ -40,10 +40,38 @@ QVariant EstimateProfileOperationCommand::operator()(const QVariantMap &request)
     {
         return estimateMove(request);
     }
-
-    return QVariant::fromValue(false);
+    else
+    {
+        return QVariant::fromValue(false);
+    }
 }
 
+
+QVariant EstimateProfileOperationCommand::makeFeeObject(const BigInt &gas, const QVariantMap &request)
+{
+    Ethereum::Connector::GasEstimator estimator(_provider);
+    BigInt price = estimator.getPrice();
+    if(request.contains("factor"))
+    {
+        size_t factor = request["factor"].toInt();
+        if(factor==0)
+        {
+            price = 0;
+        }
+        else
+        {
+            price *= factor;
+            price /= 100;
+        }
+    }
+    QVariantMap result;
+
+    BigInt fee = gas * price;
+    result["gas"] = gas.str().c_str();
+    result["fee"] = fee.str().c_str();
+    result["price"] = price.str().c_str();
+    return result;
+}
 
 
 QVariant EstimateProfileOperationCommand::estimateRegister(const QVariantMap &request)
@@ -59,18 +87,18 @@ QVariant EstimateProfileOperationCommand::estimateRegister(const QVariantMap &re
         return QVariant::fromValue(false);
     }
 
-    return QString(_estimator.estimateRegister(registrar, request["name"].toString().toStdString()).str().c_str());
+    return makeFeeObject(_estimator.estimateRegister(registrar, request["name"].toString().toStdString()), request);
 }
 
 QVariant EstimateProfileOperationCommand::estimateStealthLink(const QVariantMap &request)
 {
     if(!request.contains("uri"))
     {
-        return QString(BigInt(136000).str().c_str());
+        return makeFeeObject(BigInt(136000), request);
     }
     else
     {
-        return estimateEdit(request["uri"].toString(), "payments", request["address"].toString());
+        return makeFeeObject(estimateEdit(request["uri"].toString(), "payments", request["address"].toString()), request);
     }
 }
 
@@ -81,20 +109,20 @@ QVariant EstimateProfileOperationCommand::estimateEdit(const QVariantMap &reques
         return QVariant::fromValue(false);
     }
 
-    return estimateEdit(request["uri"].toString(), request["key"].toString(), request["value"].toString());
+    return makeFeeObject(estimateEdit(request["uri"].toString(), request["key"].toString(), request["value"].toString()), request);
 }
 
-QVariant EstimateProfileOperationCommand::estimateEdit(const QString &uri, const QString &key, const QString &value)
+BigInt EstimateProfileOperationCommand::estimateEdit(const QString &uri, const QString &key, const QString &value)
 {
     BitProfileStore::Iterator it = _store.find(uri);
     if(it==_store.end())
     {
-        return QVariant::fromValue(false);
+        return BigInt(0);
     }
 
     BitProfile::ProfileAdministrator admin = BitProfile::ProfileAdministrator::FromDescriptor(_provider, *it);
 
-    return QString(_estimator.estimateEdit(admin, key.toStdString(), value.toStdString()).str().c_str());
+    return _estimator.estimateEdit(admin, key.toStdString(), value.toStdString());
 }
 
 QVariant EstimateProfileOperationCommand::estimateMove(const QVariantMap &request)
@@ -121,7 +149,7 @@ QVariant EstimateProfileOperationCommand::estimateMove(const QVariantMap &reques
     BigInt gas = _estimator.estimateUnlink(_resolver.lookupRegistrar(admin.getProfile().getURI().getContext()), admin);
     gas += _estimator.estimateLink(registrar, admin, request["name"].toString().toStdString());
 
-    return QString(gas.str().c_str());
+    return makeFeeObject(gas, request);
 }
 
 
