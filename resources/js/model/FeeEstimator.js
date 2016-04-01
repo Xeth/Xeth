@@ -12,12 +12,16 @@ var FeeEstimator = function(){
         {
             return false;
         }
+        return this.parseFee(result);
+    };
+
+    this.parseFee = function(result){
         result["fee"] = XETH_convert.fromWei(result["fee"]);
         return result;
     };
 
     this.estimateCreateProfile = function(context, name, factor){
-        return XETH_bitprofile.estimate({operation:"create", name:name, context:context, factor:factor});
+        return this.parseFee(XETH_bitprofile.estimate({operation:"register", name:name, context:context, factor:factor}));
     };
     
     this.estimateStealthLink = function(uri, stealth, factor){
@@ -27,14 +31,14 @@ var FeeEstimator = function(){
             request.uri = uri;
             request.stealth = stealth;
         }
-        return XETH_bitprofile.estimate(request);
+        return this.parseFee(XETH_bitprofile.estimate(request));
     };
 
     this.estimateEdit = function(uri, key, value, factor){
-        return XETH_bitprofile.estimate({operation:"edit", factor:factor, uri:uri, key:key, value:value});
+        return this.parseFee(XETH_bitprofile.estimate({operation:"edit", factor:factor, uri:uri, key:key, value:value}));
     };
 
     this.estimateMoveProfile = function(uri, context, name){
-        return XETH_bitprofile.estimate({operation:"move", uri:uri, context:context, name:name});
+        return this.parseFee(XETH_bitprofile.estimate({operation:"move", uri:uri, context:context, name:name}));
     };
 }
