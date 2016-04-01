@@ -165,6 +165,19 @@ bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::ge
 
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::contains(const Key &key) const
+{
+    std::string data;
+    leveldb::Status status = _db->Get(leveldb::ReadOptions(), makeKey(key), &data);
+    if(!status.ok())
+    {
+        return false;
+    }
+    return true;
+}
+
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
 bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::insert(const Key &key, const Value &value)
 {
     return insert(makeKey(key), makeValue(value).c_str());

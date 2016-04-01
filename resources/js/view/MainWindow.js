@@ -21,6 +21,7 @@ var MainWindowView = Backbone.View.extend({
         this.models.addressValidator = options.addressValidator;
         this.models.fee = options.fee;
         this.models.events = options.events;
+        this.models.config = options.config;
         this.templates = options.templates;
         this.active = null;
     },
@@ -86,6 +87,8 @@ var MainWindowView = Backbone.View.extend({
         ({
             accounts:this.accounts,
             clipboard: this.models.clipboard,
+            router: this.router,
+            addressbook: this.models.addressbook,
             transactions:this.models.transactions,
             el:this.$el.find("#page_transactions"),
             templates:this.templates
@@ -122,8 +125,9 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.settings = new SettingsPageView
         ({
-            el:this.$el.find("#page_settings"),
-            router:this.router,
+            el: this.$el.find("#page_settings"),
+            router: this.router,
+            config: this.models.config,
             templates:this.templates
         });
         this.subpages["default"] = this.subpages.receive;

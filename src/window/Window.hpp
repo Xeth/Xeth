@@ -13,6 +13,7 @@
 #include <QCoreApplication>
 #include <QAction>
 #include <QMenu>
+#include <QCloseEvent>
 
 
 #include "facade/Facade.hpp"
@@ -36,20 +37,35 @@ class Window : public QWebView
         void setUrl(const char *);
         void setIcon(const char *);
 
+
     private:
         Window(const Window &);
+        void showTray();
+        void hideTray();
+        void initConfig();
+        void initConfigOpt(const char *, bool &, bool);
 
     private slots:
+        void close();
         void initObjects();
         void loadTemplates();
         void toggle();
         void notifyTransaction(const QVariantMap &);
+        void changeEvent(QEvent* );
+        void closeEvent(QCloseEvent *event);
+        void updateConfig(const QString &key, const QString &value);
 
     private:
+        bool _showTrayOpt;
+        bool _minimizeToTrayOpt;
+        bool _closeToTrayOpt;
+        bool _closing;
+        Facade &_facade;
         FrameContextBuilder _contextBuilder;
-        ConverterFacade &_converter;
         QSystemTrayIcon *_trayIcon;
         QMenu *_trayMenu;
+        QAction *_activateAction;
+        QAction *_quitAction;
 
 };
 

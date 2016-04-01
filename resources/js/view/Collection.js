@@ -2,26 +2,26 @@ var ListView = Backbone.View.extend({
     initialize:function(options){
         _(this).bindAll("setScroll","reset","append","prepend","resize","hide","show");
         if(options.scroll){
-			this.setScroll(options.scroll);
+            this.setScroll(options.scroll);
         }
         this.container = this.$el;
     },
-	setScroll:function(data){
-		var scrollPage = ((data.scrollPage)? data.scrollPage : this.$el);
-		var scrollbar = {	advanced:{updateOnContentResize:true},
-							scrollButtons:{enable:true},
-							theme:"light-thick",
-							scrollbarPosition:"outside",
-							scrollInertia:200
-						};
-		if(data.step){
-			scrollbar.scrollButtons.scrollType="stepped";
-			scrollbar.keyboard={scrollType:"stepped"};
-			scrollbar.mouseWheel={scrollAmount:data.step};
-			scrollbar.snapAmount=data.step;
-		}
-		this.scroll = scrollPage.mCustomScrollbar(scrollbar);
-	},
+    setScroll:function(data){
+        var scrollPage = ((data.scrollPage)? data.scrollPage : this.$el);
+        var scrollbar = {   advanced:{updateOnContentResize:true},
+                            scrollButtons:{enable:true},
+                            theme:"light-thick",
+                            scrollbarPosition:"outside",
+                            scrollInertia:200
+                        };
+        if(data.step){
+            scrollbar.scrollButtons.scrollType="stepped";
+            scrollbar.keyboard={scrollType:"stepped"};
+            scrollbar.mouseWheel={scrollAmount:data.step};
+            scrollbar.snapAmount=data.step;
+        }
+        this.scroll = scrollPage.mCustomScrollbar(scrollbar);
+    },
     reset:function(data){
         this.container.html("");
         if(data!=undefined){
@@ -171,16 +171,20 @@ var CollectionView = Backbone.View.extend({
         }
         this.items = {};
         this.collection.each(this.emplace);
+        this.trigger("reset");
     },
 
     add:function(model){
-        this.container.append(this.register(this.create(model)).$el);
+        var view = this.register(this.create(model));
+        this.container.append(view.$el);
+        this.trigger("add", view);
     },
 
     insert:function(model){
         var indx = this.collection.indexOf(model);
         var view = this.register(this.create(model));
         this.container.insert(view.$el, indx);
+        this.trigger("add", view);
     },
 
     focusLast:function(){
@@ -210,6 +214,7 @@ var CollectionView = Backbone.View.extend({
         var view = this.items[model.cid];
         if(view!=undefined){
             delete this.items[model.cid];
+            this.trigger("remove", view);
             view.unbind();
             view.$el.addClass("off");
             setTimeout(function(){

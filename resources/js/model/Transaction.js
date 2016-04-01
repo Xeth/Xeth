@@ -1,9 +1,24 @@
 var Transaction = Backbone.Model.extend({
 
+    initialize:function(){
+        _(this).bindAll("bindContact", "unbindContact");
+    },
+
+    unbindContact:function(){
+        this.contact = undefined;
+    },
+
+    bindContact:function(contact){
+        var old = this.contact;
+        this.contact = contact;
+        contact.on("destroy", this.unbindContact);
+        this.trigger("change:contact", contact, old);
+    },
+
     toJSON:function(){
         var obj = Backbone.Model.prototype.toJSON.call(this);
-        if(this.get("contact")){
-            obj.contact = Backbone.Model.prototype.toJSON.call(this.get("contact"));
+        if(this.contact){
+            obj.contact = this.contact.toJSON();
         }
         return obj;
     }
@@ -38,6 +53,7 @@ var TransactionCollection = Backbone.Collection.extend({
     },
 
     model: function(data){
+        console.log("creating model !!!!");
         data.amount = parseFloat(XETH_convert.fromWei(data.amount));
         data.timestamp = parseInt(data.timestamp) * 1000;
         if(data.amount<0.00000001) data.amount = 0;

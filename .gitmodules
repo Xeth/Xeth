@@ -13,3 +13,6 @@
 [submodule "cmake/modules"]
 	path = cmake/modules
 	url = https://github.com/BitProfile/cmake-modules.git
+[submodule "libbitprofile"]
+	path = libbitprofile
+	url = https://github.com/BitProfile/libbitprofile.git

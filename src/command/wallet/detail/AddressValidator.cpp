@@ -1,6 +1,4 @@
-
 #include "AddressValidator.hpp"
-
 
 namespace Xeth{
 

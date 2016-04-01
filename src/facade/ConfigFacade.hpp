@@ -23,8 +23,8 @@ class ConfigFacade : public QObject
     public:
         ConfigFacade(DataBase &, Notifier &);
 
-        QVariant set(const QVariantMap &);
-        QVariant get(const QString &);
+        Q_INVOKABLE QVariant set(const QVariantMap &);
+        Q_INVOKABLE QVariant get(const QString &);
 
 
     private:

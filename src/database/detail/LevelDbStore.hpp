@@ -63,6 +63,7 @@ class LevelDbStore
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;
 
+        bool contains(const Key &) const;
         bool get(const Key &, Value &) const;
         Value get(const Key &) const;
 
