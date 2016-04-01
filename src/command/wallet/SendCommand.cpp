@@ -22,10 +22,10 @@ QVariant SendCommand::operator()(const QVariantMap &request)
     if(addrSize==40||addrSize==42)
     {
         SendToAddressCommand command(_provider, _database);
-        return send(command, from, to, password, amount, gas, price, strict);
+        return send(command, from, to, password, amount, gas, price, request["logs"], strict);
     }
     SendToStealthCommand command(_provider, _database);
-    return send(command, from, to, password, amount, gas, price, strict);
+    return send(command, from, to, password, amount, gas, price, request["logs"], strict);
 
 }
 
@@ -40,15 +40,16 @@ QVariant SendCommand::send
     const BigInt &amount,
     const QVariant &gas,
     const QVariant &price,
+    const QVariant &logs,
     bool strict
 )
 {
     if(gas.isNull()||price.isNull())
     {
-        return command(from, to, password, amount, strict);
+        return command(from, to, password, amount, logs, strict);
     }
 
-    return command(from, to, password, amount, BigInt(gas.toString().toStdString()), BigInt(price.toString().toStdString()), strict);
+    return command(from, to, password, amount, BigInt(gas.toString().toStdString()), BigInt(price.toString().toStdString()), logs, strict);
 }
 
 

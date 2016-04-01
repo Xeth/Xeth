@@ -31,6 +31,7 @@ class GenericSendCommand
             const std::string &to,
             const std::string &password,
             const BigInt &amount,
+            const QVariant &logs,
             bool strict = true
         );
         QVariant operator()
@@ -41,13 +42,14 @@ class GenericSendCommand
             const BigInt &amount,
             const BigInt &gas,
             const BigInt &price,
+            const QVariant &logs,
             bool strict = true
         );
 
     private:
         bool validateDestination(const std::string &, bool strict);
         bool unlockSender(const std::string &, const std::string &, const BigInt &);
-        QVariant send(const std::string &from, const std::string &to, const std::string &password, const BigInt &amount, bool strict);
+        QVariant send(const std::string &from, const std::string &to, const std::string &password, const BigInt &amount, const QVariant &logs, bool strict);
 
     private:
         Ethereum::Connector::Wallet _wallet;

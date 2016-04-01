@@ -22,7 +22,7 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         _sender.setGasLimit(BigInt(request["gas"].toString().toStdString()));
     }
 
-    return send(from, to, password, amount, strict);
+    return send(from, to, password, amount, request["logs"], strict);
 
 }
 
@@ -33,6 +33,7 @@ QVariant GenericSendCommand<Sender, Validator>::send
     const std::string &to,
     const std::string &password,
     const BigInt &amount,
+    const QVariant &logs,
     bool strict
 )
 {
@@ -48,6 +49,12 @@ QVariant GenericSendCommand<Sender, Validator>::send
     }
 
     TransactionObjectBuilder builder;
+
+    if(!logs.isNull())
+    {
+        builder.setExtraData(logs.toMap());
+    }
+
     QString txid = _sender(_wallet, builder, from, to, amount).c_str();
     _database.getTransactions().insert(builder.build());
 
@@ -61,12 +68,13 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const std::string &to,
     const std::string &password,
     const BigInt &amount,
+    const QVariant &logs,
     bool strict
 )
 {
     _sender.setGasPrice(0);
     _sender.setGasLimit(0);
-    return send(from, to, password, amount, strict);
+    return send(from, to, password, amount, logs, strict);
 }
 
 
@@ -79,13 +87,14 @@ QVariant GenericSendCommand<Sender, Validator>::operator()
     const BigInt &amount,
     const BigInt &gas,
     const BigInt &price,
+    const QVariant &logs,
     bool strict
 )
 {
     _sender.setGasPrice(price);
     _sender.setGasLimit(gas);
 
-    return send(from, to, password, amount, strict);
+    return send(from, to, password, amount, logs, strict);
 
 }
 
