@@ -23,9 +23,11 @@ class EstimateProfileOperationCommand
         QVariant operator()(const QVariantMap &);
 
     private:
+        QVariant estimateStealthLink(const QVariantMap &);
         QVariant estimateRegister(const QVariantMap &);
         QVariant estimateEdit(const QVariantMap &);
         QVariant estimateMove(const QVariantMap &);
+        QVariant estimateEdit(const QString &uri, const QString &key, const QString &value);
 
     private:
         Ethereum::Connector::Provider &_provider;

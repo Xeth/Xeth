@@ -26,6 +26,11 @@ QVariant EstimateProfileOperationCommand::operator()(const QVariantMap &request)
         return estimateRegister(request);
     }
     else
+    if(op=="stealth")
+    {
+        return estimateStealthLink(request);
+    }
+    else
     if(op=="edit")
     {
         return estimateEdit(request);
@@ -57,6 +62,17 @@ QVariant EstimateProfileOperationCommand::estimateRegister(const QVariantMap &re
     return QString(_estimator.estimateRegister(registrar, request["name"].toString().toStdString()).str().c_str());
 }
 
+QVariant EstimateProfileOperationCommand::estimateStealthLink(const QVariantMap &request)
+{
+    if(!request.contains("uri"))
+    {
+        return QString(BigInt(136000).str().c_str());
+    }
+    else
+    {
+        return estimateEdit(request["uri"].toString(), "payments", request["address"].toString());
+    }
+}
 
 QVariant EstimateProfileOperationCommand::estimateEdit(const QVariantMap &request)
 {
@@ -65,7 +81,12 @@ QVariant EstimateProfileOperationCommand::estimateEdit(const QVariantMap &reques
         return QVariant::fromValue(false);
     }
 
-    BitProfileStore::Iterator it = _store.find(request["uri"].toString());
+    return estimateEdit(request["uri"].toString(), request["key"].toString(), request["value"].toString());
+}
+
+QVariant EstimateProfileOperationCommand::estimateEdit(const QString &uri, const QString &key, const QString &value)
+{
+    BitProfileStore::Iterator it = _store.find(uri);
     if(it==_store.end())
     {
         return QVariant::fromValue(false);
@@ -73,10 +94,7 @@ QVariant EstimateProfileOperationCommand::estimateEdit(const QVariantMap &reques
 
     BitProfile::ProfileAdministrator admin = BitProfile::ProfileAdministrator::FromDescriptor(_provider, *it);
 
-    std::string key = request["key"].toString().toStdString();
-    std::string value = request["value"].toString().toStdString();
-
-    return QString(_estimator.estimateEdit(admin, key, value).str().c_str());
+    return QString(_estimator.estimateEdit(admin, key.toStdString(), value.toStdString()).str().c_str());
 }
 
 QVariant EstimateProfileOperationCommand::estimateMove(const QVariantMap &request)
