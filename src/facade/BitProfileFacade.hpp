@@ -17,6 +17,7 @@
 #include "command/bitprofile/ResolvePaymentAddressCommand.hpp"
 #include "command/bitprofile/ExportProfileCommand.hpp"
 #include "command/bitprofile/ImportProfileCommand.hpp"
+#include "command/bitprofile/GetProfileDataCommand.hpp"
 
 
 namespace Xeth{
@@ -37,6 +38,7 @@ class BitProfileFacade : public QObject
         Q_INVOKABLE QVariant resolvePaymentAddress(const QString &);
         Q_INVOKABLE QVariant exportProfile(const QVariantMap &);
         Q_INVOKABLE QVariant importProfile(const QString &);
+        Q_INVOKABLE QVariant getData(const QVariantMap &);
 
 
     private:

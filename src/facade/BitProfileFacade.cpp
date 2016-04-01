@@ -71,4 +71,10 @@ QVariant BitProfileFacade::importProfile(const QString &path)
 }
 
 
+QVariant BitProfileFacade::getData(const QVariantMap &request)
+{
+    GetProfileDataCommand command(_provider, _settings);
+    return _invoker.invoke(command, request);
+}
+
 }
