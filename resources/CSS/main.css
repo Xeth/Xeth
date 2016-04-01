@@ -70,6 +70,11 @@ p {
 	display:none;
 }
 
+.readonly {
+	pointer-events:none;
+    opacity: 0.6;
+}
+
 .bitprofileIcon {
 	background-image: url(../img/icons-01.png);
 	background-repeat: no-repeat;

@@ -13,7 +13,7 @@
 
 
 <div class="mainNav menu">
-    <a class="profile myProfile" href="javascript:void(0)" page="page_bitprofile">BitProfile</a>
+    <a class="profile bitprofile" href="javascript:void(0)" page="page_bitprofile" rel="bitprofile">BitProfile</a>
     <ul class="nav">
         <li class="send"><a page="page_send">send</a></li>
         <li class="receive"><a page="page_receive">receive</a></li>
@@ -40,5 +40,4 @@
 </div>
 
 <div class="subnavBg"></div>
-
 

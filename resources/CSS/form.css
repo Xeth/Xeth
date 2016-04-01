@@ -12,6 +12,9 @@
 .innerpage .formpage {
 	width:580px;
 }
+.navpage .innerpage .formpage {
+	width:250px;
+}
 
 .page .formpage.waiting {
 	pointer-events: none;
@@ -285,9 +288,15 @@
 	pointer-events: none;
 }
 
+.page .input.bitprofileID {
+	width: 145px;
+    float: left;
+    margin-left: 2px;
+}
+
 .page .input.bitprofileID input {
 	padding-left: 35px;
-	width: 205px;
+	width: 120px;
 }
 
 .page .input.bitprofileID:after {
@@ -402,6 +411,10 @@
 .innerpage .formpage .submit {
 	bottom: 60px;
 	width:580px;
+}
+.navpage .innerpage .formpage .submit {
+	bottom: 10px;
+	width:250px;
 }
 .subpage .formpage .submit input[type=password] {
 	margin-bottom:30px;

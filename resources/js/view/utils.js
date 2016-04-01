@@ -29,3 +29,25 @@ function notifyError(msg){
 function notifySuccess(msg){
     notie.alert(1, msg, 5.0);
 }
+
+function feeWarning(callback){
+    notie.confirm('<span class="title warning">WARNING!</span>'+
+      'Fee is too low!<br>'+
+      'Transaction may not be mined or even propagated<br>'+
+      '<span class="question">Are you sure you want to send it?<span>', 
+      'Yes, Send it anyway', 
+      'No, I will change fee', 
+     callback);
+}
+
+
+function combineFee(results){
+    var result = {gas:0, price:0, fee:0};
+    for(var i in results){
+        result.gas += parseInt(results[i].gas);
+        result.price += Number(results[i].price);
+        result.fee += Number(results[i].fee);
+    }
+    result.fee = result.fee.toString();
+    return result;
+}

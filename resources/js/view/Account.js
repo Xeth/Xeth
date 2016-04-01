@@ -158,6 +158,7 @@ var AccountSelect = Backbone.View.extend({
 
     attach:function(dom){
         this.$el.appendTo(dom);
+        this.readonly(false);
     },
 
     filter:function(callback){
@@ -202,6 +203,15 @@ var AccountSelect = Backbone.View.extend({
 
     selected:function(){
         return this.active.model;
+    },
+    selectedView:function(){
+        return this.active;
+    },
+    detach:function(){
+        this.$el.detach();
+    },
+    readonly:function(enable){
+        this.$el.toggleClass("readonly",enable);
     }
 
 });

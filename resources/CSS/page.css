@@ -50,6 +50,10 @@
 	background-repeat: no-repeat;
 	background-position: 10px -350px;
 }
+
+.mainNav .profile.active {
+	pointer-events: none;
+}
 /*
 .mainNav .profile {
 	line-height: 62px;
@@ -98,7 +102,7 @@
 	background-image: url(../img/menu_bg-01.png);
 	background-position: 0px 0px;	
 	background-repeat: repeat-y;
-	transition: all 100ms ease-in-out;
+	transition: background-color 100ms ease-in-out, margin-left 100ms ease-in-out;
 	/*margin-left: 240px;*/
 	width: 100%;
 	margin-left: 100%;
@@ -138,7 +142,7 @@
 	margin-left: -moz-calc(100% - 16px);
 	margin-left: -webkit-calc(100% - 16px);
 	margin-left: calc(100% - 16px);
-	transition: all 200ms ease-in-out;
+	transition: background-color 200ms ease-in-out, margin-left 200ms ease-in-out;
 }
 
 .nav li.active,
@@ -163,7 +167,7 @@
 	background-image: url(../img/menu_icons-01.png);
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
-	transition: background 600ms ease-in-out, margin-left 100ms ease-in-out;
+	transition: background-color 600ms ease-in-out, margin-left 100ms ease-in-out;
 	/*margin-left: -240px;*/
 	margin-left: -100%;
 	cursor: pointer;
@@ -176,7 +180,7 @@
 	margin-left: -moz-calc(-100% + 16px);
 	margin-left: -webkit-calc(-100% + 16px);
 	margin-left: calc(-100% + 16px);
-	transition: all 200ms ease-in-out;
+	transition: background-color 200ms ease-in-out, margin-left 200ms ease-in-out;
 }
 
 .nav li a .new {
@@ -333,6 +337,10 @@
 	bottom:60px;
 	left:0;
 	right:0;
+}
+
+.navpage .innerpage {
+    bottom: 0;
 }
 
 .page.navpage {

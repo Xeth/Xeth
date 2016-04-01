@@ -17,6 +17,7 @@ var AddressBookSimulator = AddressBook.extend({
 
     create:function(data){
         var model = this.model(data);
+        if(!model.save()) return false;
         this.add(model);
         return true;
     },
