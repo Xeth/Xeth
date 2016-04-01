@@ -45,7 +45,7 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     create:function(data){
-        XETH_bitprofile.createProfile(data);
+        return XETH_bitprofile.createProfile(data);
     },
     
     importKey:function(path){
