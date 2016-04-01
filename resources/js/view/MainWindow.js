@@ -33,7 +33,7 @@ var MainWindowView = Backbone.View.extend({
         }
         var view =  this.subpages[name];
         if(view!=undefined){
-            if(this.active) this.active.hide();
+            if(this.active && this.active!=view) this.active.hide();
             this.active = view;
             this.menu.setCursor(this.menuAlias[name]||name);
             view.show(args);
