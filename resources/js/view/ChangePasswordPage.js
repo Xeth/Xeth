@@ -32,7 +32,6 @@ var ChangePasswordPageView = SubPageView.extend({
             return false;
         }
 
-
         var model = this.accounts.selected();
         if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
@@ -40,6 +39,9 @@ var ChangePasswordPageView = SubPageView.extend({
             return false;
         }
         notifySuccess("password changed");
+        newPassword.val("");
+        repeatPassword.val("");
+        oldPassword.val("");
         this.router.redirect(); //go to default page
         return true;
     }
