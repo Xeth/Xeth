@@ -36,7 +36,7 @@
 <script type="text/javascript" src="js/vendor/notie.min.js"></script>
 <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
-
+    
 <script type="text/javascript" src="js/model/Account.js"></script>
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
@@ -77,6 +77,7 @@
 <script type="text/javascript" src="simulator/model/EventListener.js"></script>
 <script type="text/javascript" src="simulator/model/Bitprofile.js"></script>
 <script type="text/javascript" src="simulator/model/Fee.js"></script>
+<script type="text/javascript" src="simulator/model/Config.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     
@@ -121,7 +122,7 @@ $(document).ready(function(){
 	
     setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 8000);
 	
-    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator});
+    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator});
     setTimeout(function(){
         view.render();
     },1000);
