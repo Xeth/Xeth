@@ -10,58 +10,58 @@
 #include "types/StealthKey.hpp"
 #include "types/EthereumKey.hpp"
 
-#include "database/DataBase.hpp"
+#include "TransactionObjectBuilder.hpp"
 
 namespace Xeth{
 
-class AddressSender
+
+class Sender
 {
     public:
-        std::string operator()
+        void setGasLimit(const BigInt &gas);
+        void setGasPrice(const BigInt &gas);
+
+    protected:
+        inline std::string send
         (
             Ethereum::Connector::Wallet &,
-            DataBase &,
+            TransactionObjectBuilder &,
             const std::string &from,
             const std::string &to,
             const BigInt &amount
         );
 
+    private:
+        BigInt _gas;
+        BigInt _price;
+};
+
+
+class AddressSender : public Sender
+{
+    public:
         std::string operator()
         (
             Ethereum::Connector::Wallet &,
-            DataBase &,
+            TransactionObjectBuilder &,
             const std::string &from,
             const std::string &to,
-            const BigInt &amount,
-            const BigInt &gas,
-            const BigInt &price
+            const BigInt &amount
         );
 
 };
 
-class StealthSender
+class StealthSender : public Sender
 {
     public:
         std::string operator()
         (
             Ethereum::Connector::Wallet &,
-            DataBase &,
+            TransactionObjectBuilder &,
             const std::string &from,
             const std::string &to,
             const BigInt &amount
         );
-
-        std::string operator()
-        (
-            Ethereum::Connector::Wallet &,
-            DataBase &,
-            const std::string &from,
-            const std::string &to,
-            const BigInt &amount,
-            const BigInt &gas,
-            const BigInt &price
-        );
-
 };
 
 }

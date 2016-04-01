@@ -3,17 +3,28 @@
 namespace Xeth{
 
 
-std::string AddressSender::operator()
+void Sender::setGasLimit(const BigInt &gas)
+{
+    _gas = gas;
+}
+
+void Sender::setGasPrice(const BigInt &price)
+{
+    _price = price;
+}
+
+
+std::string Sender::send
 (
     Ethereum::Connector::Wallet &wallet,
-    DataBase &database,
+    TransactionObjectBuilder &builder,
     const std::string &from,
     const std::string &to,
     const BigInt &amount
 )
 {
-    std::string txid = wallet.sendTransaction(from, to, amount);
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, amount, time(NULL));
+    std::string txid = (_gas>0 && _price>0) ? wallet.sendTransaction(from, to, amount) :  wallet.sendTransaction(from, to, amount, _gas, _price);
+    builder.setDetails(txid, TransactionCategory::Sent, from, to, amount, time(NULL));
     return txid;
 }
 
@@ -21,24 +32,20 @@ std::string AddressSender::operator()
 std::string AddressSender::operator()
 (
     Ethereum::Connector::Wallet &wallet,
-    DataBase &database,
+    TransactionObjectBuilder &builder,
     const std::string &from,
     const std::string &to,
-    const BigInt &amount,
-    const BigInt &gas,
-    const BigInt &price
+    const BigInt &amount
 )
 {
-    std::string txid = wallet.sendTransaction(from, to, amount, gas, price);
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, to, amount, time(NULL));
-    return txid;
+    return send(wallet, builder, from, to, amount);
 }
 
 
 std::string StealthSender::operator()
 (
     Ethereum::Connector::Wallet &wallet,
-    DataBase &database,
+    TransactionObjectBuilder &txBuilder,
     const std::string &from,
     const std::string &to,
     const BigInt &amount
@@ -46,39 +53,16 @@ std::string StealthSender::operator()
 {
     Ethereum::PublicKeySerializer serializer;
     Ethereum::Stealth::Address address = Ethereum::Stealth::Address::FromString(to);
-    Ethereum::Stealth::PaymentAddressBuilder builder(address);
-    Ethereum::Stealth::PaymentAddress paymentAddr = builder.build();
+    Ethereum::Stealth::PaymentAddressBuilder addrBuilder(address);
+    Ethereum::Stealth::PaymentAddress paymentAddr = addrBuilder.build();
 
     std::string data =  serializer.serialize(paymentAddr.getEphemPublicKey());
     std::string destination = paymentAddr.getAddresses()[0].toString();
-    std::string txid = wallet.sendTransaction(from, destination, amount, data);
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, destination, address, amount, time(NULL));
-    return txid;
+
+    txBuilder.setStealth(address);
+    return send(wallet, txBuilder, from, destination, amount);
 }
 
-std::string StealthSender::operator()
-(
-    Ethereum::Connector::Wallet &wallet,
-    DataBase &database,
-    const std::string &from,
-    const std::string &to,
-    const BigInt &amount,
-    const BigInt &gas,
-    const BigInt &price
-)
-{
-
-    Ethereum::PublicKeySerializer serializer;
-    Ethereum::Stealth::Address address = Ethereum::Stealth::Address::FromString(to);
-    Ethereum::Stealth::PaymentAddressBuilder builder(address);
-    Ethereum::Stealth::PaymentAddress paymentAddr = builder.build();
-
-    std::string data =  serializer.serialize(paymentAddr.getEphemPublicKey());
-    std::string destination = paymentAddr.getAddresses()[0].toString();
-    std::string txid = wallet.sendTransaction(from, destination, amount, data, gas, price);
-    database.getTransactions().insert(TransactionCategory::Sent, txid, from, destination, address, amount, time(NULL));
-    return txid;
-}
 
 
 }
