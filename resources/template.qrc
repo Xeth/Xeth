@@ -15,5 +15,10 @@
         <file>template/export.tpl</file>
         <file>template/import.tpl</file>
         <file>template/settings.tpl</file>
+        <file>template/profile_item.tpl</file>
+        <file>template/bitprofile.tpl</file>
+        <file>template/import_bitprofile.tpl</file>
+        <file>template/bitprofile_form.tpl</file>
+        <file>template/view_bitprofile.tpl</file>
     </qresource>
 </RCC>
