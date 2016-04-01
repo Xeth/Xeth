@@ -24,10 +24,8 @@ QVariant CreateProfileCommand::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    if(request.contains("price"))
-    {
-        registrar.setGasPrice(BigInt(request["price"].toString().toStdString()));
-    }
+    registrar.setGasPrice(BigInt(request.contains("price") ? request["price"].toString().toStdString(): "0"));
+    registrar.setGasLimit(BigInt(request.contains("gas") ? request["gas"].toString().toStdString() : "0"));
 
     CreateProfileAction * action = CreateProfileAction::Create(CreateProfileOperation
     (

@@ -23,6 +23,7 @@ class MoveProfileOperation
             const BitProfile::Registrar &,
             const QString &name,
             const QString &password,
+            const BigInt &gas,
             Notifier &
         );
 
@@ -34,6 +35,7 @@ class MoveProfileOperation
         BitProfile::Registrar _registrar;
         QString _name;
         QString _password;
+        BigInt _gas;
         Notifier &_notifier;
 };
 

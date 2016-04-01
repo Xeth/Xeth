@@ -11,6 +11,7 @@ MoveProfileOperation::MoveProfileOperation
     const BitProfile::Registrar &registrar,
     const QString &name,
     const QString &password,
+    const BigInt &gas,
     Notifier &notifier
 ) : 
     _admin(admin),
@@ -18,6 +19,7 @@ MoveProfileOperation::MoveProfileOperation
     _registrar(registrar),
     _name(name),
     _password(password),
+    _gas(gas),
     _notifier(notifier)
 {}
 
@@ -26,7 +28,7 @@ void MoveProfileOperation::operator()()
     try
     {
         BitProfile::Profile::URI uri = _admin.getProfile().getURI();
-        if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString()))
+        if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString(), _gas))
         {
             _notifier.emitError("failed to move profile");
         }

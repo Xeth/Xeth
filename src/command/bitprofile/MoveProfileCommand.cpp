@@ -35,14 +35,14 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    if(request.contains("price"))
-    {
-        BigInt price(request["price"].toString().toStdString());
-        admin.setGasPrice(price);
-        registrar.setGasPrice(price);
-    }
+    BigInt price(request.contains("price") ? request["price"].toString().toStdString(): "0");
 
-    MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, request["name"].toString(), request["password"].toString(), _notifier));
+    admin.setGasPrice(price);
+    registrar.setGasPrice(price);
+
+    QString name = request["name"].toString();
+    BigInt gas(request.contains("gas")?request["gas"].toString().toStdString():"0");
+    MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, name, request["password"].toString(), gas, _notifier));
     action->run();
     return QVariant::fromValue(true);
 }
