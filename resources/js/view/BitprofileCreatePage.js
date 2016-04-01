@@ -1,6 +1,8 @@
 var BitprofileCreateFee = function(fee){
     this.estimate = function(formData){
-        return combineFee([fee.estimateCreateProfile(formData.context, formData.id, formData.feeFactor), fee.estimateStealthLink(null, null, formData.feeFactor)]);
+        this.createFee = fee.estimateCreateProfile(formData.context, formData.id, formData.feeFactor);
+        this.linkStealthFee = fee.estimateStealthLink(null, null, formData.feeFactor);
+        return combineFee([this.createFee, this.linkStealthFee]);
     }
 }
 
@@ -10,7 +12,7 @@ var BitprofileCreatePageView = SubPageView.extend({
         _(this).bindAll("render", "submit", "clearForm", "submitCreate", "submitStealth");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
-        this.feeModel = options.fee;
+        this.feeModel = new BitprofileCreateFee(options.fee);
         this.form = options.form;
         //this.listenTo(this.profiles, "add", this.added);
     },
@@ -18,7 +20,7 @@ var BitprofileCreatePageView = SubPageView.extend({
     render:function(args){
         if(!this.form.inProgress()) this.form.renderDetailsPage();
         this.form.onSubmit(this.submit);
-        this.form.setFeeModel(new BitprofileCreateFee(this.feeModel));
+        this.form.setFeeModel(this.feeModel);
         this.form.resetForm();
         this.form.attach(this.$el);
     },
@@ -34,7 +36,8 @@ var BitprofileCreatePageView = SubPageView.extend({
 
     submitCreate:function(){
         var request = this.form.getFormData();
-        request.gas = this.feeModel.estimateCreateProfile(request.context, request.id, request.feeFactor);
+        request.gas = this.feeModel.createFee.gas;
+        request.price = this.feeModel.createFee.price;
         if(!this.profiles.create(request)){
             this.form.risePasswordError();
             return false;
@@ -47,7 +50,8 @@ var BitprofileCreatePageView = SubPageView.extend({
     },
     submitStealth:function(){
         var request = this.form.getFormData();
-        request.gas = this.feeModel.estimateStealthLink(request.context+":"+request.id, request.stealth, request.feeFactor);
+        request.gas = this.feeModel.linkStealthFee.gas;
+        request.price = this.feeModel.linkStealthFee.price;
         this.form.setLockMessage("Linking stealth address...");
         var profile = this.profiles.first();
         if(!profile.linkStealthAddress(request)){
