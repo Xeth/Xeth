@@ -305,7 +305,9 @@ label.ui-button:before,
 }
 
 label.ui-button:hover:before,
-.checkbox:hover:before {
+.checkbox:hover:before,
+label.ui-button:focus:before,
+.checkbox:focus:before {
 	background-color: #c1c6c6;
 	background-color: rgba(119, 130, 131, 0.2);
 }
@@ -317,7 +319,8 @@ label.ui-button.ui-state-active:before,
 }
 
 input:disabled,
-.checkbox.disabled
+.checkbox.disabled,
+.ui-button-disabled
 {
     opacity: 0.5;
 }
@@ -334,6 +337,7 @@ input:disabled,
     width: 100% !important;
 }
 
+.input:focus,
 textarea:focus, 
 input[type="text"]:focus,
 input[type="password"]:focus,

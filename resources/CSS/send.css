@@ -43,6 +43,7 @@
 	color: #3D8AAB;
 	background-position-y: -660px;
 }
-.page .formpage.send .btnSubmit.btnSend:hover {
+.page .formpage.send .btnSubmit.btnSend:hover,
+.page .formpage.send .btnSubmit.btnSend:focus {
 	background-position-y: -600px;
 }

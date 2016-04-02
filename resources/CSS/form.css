@@ -217,7 +217,8 @@
 	width: calc(33.333% - 2px);
 }
 
-.page .formpage .btns .btn:hover {
+.page .formpage .btns .btn:hover,
+.page .formpage .btns .btn:focus {
 	background-color: #1c2e30;
 }
 
@@ -226,7 +227,8 @@
 	background-color: rgba(247, 147, 30, 0.4);
 }
 
-.page .formpage .btns .btn.highlight:hover {
+.page .formpage .btns .btn.highlight:hover,
+.page .formpage .btns .btn.highlight:focus {
 	background-color: #F7931E;
 }
 
@@ -376,7 +378,8 @@
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 
-.page .formpage .btnSubmit:hover {
+.page .formpage .btnSubmit:hover,
+.page .formpage .btnSubmit:focus {
 	color: #ffffff !important;
 	background-position-y: -465px;
 	line-height: 58px;
@@ -416,7 +419,8 @@
 	font-size: 0.8em;
 }
 
-.page .formpage .submitCancel:hover {
+.page .formpage .submitCancel:hover,
+.page .formpage .submitCancel:focus {
 	background-color: #1c2e30;
 }
 

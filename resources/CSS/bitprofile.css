@@ -141,7 +141,8 @@
 	color: #F7931E;
 	background-position-y: -794px;
 }
-#page_bitprofile .formpage .btnSubmit:hover {
+#page_bitprofile .formpage .btnSubmit:hover,
+#page_bitprofile .formpage .btnSubmit:focus {
 	background-position-y: -734px;
 }
 

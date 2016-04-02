@@ -16,7 +16,8 @@
 	background-color: rgba(91, 148, 91, 0.4);
 }
 
-.page .formpage.receive .btns .btn.highlight:hover {
+.page .formpage.receive .btns .btn.highlight:hover,
+.page .formpage.receive .btns .btn.highlight:focus {
 	background-color: #5b945b;
 }
 
