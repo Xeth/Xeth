@@ -37,6 +37,13 @@
             <h1>Registration fee:</h1>
             <div id="bitprofileCreateAccountList" class="mandatory"></div>
         </div>
+        
+        <h1 id="bitprofileCreateAccountBalance">
+            Balance:
+            <span class="amount txtBalance">
+                    <span class="int"></span><span class="dec"></span>
+            </span>
+        </h1>
 
         <div class="section_fee" title="fee involves transaction speed">
             <h1><span class="fee"><span class="gas"></span><span class="eth"></span></span></h1>
@@ -60,7 +67,7 @@
 
 </div>
 
-<div class="pending">
+<div class="pendingBox">
     <h1>Registration in progress...</h1>
     <span>Please be patient. This may take a few minutes</span>
 </div>

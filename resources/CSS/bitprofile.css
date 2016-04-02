@@ -120,7 +120,7 @@
 	float:right;
 	margin-right: 0;
 	/*margin-bottom: -5px;*/
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 #page_bitprofile .bitprofileForm .formpage .avatarURL {
 	width: 166px;
@@ -163,18 +163,25 @@
     width: 63px;
     color: #BB874E;
 }
+#bitprofileCreateAccountBalance {
+    margin-top: 10px;
+}
+#bitprofileCreateAccountBalance .amount {
+    float: right;
+}
 
-.bitprofileForm .pending {
+.bitprofileForm .pendingBox {
     pointer-events: none;
     opacity: 0;
     bottom: -40px;
     position: absolute;
+    margin: 0px -30px;
     padding: 20px;
     color: #ffffff;
     font-size: 0.9rem;
     background-color: rgba(247, 147, 30, 0.4);
 }
-.bitprofileForm .pending h1 {
+.bitprofileForm .pendingBox h1 {
     margin-top: 0;
 }
 
@@ -185,12 +192,12 @@
 .bitprofileForm.pending #bitporfileCreate_details .generate {
     display: none;
 }
-.bitprofileForm.pending .pending,
+.bitprofileForm.pending .pendingBox,
 .bitprofileForm.pending #bitporfileCreate_details {
     opacity: 1;
     transition: 300ms opacity 600ms;
 }
 .bitprofileForm.pending #bitporfileCreate_payment {
     opacity: 1;
-    top: 300px;
+    top: 280px;
 }
