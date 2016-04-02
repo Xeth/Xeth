@@ -56,6 +56,7 @@ var MainWindowView = Backbone.View.extend({
             clipboard: this.models.clipboard,
             addressValidator: this.models.addressValidator,
             fee: this.models.fee,
+            resolver: this.models.resolver,
             templates:this.templates
         });
         this.subpages.receive = new ReceivePageView

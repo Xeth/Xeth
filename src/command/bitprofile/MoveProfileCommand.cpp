@@ -14,7 +14,7 @@ MoveProfileCommand::MoveProfileCommand(Ethereum::Connector::Provider &provider, 
 
 QVariant MoveProfileCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("old")||!request.contains("context")||!request.contains("name")||!request.contains("password"))
+    if(!request.contains("old")||!request.contains("context")||!request.contains("id")||!request.contains("password"))
     {
         return QVariant::fromValue(false);
     }
@@ -40,7 +40,7 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
     admin.setGasPrice(price);
     registrar.setGasPrice(price);
 
-    QString name = request["name"].toString();
+    QString name = request["id"].toString();
     BigInt gas(request.contains("gas")?request["gas"].toString().toStdString():"0");
     MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, name, request["password"].toString(), gas, _notifier));
     action->run();

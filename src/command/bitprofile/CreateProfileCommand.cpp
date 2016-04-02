@@ -13,11 +13,10 @@ CreateProfileCommand::CreateProfileCommand(Ethereum::Connector::Provider &provid
 
 QVariant CreateProfileCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("context")||!request.contains("name")||!request.contains("password")||!request.contains("account"))
+    if(!request.contains("context")||!request.contains("id")||!request.contains("password")||!request.contains("account"))
     {
         return QVariant::fromValue(false);
     }
-
     BitProfile::Registrar registrar = _resolver.lookupRegistrar(request["context"].toString().toStdString());
     if(registrar.isNull())
     {
@@ -30,7 +29,7 @@ QVariant CreateProfileCommand::operator()(const QVariantMap &request)
     CreateProfileAction * action = CreateProfileAction::Create(CreateProfileOperation
     (
         registrar, 
-        request["name"].toString(),
+        request["id"].toString(),
         request["account"].toString(),
         request["password"].toString(),
         _store,

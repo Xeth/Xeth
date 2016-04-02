@@ -38,7 +38,7 @@ void Notifier::emitProfileUpdate(const QString &old, const BitProfile::ProfileDe
 {
     QVariantMap event;
     event["oldURI"] = old;
-    event["name"] = descriptor.getName().c_str();
+    event["id"] = descriptor.getName().c_str();
     event["uri"] = descriptor.getURI().c_str();
     event["context"] = descriptor.getContext().c_str();
     emit ProfileUpdate(event);
@@ -47,9 +47,10 @@ void Notifier::emitProfileUpdate(const QString &old, const BitProfile::ProfileDe
 void Notifier::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
 {
     QVariantMap event;
-    event["name"] = descriptor.getName().c_str();
+    event["id"] = descriptor.getName().c_str();
     event["uri"] = descriptor.getURI().c_str();
     event["context"] = descriptor.getContext().c_str();
+    event["account"] = descriptor.getAuthAddress().c_str();
     emit Profile(event);
 }
 
@@ -60,7 +61,26 @@ void Notifier::emitConfig(const QString &name, const QString &value)
 
 void Notifier::emitError(const QString &msg)
 {
-    emit Error(msg);
+    QVariantMap event;
+    event["message"] = msg;
+    emit Error(event);
+}
+
+void Notifier::emitError(const QString &context, const QString &msg)
+{
+    QVariantMap event;
+    event["context"] = context;
+    event["message"] = msg;
+    emit Error(event);
+}
+
+void Notifier::emitObjectError(const QString &context, const QString &uri, const QString &msg)
+{
+    QVariantMap event;
+    event["context"] = context;
+    event["message"] = msg;
+    event["uri"] = uri;
+    emit Error(event);
 }
 
 

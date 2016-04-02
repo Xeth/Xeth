@@ -4,9 +4,9 @@
 namespace Xeth{
 
 
-void TransactionObjectBuilder::setDetails(const std::string &hash, const TransactionCategory &, const std::string &from, const std::string &to, const BigInt &amount, time_t timestamp)
+void TransactionObjectBuilder::setDetails(const std::string &hash, const TransactionCategory &category, const std::string &from, const std::string &to, const BigInt &amount, time_t timestamp)
 {
-    _data.insert("category", TransactionCategory::ToString(TransactionCategory::Received));
+    _data.insert("category", category.toString());
     _data.insert("hash", hash.c_str());
     _data.insert("from",  from.c_str());
     _data.insert("to", to.c_str());

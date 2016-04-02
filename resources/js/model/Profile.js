@@ -4,11 +4,11 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     get:function(key){
-        if(key=="uri"||key=="name"||key=="context")
+        if(key=="uri"||key=="id"||key=="context"||key=="account")
         {
             return Backbone.Model.prototype.get.call(this, key);
         }
-        return XETH_bitprofile.getData({uri:this.getURI(), key:key});
+        return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
     },
 
     getURI:function(){
@@ -16,7 +16,8 @@ var Profile = Backbone.Model.extend({
     },
 
     exportKey:function(path){
-        return XETH_bitprofile.exportProfile(path);
+        var request = {path: path, uri:this.getURI()}
+        return XETH_bitprofile.exportProfile(request);
     },
 
     linkStealthAddress:function(request){
@@ -32,6 +33,11 @@ var Profile = Backbone.Model.extend({
 });
 
 var ProfileCollection = Backbone.Collection.extend({
+
+    initialize:function(models, options){
+        _(this).bindAll("triggerError");
+        options.events.onError("bitprofile", this.triggerError);
+    },
 
     fetch:function(){
         var profiles = XETH_bitprofile.listProfiles();
@@ -53,7 +59,7 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     findProfile:function(uri, callback){
-        var profile = this.find({uri:event.uri});
+        var profile = this.find({uri:uri});
         if(profile) callback(profile);
     },
 
@@ -78,6 +84,13 @@ var ProfileCollection = Backbone.Collection.extend({
     triggerStealthUpdate:function(event){
         this.findProfile(event.uri, function(profile){
             profile.set("payments", event.payments);
+        });
+    },
+
+    triggerError:function(msg, uri){
+        this.trigger("error", msg);
+        this.findProfile(uri, function(profile){
+            profile.trigger("error", msg);
         });
     },
 

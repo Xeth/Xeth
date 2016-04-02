@@ -20,35 +20,39 @@ MoveProfileOperation::MoveProfileOperation
     _name(name),
     _password(password),
     _gas(gas),
-    _notifier(notifier)
+    _notifier(notifier),
+    _uri(_admin.getProfile().getURI())
 {}
 
 void MoveProfileOperation::operator()()
 {
     try
     {
-        BitProfile::Profile::URI uri = _admin.getProfile().getURI();
         if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString(), _gas))
         {
-            _notifier.emitError("failed to move profile");
+            emitError("failed to move profile");
         }
         else
         {
-            if(!_store.rename(uri, BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
+            if(!_store.rename(_uri, BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
             {
-                _notifier.emitError("failed to rename profile file");
+                emitError("failed to rename profile file");
             }
         }
     }
     catch(const std::exception &e)
     {
-        _notifier.emitError(e.what());
+        emitError(e.what());
     }
     catch(...)
     {
-        _notifier.emitError("failed to rename profile");
+        emitError("failed to rename profile");
     }
 }
 
+void MoveProfileOperation::emitError(const char *msg)
+{
+    _notifier.emitObjectError("bitprofile",  _uri.toString().c_str(), msg);
+}
 
 }

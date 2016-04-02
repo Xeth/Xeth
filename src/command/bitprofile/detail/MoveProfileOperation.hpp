@@ -30,6 +30,9 @@ class MoveProfileOperation
         void operator()();
 
     private:
+        void emitError(const char *);
+
+    private:
         BitProfile::ProfileAdministrator _admin;
         BitProfileStore &_store;
         BitProfile::Registrar _registrar;
@@ -37,6 +40,7 @@ class MoveProfileOperation
         QString _password;
         BigInt _gas;
         Notifier &_notifier;
+        BitProfile::Profile::URI _uri;
 };
 
 

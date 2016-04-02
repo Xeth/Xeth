@@ -81,7 +81,7 @@ var BitprofileEditPageView = SubPageView.extend({
         var request = this.form.getFormData();
         if(request.stealth!=this.profile.get("payments")){
             request.gas = this.feeModel.estimateStealthLink(this.profile.get("uri"), request.stealth, request.feeFactor);
-            if(!this.profile.changePayments(request)){
+            if(!this.profile.linkStealthAddress(request)){
                 this.riseError(skipped);
                 return false;
             }else{

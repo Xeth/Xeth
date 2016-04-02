@@ -59,6 +59,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Config.js"></script>
 <script type="text/javascript" src="js/model/Profile.js"></script>
 <script type="text/javascript" src="js/model/Registrar.js"></script>
+<script type="text/javascript" src="js/model/ProfileResolver.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -94,8 +95,10 @@ var transactions = new TransactionCollection;
 var addressbook = new AddressBook;
 var progress = new Progress;
 var config = new Config;
-var profiles = new ProfileCollection;
+var events = new EventListener;
+var profiles = new ProfileCollection([], {events: events});
 var registrars = new RegistrarCollection;
+var resolver = new ProfileResolver;
 
 var view = new MainWindowView
 ({
@@ -105,13 +108,15 @@ var view = new MainWindowView
     progress:progress,
     addressValidator: new AddressValidator,
     fee: new FeeEstimator,
-    events: new EventListener,
+    events: events,
     config: config,
     profiles: profiles,
-    registrars: registrars
+    registrars: registrars,
+    resolver: resolver
 });
 
 XETH_event.Ready.connect(this, function(){
+    events.listen();
     profiles.fetch();
     profiles.observe();
     accounts.fetch();

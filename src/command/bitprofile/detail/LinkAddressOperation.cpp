@@ -24,7 +24,7 @@ void LinkAddressOperation::operator()()
     {
         if(!_admin.setPaymentAddress(_address.toStdString(), _password.toStdString()))
         {
-            _notifier.emitError("failed to link stealth address");
+            emitError("failed to link stealth address");
         }
         else
         {
@@ -33,12 +33,19 @@ void LinkAddressOperation::operator()()
     }
     catch(const std::exception &e)
     {
-        _notifier.emitError(e.what());
+        emitError(e.what());
     }
     catch(...)
     {
-        _notifier.emitError("failed to link stealth address");
+        emitError("failed to link stealth address");
     }
 }
+
+
+void LinkAddressOperation::emitError(const char *error)
+{
+    _notifier.emitObjectError("bitprofile", _admin.getProfile().getURI().toString().c_str(), error);
+}
+
 
 }
