@@ -13,7 +13,7 @@ ExportProfileCommand::ExportProfileCommand(Ethereum::Connector::Provider &provid
 
 QVariant ExportProfileCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("destination")||!request.contains("uri"))
+    if(!request.contains("path")||!request.contains("uri"))
     {
         return QVariant::fromValue(false);
     }
@@ -44,7 +44,7 @@ QVariant ExportProfileCommand::operator()(const QVariantMap &request)
         backup["stealth"].append(stealthSerializer.serializeToJson(_stealthKeys.get(stealth.c_str())));
     }
 
-    QString path = request["destination"].toString();
+    QString path = request["path"].toString();
     path += QDir::separator();
     path += uri;
     path += ".";

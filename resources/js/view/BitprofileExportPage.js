@@ -9,12 +9,14 @@ var BitprofileExportPageView = SubPageView.extend({
     
     submit:function(args){
         var path = this.filesystem.browse();
-        var model = this.profiles.get(args.uri);
-        if(!model.export(path)){
-            notifyError("failed to backup, please check disk space");
-            return false;
+        if(path){
+            var model = this.profiles.get(args.uri);
+            if(!model.exportKey(path)){
+                notifyError("failed to backup, please check disk space");
+                return false;
+            }
+            notifySuccess("bitprofile exported");
         }
-        notifySuccess("bitprofile exported");
         return true;
     }
 

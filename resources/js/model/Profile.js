@@ -16,7 +16,8 @@ var Profile = Backbone.Model.extend({
     },
 
     exportKey:function(path){
-        return XETH_bitprofile.exportProfile(path);
+        var request = {path: path, uri:this.getURI()}
+        return XETH_bitprofile.exportProfile(request);
     },
 
     linkStealthAddress:function(request){
