@@ -8,7 +8,7 @@ var Profile = Backbone.Model.extend({
         {
             return Backbone.Model.prototype.get.call(this, key);
         }
-        return XETH_bitprofile.getData({uri:this.getURI(), key:key});
+        return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
     },
 
     getURI:function(){
