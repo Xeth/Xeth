@@ -35,7 +35,7 @@ var Profile = Backbone.Model.extend({
 var ProfileCollection = Backbone.Collection.extend({
 
     initialize:function(models, options){
-    
+        _(this).bindAll("triggerError");
         options.events.onError("bitprofile", this.triggerError);
     },
 
