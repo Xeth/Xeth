@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.feeModel = options.fee;
@@ -23,6 +23,7 @@ var SendPageView = SubPageView.extend({
         this.destination = this.$el.find("#sendToInput");
         this.amount = this.$el.find("#sendAmount");
         this.password = this.$el.find("#sendPassword");
+        this.addressHint = this.$el.find("#sendToHint");
         this.destination.change(this.updateContact);
         this.destination.on("input", this.scheduleUpdateContact);
         this.addressbook.on("remove", this.updateContact);
@@ -51,12 +52,24 @@ var SendPageView = SubPageView.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
+        
+        this.addressHint.click(this.copyAddressHintToClipboard);
+        this.$el.find(".hint").tooltip({
+            position: { my: "center bottom-5", at: "center top" },
+            track: true,
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
+        
         this.feeHolder = this.$el.find(".fee .eth");
         this.gasHolder = this.$el.find(".fee .gas");
 
         this.amount.on("input", this.computeFee);
         this.amount.on("change", this.computeFee);
         this.destination.on("change", this.computeFee);
+        
+        //this.setAddressHint("");
+        //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
     },
 
     updateFeeFactor:function(){
@@ -169,6 +182,24 @@ var SendPageView = SubPageView.extend({
 
     paste:function(){
         this.destination.val(this.clipboard.getText());
+    },
+    
+    setAddressHint:function(msg){
+        this.addressHint.html(shortify(msg,30));
+        this.addressHint.val(msg);
+        console.log(this.addressHint.val());
+    },
+    
+    copyAddressHintToClipboard:function(){
+        console.log(this.addressHint.val());
+        if(this.clipboard.setText(this.addressHint.val()))
+        {
+            notifySuccess("address copied to clipboard");
+        }
+        else
+        {
+            notifyError("failed to copy address");
+        }
     },
     
     checkSubmit:function(){

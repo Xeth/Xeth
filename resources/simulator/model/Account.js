@@ -9,6 +9,10 @@ var AccountSimulator = Account.extend({
 
     send:function(request){
         return true;
+    },
+    
+    changePassword:function(previous, password){
+        return true;
     }
 });
 

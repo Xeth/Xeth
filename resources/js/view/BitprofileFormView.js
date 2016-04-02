@@ -19,6 +19,7 @@ var BitprofileFormView = SubPageView.extend({
         this.pending = false;
         this.accountSelect_details = this.$el.find("#bitprofileCreateStealthList");
         this.accountSelect_payment = this.$el.find("#bitprofileCreateAccountList");
+        this.accountBalance_payment = this.$el.find("#bitprofileCreateAccountBalance");
         this.$form = this.paymentPage.find(".formpage");
         this.bitprofileContext = this.$el.find("#bitporfileCreate_context");
         for(var i=0; i<options.registrars.length; i++)
@@ -57,7 +58,9 @@ var BitprofileFormView = SubPageView.extend({
         this.accountSelect_details.html('');
         this.account_payment = this.cloneAccount(this.accountSelect_payment);
         
-        this.accounts.resize(21);
+        this.stopListening(this.accounts, "change", this.updatePaymentAccount);
+        
+        this.accounts.resize(22);
         this.accounts.compact(true);
         this.accounts.attach(this.accountSelect_details);
         this.accounts.filter(function(model){return model!=undefined&&!model.get("address")&&model.get("stealth");});
@@ -70,11 +73,12 @@ var BitprofileFormView = SubPageView.extend({
 
     renderPaymentPage:function(){
         this.accountSelect_payment.html('');
-        
         this.account_details = this.cloneAccount(this.accountSelect_details);
         
-        this.accounts.resize(14);
-        this.accounts.compact(false);
+        this.listenTo(this.accounts, "change", this.updatePaymentAccount);
+        
+        this.accounts.resize(28);
+        this.accounts.compact(true);
         this.accounts.attach(this.accountSelect_payment);
         this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
         this.accounts.style("mini send");
@@ -100,6 +104,19 @@ var BitprofileFormView = SubPageView.extend({
     
     selectAccount:function(type,account){
         this.accounts.focus(function(model){ return (model)&&(model.get(type))==account;});
+    },
+    
+    updatePaymentAccount:function(){
+        if(this.account_payment) this.stopListening(this.account_payment);
+        this.account_payment = this.accounts.selected();
+        this.updatePaymentAccountBalance();
+        this.listenTo(this.account_payment, "change:balance",this.updatePaymentAccountBalance);
+    },
+    
+    updatePaymentAccountBalance:function(){
+        var balance = splitAmount(this.account_payment.get("balance"));
+        this.accountBalance_payment.find(".int").html(balance.int);
+        this.accountBalance_payment.find(".dec").html(balance.dec);
     },
     
     resetAddressError: function(){

@@ -14,5 +14,9 @@ var FeeSimulator = Backbone.Collection.extend({
 
     estimateMoveProfile:function(from, to, amount, factor){
 		return {gas:500, price:0.01, fee:"5"};
+    },
+
+    estimateStealthLink:function(from, to, amount, factor){
+		return {gas:500, price:0.01, fee:"5"};
     }
 });

@@ -20,6 +20,10 @@
         Loading...
     </div>
 </div>
+    
+    
+    
+    
 <script type="text/javascript" src="js/vendor/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/vendor/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
@@ -36,12 +40,13 @@
 <script type="text/javascript" src="js/vendor/notie.min.js"></script>
 <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
-
 <script type="text/javascript" src="js/model/Account.js"></script>
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
 <script type="text/javascript" src="js/model/Progress.js"></script>
-<script type="text/javascript" src="js/model/Bitprofile.js"></script>
+<script type="text/javascript" src="js/model/Config.js"></script>
+<script type="text/javascript" src="js/model/Profile.js"></script>
+<script type="text/javascript" src="js/model/Registrar.js"></script>
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
 <script type="text/javascript" src="js/view/validate.js"></script>
@@ -77,6 +82,8 @@
 <script type="text/javascript" src="simulator/model/EventListener.js"></script>
 <script type="text/javascript" src="simulator/model/Bitprofile.js"></script>
 <script type="text/javascript" src="simulator/model/Fee.js"></script>
+<script type="text/javascript" src="simulator/model/Config.js"></script>
+<script type="text/javascript" src="simulator/model/Registrar.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     
@@ -94,7 +101,7 @@ $(document).ready(function(){
     accounts.add({address: "0x1111fefd7f33ca29ee17f2bfec944695e5f21111", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", balance:0.1});
     accounts.add({address: "0x2222fefd7f33ca29ee17f2bfec944695e5f22222", balance:200});
     accounts.add({address: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", bitprofile: "tester", balance:2.7});
-    accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:370.25});
+    accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:3698270.255480901});
     accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
     accounts.add({stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp"});
     accounts.add({stealth:"AteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaX"});
@@ -121,11 +128,14 @@ $(document).ready(function(){
 	
     setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 8000);
 	
-    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator});
+    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator, registrars:new RegistrarCollectionSimulator});
     setTimeout(function(){
         view.render();
     },1000);
     
+    setTimeout(function(){
+        accounts.first().set("balance",0.001);
+    },10000);
 });
 </script>
 </body></html>

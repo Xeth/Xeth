@@ -296,7 +296,7 @@
 
 .page .input.bitprofileID input {
 	padding-left: 35px;
-	width: 120px;
+	width: calc(100% - 25px) !important;
 }
 
 .page .input.bitprofileID:after {
@@ -319,7 +319,7 @@
 
 .page .input.date input {
 	padding-left: 30px;
-	width: 100px;
+	width: calc(100% - 20px) !important;
 }
 
 .page .input.date:after {
