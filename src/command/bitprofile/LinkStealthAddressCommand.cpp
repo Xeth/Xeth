@@ -13,7 +13,7 @@ LinkStealthAddressCommand::LinkStealthAddressCommand(Ethereum::Connector::Provid
 
 QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("uri")||!request.contains("address"))
+    if(!request.contains("uri")||!request.contains("stealth"))
     {
         return QVariant::fromValue(false);
     }
@@ -32,7 +32,7 @@ QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
     LinkAddressAction * action = LinkAddressAction::Create(LinkAddressOperation
     (
         admin, 
-        request["address"].toString(),
+        request["stealth"].toString(),
         request["password"].toString(),
         _notifier
     ));
