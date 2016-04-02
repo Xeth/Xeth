@@ -30,7 +30,7 @@ var BitprofileViewPageView = SubPageView.extend({
     },
     
     updateURI:function(){
-        this.$el.find(".contextSelect input").val(this.model.get("context")+":");
+        this.$el.find(".contextSelect input").val(this.model.get("context")+"@");
         this.$el.find(".bitprofileID input").val(this.model.get("id"));
     },
     
