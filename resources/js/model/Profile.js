@@ -4,7 +4,7 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     get:function(key){
-        if(key=="uri"||key=="name"||key=="context")
+        if(key=="uri"||key=="id"||key=="context")
         {
             return Backbone.Model.prototype.get.call(this, key);
         }
