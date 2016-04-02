@@ -31,11 +31,12 @@
 
 .page .formpage.send .section_to .hint {
     margin-top: -38px;
+    height: 38px;
     overflow: hidden;
     color: #BB874E;
     cursor: pointer;
     position: absolute;
-    max-width: 280px;
+    /*max-width: 280px;*/
 }
 
 .page .formpage.send .btnSubmit.btnSend {
