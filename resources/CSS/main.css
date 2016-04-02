@@ -80,10 +80,11 @@ p {
 	background-repeat: no-repeat;
 	background-position: center -85px;
 	display: inline-block;
-	vertical-align:middle;
+	vertical-align:top;
 	height: 16px;
 	width: 16px;
-	margin: -6px 0px 0px 3px;
+	/*margin: -6px 0px 0px 3px;*/
+    margin-left: 3px;
 }
 .bitprofileIcon.on {
 	background-position-y: -60px;
