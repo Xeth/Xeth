@@ -5,11 +5,7 @@
     <div class="formpage">
         <div class="section_id section_mandatory">
             <h1 error="invalid id">Details:</h1>
-            <select id="bitporfileCreate_context">
-                <option>DDDD</option>
-                <option>d2</option>
-                <option>d000</option>
-            </select>
+            <select id="bitporfileCreate_context"></select>
             <div class="input bitprofileID">
                 <input id="bitprofileCreate_id" type="text" class="mandatory" placeholder="bitprofile ID" />
             </div>

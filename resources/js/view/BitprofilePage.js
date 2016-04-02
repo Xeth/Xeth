@@ -55,6 +55,7 @@ var BitprofilePageView = SubPageView.extend({
         this.filesystem = options.filesystem;
         this.accounts = options.accounts;
         this.profiles = options.profiles;
+        this.registrars = options.registrars;
         this.fee = options.fee;
         this.menuEl = this.$el.find(".subNav.menu");
         this.menu = new MenuView({el: this.menuEl});
@@ -82,6 +83,7 @@ var BitprofilePageView = SubPageView.extend({
         var form = new BitprofileFormView
         ({
             accounts: this.accounts, 
+            registrars: this.registrars,
             router:this.router, 
             templates:this.templates
         });
@@ -114,9 +116,16 @@ var BitprofilePageView = SubPageView.extend({
         });
         this.subpages["default"] = this.subpages.create;
         this.menu.on("change", this.open);
-        
-        this.listenTo(this.profiles, "create", this.setPendingCreation);
-        this.collection.collection.on("add", this.add);
+
+        if(this.collection.collection.length)
+        {
+            this.setExistingProfile();
+        }
+        else
+        {
+            this.listenTo(this.profiles, "create", this.setPendingCreation);
+            this.collection.collection.on("add", this.add);
+        }
     },
 
     render:function(args){

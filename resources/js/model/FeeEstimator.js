@@ -12,8 +12,33 @@ var FeeEstimator = function(){
         {
             return false;
         }
+        return this.parseFee(result);
+    };
+
+    this.parseFee = function(result){
         result["fee"] = XETH_convert.fromWei(result["fee"]);
         return result;
-    }
+    };
 
+    this.estimateCreateProfile = function(context, name, factor){
+        return this.parseFee(XETH_bitprofile.estimate({operation:"register", name:name, context:context, factor:factor}));
+    };
+    
+    this.estimateStealthLink = function(uri, stealth, factor){
+        var request = {operation:"stealth", factor: factor};
+        if(uri)
+        {
+            request.uri = uri;
+            request.stealth = stealth;
+        }
+        return this.parseFee(XETH_bitprofile.estimate(request));
+    };
+
+    this.estimateEdit = function(uri, key, value, factor){
+        return this.parseFee(XETH_bitprofile.estimate({operation:"edit", factor:factor, uri:uri, key:key, value:value}));
+    };
+
+    this.estimateMoveProfile = function(uri, context, name){
+        return this.parseFee(XETH_bitprofile.estimate({operation:"move", uri:uri, context:context, name:name}));
+    };
 }

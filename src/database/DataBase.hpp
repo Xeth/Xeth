@@ -1,5 +1,7 @@
 #pragma once
 
+#include "env/Settings.hpp"
+#include "env/GetBitProfileNetwork.hpp"
 
 #include "detail/DataBaseDirectory.hpp"
 #include "detail/EthereumKeyStorePath.hpp"
@@ -11,6 +13,7 @@
 #include "StealthPaymentStore.hpp"
 #include "StealthKeyStore.hpp"
 #include "EthereumKeyStore.hpp"
+#include "BitProfileStore.hpp"
 
 
 
@@ -28,6 +31,7 @@ class DataBase
         typedef Xeth::StealthPaymentStore StealthPaymentStore;
         typedef Xeth::StealthKeyStore StealthKeyStore;
         typedef Xeth::EthereumKeyStore EthereumKeyStore;
+        typedef Xeth::BitProfileStore BitProfileStore;
 
     public:
         DataBase(const Settings &);
@@ -41,6 +45,7 @@ class DataBase
         StealthPaymentStore & getStealthPayments();
         StealthKeyStore & getStealthKeys();
         EthereumKeyStore & getEthereumKeys();
+        BitProfileStore & getBitProfiles();
 
         const TransactionStore & getTransactions() const;
         const ScanIndexStore & getScanIndex() const;
@@ -49,6 +54,7 @@ class DataBase
         const StealthPaymentStore & getStealthPayments() const;
         const StealthKeyStore & getStealthKeys() const;
         const EthereumKeyStore & getEthereumKeys() const;
+        const BitProfileStore & getBitProfiles() const;
 
 
     private:
@@ -61,6 +67,7 @@ class DataBase
         StealthPaymentStore _stealthPayments;
         StealthKeyStore _stealthKeys;
         EthereumKeyStore _ethereumKeys;
+        BitProfileStore _bitprofile;
 
 };
 

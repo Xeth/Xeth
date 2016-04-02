@@ -17,9 +17,14 @@ add_subdirectory(libethcrypto)
 
 set(ETHCRYPTO_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethcrypto/include")
 set(ETHCRYPTO_LIBRARY "ethcrypto")
-
 add_subdirectory(libethstealth)
 
+set(ETHRPC_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethrpc/include")
+set(ETHRPC_LIBRARY "ethrpc")
+add_subdirectory(libbitprofile)
+
+
+add_dependencies(bitprofile ethrpc)
 add_dependencies(ethstealth ethcrypto)
 
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)

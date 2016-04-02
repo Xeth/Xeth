@@ -37,6 +37,7 @@ class SendCommand
             const BigInt &,
             const QVariant &gas,
             const QVariant &price,
+            const QVariant &logs,
             bool strict
         );
 

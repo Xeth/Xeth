@@ -24,14 +24,18 @@ class Notifier : public QObject
 
         void emitError(const QString &);
         void emitMessage(const QString &);
-
         void emitReady();
+
+        void emitProfilePaymentAddress(const QString &uri, const QString &address); //ToDo: move it from here
 
     signals:
         void Ready() const;
         void Error(const QString &) const;
         void Message(const QString &) const;
 
+        void Profile(const QVariantMap &) const;
+        void ProfileUpdate(const QVariantMap &) const;
+        void ProfilePaymentAddress(const QVariantMap &) const;
         void Transaction(const QVariantMap &) const;
         void ScanProgress(const QVariant &) const;
         void SyncProgress(const QVariant &) const;
@@ -49,6 +53,8 @@ class Notifier : public QObject
         void emitScanProgress(double);
         void emitSyncProgress(double);
         void emitConfig(const QString &, const QString &);
+        void emitProfile(const BitProfile::ProfileDescriptor &);
+        void emitProfileUpdate(const QString &old, const BitProfile::ProfileDescriptor &);
 
     private:
         const DataBase *_database;

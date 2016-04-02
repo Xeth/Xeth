@@ -37,6 +37,7 @@ add_executable(xeth-test ${TEST_SOURCES})
 target_link_libraries(xeth-test
     xethlib
     ethstealth
+    bitprofile
     ethrpc
     ethcrypto
     ${Qt5Core_LIBRARIES}

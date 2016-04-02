@@ -15,12 +15,42 @@ void Notifier::watch(const DataBase &database)
     QObject::connect(&database.getStealthPayments(), &StealthPaymentStore::NewItem, this, &Notifier::emitStealthPayment);
     QObject::connect(&database.getAddressBook(), &AddressBookStore::NewItem, this, &Notifier::emitAddressBookItem);
     QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &Notifier::emitConfig);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::NewItem, this, &Notifier::emitProfile);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::Renamed, this, &Notifier::emitProfileUpdate);
 }
 
 void Notifier::watch(const Synchronizer &synchronizer)
 {
     QObject::connect(&synchronizer.getScanner().getProgress(), &Synchronizer::ScanProgress::Progress, this, &Notifier::emitScanProgress);
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
+}
+
+void Notifier::emitProfilePaymentAddress(const QString &uri, const QString &address)
+{
+    QVariantMap event;
+    event["uri"] = uri;
+    event["payments"] = address;
+    emit ProfilePaymentAddress(event);
+}
+
+
+void Notifier::emitProfileUpdate(const QString &old, const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["oldURI"] = old;
+    event["name"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    emit ProfileUpdate(event);
+}
+
+void Notifier::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["name"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    emit Profile(event);
 }
 
 void Notifier::emitConfig(const QString &name, const QString &value)

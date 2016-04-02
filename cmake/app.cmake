@@ -79,6 +79,7 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib;.so;.dll")
 target_link_libraries(xeth
     xethlib
     ethstealth
+    bitprofile
     ethrpc
     ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}

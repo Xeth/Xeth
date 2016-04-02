@@ -17,6 +17,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
     ${PROJECT_BINARY_DIR}/libethcrypto/include
+    ${PROJECT_BINARY_DIR}/libbitprofile/include
     ${PROJECT_SOURCE_DIR}/libethstealth
 )
 
