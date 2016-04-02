@@ -30,7 +30,7 @@ Facade::Facade(const Settings &settings) :
     
 
     connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
-    connect(initializer, &FacadeInitializer::Error, &_notifier, &Notifier::emitError);
+    connect(initializer, SIGNAL(Error(const QString &)), &_notifier, SLOT(emitError(const QString &)));
     connect(initializer, &FacadeInitializer::Done, this, &Facade::setReady);
 
     connect(initializer, &FacadeInitializer::Error, thread, &QThread::quit);

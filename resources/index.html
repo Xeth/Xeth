@@ -96,6 +96,7 @@ var progress = new Progress;
 var config = new Config;
 var profiles = new ProfileCollection;
 var registrars = new RegistrarCollection;
+var events = new EventListener;
 
 var view = new MainWindowView
 ({
@@ -105,13 +106,14 @@ var view = new MainWindowView
     progress:progress,
     addressValidator: new AddressValidator,
     fee: new FeeEstimator,
-    events: new EventListener,
+    events: events,
     config: config,
     profiles: profiles,
     registrars: registrars
 });
 
 XETH_event.Ready.connect(this, function(){
+    events.listen();
     profiles.fetch();
     profiles.observe();
     accounts.fetch();

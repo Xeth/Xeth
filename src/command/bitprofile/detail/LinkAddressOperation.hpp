@@ -25,6 +25,9 @@ class LinkAddressOperation
         void operator()();
 
     private:
+        void emitError(const char *);
+
+    private:
         BitProfile::ProfileAdministrator _admin;
         QString _address;
         QString _password;

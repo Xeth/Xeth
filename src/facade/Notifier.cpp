@@ -61,7 +61,26 @@ void Notifier::emitConfig(const QString &name, const QString &value)
 
 void Notifier::emitError(const QString &msg)
 {
-    emit Error(msg);
+    QVariantMap event;
+    event["message"] = msg;
+    emit Error(event);
+}
+
+void Notifier::emitError(const QString &context, const QString &msg)
+{
+    QVariantMap event;
+    event["context"] = context;
+    event["message"] = msg;
+    emit Error(event);
+}
+
+void Notifier::emitObjectError(const QString &context, const QString &uri, const QString &msg)
+{
+    QVariantMap event;
+    event["context"] = context;
+    event["message"] = msg;
+    event["uri"] = uri;
+    emit Error(event);
 }
 
 

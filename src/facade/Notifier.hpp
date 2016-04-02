@@ -22,6 +22,8 @@ class Notifier : public QObject
         void watch(const DataBase &);
         void watch(const Synchronizer &);
 
+        void emitObjectError(const QString &context, const QString &uri, const QString &msg);
+        void emitError(const QString &context, const QString &msg);
         void emitError(const QString &);
         void emitMessage(const QString &);
         void emitReady();
@@ -30,7 +32,7 @@ class Notifier : public QObject
 
     signals:
         void Ready() const;
-        void Error(const QString &) const;
+        void Error(const QVariantMap &) const;
         void Message(const QString &) const;
 
         void Profile(const QVariantMap &) const;

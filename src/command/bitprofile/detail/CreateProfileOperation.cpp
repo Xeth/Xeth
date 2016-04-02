@@ -54,7 +54,7 @@ void CreateProfileOperation::emitError(const char *msg)
 {
     QString error = msg;
     error += _name;
-    _notifier.emitError(error);
+    _notifier.emitError("bitprofile", error);
 }
 
 
