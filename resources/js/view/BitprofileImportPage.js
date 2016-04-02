@@ -23,14 +23,8 @@ var BitprofileImportPageView = SubPageView.extend({
             notifyError("please select a file");
             return false;
         }
-        var password = this.$el.find("#importBitprofile_password");
-        if(!password.validate()){
-            notifyError("password is required");
-            return false;
-        }
-        var profile = this.profiles.importKey(this.filename, password.val());
-        if(!profile){
-            notifyError("failed to import key, file is corrupted or invalid password");
+        if(!this.profiles.importKey(this.filename)){
+            notifyError("failed to import key, file is corrupted");
             return false;
         }
         notifySuccess("bitprofile imported");
