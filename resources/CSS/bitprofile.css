@@ -91,9 +91,8 @@
 #page_bitprofile .bitprofileList .uri .context {
 	color: #778283;
 }
-#page_bitprofile .bitprofileList .uri .context:after {
-	content: ":";
-    margin-right: 5px;
+#page_bitprofile .bitprofileList .uri .context:before {
+	content: "@";
 }
 
 #page_bitprofile_view .formpage .avatar {
