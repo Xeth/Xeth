@@ -53,7 +53,7 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     findProfile:function(uri, callback){
-        var profile = this.find({uri:event.uri});
+        var profile = this.find({uri:uri});
         if(profile) callback(profile);
     },
 
