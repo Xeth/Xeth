@@ -116,9 +116,16 @@ var BitprofilePageView = SubPageView.extend({
         });
         this.subpages["default"] = this.subpages.create;
         this.menu.on("change", this.open);
-        
-        this.listenTo(this.profiles, "create", this.setPendingCreation);
-        this.collection.collection.on("add", this.add);
+
+        if(this.collection.collection.length)
+        {
+            this.setExistingProfile();
+        }
+        else
+        {
+            this.listenTo(this.profiles, "create", this.setPendingCreation);
+            this.collection.collection.on("add", this.add);
+        }
     },
 
     render:function(args){
