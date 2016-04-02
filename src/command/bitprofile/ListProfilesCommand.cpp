@@ -1,5 +1,5 @@
 #include "ListProfilesCommand.hpp"
-#include <QDebug>
+
 
 namespace Xeth{
 
@@ -22,7 +22,6 @@ QVariant ListProfilesCommand::operator()()
         profile["account"] = descriptor.getAuthAddress().c_str();
         result.append(profile);
     }
-    qDebug()<<"profiles: "<<result;
     return result.toVariantList();
 }
 
