@@ -94,9 +94,9 @@ var transactions = new TransactionCollection;
 var addressbook = new AddressBook;
 var progress = new Progress;
 var config = new Config;
-var profiles = new ProfileCollection;
-var registrars = new RegistrarCollection;
 var events = new EventListener;
+var profiles = new ProfileCollection([], {events: events});
+var registrars = new RegistrarCollection;
 
 var view = new MainWindowView
 ({

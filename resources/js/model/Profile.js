@@ -33,6 +33,11 @@ var Profile = Backbone.Model.extend({
 
 var ProfileCollection = Backbone.Collection.extend({
 
+    initialize:function(models, options){
+    
+        options.events.onError("bitprofile", this.triggerError);
+    },
+
     fetch:function(){
         var profiles = XETH_bitprofile.listProfiles();
         if(profiles.length){
@@ -78,6 +83,13 @@ var ProfileCollection = Backbone.Collection.extend({
     triggerStealthUpdate:function(event){
         this.findProfile(event.uri, function(profile){
             profile.set("payments", event.payments);
+        });
+    },
+
+    triggerError:function(msg, uri){
+        this.trigger("error", msg);
+        this.findProfile(uri, function(profile){
+            profile.trigger("error", msg);
         });
     },
 
