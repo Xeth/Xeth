@@ -1,9 +1,10 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard");
+        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
+        this.resolver = options.resolver;
         this.feeModel = options.fee;
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
@@ -27,6 +28,7 @@ var SendPageView = SubPageView.extend({
         this.destination.change(this.updateContact);
         this.destination.on("input", this.scheduleUpdateContact);
         this.addressbook.on("remove", this.updateContact);
+        this.destTitle = this.$el.find(".section_to h1");
 
         this.aliasHolder.hide();
         this.accounts.render();
@@ -72,6 +74,8 @@ var SendPageView = SubPageView.extend({
         //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
     },
 
+    
+
     updateFeeFactor:function(){
         this.computeFee();
         if(this.feeFactor.slider("value")<45){
@@ -109,6 +113,11 @@ var SendPageView = SubPageView.extend({
         this.sendType.selectmenu( "refresh" );
         this.updatePlaceholder();
         this.updateContact();
+        this.updateSendType();
+    },
+
+    getDestination:function(){
+        return this.addressHint.val()||this.destination.val().replace(/^\s+|\s+$/g, '');
     },
 
     setAmount:function(amount){
@@ -118,6 +127,46 @@ var SendPageView = SubPageView.extend({
     updateSendType:function(){
         this.updatePlaceholder();
         if(this.destination.val()) this.updateContact();
+        if(this.sendType.val()=="bitprofile"){
+            this.resolveProfile();
+            this.destination.on("input", this.resolveProfileLater);
+            this.destination.on("change", this.resolveProfile)
+        }else{
+            this.setAddressHint("");
+            this.destination.off("input", this.resolveProfileLater);
+            this.destination.off("change", this.resolveProfile);
+        }
+    },
+
+    resolveProfileLater:function(){
+        this.clearResolverTimer();
+        this.resolverTimer = setTimeout(this.resolveProfile, 1000);
+    },
+
+    clearResolverTimer:function(){
+        if(this.resolverTimer) clearTimeout(this.resolverTimer);
+        this.resolverTimer=undefined;
+    },
+
+    resolveProfile:function(){
+        this.clearResolverTimer();
+        var uri = this.destination.val();
+        if(uri){
+            var address = this.resolver.getPaymentAddress(uri);
+            if(address){
+                this.setAddressHint(address);
+                this.destination.noerror();
+            }
+            else{
+                this.riseProfileError();
+            }
+        }
+    },
+
+    riseProfileError:function(){
+        this.setAddressHint("");
+        this.destTitle.attr("error", "selected profile is not accepting payments");
+        this.destination.error();
     },
 
     updatePlaceholder:function(){
@@ -145,7 +194,7 @@ var SendPageView = SubPageView.extend({
     computeFee: function(){
         var factor = this.getFeeFactor();
         var from = this.accounts.selected().get("address");
-        var to = this.destination.val();
+        var to = this.getDestination();
         var amount = this.amount.val();
 
         var result = this.feeModel.estimate(from, to, amount, factor);
@@ -185,7 +234,7 @@ var SendPageView = SubPageView.extend({
     },
     
     setAddressHint:function(msg){
-        this.addressHint.html(shortify(msg,30));
+        this.addressHint.html(shortify(msg,50));
         this.addressHint.val(msg);
         console.log(this.addressHint.val());
     },
@@ -229,27 +278,39 @@ var SendPageView = SubPageView.extend({
             notifyError("not enough funds");
             return false;
         }
-        var destination = this.destination.val();
-        if(destination.length==40||destination.length==42)
-        {
-            if(this.addressValidator.hasChecksum(destination))
+        if(this.sendType.val()=="bitprofile"){
+            if(!this.addressHint.val()){
+                this.riseProfileError();
+            }
+            else
             {
-                this.submit(true);
-            } 
-            else 
-            {
-                notie.confirm('<span class="title warning">WARNING!</span>'+
-                  'Destination address has no checksum!<br>'+
-                  'You can send a small test amount first or continue with the transaction<br>'+
-                  '<span class="question">Proceed with this transaction?<span>', 
-                  'Yes, Send it anyway', 
-                  'No, I will try small test amount first', 
-                  this.submit);
+                this.submit();
             }
         }
         else
         {
-            this.submit();
+            var destination = this.destination.val();
+            if(destination.length==40||destination.length==42)
+            {
+                if(this.addressValidator.hasChecksum(destination))
+                {
+                    this.submit(true);
+                } 
+                else 
+                {
+                    notie.confirm('<span class="title warning">WARNING!</span>'+
+                      'Destination address has no checksum!<br>'+
+                      'You can send a small test amount first or continue with the transaction<br>'+
+                      '<span class="question">Proceed with this transaction?<span>', 
+                      'Yes, Send it anyway', 
+                      'No, I will try small test amount first', 
+                      this.submit);
+                }
+            }
+            else
+            {
+                this.submit();
+            }
         }
     },
 
@@ -264,8 +325,8 @@ var SendPageView = SubPageView.extend({
         var type = this.sendType.val();
         var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();
-        var destination = this.destination.val().replace(/^\s+|\s+$/g, '');
-        request[type] = destination;
+        var destination = this.getDestination();
+        request.address = destination;
 
         if(checksum){
             if(!this.addressValidator.validate(destination))

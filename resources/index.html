@@ -59,6 +59,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Config.js"></script>
 <script type="text/javascript" src="js/model/Profile.js"></script>
 <script type="text/javascript" src="js/model/Registrar.js"></script>
+<script type="text/javascript" src="js/model/ProfileResolver.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -97,6 +98,7 @@ var config = new Config;
 var events = new EventListener;
 var profiles = new ProfileCollection([], {events: events});
 var registrars = new RegistrarCollection;
+var resolver = new ProfileResolver;
 
 var view = new MainWindowView
 ({
@@ -109,7 +111,8 @@ var view = new MainWindowView
     events: events,
     config: config,
     profiles: profiles,
-    registrars: registrars
+    registrars: registrars,
+    resolver: resolver
 });
 
 XETH_event.Ready.connect(this, function(){
