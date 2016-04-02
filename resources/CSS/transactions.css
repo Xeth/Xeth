@@ -125,6 +125,14 @@
 	font-size:0.8rem;
 }
 
+
+.transactions_total .total.transactions {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.transactions_total .total.transactions:after,
 .transactions_total .total:before {
 	margin-right: 8px;
 	text-transform: uppercase;
@@ -132,10 +140,23 @@
 	color:#778283;
 }
 
+.transactions_total .total.transactions:before,
+.transactions_total .total.transactions:after{
+	margin-right: 0;
+}
+
 .transactions_total .total.sent:before {
-	content:"total sent:";
+	content:"sent:";
 }
 
 .transactions_total .total.received:before {
-	content:"total received:";
+	content:"received:";
+}
+
+.transactions_total .total.transactions:before {
+	content:"last ";
+}
+
+.transactions_total .total.transactions:after {
+	content:" transactions";
 }

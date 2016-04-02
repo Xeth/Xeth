@@ -192,6 +192,7 @@ var TransactionsPageView = SubPageView.extend({
 
         this.$sent = this.$el.find(".transactions_total .sent .txtBalance");
         this.$received = this.$el.find(".transactions_total .received .txtBalance");
+        this.$transactions = this.$el.find(".transactions_total .transactions");
 
         var dateInput = this.$el.find('.daterange');
         dateInput.daterangepicker({
@@ -326,5 +327,7 @@ var TransactionsPageView = SubPageView.extend({
         this.$sent.find(".dec").html(sent.dec);
         this.$received.find(".int").html(received.int);
         this.$received.find(".dec").html(received.dec);
+        this.$transactions.html(this.collection.collection.length);
+        this.$transactions.toggleClass("hidden",(this.collection.collection.length<this.collection.collection.limit));
     }
 });
