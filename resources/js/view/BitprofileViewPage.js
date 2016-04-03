@@ -18,7 +18,7 @@ var BitprofileViewPageView = SubPageView.extend({
     render:function(args){
         console.log(args.uri);
         this.exit();
-        this.model = this.profiles.get(args.uri);
+        this.model = this.profiles.find({uri:args.uri});
         this.update();
         this.listenTo(this.model, "change:uri", this.updateURI);
         this.listenTo(this.model, "change:avatar",this.updateAvatar);

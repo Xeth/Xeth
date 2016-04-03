@@ -34,14 +34,18 @@ var BitprofileEditPageView = SubPageView.extend({
     },
 
     render:function(args){
-        this.profile = this.profiles.get(args.uri);
-        if(!this.form.inProgress()) this.form.renderDetailsPage();
+        this.profile = this.profiles.find({uri:args.uri});
+        if(!this.form.inProgress()){
+            this.form.renderDetailsPage();
+        }
         this.form.onSubmit(this.submit);
         this.form.setProfileModel(this.profile);
         this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
         this.form.setFeeModel(this.feeAdapter);
-        this.form.resetForm();
         this.form.attach(this.$el);
+        if(!this.form.inProgress()){
+            this.form.resetForm();
+        }
     },
 
     submit:function(){
@@ -84,7 +88,7 @@ var BitprofileEditPageView = SubPageView.extend({
             this.submitEditStealth(true);
         }
         
-        this.listenTo(this.profiles, "error", this.clearForm);
+        this.listenTo(this.profile, "error", this.clearForm);
     },
 
     submitEditStealth:function(skipped){
