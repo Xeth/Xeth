@@ -18,9 +18,9 @@
             <h1>Link stealth address:</h1>
             <div id="bitprofileCreateStealthList" class="mandatory"></div>
         </div>
-        <h1><span class="controls generate"><a href="javascript:void(0);">Generate new address</a></span></h1>
+        <h1><span class="controls generate off_pending"><a href="javascript:void(0);">Generate new address</a></span></h1>
         
-        <div class="submit">
+        <div class="submit off_pending">
             <a href="javascript:void(0);" class="btnSubmit"><span class="txt">Next</span></a>
             <a href="javascript:void(0);" class="submitCancel">Reset</a>
         </div>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="submit">            
+        <div class="submit off_pending">            
             <div class="section_password section_mandatory">
                 <h1>Security key:</h1>
                 <input id="bitprofileCreate_password" type="password" class="password mandatory" placeholder="Password" />
@@ -67,8 +67,8 @@
 
 </div>
 
-<div class="pendingBox">
-    <h1>Registration in progress...</h1>
+<div class="pendingBox on_pending">
+    <h1>Processing...</h1>
     <span>Please be patient. This may take a few minutes</span>
 </div>
 

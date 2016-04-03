@@ -188,16 +188,35 @@
 .bitprofileForm.pending * {
     pointer-events: none;
 }
-.bitprofileForm.pending #bitporfileCreate_details .submit,
-.bitprofileForm.pending #bitporfileCreate_details .generate {
-    display: none;
+
+.bitprofileForm.pending .on_pending,
+.bitprofileForm .off_pending {
+    opacity: 1;
+    transition: 300ms opacity 200ms;
 }
-.bitprofileForm.pending .pendingBox,
+
+.bitprofileForm .on_pending,
+.bitprofileForm.pending .off_pending {
+    opacity: 0;
+    transition: 300ms opacity 0ms;
+}
+
 .bitprofileForm.pending #bitporfileCreate_details {
     opacity: 1;
-    transition: 300ms opacity 600ms;
+    transition: 300ms all 200ms;
 }
+
 .bitprofileForm.pending #bitporfileCreate_payment {
     opacity: 1;
-    top: 280px;
+}
+.bitprofileForm #bitporfileCreate_payment .formpage {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-top: 0;
+    transition: 300ms margin-top 200ms;
+}
+.bitprofileForm.pending #bitporfileCreate_payment .formpage {
+    margin-top: 280px;
+    transition: 300ms margin-top 0ms;
 }
