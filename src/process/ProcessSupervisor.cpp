@@ -6,7 +6,8 @@ namespace Xeth{
 ProcessSupervisor::ProcessSupervisor() :
     _respawnLimit(10),
     _respawnCnt(0),
-    _respawnInterval(1000)
+    _respawnInterval(1000),
+    _process(NULL)
 {
     initSignals();
 }
@@ -14,7 +15,8 @@ ProcessSupervisor::ProcessSupervisor() :
 ProcessSupervisor::ProcessSupervisor(const Settings &settings) :
     _respawnLimit(settings.get<size_t>("respawn_limit", 10)),
     _respawnCnt(0),
-    _respawnInterval(settings.get<size_t>("respawn_interval", 1000))
+    _respawnInterval(settings.get<size_t>("respawn_interval", 1000)),
+    _process(NULL)
 {
     initSignals();
 }
@@ -32,7 +34,7 @@ void ProcessSupervisor::initSignals()
 }
 
 
-void ProcessSupervisor::supervise(QProcess *process)
+void ProcessSupervisor::attach(QProcess *process)
 {
     stopListening();
     _process = process;

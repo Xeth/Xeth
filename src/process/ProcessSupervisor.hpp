@@ -22,7 +22,7 @@ class ProcessSupervisor : public QObject
         ProcessSupervisor();
         ~ProcessSupervisor();
 
-        void supervise(QProcess *);
+        void attach(QProcess *);
         void stop();
         void start();
 
