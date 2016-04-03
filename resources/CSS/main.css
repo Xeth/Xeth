@@ -338,6 +338,7 @@ input:disabled,
     width: 100% !important;
 }
 
+.ui-state-focus,
 .input:focus,
 textarea:focus, 
 input[type="text"]:focus,
