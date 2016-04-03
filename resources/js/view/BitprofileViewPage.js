@@ -8,12 +8,16 @@ var BitprofileViewPageView = SubPageView.extend({
         this.profiles = options.profiles;
         this.router = options.router;
     },
-
-    render:function(args){
-        console.log(args.uri);
+    
+    exit:function(){
         if(this.model){
             this.stopListening(this.model);
         }
+    },
+
+    render:function(args){
+        console.log(args.uri);
+        this.exit();
         this.model = this.profiles.get(args.uri);
         this.update();
         this.listenTo(this.model, "change:uri", this.updateURI);

@@ -29,7 +29,6 @@ var BitprofileFormView = SubPageView.extend({
         }
         this.bitprofileContext.selectmenu().selectmenu( "widget" ).addClass( "contextSelect" );
         this.feeFactor.slider({value:50, change:this.updateFeeFactor});
-        this.listenTo(this.accounts, "change", this.resetAddressError);
         this.$el.find("#bitporfileCreate_details .btnSubmit").click(this.submitDetails);
         this.$el.find("#bitporfileCreate_payment .btnSubmit").click(this.submit);
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
@@ -39,9 +38,20 @@ var BitprofileFormView = SubPageView.extend({
             options.router.redirect("generate");
         });
     },
-
+    
+    exit:function(){
+        this.stopListening(this.accounts, "change", this.resetAddressError);
+        this.stopListeningPayments();
+    },
+    /*
+    render:function(){
+        this.resetForm();
+    },
+    */
     attach:function(dom){
+        this.exit();
         this.$el.appendTo(dom);
+        this.listenTo(this.accounts, "change", this.resetAddressError);
     },
 
     onSubmit:function(callback){
@@ -54,11 +64,11 @@ var BitprofileFormView = SubPageView.extend({
         this.model = profileModel;
     },
     renderDetailsPage:function(){
+        this.stopListeningPayments();
+        
         if(this.accountSelect_details.find(".accountClone").length>0)
         this.accountSelect_details.html('');
         this.account_payment = this.cloneAccount(this.accountSelect_payment);
-        
-        this.stopListening(this.accounts, "change", this.updatePaymentAccount);
         
         this.accounts.resize(22);
         this.accounts.compact(true);
@@ -75,13 +85,12 @@ var BitprofileFormView = SubPageView.extend({
         this.accountSelect_payment.html('');
         this.account_details = this.cloneAccount(this.accountSelect_details);
         
-        this.listenTo(this.accounts, "change", this.updatePaymentAccount);
-        
         this.accounts.resize(28);
         this.accounts.compact(true);
         this.accounts.attach(this.accountSelect_payment);
         this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
         this.accounts.style("mini send");
+        
         if(this.model){
             this.accounts.readonly(true);
             this.selectAccount("address",this.model.get("account"));
@@ -91,6 +100,13 @@ var BitprofileFormView = SubPageView.extend({
         this.computeFee();
         this.detailsPage.removeClass("active");
         this.paymentPage.addClass("active");
+        this.updatePaymentAccount();
+        this.listenTo(this.accounts, "change", this.updatePaymentAccount);
+    },
+    
+    stopListeningPayments:function(){
+        this.stopListening(this.accounts, "change", this.updatePaymentAccount);
+        if(this.account_payment) this.stopListening(this.account_payment);
     },
     
     cloneAccount:function(dom){
@@ -121,9 +137,6 @@ var BitprofileFormView = SubPageView.extend({
     
     resetAddressError: function(){
         this.accountSelect_payment.noerror();
-    },
-    render:function(){
-        this.resetForm()  
     },
     reset:function(){
         this.renderDetailsPage();

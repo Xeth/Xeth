@@ -223,19 +223,23 @@ var TransactionsPageView = SubPageView.extend({
         this.typeFilter.selectmenu();
         this.typeFilter.on("selectmenuchange",this.setTypeFilter);
         
-        this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
         this.listenTo(this.collection, "reset", this.computeTotals);
         this.computeTotals();
     },
+    
+    exit:function(){
+        this.stopListening(this.accounts, "change", this.setAddressFilter);
+    },
 
     render:function(options){
         this.accounts.resize(21);
         this.accounts.compact(true);
+        this.accounts.style("mini");
+        this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.accounts.attach(this.$el.find("#filterTransactionAddress"));
         this.accounts.filter(function(){return true;}); //show all rows
-        this.accounts.style("mini");
         if(options && options.focusFirst) this.collection.focusFirst();
     },
 

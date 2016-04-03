@@ -30,6 +30,9 @@
 	overflow:hidden;
 	text-align:center;
 }
+.page .formpage.receive .QR canvas {
+    display: none !important;
+}
 .page .formpage.receive .QR img {
 	height: 100%;
 }

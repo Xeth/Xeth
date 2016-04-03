@@ -16,6 +16,10 @@ var BitprofileCreatePageView = SubPageView.extend({
         this.form = options.form;
         //this.listenTo(this.profiles, "add", this.added);
     },
+    
+    exit:function(){
+        this.form.exit();
+    },
 
     render:function(args){
         if(!this.form.inProgress()) this.form.renderDetailsPage();

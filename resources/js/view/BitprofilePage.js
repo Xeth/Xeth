@@ -127,6 +127,11 @@ var BitprofilePageView = SubPageView.extend({
             this.collection.collection.on("add", this.add);
         }
     },
+    
+    exit:function(){
+        this.subpages.create.exit();
+        this.subpages.edit.exit();
+    },
 
     render:function(args){
         if(args&&args.subpage){
