@@ -76,7 +76,7 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     triggerRename:function(event){
-        this.findProfile(event.uri, function(profile){
+        this.findProfile(event.oldURI, function(profile){
             profile.set(event);
         });
     },
