@@ -171,17 +171,23 @@ function TransactionViewFactory(template, clipboard, router, addressbook){
 var TransactionsPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters", "computeTotals", "processNewTransaction", "removeTransaction", "matchFilter");
+        _(this).bindAll("open", "setTimeFilter", "setAddressFilter", "setTypeFilter", "applyFilters", "computeTotals", "processNewTransaction", "removeTransaction", "matchFilter");
         SubPageView.prototype.initialize.call(this,options);
         this.totalSent = 0;
         this.totalReceived = 0;
         this.template = options.templates.get("transactions");
-        this.$el.html(this.template());
-        this.accounts = options.accounts;
+        this.transactions = options.transactions;
         this.filters = {timeStart:null, timeEnd:null, address:null, type:null};
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router, options.addressbook);
+        
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.accounts.filter(function(){return true;}); //show all rows
+    },
+    
+    render:function(){
+        this.$el.html(this.template());
         this.collection = new CollectionView({
-            collection:options.transactions,
+            collection:this.transactions,
             factory:this.factory,
             reversed:false,
             ordered:true,
@@ -223,24 +229,20 @@ var TransactionsPageView = SubPageView.extend({
         this.typeFilter.selectmenu();
         this.typeFilter.on("selectmenuchange",this.setTypeFilter);
         
+        this.accounts.style("mini");
+        this.accounts.compact(true);
+        this.accounts.resize(21);
+        this.listenTo(this.accounts, "change", this.setAddressFilter);
+        this.accounts.attach(this.$el.find("#filterTransactionAddress"));
+        
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
         this.listenTo(this.collection, "reset", this.computeTotals);
-        this.computeTotals();
     },
     
-    exit:function(){
-        this.stopListening(this.accounts, "change", this.setAddressFilter);
-    },
-
-    render:function(options){
-        this.accounts.resize(21);
-        this.accounts.compact(true);
-        this.accounts.style("mini");
-        this.listenTo(this.accounts, "change", this.setAddressFilter);
-        this.accounts.attach(this.$el.find("#filterTransactionAddress"));
-        this.accounts.filter(function(){return true;}); //show all rows
-        if(options && options.focusFirst) this.collection.focusFirst();
+    open:function(args){        
+        this.applyFilters();
+        if(args && args.focusFirst) this.collection.focusFirst();
     },
 
     setTimeFilter:function(start, end, label){

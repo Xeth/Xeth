@@ -1,11 +1,19 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("submitDetails", "submit", "resetForm", "reset", "lockPage", "updateFeeFactor", "renderDetailsPage");
+        _(this).bindAll("clickGenerate", "submitDetails", "submit", "resetForm", "reset", "lockPage", "updateFeeFactor", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
+        this.registrars = options.registrars;
+        this.router = options.router;
+        this.pending = false;
+        
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        //this.accounts.filter(function(model){return model!=undefined;}); //hide text
+    },
+    
+    render:function(){
         this.$el = $('<div class="bitprofileForm">'+this.template()+'</div>');
-        this.accounts = options.accounts;
         this.detailsPage = this.$el.find("#bitporfileCreate_details");
         this.paymentPage = this.$el.find("#bitporfileCreate_payment");
         this.feeFactor = this.$el.find('.section_fee .slider');
@@ -16,15 +24,16 @@ var BitprofileFormView = SubPageView.extend({
         this.name = this.detailsPage.find("input.name");
         this.avatar = this.detailsPage.find("input.avatarURL");
         this.avatarImage = this.detailsPage.find(".avatar img");
-        this.pending = false;
         this.accountSelect_details = this.$el.find("#bitprofileCreateStealthList");
         this.accountSelect_payment = this.$el.find("#bitprofileCreateAccountList");
         this.accountBalance_payment = this.$el.find("#bitprofileCreateAccountBalance");
         this.$form = this.paymentPage.find(".formpage");
         this.bitprofileContext = this.$el.find("#bitporfileCreate_context");
-        for(var i=0; i<options.registrars.length; i++)
+        if(this.registrars.length==0) this.bitprofileContext.append("<option>NONE</option>");
+        else
+        for(var i=0; i<this.registrars.length; i++)
         {
-            var registrar = options.registrars.at(i);
+            var registrar = this.registrars.at(i);
             this.bitprofileContext.append("<option>"+registrar.get("uri")+"</option>");
         }
         this.bitprofileContext.selectmenu().selectmenu( "widget" ).addClass( "contextSelect" );
@@ -33,25 +42,23 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find("#bitporfileCreate_payment .btnSubmit").click(this.submit);
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
         this.$el.find("#bitporfileCreate_payment .submitCancel").click(this.renderDetailsPage);
-        this.$el.find(".generate a").click(function(){
-            console.log("clicked on generate");
-            options.router.redirect("generate");
-        });
+        this.$el.find(".generate a").click(this.clickGenerate);
+        
+        this.listenTo(this.accounts, "change", this.resetAddressError);
     },
     
     exit:function(){
-        this.stopListening(this.accounts, "change", this.resetAddressError);
+        //this.stopListening(this.accounts, "change", this.resetAddressError);
         this.stopListeningPayments();
     },
     /*
-    render:function(){
+    open:function(){
         this.resetForm();
     },
     */
     attach:function(dom){
         this.exit();
         this.$el.appendTo(dom);
-        this.listenTo(this.accounts, "change", this.resetAddressError);
     },
 
     onSubmit:function(callback){
@@ -63,6 +70,12 @@ var BitprofileFormView = SubPageView.extend({
     setProfileModel:function(profileModel){
         this.model = profileModel;
     },
+    
+    clickGenerate:function(){
+        console.log("clicked on generate");
+        this.router.redirect("generate");
+    },
+    
     renderDetailsPage:function(){
         this.stopListeningPayments();
         

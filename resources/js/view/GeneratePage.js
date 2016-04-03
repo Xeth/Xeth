@@ -1,10 +1,14 @@
 var GeneratePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateProgress", "submitEntropy", "skipSeed", "submitForm");
+        _(this).bindAll("open", "updateProgress", "submitEntropy", "skipSeed", "submitForm");
 		SubPageView.prototype.initialize.call(this,options);
         this.accounts = options.accounts;
         this.template = options.templates.get("generate");
+        this.router = options.router;
+    },
+    
+    render:function(){
         this.$el.html(this.template());
         this.progress = this.$el.find("#newAddressSeedLoader .loader");
         this.seedPage = this.$el.find("#page_newAddress_seed");
@@ -15,14 +19,13 @@ var GeneratePageView = SubPageView.extend({
         this.repeatPassword = this.$el.find("#newAddressRepassword");
         this.$el.find("#skipNewAddressSeed").click(this.skipSeed);
         this.$el.find("#createNewAddress").click(this.submitForm);
-        this.router = options.router;
     },
     
     exit:function(){
         this.stopSeedPage();
     },
 
-    render:function(){
+    open:function(){
         this.renderSeedPage();
     },
 

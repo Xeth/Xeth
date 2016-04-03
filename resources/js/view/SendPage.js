@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater");
+        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.resolver = options.resolver;
@@ -11,6 +11,13 @@ var SendPageView = SubPageView.extend({
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
+        this.router = options.router;
+        
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
+    },
+
+    render:function(){
         this.$el.html(this.template());
         this.feeFactor = this.$el.find('.section_fee .slider');
         this.feeFactor.slider({value:50, change:this.updateFeeFactor});
@@ -31,16 +38,12 @@ var SendPageView = SubPageView.extend({
         this.destTitle = this.$el.find(".section_to h1");
 
         this.aliasHolder.hide();
-        this.accounts.render();
         this.saveOption.change(this.toggleAlias);
         this.sendType.on("selectmenuchange",this.updateSendType);
         this.updatePlaceholder();
         this.$el.find("#submitSend").click(this.checkSubmit);
-        this.$el.find("a.addressbook").click(function(){
-            options.router.redirect("addressbook");
-        });
+        this.$el.find("a.addressbook").click(this.clickAddressbook);
         this.$el.find("a.clipboard").click(this.paste);
-        this.router = options.router;
         this.$form = this.$el.find(".formpage.send");
         
         this.$el.find('.btn').tooltip({
@@ -70,11 +73,25 @@ var SendPageView = SubPageView.extend({
         this.amount.on("change", this.computeFee);
         this.destination.on("change", this.computeFee);
         
+        this.accounts.style("send");
+        this.accounts.compact(false);
+        this.accounts.resize(); //default size
+        this.accounts.attach(this.$el.find("#sendFrom"));
+        this.accounts.render();
         //this.setAddressHint("");
         //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
     },
 
+    open:function(args){
+        if(args && args.destination){
+            this.setDestination(args.destination);
+            this.computeFee();
+        }
+    },
     
+    clickAddressbook:function(){
+        this.router.redirect("addressbook");
+    },
 
     updateFeeFactor:function(){
         this.computeFee();
@@ -82,18 +99,6 @@ var SendPageView = SubPageView.extend({
             this.feeFactor.addClass("warning");
         }else{
             this.feeFactor.removeClass("warning");
-        }
-    },
-
-    render:function(args){
-        this.accounts.attach(this.$el.find("#sendFrom"));
-        this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
-        this.accounts.style("send");
-        this.accounts.compact(false);
-        this.accounts.resize(); //default size
-        if(args && args.destination){
-            this.setDestination(args.destination);
-            this.computeFee();
         }
     },
 

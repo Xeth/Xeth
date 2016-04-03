@@ -7,7 +7,7 @@ var SubPageView = Backbone.View.extend({
     show:function(args){
         this.$el.removeClass("off");
         setTimeout(this.activate, 10);
-        setTimeout(this.render, 100, args);
+        setTimeout(this.open, 100, args);
     },
     hide:function(){
         this.exit();
@@ -20,6 +20,7 @@ var SubPageView = Backbone.View.extend({
     activate:function(){
         this.$el.addClass("active");
     },
+    open:function(){},
     exit:function(){}
 
 });

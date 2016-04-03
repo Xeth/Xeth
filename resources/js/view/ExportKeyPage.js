@@ -4,19 +4,21 @@ var ExportKeyPageView = SubPageView.extend({
         _(this).bindAll("submit");
 		SubPageView.prototype.initialize.call(this,options);
         this.filesystem = options.filesystem;
-        this.accounts = options.accounts;
         this.template = options.templates.get("export");
-        this.$el.html(this.template());
-        this.$el.find(".btnSubmit").click(this.submit);
         this.router = options.router;
+        
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.accounts.filter(function(model){ return model!=undefined;});
     },
 
     render:function(){
-        this.accounts.attach(this.$el.find("#exportAddress_account"));
-        this.accounts.filter(function(model){ return model!=undefined;});
+        this.$el.html(this.template());
+        this.$el.find(".btnSubmit").click(this.submit);
+        
         this.accounts.style("send");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
+        this.accounts.attach(this.$el.find("#exportAddress_account"));
     },
 
     submit:function(){

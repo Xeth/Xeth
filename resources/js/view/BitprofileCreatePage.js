@@ -9,7 +9,7 @@ var BitprofileCreateFee = function(fee){
 var BitprofileCreatePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("render", "submit", "clearForm", "submitCreate", "submitStealth");
+        _(this).bindAll("open", "submit", "clearForm", "submitCreate", "submitStealth");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
         this.feeModel = new BitprofileCreateFee(options.fee);
@@ -21,7 +21,7 @@ var BitprofileCreatePageView = SubPageView.extend({
         this.form.exit();
     },
 
-    render:function(args){
+    open:function(args){
         if(!this.form.inProgress()) this.form.renderDetailsPage();
         this.form.onSubmit(this.submit);
         this.form.setFeeModel(this.feeModel);

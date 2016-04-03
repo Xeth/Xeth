@@ -3,15 +3,17 @@ var ChangePasswordPageView = SubPageView.extend({
     initialize:function(options){
         _(this).bindAll("submit");
 		SubPageView.prototype.initialize.call(this,options);
-        this.accounts = options.accounts;
         this.template = options.templates.get("change_password");
-        this.$el.html(this.template());
-        this.$el.find(".btnSubmit").click(this.submit);
         this.router = options.router;
+        
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.accounts.filter(function(model){ return !!model;});
     },
 
     render:function(){
-        this.accounts.filter(function(model){ return !!model;});
+        this.$el.html(this.template());
+        this.$el.find(".btnSubmit").click(this.submit);
+        
         this.accounts.resize();
         this.accounts.style("send");
         this.accounts.attach(this.$el.find("#editAddress_account"));

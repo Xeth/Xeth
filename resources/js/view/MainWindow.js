@@ -1,7 +1,7 @@
 
 var PageRouter = function(master){
     this.redirect = function(name, args){
-        master.open(name, args);
+        master.openPage(name, args);
     }
     return this;
 }
@@ -10,13 +10,13 @@ var MainWindowView = Backbone.View.extend({
     el: "body",
 
     initialize:function(options){
-        _(this).bindAll("open","show","loaded", "notifyError");
+        _(this).bindAll("openPage","show","loaded", "notifyError");
         this.models = {};
         this.bindModels(options);
         this.active = null;
     },
 
-    open: function(name, args){
+    openPage: function(name, args){
         if(!name || name instanceof Object){
             args = name;
             name = "default";
@@ -43,13 +43,12 @@ var MainWindowView = Backbone.View.extend({
 
         this.models.events.onError(this.notifyError);
 
-        this.accounts = new AccountSelect({collection:this.models.accounts, templates:this.templates});
         this.router = new PageRouter(this);
-        this.menuAlias = {default: "receive"};
+        this.menuAlias = {default: "send"};
         this.subpages = {};
         this.subpages.send = new SendPageView
         ({
-            accounts: this.accounts, 
+            accounts: this.models.accounts, 
             addressbook:this.models.addressbook, 
             el:this.$el.find("#page_send"), 
             router:this.router, 
@@ -61,7 +60,7 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.receive = new ReceivePageView
         ({
-            accounts:this.accounts, 
+            accounts:this.models.accounts, 
             clipboard: this.models.clipboard, 
             el:this.$el.find("#page_receive"), 
             templates:this.templates,
@@ -76,7 +75,7 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.transactions = new TransactionsPageView
         ({
-            accounts:this.accounts,
+            accounts:this.models.accounts,
             clipboard: this.models.clipboard,
             router: this.router,
             addressbook: this.models.addressbook,
@@ -86,7 +85,7 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.password = new ChangePasswordPageView
         ({
-            accounts:this.accounts,
+            accounts:this.models.accounts,
             el:this.$el.find("#page_editAddress"),
             router:this.router,
             templates:this.templates
@@ -109,7 +108,7 @@ var MainWindowView = Backbone.View.extend({
         this.subpages.export = new ExportKeyPageView
         ({
             filesystem:this.models.filesystem,
-            accounts:this.accounts,
+            accounts:this.models.accounts,
             el:this.$el.find("#page_exportAddress"),
             router:this.router,
             templates:this.templates
@@ -125,19 +124,20 @@ var MainWindowView = Backbone.View.extend({
         ({
             filesystem:this.models.filesystem,
             registrars:this.models.registrars,
-            accounts:this.accounts,
+            accounts:this.models.accounts,
             fee: this.models.fee,
             profiles:this.models.profiles,
             el:this.$el.find("#page_bitprofile"),
             router:this.router,
             templates:this.templates
         });
-        this.subpages["default"] = this.subpages.receive;
         this.menu = new MenuView({el:this.$el.find(".mainNav")});
-        this.menu.on("change", this.open);
+        this.menu.on("change", this.openPage);
         this.progress = new ProgressView({el:this.$el.find(".footer"), model:this.models.progress});
 
         this.progress.render();
+        for(var i in this.subpages) this.subpages[i].render();
+        this.subpages["default"] = this.subpages.send;
         this.show();
     },
     notifyError:function(msg){
@@ -151,7 +151,7 @@ var MainWindowView = Backbone.View.extend({
     show:function(){
         this.$el.find("#page_splash").removeClass("active");
         setTimeout(this.loaded, 150);
-        setTimeout(this.open, 1000);
+        setTimeout(this.openPage, 1000);
     }
 
 });

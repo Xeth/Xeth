@@ -103,14 +103,17 @@ function ContactViewFactory(template, router){
 var AddressBookPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("applyFilter");
+        _(this).bindAll("open", "applyFilter");
         SubPageView.prototype.initialize.call(this,options);
-
         this.template = options.templates.get("addressbook");
-        this.$el.html(this.template())
+        this.addressbook = options.addressbook;
         this.factory = new ContactViewFactory(options.templates.get("contact_item"), options.router);
+    },
+    
+    render:function(){
+        this.$el.html(this.template())
         this.collection = new CollectionView({
-            collection: options.addressbook, 
+            collection: this.addressbook, 
             factory:this.factory,
             scroll:{scrollPage: this.$el.find(".scrollpage")/*, step: 71*/},
             el: this.$el.find(".contactList"), 
@@ -125,7 +128,7 @@ var AddressBookPageView = SubPageView.extend({
         this.collection.collection.on("insert", this.applyFilter);
     },
 
-    render:function(options){
+    open:function(args){
         this.applyFilter();
     },
 
