@@ -8,7 +8,7 @@
 
 #include "ethrpc/Provider.hpp"
 
-#include "process/EthProcessSupervisor.hpp"
+#include "process/ProcessSupervisor.hpp"
 
 
 namespace Xeth{
@@ -19,7 +19,7 @@ class FacadeInitializer : public QObject
 {
     Q_OBJECT
     public:
-        FacadeInitializer(QThread *parent, Ethereum::Connector::Provider &provider, EthProcessSupervisor &process, Ethereum::Connector::Network net);
+        FacadeInitializer(QThread *parent, Ethereum::Connector::Provider &provider, ProcessSupervisor &process, Ethereum::Connector::Network net);
         void initialize();
 
     signals:
@@ -29,7 +29,7 @@ class FacadeInitializer : public QObject
     private:
         QThread *_parent;
         Ethereum::Connector::Provider &_provider;
-        EthProcessSupervisor &_process;
+        ProcessSupervisor &_process;
         Ethereum::Connector::Network _net;
 };
 

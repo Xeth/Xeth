@@ -7,9 +7,10 @@
 #include "ethrpc/Network.hpp"
 
 #include "env/Settings.hpp"
-
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
+#include "process/ProcessSupervisor.hpp"
+#include "process/EthProcessFactory.hpp"
 
 #include "Notifier.hpp"
 #include "AddressBookFacade.hpp"
@@ -81,7 +82,7 @@ class Facade : public QObject
         DataBase _database;
         Synchronizer _synchronizer;
 
-        EthProcessSupervisor _process;
+        ProcessSupervisor _process;
 
         Wallet _wallet;
         AddressBook _addressbook;

@@ -3,7 +3,7 @@
 namespace Xeth{
 
 ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer) :
-    _process(settings),
+    _settings(settings),
     _synchronizer(synchronizer)
 {}
 
@@ -20,12 +20,13 @@ bool ImportPresaleKeyCommand::import(const QString &path, const QString &passwor
     args.push_back("import");
     args.push_back(path);
 
-    _process.exec(args);
-    _process.waitForFinished();
+    QProcess process;
+    EthProcessInitializer::Initialize(process, _settings, args);
 
-    _process.readAll();
+    process.start();
+    process.waitForFinished();
 
-    if(_process.exitStatus() != 0)
+    if(process.exitStatus() != 0)
     {
         return false;
     }

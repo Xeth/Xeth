@@ -20,6 +20,7 @@ Facade::Facade(const Settings &settings) :
     _filesystem(_notifier),
     _bitprofile(_provider, _database, _notifier, _settings)
 {
+    _process.supervise(EthProcessFactory::Create(settings));
     FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);

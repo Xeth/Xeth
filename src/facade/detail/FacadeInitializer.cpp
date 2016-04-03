@@ -3,7 +3,7 @@
 namespace Xeth{
 
 
-FacadeInitializer::FacadeInitializer(QThread *parent,Ethereum::Connector::Provider &provider, EthProcessSupervisor &process, Ethereum::Connector::Network net) : 
+FacadeInitializer::FacadeInitializer(QThread *parent,Ethereum::Connector::Provider &provider, ProcessSupervisor &process, Ethereum::Connector::Network net) : 
     _parent(parent),
     _provider(provider),
     _process(process),

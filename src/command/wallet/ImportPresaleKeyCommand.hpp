@@ -1,7 +1,7 @@
 #pragma once
 
 #include "env/Settings.hpp"
-#include "process/EthProcess.hpp"
+#include "process/EthProcessInitializer.hpp"
 #include "synchronizer/Synchronizer.hpp"
 #include "io/JsonReader.hpp"
 
@@ -24,7 +24,7 @@ class ImportPresaleKeyCommand
         bool import(const QString &path, const QString &password, QString &address);
 
     private:
-        EthProcess _process;
+        const Settings &_settings;
         Synchronizer &_synchronizer;
 };
 
