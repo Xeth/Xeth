@@ -202,7 +202,7 @@ var BitprofileFormView = SubPageView.extend({
         return parseInt(gas/50*100); //in percents
     },
     setLockMessage:function(msg){
-        this.$el.find(".pending h1").html(msg);
+        this.$el.find(".pendingBox h1").html(msg);
     },
     lockPage:function(msg){
         this.account_payment = this.cloneAccount(this.accountSelect_payment);
