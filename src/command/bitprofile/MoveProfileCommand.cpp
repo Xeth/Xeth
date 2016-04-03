@@ -14,12 +14,12 @@ MoveProfileCommand::MoveProfileCommand(Ethereum::Connector::Provider &provider, 
 
 QVariant MoveProfileCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("old")||!request.contains("context")||!request.contains("id")||!request.contains("password"))
+    if(!request.contains("uri")||!request.contains("context")||!request.contains("id")||!request.contains("password"))
     {
         return QVariant::fromValue(false);
     }
 
-    BitProfileStore::Iterator it = _store.find(request["old"].toString());
+    BitProfileStore::Iterator it = _store.find(request["uri"].toString());
     if(it==_store.end())
     {
         return QVariant::fromValue(false);
@@ -43,7 +43,7 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
     QString name = request["id"].toString();
     BigInt gas(request.contains("gas")?request["gas"].toString().toStdString():"0");
     MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, name, request["password"].toString(), gas, _notifier));
-    action->run();
+    action->start();
     return QVariant::fromValue(true);
 }
 
