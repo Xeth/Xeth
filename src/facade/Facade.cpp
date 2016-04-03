@@ -23,10 +23,11 @@ Facade::Facade(const Settings &settings) :
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
-    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _eth, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net);
+    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _eth.moveToThread(thread);
+    _ipfs.moveToThread(thread);
 
     _notifier.watch(_synchronizer);
     _notifier.watch(_database);
