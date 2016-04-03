@@ -31,17 +31,19 @@
 
 .page .formpage.send .section_to .hint {
     margin-top: -38px;
+    height: 38px;
     overflow: hidden;
     color: #BB874E;
     cursor: pointer;
     position: absolute;
-    max-width: 280px;
+    /*max-width: 280px;*/
 }
 
 .page .formpage.send .btnSubmit.btnSend {
 	color: #3D8AAB;
 	background-position-y: -660px;
 }
-.page .formpage.send .btnSubmit.btnSend:hover {
+.page .formpage.send .btnSubmit.btnSend:hover,
+.page .formpage.send .btnSubmit.btnSend:focus {
 	background-position-y: -600px;
 }

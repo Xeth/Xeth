@@ -80,10 +80,11 @@ p {
 	background-repeat: no-repeat;
 	background-position: center -85px;
 	display: inline-block;
-	vertical-align:middle;
+	vertical-align:top;
 	height: 16px;
 	width: 16px;
-	margin: -6px 0px 0px 3px;
+	/*margin: -6px 0px 0px 3px;*/
+    margin-left: 3px;
 }
 .bitprofileIcon.on {
 	background-position-y: -60px;
@@ -305,7 +306,9 @@ label.ui-button:before,
 }
 
 label.ui-button:hover:before,
-.checkbox:hover:before {
+.checkbox:hover:before,
+label.ui-button:focus:before,
+.checkbox:focus:before {
 	background-color: #c1c6c6;
 	background-color: rgba(119, 130, 131, 0.2);
 }
@@ -317,7 +320,8 @@ label.ui-button.ui-state-active:before,
 }
 
 input:disabled,
-.checkbox.disabled
+.checkbox.disabled,
+.ui-button-disabled
 {
     opacity: 0.5;
 }
@@ -334,6 +338,8 @@ input:disabled,
     width: 100% !important;
 }
 
+.ui-state-focus,
+.input:focus,
 textarea:focus, 
 input[type="text"]:focus,
 input[type="password"]:focus,

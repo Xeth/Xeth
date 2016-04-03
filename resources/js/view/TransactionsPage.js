@@ -192,6 +192,7 @@ var TransactionsPageView = SubPageView.extend({
 
         this.$sent = this.$el.find(".transactions_total .sent .txtBalance");
         this.$received = this.$el.find(".transactions_total .received .txtBalance");
+        this.$transactions = this.$el.find(".transactions_total .transactions");
 
         var dateInput = this.$el.find('.daterange');
         dateInput.daterangepicker({
@@ -222,19 +223,23 @@ var TransactionsPageView = SubPageView.extend({
         this.typeFilter.selectmenu();
         this.typeFilter.on("selectmenuchange",this.setTypeFilter);
         
-        this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
         this.listenTo(this.collection, "reset", this.computeTotals);
         this.computeTotals();
     },
+    
+    exit:function(){
+        this.stopListening(this.accounts, "change", this.setAddressFilter);
+    },
 
     render:function(options){
         this.accounts.resize(21);
         this.accounts.compact(true);
+        this.accounts.style("mini");
+        this.listenTo(this.accounts, "change", this.setAddressFilter);
         this.accounts.attach(this.$el.find("#filterTransactionAddress"));
         this.accounts.filter(function(){return true;}); //show all rows
-        this.accounts.style("mini");
         if(options && options.focusFirst) this.collection.focusFirst();
     },
 
@@ -326,5 +331,7 @@ var TransactionsPageView = SubPageView.extend({
         this.$sent.find(".dec").html(sent.dec);
         this.$received.find(".int").html(received.int);
         this.$received.find(".dec").html(received.dec);
+        this.$transactions.html(this.collection.collection.length);
+        this.$transactions.toggleClass("hidden",(this.collection.collection.length<this.collection.collection.limit));
     }
 });

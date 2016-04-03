@@ -1,10 +1,10 @@
 
 
 <div class="formpage">
-    <div class="input contextSelect">
+    <div class="input bitprofileID">
         <input type="text" readonly />
     </div>
-    <div class="input bitprofileID">
+    <div class="input contextSelect">
         <input type="text" readonly />
     </div>
     <input class="name" type="text" readonly placeholder="unnamed" />

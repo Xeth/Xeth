@@ -217,7 +217,8 @@
 	width: calc(33.333% - 2px);
 }
 
-.page .formpage .btns .btn:hover {
+.page .formpage .btns .btn:hover,
+.page .formpage .btns .btn:focus {
 	background-color: #1c2e30;
 }
 
@@ -226,7 +227,8 @@
 	background-color: rgba(247, 147, 30, 0.4);
 }
 
-.page .formpage .btns .btn.highlight:hover {
+.page .formpage .btns .btn.highlight:hover,
+.page .formpage .btns .btn.highlight:focus {
 	background-color: #F7931E;
 }
 
@@ -291,7 +293,7 @@
 .page .input.bitprofileID {
 	width: 145px;
     float: left;
-    margin-left: 2px;
+    margin-right: 2px;
 }
 
 .page .input.bitprofileID input {
@@ -309,8 +311,28 @@
 	height: 16px;
 	width: 16px;
 	padding-right: 3px;
-	margin: -28px 0px 0px -3px;
+	margin: -29px 0px 0px -3px;
 	pointer-events: none;
+}
+
+.page .contextSelect:after {
+	content: "@";
+	background-color: #D2D5D6;
+    color: #778283;
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
+    line-height: 20px;
+    font-size: 0.8rem;
+    text-align: center;
+	border-radius: 50%;
+	margin: -31px 0px 0px -22px;
+	pointer-events: none;
+}
+
+.page .ui-selectmenu-button.contextSelect:after {
+	margin-top: -29px;
 }
 
 .page .input.date {
@@ -356,7 +378,8 @@
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 
-.page .formpage .btnSubmit:hover {
+.page .formpage .btnSubmit:hover,
+.page .formpage .btnSubmit:focus {
 	color: #ffffff !important;
 	background-position-y: -465px;
 	line-height: 58px;
@@ -396,7 +419,8 @@
 	font-size: 0.8em;
 }
 
-.page .formpage .submitCancel:hover {
+.page .formpage .submitCancel:hover,
+.page .formpage .submitCancel:focus {
 	background-color: #1c2e30;
 }
 

@@ -21,6 +21,7 @@
     </div>
 </div>
 <div class="transactions_total">
+    <div class="total transactions hidden"></div>
     <div class="total sent right">
         <span class="detail txtBalance">
             <span class="int"></span><span class="dec"></span>

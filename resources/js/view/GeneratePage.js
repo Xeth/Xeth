@@ -17,6 +17,10 @@ var GeneratePageView = SubPageView.extend({
         this.$el.find("#createNewAddress").click(this.submitForm);
         this.router = options.router;
     },
+    
+    exit:function(){
+        this.stopSeedPage();
+    },
 
     render:function(){
         this.renderSeedPage();
@@ -35,6 +39,12 @@ var GeneratePageView = SubPageView.extend({
         $(document).on('keydown', ninja.seeder.seedKeyPress);
     },
 
+    stopSeedPage:function(){
+        $(document).off('mousemove', ninja.seeder.seed);
+        $(document).off('click', SecureRandom.seedTime);
+        $(document).off('keydown', ninja.seeder.seedKeyPress);
+    },
+
     updateProgress:function(percent){
         this.progress.find('.value').css('width', percent+'%');
         this.progress.find('.txt .percent').text(percent);
@@ -51,9 +61,7 @@ var GeneratePageView = SubPageView.extend({
     },
 
     renderForm:function(){
-        $(document).off('mousemove', ninja.seeder.seed);
-        $(document).off('click', SecureRandom.seedTime);
-        $(document).off('keydown', ninja.seeder.seedKeyPress);
+        this.stopSeedPage();
         this.seedPage.removeClass("active");
         this.formPage.addClass("active");
     },

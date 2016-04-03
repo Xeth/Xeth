@@ -16,7 +16,8 @@
 	background-color: rgba(91, 148, 91, 0.4);
 }
 
-.page .formpage.receive .btns .btn.highlight:hover {
+.page .formpage.receive .btns .btn.highlight:hover,
+.page .formpage.receive .btns .btn.highlight:focus {
 	background-color: #5b945b;
 }
 
@@ -28,6 +29,9 @@
 	background-color: rgba(255, 255, 255, 0.7);
 	overflow:hidden;
 	text-align:center;
+}
+.page .formpage.receive .QR canvas {
+    display: none !important;
 }
 .page .formpage.receive .QR img {
 	height: 100%;

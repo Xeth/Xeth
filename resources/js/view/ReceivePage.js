@@ -20,9 +20,8 @@ var ReceivePageView = SubPageView.extend({
 
         this.msg.on("input",this.scheduleUpdate);
         this.amount.on("input", this.scheduleUpdate);
-        this.msg.on("change",this.update);
-        this.amount.on("change",this.update);
-        this.accounts.on("change", this.update);
+        this.msg.on("change",this.scheduleUpdate);
+        this.amount.on("change",this.scheduleUpdate);
 
         this.$el.find("#copyReceiveURI").click(this.copyUriToClipboard);
         this.$el.find("#copyReceiveAddress").click(this.copyAddressToClipboard);
@@ -31,30 +30,40 @@ var ReceivePageView = SubPageView.extend({
             options.router.redirect("generate");
         })
     },
+    
+    exit:function(){
+        this.accounts.off("change", this.scheduleUpdate);
+        this.stopUpdate();
+        this.timer = true;
+    },
 
     render:function(args){
-        this.accounts.filter(function(model){return model!=undefined;}); //hide text
-        this.accounts.attach(this.$el.find("#receiveTo"));
         this.accounts.style("receive");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
+        this.accounts.attach(this.$el.find("#receiveTo"));
+        this.accounts.filter(function(model){return model!=undefined;}); //hide text
         if(args&&args.address){
             this.accounts.focus(function(model){ return (model.get("address")||model.get("stealth"))==args.address;})
         }
-        this.update();
+        this.accounts.on("change", this.scheduleUpdate);
+        (this.timer)?this.scheduleUpdate():this.update();
     },
 
     update:function(){
-        this.timer = undefined;
+        this.stopUpdate();
         var uri = this.getURI();
         this.uri.html(uri);
         this.qr.makeCode(uri);
     },
 
     scheduleUpdate:function(){
-        if(this.timer==undefined){
-            this.timer = setTimeout(this.update, 2000);
-        }
+        this.stopUpdate();
+        this.timer = setTimeout(this.update, 1000);
+    },
+
+    stopUpdate:function(){
+        clearTimeout(this.timer);
     },
 
     getSelectedAddress:function(){

@@ -28,6 +28,10 @@ var BitprofileEditPageView = SubPageView.extend({
         this.feeModel = options.fee;
         this.form = options.form;
     },
+    
+    exit:function(){
+        this.form.exit();
+    },
 
     render:function(args){
         this.profile = this.profiles.get(args.uri);
