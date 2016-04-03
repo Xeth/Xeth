@@ -22,6 +22,7 @@ class Notifier : public QObject
         void watch(const DataBase &);
         void watch(const Synchronizer &);
 
+    public slots:
         void emitObjectError(const QString &context, const QString &uri, const QString &msg);
         void emitError(const QString &context, const QString &msg);
         void emitError(const QString &);
