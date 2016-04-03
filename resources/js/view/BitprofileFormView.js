@@ -144,7 +144,6 @@ var BitprofileFormView = SubPageView.extend({
         this.unlockPage();
     },
     resetForm:function(){
-        this.account_details = this.account_payment = undefined;
         this.resetAddressError();
         this.bitprofileId.noerror();
         this.password.noerror();
@@ -250,7 +249,6 @@ var BitprofileFormView = SubPageView.extend({
     },
     getFormData:function(){
         var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth")};
-        
         if(this.name.val().length>0) request.name = this.name.val();
         if(this.avatar.val().length>0) request.avatar = this.avatar.val();
         if(this.gasPrice!=undefined && this.gasAmount){

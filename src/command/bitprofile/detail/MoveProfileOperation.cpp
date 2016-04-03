@@ -38,6 +38,7 @@ void MoveProfileOperation::operator()()
             {
                 emitError("failed to rename profile file");
             }
+            //on success event is triggered from store
         }
     }
     catch(const std::exception &e)

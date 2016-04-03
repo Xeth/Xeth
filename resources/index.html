@@ -89,60 +89,64 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 
 
 <script type="text/javascript">
+try{
+    var accounts = new AccountCollection;
+    var transactions = new TransactionCollection;
+    var addressbook = new AddressBook;
+    var progress = new Progress;
+    var config = new Config;
+    var events = new EventListener;
+    var profiles = new ProfileCollection([], {events: events});
+    var registrars = new RegistrarCollection;
+    var resolver = new ProfileResolver;
 
-var accounts = new AccountCollection;
-var transactions = new TransactionCollection;
-var addressbook = new AddressBook;
-var progress = new Progress;
-var config = new Config;
-var events = new EventListener;
-var profiles = new ProfileCollection([], {events: events});
-var registrars = new RegistrarCollection;
-var resolver = new ProfileResolver;
-
-var view = new MainWindowView
-({
-    accounts:accounts,
-    transactions:transactions,
-    addressbook:addressbook,
-    progress:progress,
-    addressValidator: new AddressValidator,
-    fee: new FeeEstimator,
-    events: events,
-    config: config,
-    profiles: profiles,
-    registrars: registrars,
-    resolver: resolver
-});
-
-XETH_event.Ready.connect(this, function(){
-    events.listen();
-    profiles.fetch();
-    profiles.observe();
-    accounts.fetch();
-    accounts.observe();
-    transactions.fetch();
-    transactions.observe();
-    addressbook.fetch();
-    addressbook.resolve(transactions);
-    addressbook.observe();
-    progress.fetch();
-    progress.observe();
-    config.observe();
-    registrars.fetch();
-
-    view.bindModels
+    var view = new MainWindowView
     ({
-        filesystem: XETH_filesystem,
-        clipboard: XETH_clipboard,
-        templates: XETH_templates
+        accounts:accounts,
+        transactions:transactions,
+        addressbook:addressbook,
+        progress:progress,
+        addressValidator: new AddressValidator,
+        fee: new FeeEstimator,
+        events: events,
+        config: config,
+        profiles: profiles,
+        registrars: registrars,
+        resolver: resolver
     });
 
-    view.render();
+    XETH_event.Ready.connect(this, function(){
+        events.listen();
+        profiles.fetch();
+        profiles.observe();
+        accounts.fetch();
+        accounts.observe();
+        transactions.fetch();
+        transactions.observe();
+        addressbook.fetch();
+        addressbook.resolve(transactions);
+        addressbook.observe();
+        progress.fetch();
+        progress.observe();
+        config.observe();
+        registrars.fetch();
+
+        view.bindModels
+        ({
+            filesystem: XETH_filesystem,
+            clipboard: XETH_clipboard,
+            templates: XETH_templates
+        });
+
+        view.render();
 
 
-});
-
+    });
+}
+catch(e)
+{
+    alert("exception : "+e);
+}
 </script>
 
 

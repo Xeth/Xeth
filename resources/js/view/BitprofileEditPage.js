@@ -2,10 +2,15 @@ var BitprofileEditFee = function(profile,fee){
     this.estimate = function(formData){
         var editFee=[];
         if((formData.context!=profile.get("context"))||(formData.id!=profile.get("id")))
-            editFee.push(fee.estimateMoveProfile(profile.get("uri"), formData.context, formData.id, formData.feeFactor));
-        
+        {
+            this.renameFee = fee.estimateMoveProfile(profile.get("uri"), formData.context, formData.id, formData.feeFactor);
+            editFee.push(this.renameFee);
+        }
         if(formData.stealth!=profile.get("payments"))
-            editFee.push(fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor));
+        {
+            this.linkStealthFee = fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor);
+            editFee.push(this.linkStealthFee);
+        }
         /*
         if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar")))
             editFee.push(fee.estimateEditProfile(profile.get("uri"), "details", {name:formData.name, avatar:formData.avatar}));
@@ -29,13 +34,18 @@ var BitprofileEditPageView = SubPageView.extend({
     },
 
     render:function(args){
-        this.profile = this.profiles.get(args.uri);
-        if(!this.form.inProgress()) this.form.renderDetailsPage();
+        this.profile = this.profiles.find({uri:args.uri});
+        if(!this.form.inProgress()){
+            this.form.renderDetailsPage();
+        }
         this.form.onSubmit(this.submit);
         this.form.setProfileModel(this.profile);
-        this.form.setFeeModel(new BitprofileEditFee(this.profile, this.feeModel));
-        this.form.resetForm();
+        this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
+        this.form.setFeeModel(this.feeAdapter);
         this.form.attach(this.$el);
+        if(!this.form.inProgress()){
+            this.form.resetForm();
+        }
     },
 
     submit:function(){
@@ -65,7 +75,7 @@ var BitprofileEditPageView = SubPageView.extend({
     submitEditURI:function(){
         var request = this.form.getFormData();
         if((request.context!=this.profile.get("context"))||(request.id!=this.profile.get("id"))){
-            request.gas = this.feeModel.estimateMoveProfile(this.profile.get("uri"), request.context, request.id, request.feeFactor);
+            request.gas = this.feeAdapter.renameFee.gas;
             if(!this.profile.changeURI(request)){
                 this.form.risePasswordError();
                 this.form.unlockPage();
@@ -78,13 +88,13 @@ var BitprofileEditPageView = SubPageView.extend({
             this.submitEditStealth(true);
         }
         
-        this.listenTo(this.profiles, "error", this.clearForm);
+        this.listenTo(this.profile, "error", this.clearForm);
     },
 
     submitEditStealth:function(skipped){
         var request = this.form.getFormData();
         if(request.stealth!=this.profile.get("payments")){
-            request.gas = this.feeModel.estimateStealthLink(this.profile.get("uri"), request.stealth, request.feeFactor);
+            request.gas = this.feeAdapter.linkStealthFee.gas;
             if(!this.profile.linkStealthAddress(request)){
                 this.riseError(skipped);
                 return false;
