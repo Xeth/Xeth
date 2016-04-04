@@ -126,7 +126,7 @@ var AccountSelectItemFactory = function(master, template){
 var AccountSelect = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggle","hide", "select", "filterNewItem");
+        _(this).bindAll("toggle", "hide", "hideContainer", "toggleOff", "select", "filterNewItem");
         var template = options.templates.get("accounts");
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
@@ -181,7 +181,7 @@ var AccountSelect = Backbone.View.extend({
     
     update:function(){
         var view = this.collection.find(function(view){return !view.hidden();});
-       this.select(view); 
+        this.select(view); 
     },
 
     focus:function(callback){
@@ -198,14 +198,33 @@ var AccountSelect = Backbone.View.extend({
     },
 
     toggle:function(){
-        this.dropdownBox.toggleClass("off");
+        if(!this.dropdownBox.hasClass("off")){
+            this.hideContainerLater();
+        }else{
+            this.dropdownBox.removeAttr("style");
+        }
+        setTimeout(this.toggleOff,0);
         //this.collection.toggle();
     },
 
     hide:function(ev){
         this.dropdownBox.addClass("off");
+        console.log("off");
+        this.hideContainerLater();
         //this.collection.hide();
         //if(ev!=undefined) ev.stopPropagation();
+    },
+    
+    toggleOff:function(){
+        this.dropdownBox.toggleClass("off");
+    },
+    
+    hideContainer:function(){
+        this.dropdownBox.hide();
+    },
+    
+    hideContainerLater:function(){
+        setTimeout(this.hideContainer,150);
     },
 
     selected:function(){
