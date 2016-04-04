@@ -1,45 +1,48 @@
 #pragma once
 
 #include <QTimer>
+#include <QProcess>
+#include <QString>
+#include <QStringList>
 
-#include "EthProcess.hpp"
+#include "env/Settings.hpp"
 
 
 namespace Xeth{
 
 
 
-class EthProcessSupervisor : public QObject
+class ProcessSupervisor : public QObject
 {
     Q_OBJECT
 
     public:
 
-        EthProcessSupervisor(const Settings &);
-        EthProcessSupervisor();
-        ~EthProcessSupervisor();
+        ProcessSupervisor(const Settings &);
+        ProcessSupervisor();
+        ~ProcessSupervisor();
 
-        void start();
+        void attach(QProcess *);
         void stop();
+        void start();
 
         void setRespawnLimit(size_t );
-
         bool isActive() const;
 
         void moveToThread(QThread *);
 
     signals:
         void Error(const QString &);
-        void Ready();
 
     private:
         void initSignals();
+        void watch(QProcess *);
+        void stopListening();
 
     private slots:
         void fork();
         void scheduleFork();
         void handleError(QProcess::ProcessError error);
-        void handleReady();
 
 
     private:
@@ -47,7 +50,7 @@ class EthProcessSupervisor : public QObject
         size_t _respawnCnt;
         size_t _respawnInterval;
         QTimer _timer;
-        EthProcess _process;
+        QProcess *_process;
 };
 
 

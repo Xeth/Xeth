@@ -10,7 +10,8 @@ Facade::Facade(const Settings &settings) :
     _provider(settings.get("rpc_retry", 1), settings.get("rpc_retry_interval", 10)),
     _database(settings),
     _synchronizer(_provider, _database, settings),
-    _process(settings),
+    _eth(settings),
+    _ipfs(settings),
     _wallet(settings, _provider, _database, _notifier, _synchronizer),
     _addressbook(_database, _notifier),
     _config(_database, _notifier),
@@ -20,10 +21,13 @@ Facade::Facade(const Settings &settings) :
     _filesystem(_notifier),
     _bitprofile(_provider, _database, _notifier, _settings)
 {
-    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _process, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net);
+    _eth.attach(EthProcessFactory::Create(settings));
+    _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
+    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
-    _process.moveToThread(thread);
+    _eth.moveToThread(thread);
+    _ipfs.moveToThread(thread);
 
     _notifier.watch(_synchronizer);
     _notifier.watch(_database);

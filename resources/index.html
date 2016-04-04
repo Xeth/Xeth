@@ -94,7 +94,6 @@ try{
     var transactions = new TransactionCollection;
     var addressbook = new AddressBook;
     var progress = new Progress;
-    var config = new Config;
     var events = new EventListener;
     var profiles = new ProfileCollection([], {events: events});
     var registrars = new RegistrarCollection;
@@ -109,13 +108,13 @@ try{
         addressValidator: new AddressValidator,
         fee: new FeeEstimator,
         events: events,
-        config: config,
         profiles: profiles,
         registrars: registrars,
         resolver: resolver
     });
 
     XETH_event.Ready.connect(this, function(){
+        var config = new Config;
         events.listen();
         profiles.fetch();
         profiles.observe();
@@ -135,7 +134,8 @@ try{
         ({
             filesystem: XETH_filesystem,
             clipboard: XETH_clipboard,
-            templates: XETH_templates
+            templates: XETH_templates,
+            config: config
         });
 
         view.render();
