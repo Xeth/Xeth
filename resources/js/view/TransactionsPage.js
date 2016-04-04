@@ -237,11 +237,11 @@ var TransactionsPageView = SubPageView.extend({
         
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
-        this.listenTo(this.collection, "reset", this.computeTotals);
+        this.listenTo(this.collection, "reset", this.computeTotals); 
+        this.applyFilters();
     },
     
-    open:function(args){        
-        this.applyFilters();
+    open:function(args){       
         if(args && args.focusFirst) this.collection.focusFirst();
     },
 
@@ -301,13 +301,8 @@ var TransactionsPageView = SubPageView.extend({
 
     processNewTransaction: function(view){
         var model = view.model;
-        if(!this.matchFilter(model))
+        if(!view.$el.is(":hidden"))
         {
-            view.$el.hide();
-        }
-        else
-        {
-            view.$el.show();
             if(model.get("type")=="Sent")
                 this.totalSent += model.get("amount");
             else

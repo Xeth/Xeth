@@ -126,9 +126,6 @@ var AddressBookPageView = SubPageView.extend({
         
         this.collection.collection.on("add", this.applyFilter);
         this.collection.collection.on("insert", this.applyFilter);
-    },
-
-    open:function(args){
         this.applyFilter();
     },
 

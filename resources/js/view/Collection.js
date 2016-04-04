@@ -103,19 +103,23 @@ var CollectionView = Backbone.View.extend({
         _(this).bindAll("reset","remove","insert", "add", "showEmpty", "hideEmpty", "updateEmpty");
         this.container = options.reversed ? new ReversedListView({el:this.$el, scroll:options.scroll}) : new ListView({el:this.$el, scroll:options.scroll});
         this.emplace = options.ordered ? this.insert : this.add;
+        if(options.empty){
+            this.$empty = $(options.empty);
+            /*this.collection.on("reset", this.updateEmpty);
+            this.collection.on("remove", this.updateEmpty);
+            this.collection.on("add", this.updateEmpty);
+            this.updateEmpty();*/
+        }else{
+            this.$empty = $("<div></div>");
+        }
+        //this.on("add", this.filterNewItem);
+        //this.on("insert", this.filterNewItem);
 
         this.reset();
 
         this.collection.on("add", this.emplace);
         this.collection.on("remove", this.remove);
         this.collection.on("reset", this.reset);
-        if(options.empty){
-            this.$empty = $(options.empty);
-            this.collection.on("reset", this.updateEmpty);
-            this.collection.on("remove", this.updateEmpty);
-            this.collection.on("add", this.updateEmpty);
-            this.updateEmpty();
-        }
 
     },
     hide:function(){this.$el.hide();},
@@ -127,15 +131,30 @@ var CollectionView = Backbone.View.extend({
             view.delegateEvents(events);
         });
     },
-
+    
     filter:function(callback){
-        this.each(function(view){
-            if(callback(view.model))
-                view.$el.show();
-            else
-                view.$el.hide();
-        });
+        this.filterHandler = function(view){
+            if(!callback(view.model)){
+                view.$el.addClass("off");
+                return false;
+            }else{
+                view.$el.removeClass("off");
+                return true;
+            }
+        }
+        this.each(this.filterHandler);
         this.updateEmpty();
+    },
+    
+    filterNewItem:function(view){
+        if(this.filterHandler){
+            if(this.filterHandler(view)) this.hideEmpty();
+        }else{
+            console.log("new hide empty",this.$el);
+            view.$el.removeClass("off");
+            
+            this.hideEmpty();
+        } 
     },
 
     each:function(callback){
@@ -177,6 +196,7 @@ var CollectionView = Backbone.View.extend({
     add:function(model){
         var view = this.register(this.create(model));
         this.container.append(view.$el);
+        this.filterNewItem(view);
         this.trigger("add", view);
     },
 
@@ -184,6 +204,7 @@ var CollectionView = Backbone.View.extend({
         var indx = this.collection.indexOf(model);
         var view = this.register(this.create(model));
         this.container.insert(view.$el, indx);
+        this.filterNewItem(view);
         this.trigger("add", view);
     },
 
@@ -202,11 +223,11 @@ var CollectionView = Backbone.View.extend({
 
     create:function(model){
         var view = this.factory.create(model);
-        view.$el.hide();
+        //view.$el.hide();
         view.render();
-        setTimeout(function(){
-            view.$el.removeClass("off");
-        },50);
+        //setTimeout(function(){
+           // view.$el.removeClass("fade");
+        //},50);
         return view;
     },
 
@@ -214,6 +235,7 @@ var CollectionView = Backbone.View.extend({
         var view = this.items[model.cid];
         if(view!=undefined){
             delete this.items[model.cid];
+            if(!view.$el.hasClass("off")) this.updateEmpty();            
             this.trigger("remove", view);
             view.unbind();
             view.$el.addClass("off");
@@ -231,19 +253,24 @@ var CollectionView = Backbone.View.extend({
         this.$empty.removeClass("on");
     },
 
-    updateEmpty:function(val){
+    updateEmpty:function(){
         var empty = true;
+        console.log("coll",this.collection.length,this.$empty);
         if(this.collection.length)
         {
-            this.each(function(view){
-                if(!view.$el.is(":hidden"))
+            for(var i in this.items){
+                if(!this.items[i].$el.hasClass("off"))
                 {
                     empty = false;
+                    break;
                 }
-            });
+            }
+            console.log("updateEmpty check",this.$el,empty);
             (empty)?this.showEmpty():this.hideEmpty();
+        }else{ 
+            this.showEmpty();
+            console.log("updateEmpty showEmpty",this.$el);
         }
-        else this.showEmpty();
     }
 
 });

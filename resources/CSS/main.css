@@ -458,6 +458,9 @@ input[type="number"]:focus {
 /*    height: 40px;*/
 /*    padding-right:20px;*/
 }
+.dropdownBox .item.off {
+    display: none;
+}
 
 .ui-selectmenu-menu ul,
 .dropdown3 .holder {
