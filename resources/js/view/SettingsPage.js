@@ -12,9 +12,13 @@ var SettingsPageView = SubPageView.extend({
         this.config = options.config;
         SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("settings");
+        this.router = options.router;
+    },
+
+    render:function(){
         this.$el.html(this.template());
         this.menu = new MenuView({el: this.$el.find(".btns")});
-        this.menu.on("change", options.router.redirect);
+        this.menu.on("change", this.router.redirect);
         this.trayToggle = this.$el.find("#trayToggle");
         this.trayMinimize = this.$el.find("#trayMinimize");
         this.trayClose = this.$el.find("#trayClose");
@@ -32,9 +36,7 @@ var SettingsPageView = SubPageView.extend({
         this.trayToggle.on("change", this.changeShowTray);
         this.trayMinimize.on("change", this.changeMinimizeTray);
         this.trayClose.on("change", this.changeCloseTray);
-    },
-
-    render:function(){
+        
         this.menu.render();
     },
 

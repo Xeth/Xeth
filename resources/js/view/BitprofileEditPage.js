@@ -22,7 +22,7 @@ var BitprofileEditFee = function(profile,fee){
 var BitprofileEditPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("render", "submit", "submitEdit", "clearForm", "submitEditURI", "submitEditStealth", "submitEditDetails");
+        _(this).bindAll("open", "submit", "submitEdit", "clearForm", "submitEditURI", "submitEditStealth", "submitEditDetails");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
         this.feeModel = options.fee;
@@ -33,7 +33,7 @@ var BitprofileEditPageView = SubPageView.extend({
         this.form.exit();
     },
 
-    render:function(args){
+    open:function(args){
         this.profile = this.profiles.find({uri:args.uri});
         if(!this.form.inProgress()){
             this.form.renderDetailsPage();

@@ -1,15 +1,22 @@
 var ReceivePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard");
+        _(this).bindAll("open", "update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard", "clickGenerate");
 		SubPageView.prototype.initialize.call(this,options);
-        this.accounts = options.accounts;
         this.clipboard = options.clipboard;
+        this.router = options.router;
         this.template = options.templates.get("receive");
+                
+        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.accounts.filter(function(model){return model!=undefined;}); //hide text
+    },
+    
+    render:function(){
         this.$el.html(this.template());
         this.msg = this.$el.find("#receiveMessage");
         this.amount = this.$el.find("#receiveAmount");
         this.uri = this.$el.find(".txtURI");
+        
         this.qr = new QRCode(this.$el.find("#receiveQR").get(0), {
             width : 240,
             height : 240,
@@ -25,29 +32,33 @@ var ReceivePageView = SubPageView.extend({
 
         this.$el.find("#copyReceiveURI").click(this.copyUriToClipboard);
         this.$el.find("#copyReceiveAddress").click(this.copyAddressToClipboard);
-        this.$el.find("a.generate").click(function(){
-            console.log("clicked on generate");
-            options.router.redirect("generate");
-        })
-    },
-    
-    exit:function(){
-        this.accounts.off("change", this.scheduleUpdate);
-        this.stopUpdate();
-        this.timer = true;
-    },
-
-    render:function(args){
+        this.$el.find("a.generate").click(this.clickGenerate);
+        
         this.accounts.style("receive");
         this.accounts.compact(false);
         this.accounts.resize(); //default size
         this.accounts.attach(this.$el.find("#receiveTo"));
-        this.accounts.filter(function(model){return model!=undefined;}); //hide text
+        this.accounts.on("change", this.scheduleUpdate);
+    },
+    
+    exit:function(){
+        //this.accounts.off("change", this.scheduleUpdate);
+        this.stopUpdate();
+        this.timer = true;
+    },
+
+    open:function(args){
+
         if(args&&args.address){
             this.accounts.focus(function(model){ return (model.get("address")||model.get("stealth"))==args.address;})
         }
-        this.accounts.on("change", this.scheduleUpdate);
+        
         (this.timer)?this.scheduleUpdate():this.update();
+    },
+    
+    clickGenerate:function(){
+        console.log("clicked on generate");
+        this.router.redirect("generate");
     },
 
     update:function(){
