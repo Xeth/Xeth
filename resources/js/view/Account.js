@@ -8,9 +8,10 @@ var AccountBaseView = Backbone.View.extend({
     },
     unbind:function(){this.$el.unbind();},
     attach:function(dom){this.$el.appendTo(dom);},
-    hide:function(){this.$el.hide().addClass("off");},
-    show:function(){this.$el.show().removeClass("off");},
+    hide:function(){this.$el.addClass("off");},
+    show:function(){this.$el.removeClass("off");},
     hidden:function(){return this.$el.hasClass("off");}
+    //hidden:function(){return this.$el.hasClass("off");}
 });
 
 var AccountView = AccountBaseView.extend({
@@ -90,6 +91,9 @@ var AccountViewReflection = AccountView.extend({
         if(this.model) AccountView.prototype.shortify.call(this, size, true);
         this.width = size;
     },
+    empty:function(){
+        return this.$el.length==0;
+    },
 
     setCompact:function(enable){
         this.compact = enable;
@@ -126,7 +130,7 @@ var AccountSelectItemFactory = function(master, template){
 var AccountSelect = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("toggle", "hide", "hideContainer", "toggleOff", "select", "filterNewItem");
+        _(this).bindAll("toggle", "hide", "hideContainer", "toggleOff", "select", "parseNewItem");
         var template = options.templates.get("accounts");
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
@@ -139,8 +143,7 @@ var AccountSelect = Backbone.View.extend({
         empty.click(this.select);
         this.collection.assign(empty);
         this.collection.render();
-        this.collection.on("add", this.filterNewItem);
-        this.collection.on("insert", this.filterNewItem);
+        this.collection.on("add",this.parseNewItem);
         this.update();
     },
 
@@ -164,19 +167,8 @@ var AccountSelect = Backbone.View.extend({
     },
 
     filter:function(callback){
-        this.filterHandler = function(view){
-            if(!callback(view.model)){
-                view.hide();
-            }else{
-                view.show();
-            }
-        }
-        this.collection.each(this.filterHandler);
+        this.collection.filter(callback);
         this.update();
-    },
-    
-    filterNewItem:function(view){
-        if(this.filterHandler) this.filterHandler(view);
     },
     
     update:function(){
@@ -214,7 +206,11 @@ var AccountSelect = Backbone.View.extend({
         //this.collection.hide();
         //if(ev!=undefined) ev.stopPropagation();
     },
-    
+    parseNewItem:function(view){
+        if(this.active.empty()&&!view.$el.is(":hidden")){
+            this.active.reset(view);
+        }
+    },
     toggleOff:function(){
         this.dropdownBox.toggleClass("off");
     },
