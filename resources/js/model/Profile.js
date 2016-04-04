@@ -37,6 +37,7 @@ var ProfileCollection = Backbone.Collection.extend({
     initialize:function(models, options){
         _(this).bindAll("triggerError");
         options.events.onError("bitprofile", this.triggerError);
+        options.events.onData("bitprofile", this.triggerData);
     },
 
     fetch:function(){
@@ -71,8 +72,7 @@ var ProfileCollection = Backbone.Collection.extend({
 
     observe:function(){
         XETH_event.Profile.connect(this, this.add);
-        XETH_event.ProfileUpdate.connect(this, this.triggerRename);
-        XETH_event.ProfilePaymentAddress.connect(this, this.triggerStealthUpdate);
+        XETH_event.ProfileRename.connect(this, this.triggerRename);
     },
 
     triggerRename:function(event){
@@ -81,16 +81,16 @@ var ProfileCollection = Backbone.Collection.extend({
         });
     },
 
-    triggerStealthUpdate:function(event){
+    triggerData:function(event){
         this.findProfile(event.uri, function(profile){
-            profile.set("payments", event.payments);
+            profile.set(event.key, event.value);
         });
     },
 
-    triggerError:function(msg, uri){
-        this.trigger("error", msg);
-        this.findProfile(uri, function(profile){
-            profile.trigger("error", msg);
+    triggerError:function(event){
+        this.trigger("error", event.message);
+        this.findProfile(event.uri, function(profile){
+            profile.trigger("error", event.message);
         });
     },
 
