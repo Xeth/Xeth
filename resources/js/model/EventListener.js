@@ -43,7 +43,7 @@ var EventListener = function(){
 
     this.listen = function(){
         XETH_event.Error.connect(this, emitError);
-        Xeth_event.Data.connect(this.emitData);
+        Xeth_event.Data.connect(this, emitData);
     };
 
     this.onError = function(context, callback){
