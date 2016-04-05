@@ -58,6 +58,8 @@ var BitprofilePageView = SubPageView.extend({
         this.fee = options.fee;
         this.router = options.router;//new PageRouter(this);
         this.factory = new ProfileViewFactory(options.templates.get("profile_item"), options.router);
+        this.menuAlias = {default: "create"};
+        this.subpages = {};
     },
     
     render:function(){
@@ -73,9 +75,6 @@ var BitprofilePageView = SubPageView.extend({
             empty:this.$el.find(".empty")
 		});
         this.collection.render();
-        
-        this.menuAlias = {default: "create"};
-        this.subpages = {};
         this.subpages.view = new BitprofileViewPageView
         ({
             el:this.$el.find("#page_bitprofile_view"), 
@@ -127,11 +126,11 @@ var BitprofilePageView = SubPageView.extend({
         {
             this.listenTo(this.profiles, "create", this.setPendingCreation);
             this.collection.collection.on("add", this.add);
+            this.subpages["default"] = this.subpages.create;
         }
         
         form.render();
         for(var i in this.subpages) this.subpages[i].render();
-        this.subpages["default"] = this.subpages.create;
     },
     
     exit:function(){
@@ -178,6 +177,7 @@ var BitprofilePageView = SubPageView.extend({
     setExistingProfile: function(){
         this.menuEl.removeClass("new");
         this.menuEl.removeClass("pending");
+        
         this.subpages["default"] = this.subpages.view;
         this.menuAlias = {default: "view"};
     },
