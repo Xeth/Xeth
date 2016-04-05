@@ -11,7 +11,6 @@ QVariant BrowseCommand::operator()()
 QVariant BrowseCommand::operator()(const QVariantMap &request)
 {
     QString caption = request.contains("caption") ? request["caption"].toString() : "";
-    QString extensions = request.contains("extensions")?request["extensions"].toString():"";
     if(request.contains("type"))
     {
         QString type = request["type"].toString();
@@ -23,7 +22,7 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
         else
         if(type=="open")
         {
-            return browseFile(caption, extensions);
+            return browseFile(caption, request.contains("extensions")?request["extensions"].toString():"");
         }
         else
         if(type=="directory")
