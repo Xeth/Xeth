@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
+        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "inputAmount", "changeAccount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.resolver = options.resolver;
@@ -62,8 +62,8 @@ var SendPageView = SubPageView.extend({
             hide: { duration: 200 }
         });
 
-        this.amount.on("input", this.computeFee);
-        this.amount.on("change", this.computeFee);
+        this.amount.on("input", this.inputAmount);
+        this.amount.on("change", this.inputAmount);
         this.destination.on("change", this.computeFee);
         
         this.accounts.style("send");
@@ -72,7 +72,7 @@ var SendPageView = SubPageView.extend({
         this.accounts.attach(this.$el.find("#sendFrom"));
         this.accounts.render();
         
-        this.listenTo(this.accounts, "change", this.computeFee);
+        this.listenTo(this.accounts, "change", this.changeAccount);
         
         //this.setAddressHint("");
         //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
@@ -182,6 +182,11 @@ var SendPageView = SubPageView.extend({
             }
         }
     },
+    
+    changeAccount:function(){
+        this.useFullAmount = false;
+        this.computeFee();
+    },
 
     computeFee: function(){
         var amount = this.amount.val();
@@ -203,16 +208,23 @@ var SendPageView = SubPageView.extend({
         this.checkAmount(this.fee);
     },
     
-    checkAmount:function(fee){
+    inputAmount:function(){
+        this.checkAmount(this.fee,true);
+    },
+    
+    checkAmount:function(fee,input){
         if(!fee) fee=this.fee;
         var balance = this.accounts.selected().get("balance");
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
         if(balanceAvailable<0) balanceAvailable=0;
-        if(amount>balanceAvailable){
+        if(amount>balanceAvailable||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
             amount=balanceAvailable;
             this.amount.val(parseFloat(amount));
+            this.useFullAmount = true;
+        }else{
+            this.useFullAmount = false;
         }
     },
     
@@ -321,7 +333,7 @@ var SendPageView = SubPageView.extend({
     submit:function(checksum){
         var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
-        var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
+        var request = {amount:((this.useFullAmount)?"all":this.amount.val()), password:this.password.val(), checksum:false};
         var account = this.accounts.selected();
         var destination = this.getDestination();
         request.address = destination;
