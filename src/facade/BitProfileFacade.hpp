@@ -19,6 +19,7 @@
 #include "command/bitprofile/ImportProfileCommand.hpp"
 #include "command/bitprofile/GetProfileDataCommand.hpp"
 #include "command/bitprofile/UpdateProfileInfoCommand.hpp"
+#include "command/bitprofile/ReadProfileInfoCommand.hpp"
 
 
 namespace Xeth{
@@ -41,6 +42,7 @@ class BitProfileFacade : public QObject
         Q_INVOKABLE QVariant importProfile(const QString &);
         Q_INVOKABLE QVariant getData(const QVariantMap &);
         Q_INVOKABLE QVariant updateDetails(const QVariantMap &);
+        Q_INVOKABLE QVariant getDetails(const QString &);
 
 
     private:
