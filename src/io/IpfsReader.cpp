@@ -17,7 +17,7 @@ QByteArray IpfsReader::readBytes(const QString &hash)
     process.waitForFinished();
     if(process.exitCode()!=0)
     {
-        throw std::runtime_error("failed to write on ipfs");
+        return QByteArray();
     }
     return process.readAllStandardOutput();
 }
@@ -25,7 +25,7 @@ QByteArray IpfsReader::readBytes(const QString &hash)
 
 QJsonObject IpfsReader::readJson(const QString &hash)
 {
-    QJsonDocument document = QJsonDocument::fromBinaryData(readBytes(hash));
+    QJsonDocument document = QJsonDocument::fromBinaryData(readBytes(hash), QJsonDocument::BypassValidation);
     return document.object();
 }
 

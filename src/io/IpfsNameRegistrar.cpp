@@ -31,7 +31,7 @@ inline QString IpfsNameRegistrar::execute(QProcess &process)
     process.waitForFinished();
     if(process.exitCode()!=0)
     {
-        throw std::runtime_error("failed to execute ipfs operation");
+        return QString();
     }
     return process.readAllStandardOutput();
 }

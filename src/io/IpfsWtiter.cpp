@@ -53,7 +53,7 @@ inline QString IpfsWriter::execute(QProcess &process)
     process.waitForFinished();
     if(process.exitCode()!=0)
     {
-        throw std::runtime_error("failed to write on ipfs");
+        return QString();
     }
     return process.readAllStandardOutput();
 }
