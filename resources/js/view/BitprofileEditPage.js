@@ -12,7 +12,7 @@ var BitprofileEditFee = function(profile,fee){
             editFee.push(this.linkStealthFee);
         }
         if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar"))){
-            this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"), {name:formData.name, avatar:formData.avatar});
+            this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"));
             editFee.push(this.editDetailsFee);
          }
         return combineFee(editFee);
@@ -115,7 +115,7 @@ var BitprofileEditPageView = SubPageView.extend({
         var profileAvatar = this.profile.get("avatar");
         if((formData.name!=profileName)||(formData.avatar!=profileAvatar)){
             var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, details:{}};
-            if(formData.name!=profileName)){
+            if(formData.name!=profileName){
                 request.details.name = formData.name.length?formData.name:null; //null to remove
             }
             if(formData.avatar!=profileAvatar){
