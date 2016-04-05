@@ -373,7 +373,7 @@ var SendPageView = SubPageView.extend({
 
             if(alias.length){
                 var contact = {alias:alias};
-                contact[type] = request[type];
+                contact[type] = _this.destination.val();
                 _this.addressbook.create(contact);
             }
 
