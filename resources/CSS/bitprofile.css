@@ -169,6 +169,14 @@
 #bitprofileCreateAccountBalance .amount {
     float: right;
 }
+#page_bitprofile .formpage .section_IPNS {
+    margin-bottom: -15px;
+}
+#page_bitprofile .formpage .section_IPNS .note {
+    height: 60px;
+    font-size: 0.7rem;
+    color: #ffffff;
+}
 
 .bitprofileForm .pendingBox {
     pointer-events: none;
@@ -192,13 +200,15 @@
 .bitprofileForm.pending .on_pending,
 .bitprofileForm .off_pending {
     opacity: 1;
-    transition: 300ms opacity 200ms;
+    max-height: 500px;
+    transition: 300ms opacity 200ms, 300ms max-height 200ms;
 }
 
 .bitprofileForm .on_pending,
 .bitprofileForm.pending .off_pending {
     opacity: 0;
-    transition: 300ms opacity 0ms;
+    max-height: 0;
+    transition: 300ms opacity 0ms, 300ms max-height 0ms;
 }
 
 .bitprofileForm.pending #bitporfileCreate_details {

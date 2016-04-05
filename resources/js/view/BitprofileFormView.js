@@ -20,6 +20,9 @@ var BitprofileFormView = SubPageView.extend({
         this.feeFactor = new FeeSlider({el:this.$el.find(".section_fee")});
         this.feeFactor.on("change", this.computeFee);
         
+        this.IPNSOption = this.$el.find("#IPNS");
+        this.IPNSOption.button({text:false});
+        
         this.password = this.$el.find("#bitprofileCreate_password");
         this.bitprofileId = this.$el.find("#bitprofileCreate_id");
         this.name = this.detailsPage.find("input.name");
@@ -170,16 +173,19 @@ var BitprofileFormView = SubPageView.extend({
             this.bitprofileContext.val(this.model.get("context"));
             this.bitprofileId.val(this.model.get("id"));
             this.name.val(this.model.get("name"));
+            this.IPNSOption.prop("checked",this.model.get("IPNS"));
             this.selectAccount("stealth",this.model.get("payments"));
         }else{
             this.bitprofileContext.prop('selectedIndex', 0);
             this.bitprofileId.val("");
             this.name.val("");
-        }
+            this.IPNSOption.prop("checked",false);
+        }            
         
         this.avatar.val(img);
         this.avatarImage.attr("src",((img)?img:'img/avatarEmpty.png'));
         this.bitprofileContext.selectmenu( "refresh" );
+        this.IPNSOption.button( "refresh" );
     },
     
     computeFee: function(){
@@ -247,7 +253,7 @@ var BitprofileFormView = SubPageView.extend({
       this.password.error();  
     },
     getFormData:function(){
-        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth")};
+        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth"), IPNS:this.IPNSOption.prop("checked")};
         if(this.name.val().length>0) request.name = this.name.val();
         if(this.avatar.val().length>0) request.avatar = this.avatar.val();
         if(this.gasPrice!=undefined && this.gasAmount){
