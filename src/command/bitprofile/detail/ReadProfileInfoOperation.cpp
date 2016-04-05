@@ -27,14 +27,19 @@ void ReadProfileInfoOperation::operator()()
             if(detailsPath.contains("ipns://"))
             {
                 IpfsNameRegistrar namereg(_settings);
-                detailsPath = namereg.resolve(detailsPath);
+                detailsPath = namereg.resolve(detailsPath.remove(0, 7));
                 if(!detailsPath.length())
                 {
                     emitData(QVariantMap());
                     return;
                 }
             }
-            emitData(reader.readJson(detailsPath).toVariantMap());
+            QVariantMap details = reader.readJson(detailsPath.remove(0, 7)).toVariantMap();
+            if(details.contains("avatar"))
+            {
+                details["avatar"] = QString(reader.readBytes(details["avatar"].toString().remove(0,7)));
+            }
+            emitData(details);
         }
     }
     catch(const std::exception &e)
