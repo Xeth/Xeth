@@ -72,19 +72,26 @@ void UpdateProfileInfoOperation::execute()
         path.prepend("ipfs://");
     }
 
-    if(_ipns && link == path)
+    if(!path.length())
     {
-        emitData("details", path);
+        emitError("failed to publish content on ipfs");
     }
     else
     {
-        if(_admin.set("details", path.toStdString(), _password.toStdString()))
+        if(_ipns && link == path)
         {
-            emitData("details", profileData);
+            emitData("details", path);
         }
         else
         {
-            emitError("failed to link details");
+            if(_admin.set("details", path.toStdString(), _password.toStdString()))
+            {
+                emitData("details", profileData);
+            }
+            else
+            {
+                emitError("failed to link details");
+            }
         }
     }
 
