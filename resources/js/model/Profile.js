@@ -28,6 +28,11 @@ var Profile = Backbone.Model.extend({
     changeURI:function(request){
         request.uri = this.getURI();
         return XETH_bitprofile.moveProfile(request);
+    },
+
+    changeDetails:function(request){
+        request.uri = this.getURI();
+        return XETH_bitprofile.updateDetails(request);
     }
 
 });
