@@ -34,7 +34,7 @@ var FeeEstimator = function(){
         return this.parseFee(XETH_bitprofile.estimate(request));
     };
 
-    this.estimateEdit = function(uri){
+    this.estimateEditProfile = function(uri){
         return this.parseFee(XETH_bitprofile.estimate({operation:"edit", factor:factor, uri:uri}));
     };
 
