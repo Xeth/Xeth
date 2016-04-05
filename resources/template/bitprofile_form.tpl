@@ -13,6 +13,12 @@
         <input type="text" class="name" placeholder="Your Name" />
         <input type="text" class="avatarURL" placeholder="image URL" />
         <span class="avatar"><span class="img"><img src="img/avatarEmpty.png" /></span></span>
+        
+        <div class="section_IPNS">
+            <input id="IPNS" type="checkbox" />
+            <label for="IPNS">use IPNS</label>
+            <div class="note off_pending">fdg fdgzfgzdfcvbx xfdcgszdf Zrds GHsdfvx Xsddsga asssadew</div>
+        </div>
 
         <div class="section_mandatory">
             <h1>Link stealth address:</h1>
