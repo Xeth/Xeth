@@ -70,6 +70,7 @@
 <script type="text/javascript" src="js/view/ChangePasswordPage.js"></script>
 <script type="text/javascript" src="js/view/ProgressView.js"></script>
 <script type="text/javascript" src="js/view/MenuView.js"></script>
+<script type="text/javascript" src="js/view/FeeSlider.js"></script>
 <script type="text/javascript" src="js/view/SettingsPage.js"></script>
 <script type="text/javascript" src="js/view/MainWindow.js"></script>
 <script type="text/javascript" src="simulator/model/Account.js"></script>
@@ -96,7 +97,10 @@ $(document).ready(function(){
     var addressValidator = new AddressValidator;
     var filesystem = new FileSystem();
     var clipboard = new ClipBoard();
-    accounts.add({address: "0x9fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:7.1});
+    for(var i=0; i<1000; i++){
+        	transactions.add({category:"Sent", from: "0x"+i+"fc6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-i*1000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
+    }
+    accounts.add({stealth:"AteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaX"});
     accounts.add({address: "0x0000fefd7f33ca29ee17f2bfec944695e5f00000", balance:0});
     accounts.add({address: "0x1111fefd7f33ca29ee17f2bfec944695e5f21111", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", balance:0.1});
     accounts.add({address: "0x2222fefd7f33ca29ee17f2bfec944695e5f22222", balance:200});
@@ -104,7 +108,10 @@ $(document).ready(function(){
     accounts.add({address: "0x69d48e1d37d76d0be85be0bc717cad59644d9098", bitprofile: "tester", balance:3698270.255480901});
     accounts.add({address: "0x9bc6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp", bitprofile:"tester2"});
     accounts.add({stealth:"vJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXp"});
-    accounts.add({stealth:"AteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8xaX"});
+    for(var i=0; i<10; i++){
+        accounts.add({address: "0x"+i+"fc6fefd7f33ca29ee17f2bfec944695e5f29caf", balance:i});
+    }
+    
     addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
     addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", stealth:true});
 	//addressbook.add({alias: "Harap Alb", bitprofile: "harap01", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf", transactions:205});
@@ -114,8 +121,8 @@ $(document).ready(function(){
 	addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
     addressbook.add({alias: "Stramba Lemne", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"});
 	
-    setTimeout(function(){addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
-	setTimeout(function(){addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 8000);
+    setTimeout(function(){addressbook.add({alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg", address: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 15000);
+	setTimeout(function(){addressbook.add({alias: "Harap Alb", address: "0x91c6fefd7f33ca29ee17f2bfec944695e5f29caf"})}, 15000);
 	
     addressbook.resolve(transactions);
     transactions.add({category:"Sent", from: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0xfo2dc172f796d4c3cd0e03520134317fc25b75d1", stealth: "xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8", amount:1, timestamp: (Date.now()-1800000)/1000});
@@ -126,7 +133,7 @@ $(document).ready(function(){
     
 	//transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'});
 	
-    setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 8000);
+    setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 15000);
 	
     var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator, registrars:new RegistrarCollectionSimulator});
     setTimeout(function(){

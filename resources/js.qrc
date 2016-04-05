@@ -44,6 +44,7 @@
         <file>js/view/ImportKeyPage.js</file>
         <file>js/view/MainWindow.js</file>
         <file>js/view/MenuView.js</file>
+        <file>js/view/FeeSlider.js</file>
         <file>js/view/ProgressView.js</file>
         <file>js/view/SettingsPage.js</file>
         <file>js/view/AddressBookPage.js</file>

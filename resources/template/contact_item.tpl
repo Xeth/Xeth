@@ -1,6 +1,6 @@
 
 
-<div class="listItem off">
+<div class="listItem new">
 	<span class="avatar"><span class="img"><img src="<%=contact.avatar?contact.avatar:'img/avatarEmpty.png'%>" /></span></span>
     <div class="data">
         <div class="detailsRow">
