@@ -1,7 +1,7 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("clickGenerate", "submitDetails", "submit", "resetForm", "reset", "lockPage", "updateFeeFactor", "renderDetailsPage");
+        _(this).bindAll("computeFee", "clickGenerate", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
@@ -16,9 +16,10 @@ var BitprofileFormView = SubPageView.extend({
         this.$el = $('<div class="bitprofileForm">'+this.template()+'</div>');
         this.detailsPage = this.$el.find("#bitporfileCreate_details");
         this.paymentPage = this.$el.find("#bitporfileCreate_payment");
-        this.feeFactor = this.$el.find('.section_fee .slider');
-        this.feeHolder = this.$el.find(".fee .eth");
-        this.gasHolder = this.$el.find(".fee .gas");
+        
+        this.feeFactor = new FeeSlider({el:this.$el.find(".section_fee")});
+        this.feeFactor.on("change", this.computeFee);
+        
         this.password = this.$el.find("#bitprofileCreate_password");
         this.bitprofileId = this.$el.find("#bitprofileCreate_id");
         this.name = this.detailsPage.find("input.name");
@@ -37,7 +38,6 @@ var BitprofileFormView = SubPageView.extend({
             this.bitprofileContext.append("<option>"+registrar.get("uri")+"</option>");
         }
         this.bitprofileContext.selectmenu().selectmenu( "widget" ).addClass( "contextSelect" );
-        this.feeFactor.slider({value:50, change:this.updateFeeFactor});
         this.$el.find("#bitporfileCreate_details .btnSubmit").click(this.submitDetails);
         this.$el.find("#bitporfileCreate_payment .btnSubmit").click(this.submit);
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
@@ -181,38 +181,24 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarImage.attr("src",((img)?img:'img/avatarEmpty.png'));
         this.bitprofileContext.selectmenu( "refresh" );
     },
-
-    updateFeeFactor:function(){
-        this.computeFee();
-        if(this.feeFactor.slider("value")<45){
-            this.feeFactor.addClass("warning");
-        }else{
-            this.feeFactor.removeClass("warning");
-        }
-    },
-
+    
     computeFee: function(){
         var request = this.getFormData();
-        request.factor = this.getFeeFactor();
+        request.factor = this.feeFactor.getFeeFactor();
+        console.log(request);
         var result = this.feeModel.estimate(request);
         console.log(result);
         if(result){
             this.gasAmount = result["gas"];
             this.gasPrice = result["price"];
             this.fee = result["fee"];
-            this.feeHolder.html(this.fee.substr(0, 15));
-            this.gasHolder.html(this.gasAmount);
         }else{
+            this.fee=0;
             this.gasAmount = this.gasPrice = undefined;
-            this.feeHolder.html("0");
-            this.gasHolder.html("0");
         }
+        this.feeFactor.update(result);
     },
-
-    getFeeFactor: function(){
-        var gas = this.feeFactor.slider("value");
-        return parseInt(gas/50*100); //in percents
-    },
+    
     setLockMessage:function(msg){
         this.$el.find(".pendingBox h1").html(msg);
     },
@@ -268,14 +254,14 @@ var BitprofileFormView = SubPageView.extend({
             request.price = this.gasPrice;
             request.gas = this.gasAmount;
         }
-        request.feeFactor = this.getFeeFactor();
+        request.feeFactor = this.feeFactor.getFeeFactor();
         return request;
     },
     inProgress:function(){
         return this.pending;
     },
     hasLowFee:function(){
-        return this.feeFactor.hasClass("warning");
+        return this.feeFactor.hasWarning();
     }
 
 });

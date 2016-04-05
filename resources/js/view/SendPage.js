@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "updateFeeFactor", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
+        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.resolver = options.resolver;
@@ -19,9 +19,11 @@ var SendPageView = SubPageView.extend({
 
     render:function(){
         this.$el.html(this.template());
-        this.feeFactor = this.$el.find('.section_fee .slider');
-        this.feeFactor.slider({value:50, change:this.updateFeeFactor});
-
+        
+        this.feeFactor = new FeeSlider({el:this.$el.find(".section_fee")});
+        this.feeFactor.on("change", this.computeFee);
+        this.feeFactor.on("autoupdate", this.checkAmount);
+        
         this.saveOption = this.$el.find("#saveContact");
         this.saveOption.button({text:false});
         this.sendType = this.$el.find("#sendToType");
@@ -52,12 +54,6 @@ var SendPageView = SubPageView.extend({
             hide: { duration: 200 }
         });
         
-        this.$el.find('.section_fee').tooltip({
-            position: { my: "center top", at: "center bottom" },
-            show: { duration: 200 },
-            hide: { duration: 200 }
-        });
-        
         this.addressHint.click(this.copyAddressHintToClipboard);
         this.$el.find(".hint").tooltip({
             position: { my: "center bottom-5", at: "center top" },
@@ -65,9 +61,6 @@ var SendPageView = SubPageView.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
-        
-        this.feeHolder = this.$el.find(".fee .eth");
-        this.gasHolder = this.$el.find(".fee .gas");
 
         this.amount.on("input", this.computeFee);
         this.amount.on("change", this.computeFee);
@@ -78,6 +71,9 @@ var SendPageView = SubPageView.extend({
         this.accounts.resize(); //default size
         this.accounts.attach(this.$el.find("#sendFrom"));
         this.accounts.render();
+        
+        this.listenTo(this.accounts, "change", this.computeFee);
+        
         //this.setAddressHint("");
         //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
     },
@@ -92,16 +88,7 @@ var SendPageView = SubPageView.extend({
     clickAddressbook:function(){
         this.router.redirect("addressbook");
     },
-
-    updateFeeFactor:function(){
-        this.computeFee();
-        if(this.feeFactor.slider("value")<45){
-            this.feeFactor.addClass("warning");
-        }else{
-            this.feeFactor.removeClass("warning");
-        }
-    },
-
+    
     setDestination:function(address){
         if(address instanceof Object){
             if(address.bitprofile!=undefined){
@@ -197,26 +184,38 @@ var SendPageView = SubPageView.extend({
     },
 
     computeFee: function(){
-        var factor = this.getFeeFactor();
+        var amount = this.amount.val();
+        var factor = this.feeFactor.getFeeFactor();
         var from = this.accounts.selected().get("address");
         var to = this.getDestination();
-        var amount = this.amount.val();
 
         var result = this.feeModel.estimate(from, to, amount, factor);
         if(result){
             this.gasAmount = result["gas"];
             this.gasPrice = result["price"];
             this.fee = result["fee"];
-            this.feeHolder.html(this.fee.substr(0, 15));
-            this.gasHolder.html(this.gasAmount);
         }else
         {
+            this.fee=0;
             this.gasAmount = this.gasPrice = undefined;
-            this.feeHolder.html("0");
-            this.gasHolder.html("0");
+        }
+        this.feeFactor.update(result);
+        this.checkAmount(this.fee);
+    },
+    
+    checkAmount:function(fee){
+        if(!fee) fee=this.fee;
+        var balance = this.accounts.selected().get("balance");
+        var amount = this.amount.val();
+        var balanceAvailable = balance-fee;
+        
+        if(balanceAvailable<0) balanceAvailable=0;
+        if(amount>balanceAvailable){
+            amount=balanceAvailable;
+            this.amount.val(parseFloat(amount));
         }
     },
-
+    
     resetContact: function(){
         this.alias.val("").prop("disabled",false);
         this.saveOption.prop("checked",false).prop("disabled",false);
@@ -318,14 +317,8 @@ var SendPageView = SubPageView.extend({
             }
         }
     },
-
-    getFeeFactor: function(){
-        var gas = this.feeFactor.slider("value");
-        return parseInt(gas/50*100); //in percents
-    },
-
+    
     submit:function(checksum){
-
         var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
         var request = {amount:this.amount.val(), password:this.password.val(), checksum:false};
@@ -357,6 +350,7 @@ var SendPageView = SubPageView.extend({
 
         var _this = this;
         var sendRequest = function(){
+            _this.$form.addClass("waiting");
             if(!account.send(request)){
                 _this.$form.removeClass("waiting");
                 _this.password.error();
@@ -379,7 +373,7 @@ var SendPageView = SubPageView.extend({
 
             _this.router.redirect("transactions", {focusFirst:true});
         };
-        if(this.feeFactor.hasClass("warning")){
+        if(this.feeFactor.hasWarning()){
             notie.confirm('<span class="title warning">WARNING!</span>'+
               'Fee is too low!<br>'+
               'Transaction may not be mined or even propagated<br>'+
@@ -387,6 +381,8 @@ var SendPageView = SubPageView.extend({
               'Yes, Send it anyway', 
               'No, I will change fee', 
              sendRequest);
+            
+            this.$form.removeClass("waiting");
         }
         else{
             setTimeout(sendRequest, 0);

@@ -19,7 +19,7 @@
     <div class="half_left section_amount section_mandatory">
         <h1 error="required">Amount:</h1>
         <div class="input amount">
-            <input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000" />
+            <input id="sendAmount" class="mandatory" type="number" min="0" placeholder="0.00000000000" />
         </div>
     </div>
     <div id="sendFee" class="half_right section_fee" title="fee involves transaction speed">

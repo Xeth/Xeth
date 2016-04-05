@@ -42,12 +42,14 @@ function feeWarning(callback){
 
 
 function combineFee(results){
-    var result = {gas:0, price:0, fee:0};
-    for(var i in results){
-        result.gas += parseInt(results[i].gas);
-        result.price += Number(results[i].price);
-        result.fee += Number(results[i].fee);
+    var sum = {gas:0, price:0, fee:0};
+    if(results&&results.length>0){
+        for(var i in results){
+            sum.gas += parseInt(results[i].gas);
+            sum.fee += Number(results[i].fee);
+        }
+        sum.price = results[0].price;
     }
-    result.fee = result.fee.toString();
-    return result;
+    sum.fee = sum.fee.toFixed(13);//toString();
+    return sum;
 }
