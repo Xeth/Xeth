@@ -25,6 +25,7 @@ void UpdateProfileInfoOperation::execute()
 
     QVariantMap profileData;
     QString link = _admin.getProfile().get("details").c_str();
+    link.remove(0, 7);
 
     if(link.length())
     {
@@ -78,9 +79,9 @@ void UpdateProfileInfoOperation::execute()
     }
     else
     {
-        if(_ipns && link == path)
+        if(_ipns && path.contains(link))
         {
-            emitData("details", path);
+            emitData("details", profileData);
         }
         else
         {
