@@ -28,7 +28,7 @@ var FeeSlider = Backbone.View.extend({
         this.trigger("change", ui.value);
     },
 
-    renderFee: function(event,ui){        
+    renderFee: function(event,ui){
         var fee;
         var factor = ((ui)?ui.value:this.getFeeFactor());
         
@@ -50,7 +50,7 @@ var FeeSlider = Backbone.View.extend({
             this.feeFactor.removeClass("warning");
         }
         
-        this.feeHolder.html(fee.substr(0, 15));
+        this.feeHolder.html(fee?fee.substr(0, 15):0);
         this.gasHolder.html(((this.gasAmount)?this.gasAmount:0));
     },
     
