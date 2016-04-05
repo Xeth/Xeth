@@ -26,7 +26,7 @@ class EstimateProfileOperationCommand
         QVariant makeFeeObject(const BigInt &gas, const QVariantMap &request);
         QVariant estimateStealthLink(const QVariantMap &);
         QVariant estimateRegister(const QVariantMap &);
-        QVariant estimateEdit(const QVariantMap &);
+        QVariant estimateEditDetails(const QVariantMap &);
         QVariant estimateMove(const QVariantMap &);
         BigInt estimateEdit(const QString &uri, const QString &key, const QString &value);
 

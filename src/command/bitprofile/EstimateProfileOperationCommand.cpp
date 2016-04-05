@@ -33,7 +33,7 @@ QVariant EstimateProfileOperationCommand::operator()(const QVariantMap &request)
     else
     if(op=="edit")
     {
-        return estimateEdit(request);
+        return estimateEditDetails(request);
     }
     else
     if(op=="move")
@@ -102,14 +102,15 @@ QVariant EstimateProfileOperationCommand::estimateStealthLink(const QVariantMap 
     }
 }
 
-QVariant EstimateProfileOperationCommand::estimateEdit(const QVariantMap &request)
+
+QVariant EstimateProfileOperationCommand::estimateEditDetails(const QVariantMap &request)
 {
-    if(!request.contains("key")||!request.contains("value")||!request.contains("uri"))
+    if(!request.contains("uri"))
     {
-        return QVariant::fromValue(false);
+        return makeFeeObject(BigInt(136000), request);
     }
 
-    return makeFeeObject(estimateEdit(request["uri"].toString(), request["key"].toString(), request["value"].toString()), request);
+    return makeFeeObject(estimateEdit(request["uri"].toString(), "details", "ipfs://QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"), request);
 }
 
 BigInt EstimateProfileOperationCommand::estimateEdit(const QString &uri, const QString &key, const QString &value)
