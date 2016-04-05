@@ -53,7 +53,6 @@ void UpdateProfileInfoOperation::execute()
         }
     }
 
-
     IpfsWriter writer(_settings);
     if(_details.contains("avatar"))
     {
@@ -81,7 +80,7 @@ void UpdateProfileInfoOperation::execute()
     {
         if(_admin.set("details", path.toStdString(), _password.toStdString()))
         {
-            emitData("details", path);
+            emitData("details", profileData);
         }
         else
         {
