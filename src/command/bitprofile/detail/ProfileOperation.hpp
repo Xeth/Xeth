@@ -27,7 +27,7 @@ class ProfileOperation
     protected:
         virtual void execute() = 0;
         void emitError(const char *);
-        void emitData(const QString &key, const QString &);
+        void emitData(const QString &key, const QVariant &);
         QString getProfileUri();
 
     protected:

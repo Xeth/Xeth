@@ -32,7 +32,7 @@ void ProfileOperation::operator()()
     }
 }
 
-void ProfileOperation::emitData(const QString &key, const QString &value)
+void ProfileOperation::emitData(const QString &key, const QVariant &value)
 {
     _notifier.emitData("bitprofile", getProfileUri(), "payments", value);
 }

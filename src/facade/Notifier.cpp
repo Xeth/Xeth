@@ -25,7 +25,7 @@ void Notifier::watch(const Synchronizer &synchronizer)
     QObject::connect(&synchronizer.getSyncProgressFetcher(), &Synchronizer::SyncProgress::Progress, this, &Notifier::emitSyncProgress);
 }
 
-void Notifier::emitData(const QString &context, const QString &uri, const QString &key, const QString &value)
+void Notifier::emitData(const QString &context, const QString &uri, const QString &key, const QVariant &value)
 {
     QVariantMap event;
     event["context"] = context;
@@ -36,7 +36,7 @@ void Notifier::emitData(const QString &context, const QString &uri, const QStrin
 }
 
 
-void Notifier::emitData(const QString &context, const QString &key, const QString &value)
+void Notifier::emitData(const QString &context, const QString &key, const QVariant &value)
 {
     QVariantMap event;
     event["context"] = context;

@@ -29,8 +29,8 @@ class Notifier : public QObject
         void emitMessage(const QString &);
         void emitReady();
 
-        void emitData(const QString &context, const QString &uri, const QString &key, const QString &value);
-        void emitData(const QString &context, const QString &key, const QString &value);
+        void emitData(const QString &context, const QString &uri, const QString &key, const QVariant &value);
+        void emitData(const QString &context, const QString &key, const QVariant &value);
 
     signals:
         void Ready() const;
