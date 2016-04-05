@@ -11,6 +11,7 @@ QVariant BrowseCommand::operator()()
 QVariant BrowseCommand::operator()(const QVariantMap &request)
 {
     QString caption = request.contains("caption") ? request["caption"].toString() : "";
+    QString extensions = request.contains("extensions")?request["extensions"].toString():"";
     if(request.contains("type"))
     {
         QString type = request["type"].toString();
@@ -22,7 +23,7 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
         else
         if(type=="open")
         {
-            return browseFile(caption);
+            return browseFile(caption, extensions);
         }
         else
         if(type=="directory")
@@ -38,9 +39,9 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
 }
 
 
-QVariant BrowseCommand::browseFile(const QString &caption)
+QVariant BrowseCommand::browseFile(const QString &caption, const QString &extensions)
 {
-    return QVariant::fromValue(QFileDialog::getOpenFileName(NULL, caption));
+    return QVariant::fromValue(QFileDialog::getOpenFileName(NULL, caption, QDir::currentPath(), extensions));
 }
 
 
