@@ -39,11 +39,11 @@ var EventListener = function(){
             if(container.contextCallbacks[context]==undefined) container.contextCallbacks[context] = [];
             container.contextCallbacks[context].push(callback);
         }
-    }
+    };
 
     this.listen = function(){
         XETH_event.Error.connect(this, emitError);
-        Xeth_event.Data.connect(this, emitData);
+        XETH_event.Data.connect(this, emitData);
     };
 
     this.onError = function(context, callback){
