@@ -34,7 +34,7 @@ void ProfileOperation::operator()()
 
 void ProfileOperation::emitData(const QString &key, const QVariant &value)
 {
-    _notifier.emitData("bitprofile", getProfileUri(), "payments", value);
+    _notifier.emitData("bitprofile", getProfileUri(), key, value);
 }
 
 void ProfileOperation::emitError(const char *error)
