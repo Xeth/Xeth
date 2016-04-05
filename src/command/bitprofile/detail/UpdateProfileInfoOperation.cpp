@@ -57,7 +57,13 @@ void UpdateProfileInfoOperation::execute()
     IpfsWriter writer(_settings);
     if(_details.contains("avatar"))
     {
-        profileData["avatar"] = "ipfs://"+writer.writeFile(_details["avatar"].toString());
+        QImage image(profileData["avatar"].toString());
+        QByteArray byteArray;
+        QBuffer buffer(&byteArray);
+        image.save(&buffer, "PNG");
+        QString base64 = QString::fromLatin1(byteArray.toBase64().data());
+        base64.prepend("data:image/png;base64,");
+        profileData["avatar"] = "ipfs://"+writer.writeData(base64);
     }
 
     QString path = writer.writeData(profileData);

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QVariantMap>
+#include <QImage>
+#include <QByteArray>
+#include <QBuffer>
 
 #include "io/IpfsWriter.hpp"
 #include "io/IpfsReader.hpp"
