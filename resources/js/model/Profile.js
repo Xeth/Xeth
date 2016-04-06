@@ -3,12 +3,19 @@ var Profile = Backbone.Model.extend({
 
     idAttribute: "uri",
 
+    initialize:function(){
+        XETH_bitprofile.getDetails(this.getURI()); //its asynchronous
+    },
+
     get:function(key){
         if(key=="uri"||key=="id"||key=="context"||key=="account")
         {
             return Backbone.Model.prototype.get.call(this, key);
         }
-        return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
+        else
+        {
+            return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
+        }
     },
 
     getURI:function(){
