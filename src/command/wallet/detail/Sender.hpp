@@ -36,7 +36,8 @@ class Sender
             TransactionObjectBuilder &,
             const std::string &from,
             const std::string &to,
-            const BigInt &amount
+            const BigInt &amount,
+            const std::string &data
         );
 
         inline std::string send
@@ -44,7 +45,8 @@ class Sender
             Ethereum::Connector::Wallet &,
             const std::string &from,
             const std::string &to,
-            const BigInt &amount
+            const BigInt &amount,
+            const std::string &data
         );
 
     private:
