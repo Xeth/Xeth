@@ -1,14 +1,12 @@
 var ProfileView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateURI", "updateDetails", "updateName", "updateAvatar", "goToPreview");
+        _(this).bindAll("updateURI", "updateDetails", "goToPreview");
         this.router = options.router;
         var data = {profile:this.model.toJSON()};
         this.$el = $(options.template(data));
         this.listenTo(this.model, "change:uri", this.updateURI);
         this.listenTo(this.model, "change:details", this.updateDetails);
-        this.listenTo(this.model, "change:name", this.updateName);
-        this.listenTo(this.model, "change:avatar", this.updateAvatar);
         
         this.$el.click(this.goToPreview);
 
@@ -20,16 +18,9 @@ var ProfileView = Backbone.View.extend({
     },
 
     updateDetails:function(){
-        this.updateName();
-        this.updateAvatar();
-    },
-
-    updateName:function(){
-        this.$el.find(".name").html(this.model.get("name"));
-    },
-
-    updateAvatar:function(){
-        this.$el.find(".avatar img").attr("src", this.model.get("avatar"));
+        var details = this.model.get("details");
+        this.$el.find(".name").html(details&&details.name?details.name:"");
+        this.$el.find(".avatar img").attr("src", (details && details.avatar)?details.avatar:"img/avatarEmpty.png");
     },
 
     goToPreview: function(){
