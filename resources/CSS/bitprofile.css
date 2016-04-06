@@ -246,6 +246,9 @@
 .bitprofileForm.pending #bitporfileCreate_payment {
     opacity: 1;
 }
+.bitprofileForm.pending.details #bitporfileCreate_payment {
+    opacity: 0;
+}
 .bitprofileForm #bitporfileCreate_payment .formpage {
     position: absolute;
     height: 100%;
