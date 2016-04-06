@@ -4,7 +4,7 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     initialize:function(){
-        _(this).bindAll("setReady");
+        _(this).bindAll("setReady", "parseEvent");
         XETH_bitprofile.getDetails(this.getURI()); //its asynchronous
         this.set("loaded", false);
         this.once("change:details", this.setReady);
@@ -31,6 +31,22 @@ var Profile = Backbone.Model.extend({
                 return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
             }
         }
+    },
+
+    observe:function(){
+        XETH_event.Data.connect(this, this.parseEvent);
+    },
+
+    parseEvent:function(event){
+        if(event.context=="bitprofile"&&event.uri==this.getURI())
+        {
+            this.set(event.key, event.value);
+        }
+    },
+
+    stopListening:function(){
+        Backbone.Model.prototype.stopListening.call(this);
+        XETH_event.Data.disconnect(this, this.parseEvent);
     },
 
     getURI:function(){
