@@ -2,14 +2,19 @@ var BitprofileCreateFee = function(fee){
     this.estimate = function(formData){
         this.createFee = fee.estimateCreateProfile(formData.context, formData.id, formData.feeFactor);
         this.linkStealthFee = fee.estimateStealthLink(null, null, formData.feeFactor);
-        return combineFee([this.createFee, this.linkStealthFee]);
+        var fees = [this.createFee, this.linkStealthFee];
+        if(formData.avatar||formData.name){
+            this.detailsFee = fee.estimateEditProfile(null);
+            fees.push(this.detailsFee);
+        }
+        return combineFee(fees);
     }
 }
 
 var BitprofileCreatePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "submit", "clearForm", "submitCreate", "submitStealth");
+        _(this).bindAll("open", "submit", "clearForm", "submitCreate", "submitStealth", "submitDetails");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
         this.feeModel = new BitprofileCreateFee(options.fee);
@@ -62,7 +67,28 @@ var BitprofileCreatePageView = SubPageView.extend({
             this.form.unlockPage();
             return false;
         }else{
-            profile.once("change:payments", this.clearForm);  
+            profile.once("change:payments", this.submitDetails);
+        }
+    },
+    submitDetails:function(){
+        var formData = this.form.getFormData();
+        if(formData.avatar||formData.name)
+        {
+            var request = {gas: this.feeModel.detailsFee.gas, price:this.feeModel.detailsFee.price, ipns:formData.ipns, password:formData.password, details:{}};
+            if(formData.avatar) request.details.avatar = formData.avatar;
+            if(formData.name) request.details.name = formData.name;
+            var profile = this.profiles.first();
+            if(!profile.changeDetails(request)){
+                this.form.unlockPage();
+                return false;
+            }else{
+                this.form.lockPage("Changing profile details...");
+                this.listenToOnce(profile, "change:details", this.clearForm);
+            }
+        }
+        else
+        {
+            this.clearForm();
         }
     },
     clearForm:function(){
