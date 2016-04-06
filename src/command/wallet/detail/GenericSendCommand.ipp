@@ -43,7 +43,7 @@ QVariant GenericSendCommand<Sender, Validator>::send
         throw std::runtime_error("invalid address");
     }
 
-    if(!unlockSender(from, password, amount))
+    if(!unlockSender(from, password))
     {
         throw std::runtime_error("invalid password");
     }
@@ -108,12 +108,8 @@ bool GenericSendCommand<Sender, Validator>::validateDestination(const std::strin
 
 
 template<class Sender, class Validator>
-bool GenericSendCommand<Sender, Validator>::unlockSender(const std::string &from, const std::string &password, const BigInt &amount)
+bool GenericSendCommand<Sender, Validator>::unlockSender(const std::string &from, const std::string &password)
 {
-    if(amount<=0 || _wallet.getBalance(from) < amount)
-    {
-        return false;
-    }
     if(!_wallet.unlockAccount(from, password, 5))
     {
         //maybe it was a stealth payment

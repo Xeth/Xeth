@@ -48,7 +48,7 @@ class GenericSendCommand
 
     private:
         bool validateDestination(const std::string &, bool strict);
-        bool unlockSender(const std::string &, const std::string &, const BigInt &);
+        bool unlockSender(const std::string &, const std::string &);
         QVariant send(const std::string &from, const std::string &to, const std::string &password, const BigInt &amount, const QVariant &logs, bool strict);
 
     private:

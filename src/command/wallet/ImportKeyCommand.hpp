@@ -3,9 +3,13 @@
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
 
-#include "ImportEthereumKeyCommand.hpp"
-#include "ImportStealthKeyCommand.hpp"
-#include "ImportPresaleKeyCommand.hpp"
+#include "env/Settings.hpp"
+#include "process/EthProcessInitializer.hpp"
+#include "io/JsonReader.hpp"
+
+#include "detail/GenericImportKeyCommand.hpp"
+#include "detail/StealthKeyValidator.hpp"
+#include "detail/EthereumKeyValidator.hpp"
 
 
 namespace Xeth{
@@ -32,5 +36,42 @@ class ImportKeyCommand
 
 };
 
+
+class ImportEthereumKeyCommand : public GenericImportKeyCommand<EthereumKeyStore, EthereumKeyValidator>
+{
+    public:
+        typedef GenericImportKeyCommand<EthereumKeyStore, EthereumKeyValidator> Base;
+
+    public:
+        ImportEthereumKeyCommand(DataBase &db, Synchronizer &);
+
+};
+
+
+class ImportPresaleKeyCommand
+{
+    public:
+        ImportPresaleKeyCommand(const Settings &, Synchronizer &);
+
+        QVariant operator()(const QVariantMap &);
+
+        bool import(const QVariantMap &, QString &address);
+        bool import(const QString &path, const QString &password, QString &address);
+
+    private:
+        const Settings &_settings;
+        Synchronizer &_synchronizer;
+};
+
+
+class ImportStealthKeyCommand : public GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator>
+{
+    public:
+        typedef GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator> Base;
+
+    public:
+        ImportStealthKeyCommand(DataBase &db, Synchronizer &);
+
+};
 
 }
