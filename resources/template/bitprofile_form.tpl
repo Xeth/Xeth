@@ -16,7 +16,7 @@
         <a class="inputBtn btnRemove" href="javascript:void(0);" title="remove avatar image"></a>
         <span class="avatar"><span class="img"><img src="img/avatarEmpty.png" /></span></span>
         
-        <div class="section_IPNS">
+        <div class="section_IPNS" style="display:none">
             <input id="IPNS" type="checkbox" />
             <label for="IPNS">use IPNS</label>
             <div class="note off_pending">fdg fdgzfgzdfcvbx xfdcgszdf Zrds GHsdfvx Xsddsga asssadew</div>
