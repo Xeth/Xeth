@@ -47,6 +47,9 @@ var BitprofileEditPageView = SubPageView.extend({
         if(!this.form.inProgress()){
             this.form.resetForm();
         }
+        if(args && args.address){
+            this.form.selectAccount("stealth", args.address);
+        }
     },
 
     submit:function(){

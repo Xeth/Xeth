@@ -84,8 +84,7 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     clickGenerate:function(){
-        console.log("clicked on generate");
-        this.router.redirect("generate");
+        this.router.redirect("generate", {stealth: true, redirect:"bitprofile", redirectArgs:{subpage:"form"}});
     },
 
     clickBrowseAvatar:function(){

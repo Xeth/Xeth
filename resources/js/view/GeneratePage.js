@@ -25,7 +25,28 @@ var GeneratePageView = SubPageView.extend({
         this.stopSeedPage();
     },
 
-    open:function(){
+    open:function(args){
+        if(args)
+        {
+            this.redirectPage = args.redirect ? args.redirect : null;
+            this.redirectArgs = (args.redirectArgs && args.redirectArgs instanceof Object) ? args.redirectArgs : {};
+            if(args.stealth!=undefined)
+            {
+                this.stealth.prop("checked",args.stealth).prop("disabled",args.stealth);
+                this.stealth.button("refresh");
+            }
+            else
+            {
+                this.stealth.prop("disabled",false);
+                this.stealth.button("refresh");
+            }
+        }
+        else
+        {
+            this.redirectPage = this.redirectArgs = null;
+            this.stealth.prop("disabled",false);
+            this.stealth.button("refresh");
+        }
         this.renderSeedPage();
     },
 
@@ -99,7 +120,16 @@ var GeneratePageView = SubPageView.extend({
             msg += " account generated";
             notifySuccess(msg);
             this.entropy = "";
-            this.router.redirect("receive", {address:address});
+            if(this.redirectPage)
+            {
+                var request = this.redirectArgs;
+                request.address = address;
+                this.router.redirect(this.redirectPage, request);
+            }
+            else
+            {
+                this.router.redirect("receive", {address:address});
+            }
         }else{
             notifyError("failed to generate account");
         }

@@ -49,7 +49,7 @@ var BitprofilePageView = SubPageView.extend({
         this.fee = options.fee;
         this.router = options.router;//new PageRouter(this);
         this.factory = new ProfileViewFactory(options.templates.get("profile_item"), options.router);
-        this.menuAlias = {default: "create"};
+        this.menuAlias = {default: "create", form: "create"};
         this.subpages = {};
     },
     
@@ -119,6 +119,7 @@ var BitprofilePageView = SubPageView.extend({
             this.listenTo(this.profiles, "create", this.setPendingCreation);
             this.collection.collection.on("add", this.add);
             this.subpages["default"] = this.subpages.create;
+            this.subpages["form"] = this.subpages.create;
         }
         
         form.render();
@@ -132,8 +133,11 @@ var BitprofilePageView = SubPageView.extend({
 
     open:function(args){
         if(args&&args.subpage){
-            console.log(args);
-            this.openPage(args.subpage,args.args);
+            var subpageArgs = args.args||{};
+            if(args.address){
+                subpageArgs.address = args.address; //from generate
+            }
+            this.openPage(args.subpage,subpageArgs);
         }
         else{
             this.openPage();
@@ -171,7 +175,8 @@ var BitprofilePageView = SubPageView.extend({
         this.menuEl.removeClass("pending");
         
         this.subpages["default"] = this.subpages.view;
-        this.menuAlias = {default: "view"};
+        this.subpages["form"] = this.subpages.edit;
+        this.menuAlias = {default: "view", form: "edit"};
     },
     
     setPendingCreation: function(){
