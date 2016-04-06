@@ -11,7 +11,7 @@ EditContactCommand::EditContactCommand(DataBase &database) :
 
 QVariant EditContactCommand::operator ()(const QVariantMap &request)
 {
-    if(!request.contains("alias") || !request.contains("address"))
+    if(!request.contains("alias") || (!request.contains("address")&&!request.contains("bitprofile")))
     {
         return QVariant::fromValue(false);
     }

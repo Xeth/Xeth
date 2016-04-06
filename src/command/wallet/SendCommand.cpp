@@ -11,14 +11,16 @@ SendCommand::SendCommand(Ethereum::Connector::Provider &provider, DataBase &data
 
 QVariant SendCommand::operator()(const QVariantMap &request)
 {
-    std::string to = request["address"].toString().toStdString();
-    std::string from = request["from"].toString().toStdString();
-    std::string password = request["password"].toString().toStdString();
+    QString to = request["address"].toString();
+    QString from = request["from"].toString();
+    QString password = request["password"].toString();
+    QString amount = request["amount"].toString();
     const QVariant & gas = request["gas"];
     const QVariant & price = request["price"];
-    BigInt amount(request["amount"].toString().toStdString());
+
     bool strict = request.contains("checksum") ? request["checksum"].toBool() : false;
-    size_t addrSize = to.size();
+    size_t addrSize = to.length();
+
     if(addrSize==40||addrSize==42)
     {
         SendToAddressCommand command(_provider, _database);
@@ -34,10 +36,10 @@ template<class Command>
 QVariant SendCommand::send
 (
     Command &command,
-    const std::string &from,
-    const std::string &to,
-    const std::string &password,
-    const BigInt &amount,
+    const QString &from,
+    const QString &to,
+    const QString &password,
+    const QString &amount,
     const QVariant &gas,
     const QVariant &price,
     const QVariant &logs,
@@ -49,7 +51,7 @@ QVariant SendCommand::send
         return command(from, to, password, amount, logs, strict);
     }
 
-    return command(from, to, password, amount, BigInt(gas.toString().toStdString()), BigInt(price.toString().toStdString()), logs, strict);
+    return command(from, to, password, amount, gas.toString(), price.toString(), logs, strict);
 }
 
 

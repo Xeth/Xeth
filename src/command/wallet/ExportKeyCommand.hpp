@@ -1,9 +1,7 @@
 #pragma once 
 
 #include "database/DataBase.hpp"
-
-#include "ExportEthereumKeyCommand.hpp"
-#include "ExportStealthKeyCommand.hpp"
+#include "detail/GenericExportKeyCommand.hpp"
 
 
 namespace Xeth{
@@ -23,6 +21,24 @@ class ExportKeyCommand
     private:
         DataBase &_database;
 };
+
+
+class ExportEthereumKeyCommand : public GenericExportKeyCommand<EthereumKeyStore>
+{
+    public:
+        ExportEthereumKeyCommand(const DataBase &);
+
+};
+
+
+
+class ExportStealthKeyCommand : public GenericExportKeyCommand<StealthKeyStore>
+{
+    public:
+        ExportStealthKeyCommand(const DataBase &);
+
+};
+
 
 
 }

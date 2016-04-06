@@ -77,4 +77,16 @@ QVariant BitProfileFacade::getData(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QVariant BitProfileFacade::updateDetails(const QVariantMap &request)
+{
+    UpdateProfileInfoCommand command(_provider, _store, _notifier, _settings);
+    return _invoker.invoke(command, request);
+}
+
+QVariant BitProfileFacade::getDetails(const QString &uri)
+{
+    ReadProfileInfoCommand command(_provider, _settings, _notifier);
+    return _invoker.invoke(command, uri);
+}
+
 }

@@ -1,40 +1,56 @@
 var EventListener = function(){
 
-    var contextCallbacks = {};
-    var callbacks = [];
+    var dataCallbacks = {callbacks:[], contextCallbacks:[]};
+    var errorCallbacks = {callbacks:[], contextCallbacks:[]};
 
-    var emitError = function(error){
-        for(var i in callbacks)
+    var emitEvent = function(event, container){
+        for(var i in container.callbacks)
         {
-            callbacks[i](error.message);
+            container.callbacks[i](event);
         }
-        if(error.context)
+        if(event.context)
         {
-            var handlers = contextCallbacks[error.context];
+            var handlers = container.contextCallbacks[event.context];
             if(Array.isArray(handlers))
             {
                 for(var i in handlers)
                 {
-                    handlers[i](error.message, error.uri);
+                    handlers[i](event);
                 }
             }
         }
     };
 
-    this.listen = function(){
-        XETH_event.Error.connect(this, emitError);
+    var emitError = function(event){
+        emitEvent(event, errorCallbacks);
     };
 
-    this.onError = function(context, callback){
+    var emitData = function(event){
+        emitEvent(event, dataCallbacks);
+    };
+
+    var saveCallback = function(container, context, callback){
         if(!callback)
         {
-            callbacks.push(context);
+            container.callbacks.push(context);
         }
         else
         {
-            if(contextCallbacks[context]==undefined) contextCallbacks[context] = [];
-            contextCallbacks[context].push(callback);
+            if(container.contextCallbacks[context]==undefined) container.contextCallbacks[context] = [];
+            container.contextCallbacks[context].push(callback);
         }
     };
 
+    this.listen = function(){
+        XETH_event.Error.connect(this, emitError);
+        XETH_event.Data.connect(this, emitData);
+    };
+
+    this.onError = function(context, callback){
+        saveCallback(errorCallbacks, context, callback);
+    };
+
+    this.onData = function(context, callback){
+        saveCallback(dataCallbacks, context, callback);
+    };
 }

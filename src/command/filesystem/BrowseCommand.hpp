@@ -15,7 +15,7 @@ class BrowseCommand
         QVariant operator()(const QVariantMap &);
 
     private:
-        QVariant browseFile(const QString &caption);
+        QVariant browseFile(const QString &caption, QString &extensions);
         QVariant browseNewFile(const QString &caption);
         QVariant browseDirectory(const QString &caption);
 };

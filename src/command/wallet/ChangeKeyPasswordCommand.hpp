@@ -5,9 +5,11 @@
 
 #include "database/DataBase.hpp"
 
-#include "ChangeEthereumKeyPasswordCommand.hpp"
-#include "ChangeStealthKeyPasswordCommand.hpp"
+#include "types/EthereumKey.hpp"
 
+#include "detail/GenericChangePasswordCommand.hpp"
+#include "detail/ChangeEthereumKeyPasswordOperation.hpp"
+#include "detail/ChangeStealthKeyPasswordOperation.hpp"
 
 namespace Xeth{
 
@@ -24,6 +26,30 @@ class ChangeKeyPasswordCommand
 
     private:
         DataBase &_database;
+};
+
+
+class ChangeEthereumKeyPasswordCommand : 
+    public GenericChangePasswordCommand<EthereumKeyStore, ChangeEthereumKeyPasswordOperation>
+{
+    public:
+        typedef GenericChangePasswordCommand<EthereumKeyStore, ChangeEthereumKeyPasswordOperation> Base;
+
+    public:
+        ChangeEthereumKeyPasswordCommand(DataBase &);
+
+};
+
+
+class ChangeStealthKeyPasswordCommand : 
+    public GenericChangePasswordCommand<StealthKeyStore, ChangeStealthKeyPasswordOperation>
+{
+    public:
+        typedef GenericChangePasswordCommand<StealthKeyStore, ChangeStealthKeyPasswordOperation> Base;
+
+    public:
+        ChangeStealthKeyPasswordCommand(DataBase &);
+
 };
 
 

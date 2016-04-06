@@ -51,4 +51,15 @@ QVariant GenerateKeyCommand::generateStealthKey(const QVariantMap &request)
 }
 
 
+GenerateStealthKeyCommand::GenerateStealthKeyCommand(DataBase &database, Synchronizer &synchronizer):
+    Base(database.getStealthKeys(), synchronizer)
+{}
+
+
+GenerateEthereumKeyCommand::GenerateEthereumKeyCommand(DataBase &database, Synchronizer &synchronizer):
+    Base(database.getEthereumKeys(), synchronizer)
+{}
+
+
+
 }

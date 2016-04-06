@@ -1,19 +1,22 @@
 namespace Xeth{
 
-template<class Sender, class Validator>
-GenericSendCommand<Sender, Validator>::GenericSendCommand(Ethereum::Connector::Provider &provider, DataBase &database):
+template<class Sender, class Validator, class Estimator>
+GenericSendCommand<Sender, Validator, Estimator>::GenericSendCommand(Ethereum::Connector::Provider &provider, DataBase &database):
     _wallet(provider),
-    _database(database)
+    _database(database),
+    _estimator(provider)
 {}
 
 
-template<class Sender, class Validator>
-QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &request)
+template<class Sender, class Validator, class Estimator>
+QVariant GenericSendCommand<Sender, Validator, Estimator>::operator()(const QVariantMap &request)
 {
-    std::string from = request["from"].toString().toStdString();
-    std::string to = request["to"].toString().toStdString();
-    std::string password = request["password"].toString().toStdString();
-    BigInt amount(request["amount"].toString().toStdString());
+
+    if(!request.contains("from")||!request.contains("to")||!request.contains("amount")||!request.contains("password"))
+    {
+        return QVariant::fromValue(false);
+    }
+
     bool strict = request.contains("checksum") ? request["checksum"].toBool() : true;
 
     if(request.contains("gas") && request.contains("price"))
@@ -21,18 +24,39 @@ QVariant GenericSendCommand<Sender, Validator>::operator()(const QVariantMap &re
         _sender.setGasPrice(BigInt(request["price"].toString().toStdString()));
         _sender.setGasLimit(BigInt(request["gas"].toString().toStdString()));
     }
+    else
+    {
+        _sender.unsetGasLimit();
+        _sender.unsetGasPrice();
+    }
 
-    return send(from, to, password, amount, request["logs"], strict);
+    return send(request["from"].toString(), request["to"].toString(), request["password"].toString(), request["amount"].toString(), request["logs"], strict);
 
 }
 
-template<class Sender, class Validator>
-QVariant GenericSendCommand<Sender, Validator>::send
+template<class Sender, class Validator, class Estimator>
+QVariant GenericSendCommand<Sender, Validator, Estimator>::send
+(
+    const QString &from,
+    const QString &to,
+    const QString &password,
+    const QString &amount,
+    const QVariant &logs,
+    bool strict
+)
+{
+
+    return send(from.toStdString(), to.toStdString(), password.toStdString(), amount.toStdString(), logs, strict);
+}
+
+
+template<class Sender, class Validator, class Estimator>
+QVariant GenericSendCommand<Sender, Validator, Estimator>::send
 (
     const std::string &from,
     const std::string &to,
     const std::string &password,
-    const BigInt &amount,
+    const std::string &amountStr,
     const QVariant &logs,
     bool strict
 )
@@ -43,7 +67,7 @@ QVariant GenericSendCommand<Sender, Validator>::send
         throw std::runtime_error("invalid address");
     }
 
-    if(!unlockSender(from, password, amount))
+    if(!unlockSender(from, password))
     {
         throw std::runtime_error("invalid password");
     }
@@ -55,65 +79,77 @@ QVariant GenericSendCommand<Sender, Validator>::send
         builder.setExtraData(logs.toMap());
     }
 
+    BigInt amount;
+
+    if(amountStr=="all")
+    {
+        amount = _wallet.getBalance(from);
+        BigInt gasPrice = _sender.hasGasPrice() ? _sender.getGasPrice() : _estimator.getGasPrice();
+        BigInt gas = _sender.hasGas() ? _sender.getGas() : _estimator.estimate(from, to, amount);
+        BigInt fee = gas * gasPrice;
+        amount -= fee;
+    }
+    else
+    {
+        amount = BigInt(amountStr);
+    }
+
     QString txid = _sender(_wallet, builder, from, to, amount).c_str();
     _database.getTransactions().insert(builder.build());
 
     return txid;
 }
 
-template<class Sender, class Validator>
-QVariant GenericSendCommand<Sender, Validator>::operator()
+
+template<class Sender, class Validator, class Estimator>
+QVariant GenericSendCommand<Sender, Validator, Estimator>::operator()
 (
-    const std::string &from,
-    const std::string &to,
-    const std::string &password,
-    const BigInt &amount,
+    const QString &from,
+    const QString &to,
+    const QString &password,
+    const QString &amount,
     const QVariant &logs,
     bool strict
 )
 {
-    _sender.setGasPrice(0);
-    _sender.setGasLimit(0);
+    _sender.unsetGasPrice();
+    _sender.unsetGasLimit();
     return send(from, to, password, amount, logs, strict);
 }
 
 
-template<class Sender, class Validator>
-QVariant GenericSendCommand<Sender, Validator>::operator()
+template<class Sender, class Validator, class Estimator>
+QVariant GenericSendCommand<Sender, Validator, Estimator>::operator()
 (
-    const std::string &from,
-    const std::string &to,
-    const std::string &password,
-    const BigInt &amount,
-    const BigInt &gas,
-    const BigInt &price,
+    const QString &from,
+    const QString &to,
+    const QString &password,
+    const QString &amount,
+    const QString &gas,
+    const QString &price,
     const QVariant &logs,
     bool strict
 )
 {
-    _sender.setGasPrice(price);
-    _sender.setGasLimit(gas);
+    _sender.setGasPrice(BigInt(price.toStdString()));
+    _sender.setGasLimit(BigInt(gas.toStdString()));
 
     return send(from, to, password, amount, logs, strict);
 
 }
 
 
-template<class Sender, class Validator>
-bool GenericSendCommand<Sender, Validator>::validateDestination(const std::string &to, bool strict)
+template<class Sender, class Validator, class Estimator>
+bool GenericSendCommand<Sender, Validator, Estimator>::validateDestination(const std::string &to, bool strict)
 {
     Validator validator;
     return validator(to, strict);
 }
 
 
-template<class Sender, class Validator>
-bool GenericSendCommand<Sender, Validator>::unlockSender(const std::string &from, const std::string &password, const BigInt &amount)
+template<class Sender, class Validator, class Estimator>
+bool GenericSendCommand<Sender, Validator, Estimator>::unlockSender(const std::string &from, const std::string &password)
 {
-    if(amount<=0 || _wallet.getBalance(from) < amount)
-    {
-        return false;
-    }
     if(!_wallet.unlockAccount(from, password, 5))
     {
         //maybe it was a stealth payment

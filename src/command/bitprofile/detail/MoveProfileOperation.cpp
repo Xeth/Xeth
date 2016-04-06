@@ -14,46 +14,28 @@ MoveProfileOperation::MoveProfileOperation
     const BigInt &gas,
     Notifier &notifier
 ) : 
-    _admin(admin),
+    ProfileOperation(admin, password, notifier),
     _store(store),
     _registrar(registrar),
     _name(name),
-    _password(password),
-    _gas(gas),
-    _notifier(notifier),
-    _uri(_admin.getProfile().getURI())
+    _gas(gas)
 {}
 
-void MoveProfileOperation::operator()()
+
+void MoveProfileOperation::execute()
 {
-    try
+    if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString(), _gas))
     {
-        if(!_admin.move(_registrar, _name.toStdString(), _password.toStdString(), _gas))
-        {
-            emitError("failed to move profile");
-        }
-        else
-        {
-            if(!_store.rename(_uri, BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
-            {
-                emitError("failed to rename profile file");
-            }
-            //on success event is triggered from store
-        }
+        emitError("failed to move profile");
     }
-    catch(const std::exception &e)
+    else
     {
-        emitError(e.what());
-    }
-    catch(...)
-    {
-        emitError("failed to rename profile");
+        if(!_store.rename(_admin.getProfile().getURI(), BitProfile::Profile::URI(_registrar.getURI(), _name.toStdString())))
+        {
+            emitError("failed to rename profile file");
+        }
     }
 }
 
-void MoveProfileOperation::emitError(const char *msg)
-{
-    _notifier.emitObjectError("bitprofile",  _uri.toString().c_str(), msg);
-}
 
 }

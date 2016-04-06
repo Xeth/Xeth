@@ -23,4 +23,11 @@ QVariant FileSystemFacade::browse()
 }
 
 
+QVariant FileSystemFacade::readImage(const QString &path)
+{
+    ReadImageCommand command;
+    return _invoker.invoke(command, path);
+}
+
+
 }

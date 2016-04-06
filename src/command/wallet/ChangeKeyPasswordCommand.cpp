@@ -44,4 +44,15 @@ bool ChangeKeyPasswordCommand::changeStealthKeyPassword(const QString &address, 
 }
 
 
+
+ChangeEthereumKeyPasswordCommand::ChangeEthereumKeyPasswordCommand(DataBase &database) :
+    Base(database.getEthereumKeys())
+{}
+
+
+
+ChangeStealthKeyPasswordCommand::ChangeStealthKeyPasswordCommand(DataBase &database) :
+    Base(database.getStealthKeys())
+{}
+
 }

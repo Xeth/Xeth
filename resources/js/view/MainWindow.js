@@ -140,8 +140,8 @@ var MainWindowView = Backbone.View.extend({
         this.subpages["default"] = this.subpages.send;
         this.show();
     },
-    notifyError:function(msg){
-        notifyError(msg);
+    notifyError:function(event){
+        notifyError(event.message);
     },
     loaded:function(){
         this.$el.addClass("loaded");

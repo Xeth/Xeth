@@ -7,7 +7,7 @@ var FeeSlider = Backbone.View.extend({
         this.feeHolder = this.$el.find(".fee .eth");
         this.gasHolder = this.$el.find(".fee .gas");
         this.feeFactor = this.$el.find('.slider');
-        this.feeFactor.slider({min:0, max:200, value:this.lastFeeFactor, change:this.change, start:this.change, slide:this.renderFee});
+        this.feeFactor.slider({min:0, max:200, value:this.lastFeeFactor, start:this.change, change:this.change, slide:this.renderFee});
         this.update({gas:0,price:0,fee:"0.0000000000000"});
         
         this.$el.tooltip({
@@ -28,19 +28,20 @@ var FeeSlider = Backbone.View.extend({
         this.trigger("change", ui.value);
     },
 
-    renderFee: function(event,ui){        
+    renderFee: function(event,ui){
         var fee;
         var factor = ((ui)?ui.value:this.getFeeFactor());
         
         if(event!=false){
-            var price = this.lastGasPrice/this.lastFeeFactor*factor;
-            fee = ((isNaN(price))?0:this.gasAmount*price).toFixed(13);
+            var factorMovement = factor/this.lastFeeFactor;
+            var fee = this.lastFee*factorMovement;
+            fee = ((isNaN(fee))?0:fee).toFixed(13);
             this.trigger("autoupdate", fee);
         }else{
             fee = this.fee;
             if(fee>0){
                 this.lastFeeFactor = this.getFeeFactor();
-                this.lastGasPrice = this.gasPrice;
+                this.lastFee = this.fee;
             }
         }
         console.log(fee,this.fee);
@@ -50,7 +51,7 @@ var FeeSlider = Backbone.View.extend({
             this.feeFactor.removeClass("warning");
         }
         
-        this.feeHolder.html(fee.substr(0, 15));
+        this.feeHolder.html(fee?fee.substr(0, 15):0);
         this.gasHolder.html(((this.gasAmount)?this.gasAmount:0));
     },
     

@@ -1,19 +1,15 @@
 #pragma once 
 
-#include <QString>
-
-#include "ethrpc/Provider.hpp"
-#include "bitprofile/ProfileDescriptor.hpp"
-#include "bitprofile/ProfileAdministrator.hpp"
-
+#include "bitprofile/Registrar.hpp"
+#include "types/BigInt.hpp"
 #include "database/BitProfileStore.hpp"
-#include "facade/Notifier.hpp"
+#include "ProfileOperation.hpp"
 
 
 namespace Xeth{
 
 
-class MoveProfileOperation
+class MoveProfileOperation : public ProfileOperation
 {
     public:
         MoveProfileOperation
@@ -27,20 +23,14 @@ class MoveProfileOperation
             Notifier &
         );
 
-        void operator()();
+    protected:
+        void execute();
 
     private:
-        void emitError(const char *);
-
-    private:
-        BitProfile::ProfileAdministrator _admin;
         BitProfileStore &_store;
         BitProfile::Registrar _registrar;
         QString _name;
-        QString _password;
         BigInt _gas;
-        Notifier &_notifier;
-        BitProfile::Profile::URI _uri;
 };
 
 

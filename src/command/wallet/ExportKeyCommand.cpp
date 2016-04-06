@@ -53,4 +53,13 @@ QVariant ExportKeyCommand::exportStealthKey(const QString &address, const QStrin
 }
 
 
+ExportStealthKeyCommand::ExportStealthKeyCommand(const DataBase &database ) :
+    GenericExportKeyCommand<StealthKeyStore>(database.getStealthKeys())
+{}
+
+ExportEthereumKeyCommand::ExportEthereumKeyCommand(const DataBase &database ) :
+    GenericExportKeyCommand<EthereumKeyStore>(database.getEthereumKeys())
+{}
+
+
 }

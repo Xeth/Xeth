@@ -11,10 +11,10 @@ var BitprofileEditFee = function(profile,fee){
             this.linkStealthFee = fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor);
             editFee.push(this.linkStealthFee);
         }
-        /*
-        if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar")))
-            editFee.push(fee.estimateEditProfile(profile.get("uri"), "details", {name:formData.name, avatar:formData.avatar}));
-            */
+        if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar"))){
+            this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"));
+            editFee.push(this.editDetailsFee);
+         }
         return combineFee(editFee);
     }
 }
@@ -76,6 +76,7 @@ var BitprofileEditPageView = SubPageView.extend({
         var request = this.form.getFormData();
         if((request.context!=this.profile.get("context"))||(request.id!=this.profile.get("id"))){
             request.gas = this.feeAdapter.renameFee.gas;
+            request.price = this.feeAdapter.renameFee.price;
             if(!this.profile.changeURI(request)){
                 this.form.risePasswordError();
                 this.form.unlockPage();
@@ -95,12 +96,13 @@ var BitprofileEditPageView = SubPageView.extend({
         var request = this.form.getFormData();
         if(request.stealth!=this.profile.get("payments")){
             request.gas = this.feeAdapter.linkStealthFee.gas;
+            request.price = this.feeAdapter.linkStealthFee.price;
             if(!this.profile.linkStealthAddress(request)){
                 this.riseError(skipped);
                 return false;
             }else{
                 this.form.lockPage("Changing stealth address...");
-                this.listenToOnce(this.profile, "change:payments", this.clearForm);
+                this.listenToOnce(this.profile, "change:payments", this.submitEditDetails);
             }
         }else{
             this.clearForm(skipped);
@@ -108,15 +110,23 @@ var BitprofileEditPageView = SubPageView.extend({
     },
 
     submitEditDetails:function(skipped){
-        var request = this.form.getFormData();
-        if((request.name!=this.profile.get("name"))||(request.avatar!=this.profile.get("avatar"))){
-            request.gas = this.feeModel.estimateEditProfile(this.profile.get("uri"), "details", {name:request.name, avatar:request.avatar});
+        var formData = this.form.getFormData();
+        var profileName = this.profile.get("name");
+        var profileAvatar = this.profile.get("avatar");
+        if((formData.name!=profileName)||(formData.avatar!=profileAvatar)){
+            var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, details:{}};
+            if(formData.name!=profileName){
+                request.details.name = formData.name.length?formData.name:null; //null to remove
+            }
+            if(formData.avatar!=profileAvatar){
+                request.details.avatar = formData.avatar.length?formData.avatar:null;
+            }
             if(!this.profile.changeDetails(request)){
                 this.riseError(skipped);
                 return false;
             }else{
                 this.form.lockPage("Changing profile details...");
-                this.listenToOnce(this.profile, "change:details", this.clearForm);
+                this.listenToOnce(this.profile, "change:details", this.submitEditDetails);
             }
         }else{
             this.clearForm(skipped);

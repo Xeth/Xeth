@@ -19,12 +19,16 @@ QVariant GetAccountsCommand::operator ()()
     const StealthPaymentStore & stealthPayments = _database.getStealthPayments();
     for(StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
     {
-        QVariantMap obj;
         QString address = computeCheckSum((*it)["address"].toString().toStdString());
-        obj["address"] = address;
-        obj["stealth"] = it->take("stealth");
-        accounts.push_back(obj);
         registry.insert(std::make_pair(address, true));
+
+        if(wallet.getBalance(address.toStdString())!=0)
+        {
+            QVariantMap obj;
+            obj["address"] = address;
+            obj["stealth"] = it->take("stealth");
+            accounts.push_back(obj);
+        }
     }
 
 

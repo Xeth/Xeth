@@ -1,5 +1,5 @@
 #include "BrowseCommand.hpp"
-
+#include <QDebug>
 
 namespace Xeth{
 
@@ -22,7 +22,8 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
         else
         if(type=="open")
         {
-            return browseFile(caption);
+            QString extensions = request.contains("extensions")?request["extensions"].toString():"";
+            return browseFile(caption, extensions);
         }
         else
         if(type=="directory")
@@ -38,9 +39,9 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
 }
 
 
-QVariant BrowseCommand::browseFile(const QString &caption)
+QVariant BrowseCommand::browseFile(const QString &caption, QString &extensions)
 {
-    return QVariant::fromValue(QFileDialog::getOpenFileName(NULL, caption));
+    return QVariant::fromValue(QFileDialog::getOpenFileName(NULL, caption, QDir::currentPath(), extensions, &extensions));
 }
 
 

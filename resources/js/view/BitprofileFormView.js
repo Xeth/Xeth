@@ -89,12 +89,17 @@ var BitprofileFormView = SubPageView.extend({
     },
     
     clickBrowseAvatar:function(){
-        var filename = this.filesystem.browse({type:"open"});
-        if(filename) this.avatar.val(filename);
+        var filename = this.filesystem.browse({type:"open", extensions:"Image (*.jpg *.jpeg *.png *.bmp *.tif)"});
+        if(filename){
+            this.avatar.val(filename);
+            var image = this.filesystem.readImage(filename);
+            this.avatarImage.attr("src", image);
+        }
     },
     
     clickRemoveAvatar:function(){
         this.avatar.val("");
+        this.avatarImage.attr("src",'img/avatarEmpty.png');
     },
     
     renderDetailsPage:function(){
