@@ -11,7 +11,6 @@ SendCommand::SendCommand(Ethereum::Connector::Provider &provider, DataBase &data
 
 QVariant SendCommand::operator()(const QVariantMap &request)
 {
-    qDebug()<<"send request : "<<request;
     QString to = request["address"].toString();
     QString from = request["from"].toString();
     QString password = request["password"].toString();
