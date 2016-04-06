@@ -1,7 +1,7 @@
 var ChangePasswordPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("submit");
+        _(this).bindAll("submit", "sendRequest");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("change_password");
         this.router = options.router;
@@ -33,7 +33,11 @@ var ChangePasswordPageView = SubPageView.extend({
             repeatPassword.error();
             return false;
         }
-
+        this.$el.find(".formpage").addClass("waiting");
+        setTimeout(this.sendRequest, 0, oldPassword, newPassword);
+        return true;
+    },
+    sendRequest:function(oldPassword, newPassword){
         var model = this.accounts.selected();
         if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
@@ -42,8 +46,8 @@ var ChangePasswordPageView = SubPageView.extend({
         }
         notifySuccess("password changed");
         newPassword.val("");
-        repeatPassword.val("");
         oldPassword.val("");
+        this.$el.find(".formpage").removeClass("waiting");
         this.router.redirect(); //go to default page
         return true;
     }
