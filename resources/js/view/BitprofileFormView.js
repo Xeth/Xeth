@@ -1,11 +1,12 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("computeFee", "clickGenerate", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
+        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
         this.router = options.router;
+        this.filesystem = options.filesystem;
         this.pending = false;
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
@@ -46,8 +47,16 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
         this.$el.find("#bitporfileCreate_payment .submitCancel").click(this.renderDetailsPage);
         this.$el.find(".generate a").click(this.clickGenerate);
+        this.$el.find("#bitporfileCreate_details .btnBrowse").click(this.clickBrowseAvatar);
+        this.$el.find("#bitporfileCreate_details .btnRemove").click(this.clickRemoveAvatar);
         
         this.listenTo(this.accounts, "change", this.resetAddressError);
+        
+        this.$el.find('.inputBtn').tooltip({
+            position: { my: "center bottom", at: "center top-5" },
+            show: { duration: 200 },
+            hide: { duration: 200 }
+        });
     },
     
     exit:function(){
@@ -77,6 +86,15 @@ var BitprofileFormView = SubPageView.extend({
     clickGenerate:function(){
         console.log("clicked on generate");
         this.router.redirect("generate");
+    },
+    
+    clickBrowseAvatar:function(){
+        var filename = this.filesystem.browse({type:"open"});
+        if(filename) this.avatar.val(filename);
+    },
+    
+    clickRemoveAvatar:function(){
+        this.avatar.val("");
     },
     
     renderDetailsPage:function(){
