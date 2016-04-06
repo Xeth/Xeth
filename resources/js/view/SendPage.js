@@ -334,7 +334,9 @@ var SendPageView = SubPageView.extend({
         var account = this.accounts.selected();
         var destination = this.getDestination();
         request.address = destination;
-
+        if(type=="bitprofile"){
+            request.logs = {bitprofile: this.destination.val()};
+        }
         if(checksum){
             if(!this.addressValidator.validate(destination))
             {
