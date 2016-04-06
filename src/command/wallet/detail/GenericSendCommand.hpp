@@ -17,7 +17,7 @@
 namespace Xeth{
 
 
-template<class Sender, class Validator>
+template<class Sender, class Validator, class Estimator>
 class GenericSendCommand
 {
     public:
@@ -27,21 +27,21 @@ class GenericSendCommand
 
         QVariant operator()
         (
-            const std::string &from,
-            const std::string &to,
-            const std::string &password,
-            const BigInt &amount,
+            const QString &from,
+            const QString &to,
+            const QString &password,
+            const QString &amount,
             const QVariant &logs,
             bool strict = true
         );
         QVariant operator()
         (
-            const std::string &from,
-            const std::string &to,
-            const std::string &password,
-            const BigInt &amount,
-            const BigInt &gas,
-            const BigInt &price,
+            const QString &from,
+            const QString &to,
+            const QString &password,
+            const QString &amount,
+            const QString &gas,
+            const QString &price,
             const QVariant &logs,
             bool strict = true
         );
@@ -49,12 +49,14 @@ class GenericSendCommand
     private:
         bool validateDestination(const std::string &, bool strict);
         bool unlockSender(const std::string &, const std::string &);
-        QVariant send(const std::string &from, const std::string &to, const std::string &password, const BigInt &amount, const QVariant &logs, bool strict);
+        QVariant send(const QString &from, const QString &to, const QString &password, const QString &amount, const QVariant &logs, bool strict);
+        QVariant send(const std::string &from, const std::string &to, const std::string &password, const std::string &amount, const QVariant &logs, bool strict);
 
     private:
         Ethereum::Connector::Wallet _wallet;
         Sender _sender;
         DataBase &_database;
+        Estimator _estimator;
 
 };
 

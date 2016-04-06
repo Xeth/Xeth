@@ -17,6 +17,18 @@ BigInt SendGasEstimator::estimate(const QString &from, const QString &to, const 
 
 BigInt SendGasEstimator::estimate(const std::string &from, const std::string &to, const BigInt &amount)
 {
+    return (to.length()<42) ? estimateHex(from, to, amount) : estimateStealth(from, to, amount);
+}
+
+
+BigInt SendGasEstimator::estimateHex(const QString &from, const QString &to, const BigInt &amount)
+{
+    return estimateHex(from.toStdString(), to.toStdString(), amount);
+}
+
+
+BigInt SendGasEstimator::estimateHex(const std::string &from, const std::string &to, const BigInt &amount)
+{
     return _estimator.estimate(from, to, amount);
 }
 
@@ -68,5 +80,30 @@ BigInt StealthSendGasEstimator::getGasPrice()
 {
     return _estimator.getGasPrice();
 }
+
+
+
+HexSendGasEstimator::HexSendGasEstimator(Ethereum::Connector::Provider &provider) : 
+    _estimator(provider)
+{}
+
+
+BigInt HexSendGasEstimator::estimate(const QString &from, const QString &to, const BigInt &amount)
+{
+    return _estimator.estimateHex(from.toStdString(), to.toStdString(), amount);
+}
+
+
+BigInt HexSendGasEstimator::estimate(const std::string &from, const std::string &to, const BigInt &amount)
+{
+    return _estimator.estimateHex(from, to, amount);
+}
+
+
+BigInt HexSendGasEstimator::getGasPrice()
+{
+    return _estimator.getGasPrice();
+}
+
 
 }

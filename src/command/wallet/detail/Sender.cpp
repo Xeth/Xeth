@@ -2,17 +2,56 @@
 
 namespace Xeth{
 
+Sender::Sender() :
+    _hasGas(false),
+    _hasGasPrice(false)
+{}
 
 void Sender::setGasLimit(const BigInt &gas)
 {
     _gas = gas;
+    _hasGas = true;
 }
 
 void Sender::setGasPrice(const BigInt &price)
 {
     _price = price;
+    _hasGasPrice = true;
 }
 
+
+void Sender::unsetGasPrice()
+{
+    _hasGasPrice = false;
+}
+
+
+void Sender::unsetGasLimit()
+{
+    _hasGas = false;
+}
+
+BigInt Sender::getGas()
+{
+    return _gas;
+}
+
+
+BigInt Sender::getGasPrice()
+{
+    return _price;
+}
+
+bool Sender::hasGasPrice()
+{
+    return _hasGasPrice;
+}
+
+
+bool Sender::hasGas()
+{
+    return _hasGas;
+}
 
 std::string Sender::send
 (
@@ -23,11 +62,36 @@ std::string Sender::send
     const BigInt &amount
 )
 {
-    std::string txid = (_gas>0 && _price>0) ? wallet.sendTransaction(from, to, amount) :  wallet.sendTransaction(from, to, amount, _gas, _price);
+    std::string txid = send(wallet, from, to, amount);
     builder.setDetails(txid, TransactionCategory::Sent, from, to, amount, time(NULL));
     return txid;
 }
 
+
+std::string Sender::send
+(
+    Ethereum::Connector::Wallet &wallet,
+    const std::string &from,
+    const std::string &to,
+    const BigInt &amount
+)
+{
+    if(_hasGas)
+    {
+        if(_hasGasPrice)
+        {
+            return wallet.sendTransaction(from, to, amount, _gas, _price);
+        }
+        else
+        {
+            return wallet.sendTransaction(from, to, amount, _gas);
+        }
+    }
+    else
+    {
+        return wallet.sendTransaction(from, to, amount);
+    }
+}
 
 std::string AddressSender::operator()
 (

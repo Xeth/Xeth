@@ -36,7 +36,7 @@ QVariant EstimateFeeCommand::operator()(const QVariantMap &request)
 
         QVariantMap result;
 
-        BigInt fee = (to.length()<42) ? _estimator.estimate(from, to, amount) : _estimator.estimateStealth(from, to, amount);
+        BigInt fee = _estimator.estimate(from, to, amount);
         result["gas"] = fee.str().c_str();
         fee *= price;
         result["fee"] = fee.str().c_str();

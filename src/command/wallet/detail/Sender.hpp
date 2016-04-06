@@ -18,8 +18,16 @@ namespace Xeth{
 class Sender
 {
     public:
+        Sender();
+
+        BigInt getGas();
+        BigInt getGasPrice();
         void setGasLimit(const BigInt &gas);
         void setGasPrice(const BigInt &gas);
+        void unsetGasLimit();
+        void unsetGasPrice();
+        bool hasGasPrice();
+        bool hasGas();
 
     protected:
         inline std::string send
@@ -31,9 +39,19 @@ class Sender
             const BigInt &amount
         );
 
+        inline std::string send
+        (
+            Ethereum::Connector::Wallet &,
+            const std::string &from,
+            const std::string &to,
+            const BigInt &amount
+        );
+
     private:
         BigInt _gas;
         BigInt _price;
+        bool _hasGas;
+        bool _hasGasPrice;
 };
 
 

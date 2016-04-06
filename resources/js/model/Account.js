@@ -37,7 +37,10 @@ var Account = AccountBase.extend({
 
     send:function(request){
         request.from = this.get("address");
-        request.amount = XETH_convert.toWei(""+request.amount);
+        if(!isNaN(request.amount))
+        {
+            request.amount = XETH_convert.toWei(""+request.amount);
+        }
         var txid = XETH_wallet.send(request);
         if(txid){
             this.update();

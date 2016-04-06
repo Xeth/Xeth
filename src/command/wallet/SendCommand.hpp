@@ -5,18 +5,18 @@
 
 #include "ethrpc/Provider.hpp"
 #include "database/DataBase.hpp"
+#include "types/StealthKey.hpp"
 
 #include "detail/AddressValidator.hpp"
 #include "detail/Sender.hpp"
 #include "detail/GenericSendCommand.hpp"
-#include "types/StealthKey.hpp"
-
+#include "detail/SendGasEstimator.hpp"
 
 
 namespace Xeth{
 
-typedef GenericSendCommand<AddressSender, HexAddressValidator> SendToAddressCommand;
-typedef GenericSendCommand<StealthSender, StealthAddressValidator> SendToStealthCommand;
+typedef GenericSendCommand<AddressSender, HexAddressValidator, HexSendGasEstimator> SendToAddressCommand;
+typedef GenericSendCommand<StealthSender, StealthAddressValidator, StealthSendGasEstimator> SendToStealthCommand;
 
 
 class SendCommand
@@ -31,10 +31,10 @@ class SendCommand
         QVariant send
         (
             Command &command,
-            const std::string &from, 
-            const std::string &to,
-            const std::string &password,
-            const BigInt &,
+            const QString &from, 
+            const QString &to,
+            const QString &password,
+            const QString &,
             const QVariant &gas,
             const QVariant &price,
             const QVariant &logs,
