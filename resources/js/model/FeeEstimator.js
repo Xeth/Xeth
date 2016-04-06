@@ -6,7 +6,8 @@ var FeeEstimator = function(){
         {
             return false;
         }
-        var request = {from: from, to: to, amount:amount, factor: factor};
+        var request = {from: from, to: to, amount:amount};
+        if(factor) request.factor = factor;
         var result = XETH_wallet.estimateFee(request);
         if(!result)
         {
@@ -20,25 +21,31 @@ var FeeEstimator = function(){
         return result;
     };
 
+    var makeProfileRequest = function(request, factor){
+        if(factor) request.factor = factor;
+        return request;
+    };
+
     this.estimateCreateProfile = function(context, name, factor){
-        return this.parseFee(XETH_bitprofile.estimate({operation:"register", name:name, context:context, factor:factor}));
+        return this.parseFee(XETH_bitprofile.estimate(makeProfileRequest({operation:"register", name:name, context:context}, factor)));
     };
     
     this.estimateStealthLink = function(uri, stealth, factor){
-        var request = {operation:"stealth", factor: factor};
+        var request = {operation:"stealth"};
         if(uri)
         {
             request.uri = uri;
             request.stealth = stealth;
         }
-        return this.parseFee(XETH_bitprofile.estimate(request));
+        return this.parseFee(XETH_bitprofile.estimate(makeProfileRequest(request, factor)));
     };
 
-    this.estimateEditProfile = function(uri){
-        return this.parseFee(XETH_bitprofile.estimate({operation:"edit", factor:factor, uri:uri}));
+    this.estimateEditProfile = function(uri, factor){
+        return this.parseFee(XETH_bitprofile.estimate(makeProfileRequest({operation:"edit", uri:uri})));
     };
 
-    this.estimateMoveProfile = function(uri, context, name){
-        return this.parseFee(XETH_bitprofile.estimate({operation:"move", uri:uri, context:context, name:name}));
+    this.estimateMoveProfile = function(uri, context, name, factor){
+        return this.parseFee(XETH_bitprofile.estimate(makeProfileRequest({operation:"move", uri:uri, context:context, name:name}, factor)));
     };
+  
 }
