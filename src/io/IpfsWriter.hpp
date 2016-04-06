@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QProcess>
 #include <QByteArray>
+#include <QTemporaryFile>
 
 #include "env/Settings.hpp"
 #include "process/IpfsProcessInitializer.hpp"

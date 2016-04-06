@@ -1,6 +1,5 @@
 #include "IpfsReader.hpp"
 
-
 namespace Xeth{
 
 
@@ -14,7 +13,7 @@ QByteArray IpfsReader::readBytes(const QString &hash)
     QProcess process;
     IpfsProcessInitializer::Initialize(process, _settings, QStringList()<<"cat"<<hash);
     process.start();
-    process.waitForFinished();
+    process.waitForFinished(3000000);
     if(process.exitCode()!=0)
     {
         return QByteArray();
@@ -25,7 +24,8 @@ QByteArray IpfsReader::readBytes(const QString &hash)
 
 QJsonObject IpfsReader::readJson(const QString &hash)
 {
-    QJsonDocument document = QJsonDocument::fromBinaryData(readBytes(hash), QJsonDocument::BypassValidation);
+    QByteArray result = readBytes(hash);
+    QJsonDocument document = QJsonDocument::fromJson(result);
     return document.object();
 }
 
