@@ -122,8 +122,35 @@
 	margin-bottom: 20px;
 }
 #page_bitprofile .bitprofileForm .formpage .avatarURL {
-	width: 166px;
+	width: 126px;
+    padding: 0 30px;
 	float:left;
+}
+#page_bitprofile .bitprofileForm .formpage .avatarControls {
+	width: 50px;
+    margin-left: -50px;
+    height: 38px;
+	float:left;
+}
+#page_bitprofile .bitprofileForm .formpage .inputBtn {
+    float: left;
+    height: 16px;
+    width: 16px;
+    margin: 11px 0px 0px 0px;
+    background-image: url(../img/icons-01.png);
+    background-repeat: no-repeat;
+}
+
+#page_bitprofile .bitprofileForm .formpage .btnBrowse {
+    background-position: center -922px;
+    /* margin-right: -26px; */
+    margin-left: 8px;
+    position: absolute;
+}
+
+#page_bitprofile .bitprofileForm .formpage .btnRemove {
+    background-position: center -185px;
+    margin-left: -26px;
 }
 
 #page_bitprofile .formpage .section_fee {

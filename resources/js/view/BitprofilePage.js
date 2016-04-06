@@ -88,7 +88,8 @@ var BitprofilePageView = SubPageView.extend({
             accounts: this.accounts, 
             registrars: this.registrars,
             router:this.router, 
-            templates:this.templates
+            templates:this.templates,
+            filesystem:this.filesystem
         });
         this.subpages.create = new BitprofileCreatePageView
         ({
