@@ -37,9 +37,9 @@ var Contact = Backbone.Model.extend({
     },
 
     resolve:function(transaction){
-        var address = this.get("address");
-        var bitprofile = this.get("bitprofile");
-        if(address==transaction.get("from")||address==transaction.get("to")||address==transaction.get("stealth")||(bitprofile &&bitprofile==transaction.get("bitprofile"))){
+        var address = ""+this.get("address");
+        var bitprofile = ""+this.get("bitprofile");
+        if((address.length && (address==transaction.get("from")||address==transaction.get("to")||address==transaction.get("stealth")))||(bitprofile.length &&bitprofile==transaction.get("bitprofile"))){
             transaction.bindContact(this);
             this.set("transactions", (this.get("transactions")||0)+1);
             return true;
