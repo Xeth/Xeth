@@ -46,7 +46,9 @@ var ContactView = Backbone.View.extend({
 
     updateBitProfileDetails:function(){
         var details = this.bitprofile.get("details");
-        this.$el.find(".avatar img").attr("src", (details && details.avatar)? details.avatar: "img/avatarEmpty.png");
+        var avatar = (details && details.avatar)? details.avatar: "img/avatarEmpty.png";
+        this.$el.find(".avatar img").attr("src", avatar);
+        this.model.set("avatar", avatar);
     },
 
     updateBitProfile:function(){
