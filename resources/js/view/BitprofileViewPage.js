@@ -1,7 +1,7 @@
 var BitprofileViewPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open");
+        _(this).bindAll("open", "updateURI", "updateDetails", "updateStealth");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("view_bitprofile");
         this.$el.html(this.template());
@@ -25,15 +25,13 @@ var BitprofileViewPageView = SubPageView.extend({
         this.model = this.profiles.find({uri:args.uri});
         this.update();
         this.listenTo(this.model, "change:uri", this.updateURI);
-        this.listenTo(this.model, "change:avatar",this.updateAvatar);
-        this.listenTo(this.model, "change:name", this.updateName);
+        this.listenTo(this.model, "change:details",this.updateDetails);
         this.listenTo(this.model, "change:payments", this.updateStealth);
     },
     
     update:function(model){
         this.updateURI();
-        this.updateAvatar();
-        this.updateName();
+        this.updateDetails();
         this.updateStealth();
     },
     
@@ -42,15 +40,12 @@ var BitprofileViewPageView = SubPageView.extend({
         this.$el.find(".bitprofileID input").val(this.model.get("id"));
     },
     
-    updateAvatar:function(){
-        var img = this.model.get("avatar");
-        this.$el.find("input.avatarURL").val(img);
-        this.$el.find(".avatar img").attr("src",((img)?img:'img/avatarEmpty.png'));
+    updateDetails:function(details){
+        if(!details) details = this.model.get("details");
+        this.$el.find(".avatar img").attr("src",((details.avatar)?details.avatar:'img/avatarEmpty.png'));
+        this.$el.find("input.name").val(details.name||"");
     },
     
-    updateName:function(){
-        this.$el.find("input.name").val(this.model.get("name"));
-    },
     
     updateStealth:function(){
         var stealth = this.model.get("payments");
