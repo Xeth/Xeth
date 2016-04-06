@@ -5,9 +5,10 @@
 #include <QString>
 
 #include "ethrpc/Provider.hpp"
-#include "ethrpc/GasEstimator.hpp"
+
 
 #include "types/BigInt.hpp"
+#include "detail/SendGasEstimator.hpp"
 
 
 namespace Xeth{
@@ -20,11 +21,7 @@ class EstimateFeeCommand
         QVariant operator()(const QVariantMap &);
 
     private:
-        BigInt estimateStealthGas(const QString &from, const QString &to, const BigInt &);
-        BigInt estimateGas(const QString &from, const QString &to, const BigInt &);
-
-    private:
-        Ethereum::Connector::GasEstimator _estimator;
+        SendGasEstimator _estimator;
 
 };
 

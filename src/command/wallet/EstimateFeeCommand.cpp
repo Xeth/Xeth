@@ -19,7 +19,7 @@ QVariant EstimateFeeCommand::operator()(const QVariantMap &request)
         QString from = request["from"].toString();
         QString to = request["to"].toString();
         BigInt amount = BigInt(request["amount"].toString().toStdString());
-        BigInt price = _estimator.getPrice();
+        BigInt price = _estimator.getGasPrice();
         if(request.contains("factor"))
         {
             size_t factor = request["factor"].toInt();
@@ -36,7 +36,7 @@ QVariant EstimateFeeCommand::operator()(const QVariantMap &request)
 
         QVariantMap result;
 
-        BigInt fee = (to.length()<42) ? estimateGas(from, to, amount) : estimateStealthGas(from, to, amount);
+        BigInt fee = (to.length()<42) ? _estimator.estimate(from, to, amount) : _estimator.estimateStealth(from, to, amount);
         result["gas"] = fee.str().c_str();
         fee *= price;
         result["fee"] = fee.str().c_str();
@@ -49,16 +49,6 @@ QVariant EstimateFeeCommand::operator()(const QVariantMap &request)
 }
 
 
-BigInt EstimateFeeCommand::estimateGas(const QString &from, const QString &to, const BigInt &amount)
-{
-    return _estimator.estimate(from.toStdString(), to.toStdString(), amount);
-}
-
-
-BigInt EstimateFeeCommand::estimateStealthGas(const QString &from, const QString &to, const BigInt &amount)
-{
-    return _estimator.estimate(from.toStdString().c_str(), "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", amount, "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-}
 
 
 }
