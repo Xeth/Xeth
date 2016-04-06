@@ -98,7 +98,7 @@ QVariant EstimateProfileOperationCommand::estimateStealthLink(const QVariantMap 
     }
     else
     {
-        return makeFeeObject(estimateEdit(request["uri"].toString(), "payments", request["address"].toString()), request);
+        return makeFeeObject(estimateEdit(request["uri"].toString(), "payments", request["stealth"].toString()), request);
     }
 }
 
