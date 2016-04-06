@@ -1,7 +1,7 @@
 var ContactView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove", "goToSend");
+        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove", "goToSend", "updateBitProfileDetails");
         this.router = options.router;
         var data = {contact:this.model.toJSON()};
         this.$el = $(options.template(data));
@@ -10,6 +10,7 @@ var ContactView = Backbone.View.extend({
         this.listenTo(this.model, "change:avatar", this.updateAvatar);
         this.listenTo(this.model, "change:bitprofile", this.updateBitProfile);
         this.listenTo(this.model, "change:transactions", this.updateTransactions);
+        this.updateBitProfile();
 
         this.$el.find('.name.editableTxt').editable({
             mode: 'inline',
@@ -43,16 +44,34 @@ var ContactView = Backbone.View.extend({
         this.$el.find(".avatar img").attr("src", this.model.get("avatar"));
     },
 
+    updateBitProfileDetails:function(){
+        var details = this.bitprofile.get("details");
+        this.$el.find(".avatar img").attr("src", (details && details.avatar)? details.avatar: "img/avatarEmpty.png");
+    },
+
     updateBitProfile:function(){
         var icon = this.$el.find(".bitprofileIcon");
         var bitprofile = this.model.get("bitprofile");
 
+        if(this.bitprofile){
+            this.stopListening(this.bitprofile);
+            this.bitprofile.stopListening();
+        }
+
         if(bitprofile){
             if(!icon.hasClass("on")) icon.addClass("on");
             icon.attr("title", bitprofile);
+            this.bitprofile = new Profile({uri: bitprofile});
+            this.bitprofile.observe();
+            this.listenTo(this.bitprofile, "change:details", this.updateBitProfileDetails);
+            if(this.bitprofile.get("loaded"))
+            {
+                this.updateBitProfileDetails();
+            }
         }else{
             icon.attr("title", "no bitprofile");
             icon.removeClass("on");
+            this.bitprofile = null;
         }
     },
 
