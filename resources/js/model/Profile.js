@@ -4,17 +4,32 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     initialize:function(){
+        _(this).bindAll("setReady");
         XETH_bitprofile.getDetails(this.getURI()); //its asynchronous
+        this.set("loaded", false);
+        this.once("change:details", this.setReady);
+    },
+
+    setReady:function(){
+        this.set("loaded", true);
     },
 
     get:function(key){
-        if(key=="uri"||key=="id"||key=="context"||key=="account")
+        if(key=="uri"||key=="id"||key=="context"||key=="account"||key=="details"||key=="loaded")
         {
             return Backbone.Model.prototype.get.call(this, key);
         }
         else
         {
-            return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
+            if(key=="ipns")
+            {
+                var path = XETH_bitprofile.getData({uri:this.getURI(), key:"details"})||"";
+                return (path.indexOf("ipns://") > -1)
+            }
+            else
+            {
+                return XETH_bitprofile.getData({uri:this.getURI(), key:key})||"";
+            }
         }
     },
 

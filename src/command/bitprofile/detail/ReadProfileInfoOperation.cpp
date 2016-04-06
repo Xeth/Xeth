@@ -34,7 +34,11 @@ void ReadProfileInfoOperation::operator()()
                     return;
                 }
             }
-            QVariantMap details = reader.readJson(detailsPath.remove(0, 7)).toVariantMap();
+            else
+            {
+                detailsPath.remove(0, 7);
+            }
+            QVariantMap details = reader.readJson(detailsPath).toVariantMap();
             if(details.contains("avatar"))
             {
                 details["avatar"] = QString(reader.readBytes(details["avatar"].toString().remove(0,7)));

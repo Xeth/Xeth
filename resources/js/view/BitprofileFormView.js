@@ -8,11 +8,12 @@ var BitprofileFormView = SubPageView.extend({
         this.router = options.router;
         this.filesystem = options.filesystem;
         this.pending = false;
+        this.avatarDeleted = false;
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
         //this.accounts.filter(function(model){return model!=undefined;}); //hide text
     },
-    
+
     render:function(){
         this.$el = $('<div class="bitprofileForm">'+this.template()+'</div>');
         this.detailsPage = this.$el.find("#bitporfileCreate_details");
@@ -58,16 +59,12 @@ var BitprofileFormView = SubPageView.extend({
             hide: { duration: 200 }
         });
     },
-    
+
     exit:function(){
         //this.stopListening(this.accounts, "change", this.resetAddressError);
         this.stopListeningPayments();
     },
-    /*
-    open:function(){
-        this.resetForm();
-    },
-    */
+
     attach:function(dom){
         this.exit();
         this.$el.appendTo(dom);
@@ -76,32 +73,37 @@ var BitprofileFormView = SubPageView.extend({
     onSubmit:function(callback){
         this.submitStrategy = callback;
     },
+
     setFeeModel:function(feeModel){
         this.feeModel = feeModel;
     },
+
     setProfileModel:function(profileModel){
+        if(this.model) this.stopListening(this.model);
         this.model = profileModel;
     },
-    
+
     clickGenerate:function(){
         console.log("clicked on generate");
         this.router.redirect("generate");
     },
-    
+
     clickBrowseAvatar:function(){
         var filename = this.filesystem.browse({type:"open", extensions:"Image (*.jpg *.jpeg *.png *.bmp *.tif)"});
         if(filename){
             this.avatar.val(filename);
             var image = this.filesystem.readImage(filename);
             this.avatarImage.attr("src", image);
+            this.avatarDeleted = false;
         }
     },
-    
+
     clickRemoveAvatar:function(){
         this.avatar.val("");
+        this.avatarDeleted = true;
         this.avatarImage.attr("src",'img/avatarEmpty.png');
     },
-    
+
     renderDetailsPage:function(){
         this.stopListeningPayments();
         
@@ -142,12 +144,12 @@ var BitprofileFormView = SubPageView.extend({
         this.updatePaymentAccount();
         this.listenTo(this.accounts, "change", this.updatePaymentAccount);
     },
-    
+
     stopListeningPayments:function(){
         this.stopListening(this.accounts, "change", this.updatePaymentAccount);
         if(this.account_payment) this.stopListening(this.account_payment);
     },
-    
+
     cloneAccount:function(dom){
         if(dom){
             var currentAccount = '<div class="input accountClone">'+this.accounts.selectedView().$el.html()+'</div>';
@@ -156,61 +158,73 @@ var BitprofileFormView = SubPageView.extend({
         }
         return this.accounts.selected();
     },
-    
+
     selectAccount:function(type,account){
         this.accounts.focus(function(model){ return (model)&&(model.get(type))==account;});
     },
-    
+
     updatePaymentAccount:function(){
         if(this.account_payment) this.stopListening(this.account_payment);
         this.account_payment = this.accounts.selected();
         this.updatePaymentAccountBalance();
         this.listenTo(this.account_payment, "change:balance",this.updatePaymentAccountBalance);
     },
-    
+
     updatePaymentAccountBalance:function(){
         var balance = splitAmount(this.account_payment.get("balance"));
         this.accountBalance_payment.find(".int").html(balance.int);
         this.accountBalance_payment.find(".dec").html(balance.dec);
     },
-    
+
     resetAddressError: function(){
         this.accountSelect_payment.noerror();
     },
+
     reset:function(){
         this.renderDetailsPage();
         this.resetForm();
         this.unlockPage();
     },
+
     resetForm:function(){
         this.resetAddressError();
         this.bitprofileId.noerror();
         this.password.noerror();
         this.password.val("");
+        this.avatarDeleted = false;
         this.fillForm();  
     },
+
     fillForm:function(){
-        var img;
         if(this.model){
-            img = this.model.get("avatar");
             this.bitprofileContext.val(this.model.get("context"));
             this.bitprofileId.val(this.model.get("id"));
-            this.name.val(this.model.get("name"));
-            this.IPNSOption.prop("checked",this.model.get("IPNS"));
+            this.IPNSOption.prop("checked",this.model.get("ipns"));
             this.selectAccount("stealth",this.model.get("payments"));
+            if(this.model.get("loaded"))
+            {
+                var details = this.model.get("details");
+                this.name.val(details.name);
+                this.avatarImage.attr("src",((details.avatar)?details.avatar:'img/avatarEmpty.png'));
+            }
+            else
+            {
+                this.lockPage("loading profile details",true);
+                this.model.once("change:loaded", this.reset);
+            }
         }else{
             this.bitprofileContext.prop('selectedIndex', 0);
             this.bitprofileId.val("");
             this.name.val("");
             this.IPNSOption.prop("checked",false);
-        }            
-        
-        this.avatar.val(img);
-        this.avatarImage.attr("src",((img)?img:'img/avatarEmpty.png'));
+            this.avatarImage.attr("src",'img/avatarEmpty.png');
+        }
+
+       this.avatar.val("");
         this.bitprofileContext.selectmenu( "refresh" );
         this.IPNSOption.button( "refresh" );
     },
-    
+
     computeFee: function(){
         var request = this.getFormData();
         request.factor = this.feeFactor.getFeeFactor();
@@ -227,22 +241,29 @@ var BitprofileFormView = SubPageView.extend({
         }
         this.feeFactor.update(result);
     },
-    
+
     setLockMessage:function(msg){
         this.$el.find(".pendingBox h1").html(msg);
     },
-    lockPage:function(msg){
-        this.account_payment = this.cloneAccount(this.accountSelect_payment);
+
+    lockPage:function(msg,details){
+
         this.pending = true;
         this.$el.addClass("pending");
+        if(details){
+            this.$el.addClass("details");
+        }else{
+            this.account_payment = this.cloneAccount(this.accountSelect_payment);
+        }
         this.setLockMessage(msg);
     },
-    
+
     unlockPage:function(){
         this.pending = false;
         this.$el.removeClass("pending");
+        this.$el.removeClass("details");
     },
-    
+
     submitDetails:function(){
         if(!$([this.bitprofileId]).validate()){
             notifyError("please fill all mandatory fields");
@@ -260,7 +281,6 @@ var BitprofileFormView = SubPageView.extend({
             notifyError("please fill all mandatory fields");
             return false;
         }
-        
         var account = this.accounts.selected();
         if(account.get("balance")<parseFloat(this.fee)){
             this.accountSelect_payment.error();
@@ -272,13 +292,27 @@ var BitprofileFormView = SubPageView.extend({
         this.submitStrategy();
         this.$form.removeClass("waiting");
     },
+
     risePasswordError:function(){
       this.password.error();  
     },
+
     getFormData:function(){
-        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth"), IPNS:this.IPNSOption.prop("checked")};
-        if(this.name.val().length>0) request.name = this.name.val();
-        if(this.avatar.val().length>0) request.avatar = this.avatar.val();
+        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
+
+        var avatar = this.avatar.val();
+        if(avatar.length)
+        {
+            request.avatar = avatar;
+        }
+        else
+        {
+            if(this.avatarDeleted)
+            {
+                request.avatar = null;
+            }
+        }
+
         if(this.gasPrice!=undefined && this.gasAmount){
             request.price = this.gasPrice;
             request.gas = this.gasAmount;

@@ -22,14 +22,21 @@ UpdateProfileInfoOperation::UpdateProfileInfoOperation
 
 void UpdateProfileInfoOperation::execute()
 {
-
     QVariantMap profileData;
+    IpfsReader reader(_settings);
     QString link = _admin.getProfile().get("details").c_str();
-    link.remove(0, 7);
 
     if(link.length())
     {
-        IpfsReader reader(_settings);
+        if(link.contains("ipns://"))
+        {
+            IpfsNameRegistrar namereg(_settings);
+            link = namereg.resolve(link.remove(0, 7));
+        }
+        else
+        {
+            link.remove(0, 7);
+        }
         profileData = reader.readJson(link).toVariantMap();
         for(QVariantMap::iterator it = _details.begin(), end=_details.end(); it!=end; ++it)
         {
@@ -54,16 +61,17 @@ void UpdateProfileInfoOperation::execute()
         }
     }
 
+    QString avatar;
     IpfsWriter writer(_settings);
-    if(_details.contains("avatar"))
+    if(_details.contains("avatar")&&!_details["avatar"].isNull())
     {
         QImage image(profileData["avatar"].toString());
         QByteArray byteArray;
         QBuffer buffer(&byteArray);
         image.save(&buffer, "PNG");
-        QString base64 = QString::fromLatin1(byteArray.toBase64().data());
-        base64.prepend("data:image/png;base64,");
-        profileData["avatar"] = "ipfs://"+writer.writeData(base64);
+        avatar = QString::fromLatin1(byteArray.toBase64().data());
+        avatar.prepend("data:image/png;base64,");
+        profileData["avatar"] = "ipfs://"+writer.writeData(avatar);
     }
 
     QString path = writer.writeData(profileData);
@@ -85,14 +93,21 @@ void UpdateProfileInfoOperation::execute()
     }
     else
     {
+        if(!avatar.length()&&profileData.contains("avatar"))
+        {
+            avatar = reader.readBytes(profileData["avatar"].toString().remove(0, 7));
+        }
         if(_ipns && path.contains(link))
         {
+            profileData["avatar"] = avatar;
             emitData("details", profileData);
         }
         else
         {
             if(_admin.set("details", path.toStdString(), _password.toStdString()))
             {
+
+                profileData["avatar"] = avatar;
                 emitData("details", profileData);
             }
             else

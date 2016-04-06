@@ -14,14 +14,17 @@ UpdateProfileInfoCommand::UpdateProfileInfoCommand(Ethereum::Connector::Provider
 
 QVariant UpdateProfileInfoCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("uri")||!request.contains("detail"))
+    qDebug()<<"save details request : "<<request;
+    if(!request.contains("uri")||!request.contains("details"))
     {
+        qDebug()<<"no uri defined";
         return QVariant::fromValue(false);
     }
 
     BitProfileStore::Iterator it = _store.find(request["uri"].toString());
     if(it==_store.end())
     {
+        qDebug()<<"profile not found";
         return QVariant::fromValue(false);
     }
 
@@ -39,8 +42,9 @@ QVariant UpdateProfileInfoCommand::operator()(const QVariantMap &request)
         request.contains("ipns")?request["ipns"].toBool():false,
         _notifier
     ));
-
+    qDebug()<<"sarting profile save action";
     action->start();
+    qDebug()<<"action started";
     return QVariant::fromValue(true);
 
 }

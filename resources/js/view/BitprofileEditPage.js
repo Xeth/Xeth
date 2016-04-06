@@ -11,7 +11,8 @@ var BitprofileEditFee = function(profile,fee){
             this.linkStealthFee = fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor);
             editFee.push(this.linkStealthFee);
         }
-        if((formData.name!=profile.get("name"))||(formData.avatar!=profile.get("avatar"))){
+        var details = profile.get("details");
+        if((formData.name!=(details.name||""))||(formData.avatar!==undefined)||(formData.ipns!=profile.get("ipns"))){
             this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"));
             editFee.push(this.editDetailsFee);
          }
@@ -62,9 +63,10 @@ var BitprofileEditPageView = SubPageView.extend({
         if((request.context!=this.profile.get("context"))||
            (request.id!=this.profile.get("id"))||
            (request.stealth!=this.profile.get("payments"))||
-           (request.name!=this.profile.get("name"))||
-           (request.avatar!=this.profile.get("avatar"))){
-            
+           (formData.name!=(details.name||""))||
+           (formData.avatar!==undefined)||
+           (formData.ipns!=profile.get("ipns"))
+        ){
             this.form.lockPage("Applying changes...");
             this.submitEditURI();
         }else{
@@ -105,34 +107,36 @@ var BitprofileEditPageView = SubPageView.extend({
                 this.listenToOnce(this.profile, "change:payments", this.submitEditDetails);
             }
         }else{
-            this.clearForm(skipped);
+            this.submitEditDetails(skipped);
         }
     },
 
     submitEditDetails:function(skipped){
         var formData = this.form.getFormData();
-        var profileName = this.profile.get("name");
-        var profileAvatar = this.profile.get("avatar");
-        if((formData.name!=profileName)||(formData.avatar!=profileAvatar)){
-            var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, details:{}};
-            if(formData.name!=profileName){
+        var details = this.profile.get("details");
+        if((formData.name!=details.name)||(formData.avatar!==undefined)||(formData.ipns!=this.profile.get("ipns"))){
+            var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, ipns:formData.ipns, password:formData.password, details:{}};
+
+            if(formData.name!=details.name){
                 request.details.name = formData.name.length?formData.name:null; //null to remove
             }
-            if(formData.avatar!=profileAvatar){
-                request.details.avatar = formData.avatar.length?formData.avatar:null;
+            if(formData.avatar!==undefined)
+            {
+                request.details.avatar = formData.avatar;
             }
             if(!this.profile.changeDetails(request)){
                 this.riseError(skipped);
                 return false;
             }else{
                 this.form.lockPage("Changing profile details...");
-                this.listenToOnce(this.profile, "change:details", this.submitEditDetails);
+                this.listenToOnce(this.profile, "change:details", this.clearForm);
             }
         }else{
             this.clearForm(skipped);
         }
     },
     clearForm:function(skipped){
+//        alert("clearing form : "+JSON.stringify(arguments));
         if(skipped===true) notifySuccess("There is nothing to change");
         this.form.reset();
         this.stopListening(this.profile);
