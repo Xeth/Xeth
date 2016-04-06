@@ -88,7 +88,7 @@ var ContactView = Backbone.View.extend({
     },
 
     goToSend: function(){
-        this.router.redirect("send",{destination:this.model.get("address")});
+        this.router.redirect("send",{destination:{address:this.model.get("address"), bitprofile:this.model.get("bitprofile")}});
     }
 
 

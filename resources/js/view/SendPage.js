@@ -88,7 +88,7 @@ var SendPageView = SubPageView.extend({
     
     setDestination:function(address){
         if(address instanceof Object){
-            if(address.bitprofile!=undefined){
+            if(address.bitprofile){
                 this.sendType.val("bitprofile");
                 this.destination.val(address.bitprofile);
             }else{
