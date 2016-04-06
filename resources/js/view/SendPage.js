@@ -73,9 +73,6 @@ var SendPageView = SubPageView.extend({
         this.accounts.render();
         
         this.listenTo(this.accounts, "change", this.changeAccount);
-        
-        //this.setAddressHint("");
-        //this.setAddressHint("xaXAteRdi3ZUk3T2ZMSad5KyPbve7uyH6eswYAxLHRVSbWgNUeoGuXpvJmzLu29obZcUGXXgotapfQLUpz7dfnZpbr4xg1R75qctf8");
     },
 
     open:function(args){
@@ -188,12 +185,11 @@ var SendPageView = SubPageView.extend({
         this.computeFee();
     },
 
-    computeFee: function(){
+    computeFee: function(input){
         var amount = this.amount.val();
         var factor = this.feeFactor.getFeeFactor();
         var from = this.accounts.selected().get("address");
         var to = this.getDestination();
-
         var result = this.feeModel.estimate(from, to, amount, factor);
         if(result){
             this.gasAmount = result["gas"];
@@ -205,11 +201,12 @@ var SendPageView = SubPageView.extend({
             this.gasAmount = this.gasPrice = undefined;
         }
         this.feeFactor.update(result);
-        this.checkAmount(this.fee);
+        this.checkAmount(this.fee, input===true);
     },
     
     inputAmount:function(){
-        this.checkAmount(this.fee,true);
+//        this.checkAmount(this.fee,true);
+        this.computeFee(true);
     },
     
     checkAmount:function(fee,input){
