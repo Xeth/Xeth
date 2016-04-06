@@ -8,8 +8,11 @@
 namespace Xeth{
 
 
-class AddressBookDataSerializer
+class AddressBookDataSerializer : public DataSerializer<QJsonObject>
 {
+    public:
+        typedef DataSerializer<QJsonObject> Base;
+
     public:
         QJsonObject operator()(const char *, const char *) const;
         bool operator()(const char *, const char *, QJsonObject &) const;

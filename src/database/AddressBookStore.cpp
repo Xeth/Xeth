@@ -11,15 +11,15 @@ QJsonObject AddressBookDataSerializer::operator ()(const char *key, const char *
 
 bool AddressBookDataSerializer::operator ()(const char *key, const char *value, QJsonObject &result) const
 {
+    Base::operator()(key, value, result);
     result.insert("alias", key);
-    result.insert("address", value);
     return true;
 }
 
 
 std::string AddressBookDataSerializer::operator ()(const QJsonObject &object) const
 {
-    return object["address"].toString().toStdString();
+    return Base::operator()(object);
 }
 
 
