@@ -4,7 +4,9 @@ namespace Xeth{
 
 AccountScanCriterion::AccountScanCriterion(const char *address) :
     ScanCriterion(address)
-{}
+{
+    std::transform(_address.begin(), _address.end(), _address.begin(), ::tolower);
+}
 
 void AccountScanCriterion::processHeader
 (
