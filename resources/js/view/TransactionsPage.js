@@ -238,11 +238,11 @@ var TransactionsPageView = SubPageView.extend({
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
         this.listenTo(this.collection, "reset", this.computeTotals); 
-        this.applyFilters();
     },
     
-    open:function(args){       
+    open:function(args){
         if(args && args.focusFirst) this.collection.focusFirst();
+        this.applyFilters();
     },
 
     setTimeFilter:function(start, end, label){
@@ -287,7 +287,7 @@ var TransactionsPageView = SubPageView.extend({
         var sent = 0;
         var received = 0;
         this.collection.each(function(view){
-            if(view.$el.is(":hidden")) return;
+            if(view.$el.hasClass("off")) return;
             var model = view.model;
             if(model.get("category")=="Sent")
                 sent += model.get("amount");
@@ -301,7 +301,7 @@ var TransactionsPageView = SubPageView.extend({
 
     processNewTransaction: function(view){
         var model = view.model;
-        if(!view.$el.is(":hidden"))
+        if(!view.$el.hasClass("off"))
         {
             if(model.get("type")=="Sent")
                 this.totalSent += model.get("amount");
@@ -312,7 +312,7 @@ var TransactionsPageView = SubPageView.extend({
     },
 
     removeTransaction:function(view){
-        if(view.$el.is(":hidden")) return;
+        if(view.$el.hasClass("off")) return;
         var model = view.model;
         if(model.get("type")=="Sent")
             this.totalSent -= model.get("amount");
