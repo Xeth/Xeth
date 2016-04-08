@@ -30,7 +30,7 @@ var ExportKeyPageView = SubPageView.extend({
                 return false;
             }
             notifySuccess("key exported");
-            this.router.redirect(); //go to default page
+            this.router.redirect("settings");
             return true;
         }
     }
