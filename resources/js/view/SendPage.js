@@ -244,6 +244,7 @@ var SendPageView = SubPageView.extend({
 
     paste:function(){
         this.destination.val(this.clipboard.getText());
+        this.updateContact();
     },
     
     setAddressHint:function(msg){
