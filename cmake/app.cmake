@@ -62,6 +62,7 @@ PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
 
 
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
+file(COPY ${PROJECT_SOURCE_DIR}/bin DESTINATION ${PROJECT_BINARY_DIR})
 
 
 
@@ -73,7 +74,7 @@ add_dependencies(xeth parse_js)
 
 
 
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib;.so;.dll")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.la;.lib;.so;.dll")
 
 
 target_link_libraries(xeth

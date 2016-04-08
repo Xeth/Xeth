@@ -5,13 +5,24 @@ namespace Xeth{
 
 void EthProcessInitializer::Initialize(QProcess &process)
 {
-#ifdef __WINDOWS_OS__
-    process.setProgram("geth.exe");
-#else
-    process.setProgram("geth");
-#endif
+    process.setProgram(GetDefaultCommand());
 }
 
+QString EthProcessInitializer::GetDefaultCommand()
+{
+    QString path = QCoreApplication::applicationDirPath();
+    path.append("/bin/");
+#if defined(__WINDOWS_OS__)
+    path.append("/windows-x64/geth.exe");
+#elif defined(__LINUX_OS__)
+    path.append("/linux-x64/geth");
+#elif defined(__APPLE_OS__)
+    path.append("/darwin-x64/geth");
+#else
+    #error "Invalid OS"
+#endif
+    return path;
+}
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
 {
@@ -21,11 +32,12 @@ void EthProcessInitializer::Initialize(QProcess &process, const Settings &settin
 
 QString EthProcessInitializer::GetCommand(const Settings &settings)
 {
-#ifdef __WINDOWS_OS__
-    return settings.get("eth-command", "geth.exe");
-#else
-    return settings.get("eth-command", "geth");
-#endif
+    if(settings.has("eth"))
+    {
+        return settings.get("eth");
+    }
+    //else
+    return GetDefaultCommand();
 }
 
 QStringList EthProcessInitializer::GetArguments(const Settings &settings)

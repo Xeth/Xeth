@@ -3,6 +3,7 @@
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+#include <QApplication>
 
 #include "env/Settings.hpp"
 
@@ -23,6 +24,7 @@ class IpfsProcessInitializer
 
         static QString GetCommand(const Settings &);
         static QStringList GetDaemonArguments();
+        static QString GetDefaultCommand();
 };
 
 

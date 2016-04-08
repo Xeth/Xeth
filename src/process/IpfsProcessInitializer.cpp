@@ -5,13 +5,24 @@ namespace Xeth{
 
 void IpfsProcessInitializer::Initialize(QProcess &process)
 {
-#ifdef __WINDOWS_OS__
-    process.setProgram("ipfs.exe");
-#else
-    process.setProgram("ipfs");
-#endif
+    process.setProgram(GetDefaultCommand());
 }
 
+QString IpfsProcessInitializer::GetDefaultCommand()
+{
+    QString path = QCoreApplication::applicationDirPath();
+    path.append("/bin/");
+#if defined(__WINDOWS_OS__)
+    path.append("/windows-x64/ipfs.exe");
+#elif defined(__LINUX_OS__)
+    path.append("/linux-x64/ipfs");
+#elif defined(__APPLE_OS__)
+    path.append("/darwin-x64/ipfs");
+#else
+    #error "Invalid OS"
+#endif
+    return path;
+}
 
 void IpfsProcessInitializer::Initialize(QProcess &process, const Settings &settings)
 {
@@ -20,11 +31,12 @@ void IpfsProcessInitializer::Initialize(QProcess &process, const Settings &setti
 
 QString IpfsProcessInitializer::GetCommand(const Settings &settings)
 {
-#ifdef __WINDOWS_OS__
-    return settings.get("ipfs-command", "ipfs.exe");
-#else
-    return settings.get("ipfs-command", "ipfs");
-#endif
+    if(settings.has("ipfs"))
+    {
+        return settings.get("ipfs");
+    }
+    //else
+    return GetDefaultCommand();
 }
 
 
