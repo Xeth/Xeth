@@ -70,6 +70,7 @@ QString BrowseCommand::openFileDialog(const QString &caption, const QFileDialog:
     dialog.setWindowModality(Qt::ApplicationModal);
     dialog.activateWindow();
     dialog.setFocus();
+    dialog.setDirectory(QDir::homePath());
     if(dialog.exec())
     {
         return *dialog.selectedFiles().begin();
