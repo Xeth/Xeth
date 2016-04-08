@@ -11,7 +11,7 @@ var ImportKeyPageView = SubPageView.extend({
 
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".browse a").click(this.render);
+        this.$el.find(".browse a").click(this.open);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importAddress_address");
     },

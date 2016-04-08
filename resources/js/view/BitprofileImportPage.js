@@ -11,7 +11,7 @@ var BitprofileImportPageView = SubPageView.extend({
     
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".btn.browse").click(this.render);
+        this.$el.find(".btn.browse").click(this.open);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importBitprofile_address");
     },
