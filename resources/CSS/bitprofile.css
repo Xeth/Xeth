@@ -122,14 +122,8 @@
 	margin-bottom: 20px;
 }
 #page_bitprofile .bitprofileForm .formpage .avatarURL {
-	width: 126px;
-    padding: 0 30px;
-	float:left;
-}
-#page_bitprofile .bitprofileForm .formpage .avatarControls {
-	width: 50px;
-    margin-left: -50px;
-    height: 38px;
+	width: 146px;
+    padding-right: 30px;
 	float:left;
 }
 #page_bitprofile .bitprofileForm .formpage .inputBtn {
@@ -140,14 +134,13 @@
     background-image: url(../img/icons-01.png);
     background-repeat: no-repeat;
 }
-
+/*
 #page_bitprofile .bitprofileForm .formpage .btnBrowse {
     background-position: center -922px;
-    /* margin-right: -26px; */
     margin-left: 8px;
     position: absolute;
 }
-
+*/
 #page_bitprofile .bitprofileForm .formpage .btnRemove {
     background-position: center -185px;
     margin-left: -26px;
