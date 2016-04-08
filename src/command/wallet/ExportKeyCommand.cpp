@@ -34,12 +34,12 @@ QVariant ExportKeyCommand::exportEthereumKey(const QString &address, const QStri
     {
         //try stealth payments
         StealthPaymentStore &payments = _database.getStealthPayments();
-        StealthPaymentStore::Iterator it = payments.find(address.toStdString().c_str());
-        if(it==payments.end())
+        std::string addr = address.toStdString();
+        if(payments.contains(addr.c_str()))
         {
             return QVariant::fromValue(false);
         }
-        QJsonObject payment = *it; //ToDo: use ref
+        QJsonObject payment = payments.get(addr.c_str());
         return exportStealthKey(payment["stealth"].toString(), path);
     }
     return QVariant::fromValue(true);

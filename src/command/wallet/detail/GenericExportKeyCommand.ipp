@@ -34,11 +34,18 @@ bool GenericExportKeyCommand<Store>::execute(const QString &address, const QStri
         return false;
     }
 
-    const boost::filesystem::path & path = it.path();
-    QString file = destination;
-    file +=  QDir::separator();
-    file += (const char *)path.filename().c_str();
-    return QFile::copy(path.string().c_str(), file);
+    const boost::filesystem::path & from = it.path();
+    boost::filesystem::path to = boost::filesystem::absolute(destination.toStdString());
+    to /= from.filename();
+    to += ".backup_";
+    to += boost::lexical_cast<std::string>(time(NULL));
+    boost::system::error_code error;
+    boost::filesystem::copy_file(from, to, boost::filesystem::copy_option::overwrite_if_exists, error);
+    if(error)
+    {
+        return false;
+    }
+    return true;
 }
 
 
