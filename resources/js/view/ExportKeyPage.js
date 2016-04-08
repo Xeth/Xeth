@@ -22,14 +22,17 @@ var ExportKeyPageView = SubPageView.extend({
 
     submit:function(){
         var path = this.filesystem.browse();
-        var model = this.accounts.selected();
-        if(!model.backup(path)){
-            notifyError("failed to backup, please check disk space");
-            return false;
+        if(path)
+        {
+            var model = this.accounts.selected();
+            if(!model.backup(path)){
+                notifyError("failed to backup, please check disk space");
+                return false;
+            }
+            notifySuccess("key exported");
+            this.router.redirect(); //go to default page
+            return true;
         }
-        notifySuccess("key exported");
-        this.router.redirect(); //go to default page
-        return true;
     }
 
 });
