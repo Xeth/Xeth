@@ -15,7 +15,6 @@ var ChangePasswordPageView = SubPageView.extend({
         this.$el.find(".btnSubmit").click(this.submit);
         
         this.accounts.resize();
-        this.accounts.style("send");
         this.accounts.attach(this.$el.find("#editAddress_account"));
     },
 
