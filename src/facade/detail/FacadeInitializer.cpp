@@ -65,11 +65,11 @@ bool FacadeInitializer::initializeEth()
 
         _eth.start();
         size_t cnt = 0;
-        while(!_provider.connect(_net)&&cnt<10)
+        while(!_provider.connect(_net)&&cnt<15)
         {
             qDebug()<<"failed to connect, retrying in 1 sec";
             cnt++;
-            boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
+            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
         }
 
 
