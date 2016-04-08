@@ -34,6 +34,7 @@ void FacadeInitializer::initialize()
 
 bool FacadeInitializer::initializeIpfs()
 {
+    qDebug()<<"checking ipfs...";
     QProcess client;
     client.setProcessChannelMode(QProcess::MergedChannels);
     IpfsProcessInitializer::Initialize(client, _settings, QStringList()<<"swarm"<<"peers");
@@ -57,6 +58,7 @@ bool FacadeInitializer::initializeIpfs()
 
 bool FacadeInitializer::initializeEth()
 {
+    qDebug()<<"checking geth...";
     if(!_provider.connect(_net))
     {
         qDebug()<<"failed to connect, forking new process";
@@ -67,7 +69,7 @@ bool FacadeInitializer::initializeEth()
         {
             qDebug()<<"failed to connect, retrying in 1 sec";
             cnt++;
-            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+            boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
         }
 
 
