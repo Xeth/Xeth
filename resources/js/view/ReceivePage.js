@@ -38,7 +38,7 @@ var ReceivePageView = SubPageView.extend({
         this.accounts.compact(false);
         this.accounts.resize(); //default size
         this.accounts.attach(this.$el.find("#receiveTo"));
-        this.accounts.on("change", this.scheduleUpdate);
+        this.accounts.on("change", this.update);
     },
     
     exit:function(){
