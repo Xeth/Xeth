@@ -18,6 +18,7 @@ class BrowseCommand
         QVariant browseFile(const QString &caption, QString &extensions);
         QVariant browseNewFile(const QString &caption);
         QVariant browseDirectory(const QString &caption);
+        QString openFileDialog(const QString &, const QFileDialog::FileMode &, const QString &);
 };
 
 
