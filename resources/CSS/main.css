@@ -184,6 +184,7 @@ textarea {
 	padding: 10px;
 }
 
+.ui-state-focus,
 .ui-selectmenu-button:hover,
 .input:hover,
 input[type="text"]:hover,
@@ -338,7 +339,6 @@ input:disabled,
     width: 100% !important;
 }
 
-.ui-state-focus,
 .input:focus,
 textarea:focus, 
 input[type="text"]:focus,
