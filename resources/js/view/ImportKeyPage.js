@@ -1,8 +1,8 @@
 var ImportKeyPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "render", "submit");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("open", "render", "submit", "browse");
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import");
         this.filesystem = options.filesystem;
         this.wallet = options.wallet;
@@ -11,12 +11,16 @@ var ImportKeyPageView = SubPageView.extend({
 
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".browse a").click(this.open);
+        this.$el.find(".browse a").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importAddress_address");
     },
 
     open:function(){
+        setTimeout(this.browse, 500);
+    },
+
+    browse:function(){
         this.filename = this.filesystem.browse({type:"open"});
         this.fileInput.val(this.filename||"");
     },

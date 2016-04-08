@@ -1,8 +1,8 @@
 var BitprofileImportPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "render", "submit");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("open", "render", "submit", "browse");
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import_bitprofile");
         this.filesystem = options.filesystem;
         this.profiles = options.profiles;
@@ -11,12 +11,16 @@ var BitprofileImportPageView = SubPageView.extend({
     
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".btn.browse").click(this.open);
+        this.$el.find(".btn.browse").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importBitprofile_address");
     },
 
     open:function(){
+        setTimeout(this.browse, 500);
+    },
+
+    browse:function(){
         this.filename = this.filesystem.browse({type:"open"});
         this.fileInput.val(this.filename||"");
     },
@@ -31,7 +35,7 @@ var BitprofileImportPageView = SubPageView.extend({
             return false;
         }
         notifySuccess("bitprofile imported");
-        //this.router.redirect("bitprofile",{subpage:"view"});
+        this.router.redirect("bitprofile", {subpage:"view"});
         return true;
     }
 
