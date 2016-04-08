@@ -11,8 +11,7 @@
             <select id="bitporfileCreate_context"></select>
         </div>
         <input type="text" class="name" placeholder="Your Name" />
-        <a class="inputBtn btnBrowse" href="javascript:void(0);" title="browse file..."></a>
-        <input type="text" class="avatarURL" placeholder="image URL" />
+        <input type="text" class="avatarURL" readonly placeholder="browse image file..." />
         <a class="inputBtn btnRemove" href="javascript:void(0);" title="remove avatar image"></a>
         <span class="avatar"><span class="img"><img src="img/avatarEmpty.png" /></span></span>
         

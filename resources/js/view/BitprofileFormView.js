@@ -1,7 +1,7 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
+        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "toggleRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
@@ -30,6 +30,7 @@ var BitprofileFormView = SubPageView.extend({
         this.name = this.detailsPage.find("input.name");
         this.avatar = this.detailsPage.find("input.avatarURL");
         this.avatarImage = this.detailsPage.find(".avatar img");
+        this.avatarRemove = this.detailsPage.find("#bitporfileCreate_details .btnRemove");
         this.accountSelect_details = this.$el.find("#bitprofileCreateStealthList");
         this.accountSelect_payment = this.$el.find("#bitprofileCreateAccountList");
         this.accountBalance_payment = this.$el.find("#bitprofileCreateAccountBalance");
@@ -48,8 +49,9 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
         this.$el.find("#bitporfileCreate_payment .submitCancel").click(this.renderDetailsPage);
         this.$el.find(".generate a").click(this.clickGenerate);
-        this.$el.find("#bitporfileCreate_details .btnBrowse").click(this.clickBrowseAvatar);
-        this.$el.find("#bitporfileCreate_details .btnRemove").click(this.clickRemoveAvatar);
+        this.avatar.click(this.clickBrowseAvatar);
+        this.avatarRemove.click(this.clickRemoveAvatar);
+        this.avatar.on("change", this.toggleRemoveAvatar);
         
         this.listenTo(this.accounts, "change", this.resetAddressError);
         
@@ -102,7 +104,11 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarDeleted = true;
         this.avatarImage.attr("src",'img/avatarEmpty.png');
     },
-
+    
+    toggleRemoveAvatar:function(){
+        (this.avatar.val())?this.avatarRemove.hide():this.avatarRemove.show();
+    },
+    
     renderDetailsPage:function(){
         this.stopListeningPayments();
         
