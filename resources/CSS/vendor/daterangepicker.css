@@ -332,6 +332,7 @@
   color: #1C2E30;
 }
 
+.daterangepicker .ranges .custom,
 .daterangepicker .ranges .range_inputs {
 	display: none;
 }
