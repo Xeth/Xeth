@@ -29,7 +29,7 @@ var ContactView = Backbone.View.extend({
         this.$el.find(".remove").click(this.removeLater);
         this.$el.find(".removing .cancel").click(this.cancelRemove);
         this.$el.find(".send").click(this.goToSend);
-
+        
     },
 
     updateAlias:function(){
@@ -141,9 +141,11 @@ var AddressBookPageView = SubPageView.extend({
             empty:this.$el.find(".empty")
         });
         this.collection.render();
+        this.$search = this.$el.find("#inputSearchContacts");
         this.$filter = this.$el.find("#filterContacts");
         this.$filter.selectmenu();
         this.$filter.on("selectmenuchange",this.applyFilter);
+        this.$search.on("input",this.applyFilter);
         
         this.collection.collection.on("add", this.applyFilter);
         this.collection.collection.on("insert", this.applyFilter);
@@ -151,13 +153,28 @@ var AddressBookPageView = SubPageView.extend({
     },
 
     applyFilter:function(){
-        var criterion = this.$filter.val();
-        if(criterion=="all"){
-            this.collection.filter(function(){return true;});
+        var type = this.$filter.val();
+        var searchVal = this.$search.val();
+        var pattern = new RegExp(searchVal);
+        var matchPattern = function(model){
+            return pattern.test(model.get("alias"))||
+            pattern.test(model.get("bitprofile"))||
+            pattern.test(model.get("address"));
+        };
+        if(type=="all"){
+            if(searchVal){
+                this.collection.filter(matchPattern);
+            }else{
+                this.collection.filter(function(){return true;});
+            }
         }
         else{
-            var local = (criterion!="bitprofile");
-            this.collection.filter(function(model){return local == !model.get("bitprofile"); });
+            var local = (type!="bitprofile");
+            if(searchVal){
+                this.collection.filter(function(model){return local == !model.get("bitprofile")&&matchPattern(model);});
+            }else{
+                this.collection.filter(function(model){return local == !model.get("bitprofile");});
+            }
         }
     }
 
