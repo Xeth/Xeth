@@ -159,10 +159,13 @@ const Facade::BitProfile & Facade::getBitProfile() const
 
 void Facade::setReady()
 {
-    _ready = true;
-    _synchronizer.loadAddresses();
-    _synchronizer.synchronize();
-    _notifier.emitReady();
+    if(!_ready)
+    {
+        _ready = true;
+        _synchronizer.loadAddresses();
+        _synchronizer.synchronize();
+        _notifier.emitReady();
+    }
 }
 
 
