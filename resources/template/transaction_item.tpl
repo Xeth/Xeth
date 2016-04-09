@@ -1,7 +1,7 @@
 
 
 <%if(transaction.category=="Mined"){%>
-<div class="listItem new mined">
+<div class="listItem mined">
     <div class="header icon">
         <span class="detail s_titled userAddress"><a href="javascript:void(0)"><%=transaction.to%></a></span>
     </div>
@@ -18,7 +18,7 @@
     </div>
 </div>
 <%}else{%>
-<div class="listItem new <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
+<div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
     <div class="header icon">
         <span class="detail s_titled userAddress">
             <%if(transaction.category=="Sent"){%>

@@ -342,6 +342,7 @@
 .page .input.date input {
 	padding-left: 30px;
 	width: calc(100% - 20px) !important;
+    cursor: pointer;
 }
 
 .page .input.date:after {
