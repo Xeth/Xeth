@@ -4,10 +4,28 @@ find_package(Boost COMPONENTS system filesystem thread program_options random re
 find_package(LevelDB REQUIRED)
 find_package(GMP)
 
+
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
 
-set(APP_SOURCES src/main.cpp src/Application.cpp src/window/Window.cpp)
+file(GLOB_RECURSE WINDOW_SOURCES "src/window/*.cpp")
+set(APP_SOURCES src/main.cpp src/Application.cpp ${WINDOW_SOURCES})
+
+
+if(UNIX AND NOT APPLE)
+    find_package(AppIndicator)
+    find_package(GTK2)
+
+    if(APPINDICATOR_FOUND AND GTK2_FOUND)
+        add_definitions(-D__UNITY_ENABLED__)
+        add_definitions(-D__GTK_ENABLED__)
+        include_directories(${APPINDICATOR_INCLUDE_DIRS} ${GTK2_INCLUDE_DIRS})
+    elseif(GTK2_FOUND)
+        add_definitions(-D__GTK_ENABLED__)
+        include_directories(${GTK2_INCLUDE_DIRS})
+    endif()
+
+endif()
 
 
 include_directories(
@@ -63,6 +81,7 @@ PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
 
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
 file(COPY ${PROJECT_SOURCE_DIR}/vendor/bin DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY ${PROJECT_SOURCE_DIR}/resources/icon DESTINATION ${PROJECT_BINARY_DIR})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
@@ -112,5 +131,14 @@ target_link_libraries(xeth
 if(GMP_LIBRARIES)
     target_link_libraries(xeth ${GMP_LIBRARIES})
 endif()
+
+if(APPINDICATOR_FOUND)
+    target_link_libraries(xeth ${APPINDICATOR_LIBRARIES})
+endif()
+
+if(GTK2_FOUND)
+    target_link_libraries(xeth ${GTK2_LIBRARIES})
+endif()
+
 
 

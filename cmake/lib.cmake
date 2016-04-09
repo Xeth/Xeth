@@ -35,7 +35,7 @@ file(GLOB_RECURSE LIBRARY_SOURCES
 
 file(GLOB_RECURSE MAIN_CPP "src/main.cpp")
 file(GLOB_RECURSE APPLICATION_CPP "src/Application.cpp")
-file(GLOB_RECURSE WINDOW_CPP "src/Window.cpp")
+file(GLOB_RECURSE WINDOW_CPP "src/window/*.cpp")
 
 
 list(REMOVE_ITEM LIBRARY_SOURCES ${MAIN_CPP})
