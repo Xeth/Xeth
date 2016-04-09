@@ -26,7 +26,7 @@ Window::Window(Facade &facade) :
 //    inspector->setPage(page());
 //    inspector->show();
 
-    _trayIcon = new QSystemTrayIcon(this);
+    _trayIcon = new Tray(this);
     QObject::connect(page()->mainFrame(), &QWebFrame::loadFinished, this, &Window::loadTemplates);
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -35,7 +35,7 @@ Window::Window(Facade &facade) :
     _trayIcon->hide();
     setIcon(":/icon/ethereum.ico");
 
-    _trayIcon->setToolTip("Ethereum Wallet");
+//    _trayIcon->setToolTip("Ethereum Wallet");
     _trayMenu = new QMenu(this);
     _trayMenu->addSeparator();
 
@@ -196,7 +196,7 @@ void Window::setIcon(const char *uri)
 {
     QIcon icon(uri);
     setWindowIcon(icon);
-    _trayIcon->setIcon(icon);
+//    _trayIcon->setIcon(icon);
 }
 
 void Window::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID )

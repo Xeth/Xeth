@@ -18,6 +18,7 @@
 
 #include "facade/Facade.hpp"
 #include "FrameContextBuilder.hpp"
+#include "Tray.hpp"
 
 
 namespace Xeth{
@@ -62,7 +63,7 @@ class Window : public QWebView
         bool _closing;
         Facade &_facade;
         FrameContextBuilder _contextBuilder;
-        QSystemTrayIcon *_trayIcon;
+        Tray *_trayIcon;
         QMenu *_trayMenu;
         QAction *_activateAction;
         QAction *_quitAction;
