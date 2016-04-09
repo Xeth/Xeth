@@ -509,13 +509,16 @@
 	transition: opacity 300ms, max-height 300ms, padding 300ms;
 }
 
-.listItem.new,
-.listItem.off {
+.listItem.new {
     max-height: 0;
     opacity: 0;
     padding: 0 9px;
     margin-bottom: -1px;
     pointer-events: none;
+}
+
+.listItem.off {
+    display: none;
 }
 /*
 .listItem:first-child {

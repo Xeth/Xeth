@@ -126,8 +126,11 @@ var CollectionView = Backbone.View.extend({
     show:function(){this.$el.show();},
     toggle:function(){this.$el.toggle();},
     
-    itemFresh:function(view){
+    itemDisableAnimation:function(view){
         view.$el.removeClass("new");
+    },
+    itemEnableAnimation:function(view){
+        view.$el.addClass("new");
     },
     itemShow:function(view){
         view.$el.removeClass("off");
@@ -208,7 +211,7 @@ var CollectionView = Backbone.View.extend({
     },
 
     add:function(model){
-        var view = this.register(this.create(model));
+        var view = this.register(this.create(model,true));
         this.container.append(view.$el);
         this.filterNewItem(view);
         this.trigger("add", view);
@@ -216,7 +219,7 @@ var CollectionView = Backbone.View.extend({
 
     insert:function(model){
         var indx = this.collection.indexOf(model);
-        var view = this.register(this.create(model));
+        var view = this.register(this.create(model,true));
         this.container.insert(view.$el, indx);
         this.filterNewItem(view);
         this.trigger("add", view);
@@ -235,11 +238,13 @@ var CollectionView = Backbone.View.extend({
         return view;
     },
 
-    create:function(model){
+    create:function(model,animate){
         var view = this.factory.create(model);
-        //this.itemHide(view);
+        if(animate===true){
+            this.itemEnableAnimation(view);
+            setTimeout(this.itemDisableAnimation,50,view);
+        }
         view.render();
-        setTimeout(this.itemFresh,50,view);
         return view;
     },
 
@@ -250,7 +255,7 @@ var CollectionView = Backbone.View.extend({
             if(!this.itemIsHiden(view)) this.updateEmpty();            
             this.trigger("remove", view);
             view.unbind();
-            this.itemHide(view);
+            this.itemEnableAnimation(view);
             setTimeout(function(){
                 view.remove();
             },300);
