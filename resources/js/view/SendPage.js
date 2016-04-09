@@ -185,44 +185,49 @@ var SendPageView = SubPageView.extend({
         this.computeFee();
     },
 
-    computeFee: function(input){
-        var amount = this.amount.val();
-        var factor = this.feeFactor.getFeeFactor();
-        var from = this.accounts.selected().get("address");
+    computeFee: function(){
         var to = this.getDestination();
-        var result = this.feeModel.estimate(from, to, amount, factor);
-        if(result){
-            this.gasAmount = result["gas"];
-            this.gasPrice = result["price"];
-            this.fee = result["fee"];
-        }else
-        {
-            this.fee=0;
-            this.gasAmount = this.gasPrice = undefined;
+        if(to){
+            var amount = this.amount.val();
+            var factor = this.feeFactor.getFeeFactor();
+            var from = this.accounts.selected().get("address");
+            console.log("computeFee",factor);
+            var result = this.feeModel.estimate(from, to, amount, factor);
+            if(result){
+                this.gasAmount = result["gas"];
+                this.gasPrice = result["price"];
+                this.fee = result["fee"];
+            }else{
+                this.fee=0;
+                this.gasAmount = this.gasPrice = undefined;
+            }
+            this.feeFactor.update(result);
+        }else{
+            this.fee = 0;
         }
-        this.feeFactor.update(result);
-        this.checkAmount(this.fee, input===true);
+        this.checkAmount(this.fee);
     },
     
     inputAmount:function(){
 //        this.checkAmount(this.fee,true);
-        this.computeFee(true);
+        this.computeFee();
     },
     
-    checkAmount:function(fee,input){
+    checkAmount:function(fee){
         if(!fee) fee=this.fee;
         var balance = this.accounts.selected().get("balance");
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
         if(balanceAvailable<0) balanceAvailable=0;
-        if(amount>balanceAvailable||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
+        if(amount>=balanceAvailable){//||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
             amount=balanceAvailable;
             this.amount.val(parseFloat(amount));
             this.useFullAmount = true;
         }else{
             this.useFullAmount = false;
         }
+        console.log("useFullAmount: ",this.useFullAmount);
     },
     
     resetContact: function(){
