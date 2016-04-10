@@ -44,7 +44,6 @@ var MainWindowView = Backbone.View.extend({
         this.models.events.onError(this.notifyError);
 
         this.router = new PageRouter(this);
-        this.menuAlias = {default: "send"};
         this.subpages = {};
         this.subpages.send = new SendPageView
         ({
@@ -137,7 +136,13 @@ var MainWindowView = Backbone.View.extend({
 
         this.progress.render();
         for(var i in this.subpages) this.subpages[i].render();
-        this.subpages["default"] = this.subpages.send;
+        if(this.models.accounts.length>0){
+            this.menuAlias = {default: "receive"};
+            this.subpages["default"] = this.subpages.receive;
+        }else{
+            this.menuAlias = {default: "generate"};
+            this.subpages["default"] = this.subpages.generate;
+        }
         this.show();
     },
     notifyError:function(event){
