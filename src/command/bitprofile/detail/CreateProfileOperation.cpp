@@ -41,11 +41,11 @@ void CreateProfileOperation::operator()()
     }
     catch(const std::exception &e)
     {
-        _notifier.emitError(e.what());
+        emitError(e.what());
     }
     catch(...)
     {
-        _notifier.emitError("create profile operation failed");
+        emitError("create profile operation failed");
     }
 }
 
