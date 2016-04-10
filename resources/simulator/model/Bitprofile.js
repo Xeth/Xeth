@@ -14,6 +14,13 @@ var ProfileSimulator = Profile.extend({
     updateURI:function(){
         this.set("uri",this.get("context")+":"+this.get("id"));
     },
+
+    get:function(key){
+        if(key=="uri"||key=="id"||key=="context"||key=="account"||key=="details"||key=="loaded")
+        {
+            return Backbone.Model.prototype.get.call(this, key);
+        }
+    },
     
     linkStealthAddress:function(data){
         console.log(data);
