@@ -18,7 +18,7 @@ void AccountScanCriterion::processHeader
     ScanResult &result
 )
 {
-    if(miner == _address)
+    if(miner == _address && _address.size())
     {
         saveTransaction(TransactionCategory::Mined, hash, "", miner, amount, timestamp, result);
     }
@@ -35,13 +35,16 @@ void AccountScanCriterion::processTransaction
     ScanResult &result
 )
 {
-    if(from == _address)
+    if(_address.size())
     {
-        saveTransaction(TransactionCategory::Sent, hash, from, to, amount, timestamp, result);
-    }
-    else if(to == _address)
-    {
-        saveTransaction(TransactionCategory::Received, hash, from, to, amount, timestamp, result);
+        if(from == _address)
+        {
+            saveTransaction(TransactionCategory::Sent, hash, from, to, amount, timestamp, result);
+        }
+        else if(to == _address)
+        {
+            saveTransaction(TransactionCategory::Received, hash, from, to, amount, timestamp, result);
+        }
     }
 }
 
