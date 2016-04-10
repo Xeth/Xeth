@@ -3,7 +3,7 @@
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "process/EthProcessInitializer.hpp"
 #include "io/JsonReader.hpp"
 

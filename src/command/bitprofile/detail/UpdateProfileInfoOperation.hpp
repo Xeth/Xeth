@@ -8,7 +8,7 @@
 #include "io/IpfsWriter.hpp"
 #include "io/IpfsReader.hpp"
 #include "io/IpfsNameRegistrar.hpp"
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 #include "ProfileOperation.hpp"
 

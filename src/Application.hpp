@@ -3,7 +3,7 @@
 #include <QApplication>
 
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "facade/Facade.hpp"
 #include "window/Window.hpp"
 

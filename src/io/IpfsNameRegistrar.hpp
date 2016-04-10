@@ -6,7 +6,7 @@
 #include <QProcess>
 
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "process/IpfsProcessInitializer.hpp"
 
 

@@ -6,7 +6,7 @@
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/Network.hpp"
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
 #include "process/ProcessSupervisor.hpp"

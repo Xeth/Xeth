@@ -8,7 +8,7 @@
 
 #include "facade/Notifier.hpp"
 #include "database/BitProfileStore.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 
 #include "detail/BitProfileAction.hpp"
 #include "detail/CreateProfileOperation.hpp"
