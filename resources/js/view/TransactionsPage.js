@@ -262,7 +262,18 @@ var TransactionsPageView = SubPageView.extend({
     },
 
     setAddressFilter:function(model){
-        var address = !model ? null : model.get("address")||model.get("stealth");
+        var address;
+        if(model){
+            address = model.get("address");
+            if(address){
+                address = address.toLowerCase();
+            }
+            else{
+                address = model.get("stealth");
+            }
+        }else{
+            address = null;
+        }
         this.filters.address = address;
         this.applyFilters();
     },
