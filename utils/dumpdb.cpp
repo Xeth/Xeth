@@ -1,6 +1,6 @@
 
 #include "database/DataBase.hpp"
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 #include <QDebug>
 
