@@ -22,7 +22,7 @@ var BitprofileImportPageView = SubPageView.extend({
 
     browse:function(){
         this.filename = this.filesystem.browse({type:"open"});
-        if(!this.filename)this.fileInput.val(this.filename);
+        if(this.filename)this.fileInput.val(this.filename);
     },
 
     submit:function(){
