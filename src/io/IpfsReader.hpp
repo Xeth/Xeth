@@ -7,7 +7,7 @@
 #include <QByteArray>
 #include <QProcess>
 
-#include "settings/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "process/IpfsProcessInitializer.hpp"
 
 

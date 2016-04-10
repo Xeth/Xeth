@@ -9,7 +9,7 @@
 #include <QDebug>
 
 
-#include "Settings.hpp"
+#include "conf/Settings.hpp"
 
 namespace Xeth{
 
