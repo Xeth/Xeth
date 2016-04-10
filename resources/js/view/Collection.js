@@ -168,7 +168,6 @@ var CollectionView = Backbone.View.extend({
         if(this.filterHandler){
             if(this.filterHandler(view)) this.hideEmpty();
         }else{
-            console.log("new hide empty",this.$el);
             this.itemShow(view);
             this.hideEmpty();
         } 
@@ -272,7 +271,6 @@ var CollectionView = Backbone.View.extend({
 
     updateEmpty:function(){
         var empty = true;
-        console.log("coll",this.collection.length,this.$empty);
         if(this.collection.length)
         {
             for(var i in this.items){
@@ -282,11 +280,9 @@ var CollectionView = Backbone.View.extend({
                     break;
                 }
             }
-            console.log("updateEmpty check",this.$el,empty);
             (empty)?this.showEmpty():this.hideEmpty();
         }else{ 
             this.showEmpty();
-            console.log("updateEmpty showEmpty",this.$el);
         }
     }
 
