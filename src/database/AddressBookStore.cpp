@@ -12,7 +12,7 @@ QJsonObject AddressBookDataSerializer::operator ()(const char *key, const char *
 bool AddressBookDataSerializer::operator ()(const char *key, const char *value, QJsonObject &result) const
 {
     Base::operator()(key, value, result);
-    result.insert("alias", key);
+    result.insert("alias", QString(key));
     return true;
 }
 
@@ -38,7 +38,7 @@ AddressBookStore::AddressBookStore(const boost::filesystem::path &path) : Base(p
 bool AddressBookStore::insert(const char *alias, const char *address)
 {
     QJsonObject object;
-    object.insert("address", address);
+    object.insert("address", QString(address));
 
     return insert(alias, object);
 }

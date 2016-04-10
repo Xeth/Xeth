@@ -6,18 +6,18 @@ namespace Xeth{
 
 void TransactionObjectBuilder::setDetails(const std::string &hash, const TransactionCategory &category, const std::string &from, const std::string &to, const BigInt &amount, time_t timestamp)
 {
-    _data.insert("category", category.toString());
-    _data.insert("hash", hash.c_str());
-    _data.insert("from",  from.c_str());
-    _data.insert("to", to.c_str());
-    _data.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    _data.insert("category", QString(category.toString()));
+    _data.insert("hash", QString(hash.c_str()));
+    _data.insert("from",  QString(from.c_str()));
+    _data.insert("to", QString(to.c_str()));
+    _data.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
     _data.insert("timestamp", (int)timestamp);
 }
 
 
 void TransactionObjectBuilder::setStealth(const Ethereum::Stealth::Address &address)
 {
-    _data.insert("stealth", address.toString().c_str());
+    _data.insert("stealth", QString(address.toString().c_str()));
 }
 
 

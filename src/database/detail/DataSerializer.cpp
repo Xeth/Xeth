@@ -23,7 +23,7 @@ bool DataSerializer<QJsonObject>::operator()(const char *key, const char *value,
 std::string DataSerializer<QJsonObject>::operator ()(const QJsonObject &object) const
 {
     QJsonDocument document(object);
-    return document.toJson().toStdString();
+    return QString(document.toJson()).toStdString();
 }
 
 

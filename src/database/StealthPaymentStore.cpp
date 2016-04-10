@@ -22,10 +22,10 @@ bool StealthPaymentStore::insert(const char *address, const char *stealth, const
 {
     QJsonObject object;
 
-    object.insert("address", address);
-    object.insert("stealth", stealth);
-    object.insert("secret", secret);
-    object.insert("txid", txid);
+    object.insert("address", QString(address));
+    object.insert("stealth", QString(stealth));
+    object.insert("secret", QString(secret));
+    object.insert("txid", QString(txid));
 
     if(Base::insert(address, object))
     {

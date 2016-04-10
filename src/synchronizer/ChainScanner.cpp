@@ -159,13 +159,15 @@ void ChainScanner::processData(const PartialScanResult &result)
 
     for(QJsonArray::const_iterator it = result.transactions.first; it!=result.transactions.second; ++it)
     {
-        QJsonObject object = it->toObject(); //ToDo : use const reference isntead
+	const QJsonValue & value = *it;
+        QJsonObject object = value.toObject(); //ToDo : use const reference isntead
         transactionStore.insert(object); //ignore duplicates
     }
 
     for(QJsonArray::const_iterator it = result.stealthPayments.first; it!=result.stealthPayments.second; ++it)
     {
-        if(!stealthPaymentStore.insert(it->toObject()))
+	const QJsonValue & value = *it;
+        if(!stealthPaymentStore.insert(value.toObject()))
         {
             return;
         }

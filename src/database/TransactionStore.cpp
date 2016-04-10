@@ -125,14 +125,14 @@ bool TransactionStore::insert
 )
 {
     QJsonObject obj;
-    obj.insert("category", category.toString());
-    obj.insert("hash", hash.c_str());
+    obj.insert("category", QString(category.toString()));
+    obj.insert("hash", QString(hash.c_str()));
     if(from.size())
     {
-        obj.insert("from",  from.c_str());
+        obj.insert("from",  QString(from.c_str()));
     }
-    obj.insert("to", to.c_str());
-    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("to", QString(to.c_str()));
+    obj.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
     obj.insert("timestamp", (int)timestamp);
     return insert(makeID(category, hash), obj);
 }
@@ -149,16 +149,16 @@ bool TransactionStore::insert
 )
 {
     QJsonObject obj;
-    obj.insert("category", category.toString());
-    obj.insert("hash", hash.c_str());
+    obj.insert("category", QString(category.toString()));
+    obj.insert("hash", QString(hash.c_str()));
     if(from.size())
     {
-        obj.insert("from",  from.c_str());
+        obj.insert("from",  QString(from.c_str()));
     }
-    obj.insert("to", to.c_str());
-    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("to", QString(to.c_str()));
+    obj.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
     obj.insert("timestamp", (int)timestamp);
-    obj.insert("stealth", stealth.toString().c_str());
+    obj.insert("stealth", QString(stealth.toString().c_str()));
     return insert(makeID(category, hash), obj);
 }
 
