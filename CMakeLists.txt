@@ -8,7 +8,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTORCC ON)
 
 include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
 

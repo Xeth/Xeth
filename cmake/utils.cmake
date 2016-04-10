@@ -1,7 +1,5 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 
-
-
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -26,11 +24,17 @@ set(UTILS_LIBRARIES
     ${Qt5Core_LIBRARIES}
 )
 
-add_executable(compiler ${PROJECT_SOURCE_DIR}/utils/compiler.cpp ${PROJECT_SOURCE_DIR}/utils/js.qrc)
+add_custom_target(utils_js_rcc COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name utils_js_rcc -o ${PROJECT_BINARY_DIR}/utils_js.cxx ${PROJECT_SOURCE_DIR}/utils/js.qrc)
+set_source_files_properties(${PROJECT_BINARY_DIR}/utils_js.cxx PROPERTIES GENERATED TRUE)
+
+add_executable(compiler ${PROJECT_SOURCE_DIR}/utils/compiler.cpp ${PROJECT_BINARY_DIR}/utils_js.cxx)
 target_link_libraries(compiler ${UTILS_LIBRARIES})
 
+add_dependencies(compiler utils_js_rcc)
 
-add_executable(jsmin ${PROJECT_SOURCE_DIR}/utils/jsmin.cpp ${PROJECT_SOURCE_DIR}/utils/js.qrc)
+add_executable(jsmin ${PROJECT_SOURCE_DIR}/utils/jsmin.cpp ${PROJECT_BINARY_DIR}/utils_js.cxx)
+
+add_dependencies(jsmin utils_js_rcc)
 target_link_libraries(jsmin ${UTILS_LIBRARIES})
 
 add_executable(cssmin ${PROJECT_SOURCE_DIR}/utils/cssmin.cpp)

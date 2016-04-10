@@ -1,7 +1,11 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
-find_package(GMP)
+find_package(CryptoPP REQUIRED) 
+
+if(ENABLE_GMP)
+    find_package(GMP)
+endif()
 
 add_definitions(-DBOOST_PP_VARIADICS)
 
@@ -13,6 +17,7 @@ include_directories(
     ${Qt5Concurrent_INCLUDE_DIRS}
     ${Qt5Core_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
+    ${CRYPTOPP_INCLUDE_DIR}
     ${LEVELDB_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
@@ -21,8 +26,10 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/libethstealth
 )
 
-if(GMP_LIBRARIES)
-    add_definitions(-D__HAS_GMP__)
+if(ENABLE_GMP)
+    if(GMP_LIBRARIES)
+        add_definitions(-D__HAS_GMP__)
+    endif()
 endif()
 
 if(NOT MSVC)
