@@ -1,7 +1,7 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "toggleRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
+        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
@@ -30,7 +30,7 @@ var BitprofileFormView = SubPageView.extend({
         this.name = this.detailsPage.find("input.name");
         this.avatar = this.detailsPage.find("input.avatarURL");
         this.avatarImage = this.detailsPage.find(".avatar img");
-        this.avatarRemove = this.detailsPage.find("#bitporfileCreate_details .btnRemove");
+        this.avatarRemove = this.detailsPage.find(".btnRemove");
         this.accountSelect_details = this.$el.find("#bitprofileCreateStealthList");
         this.accountSelect_payment = this.$el.find("#bitprofileCreateAccountList");
         this.accountBalance_payment = this.$el.find("#bitprofileCreateAccountBalance");
@@ -51,7 +51,6 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find(".generate a").click(this.clickGenerate);
         this.avatar.click(this.clickBrowseAvatar);
         this.avatarRemove.click(this.clickRemoveAvatar);
-        this.avatar.on("change", this.toggleRemoveAvatar);
         
         this.listenTo(this.accounts, "change", this.resetAddressError);
         
@@ -96,6 +95,7 @@ var BitprofileFormView = SubPageView.extend({
             var image = this.filesystem.readImage(filename);
             this.avatarImage.attr("src", image);
             this.avatarDeleted = false;
+            this.avatarRemove.show();
         }
     },
 
@@ -103,10 +103,7 @@ var BitprofileFormView = SubPageView.extend({
         this.avatar.val("");
         this.avatarDeleted = true;
         this.avatarImage.attr("src",'img/avatarEmpty.png');
-    },
-    
-    toggleRemoveAvatar:function(){
-        (this.avatar.val())?this.avatarRemove.hide():this.avatarRemove.show();
+        this.avatarRemove.hide();
     },
     
     renderDetailsPage:function(){
@@ -210,7 +207,13 @@ var BitprofileFormView = SubPageView.extend({
             {
                 var details = this.model.get("details");
                 this.name.val(details.name);
-                this.avatarImage.attr("src",((details.avatar)?details.avatar:'img/avatarEmpty.png'));
+                if(details.avatar){
+                    this.avatarImage.attr("src",details.avatar);
+                    this.avatarRemove.show();
+                }else{
+                    this.avatarImage.attr("src",'img/avatarEmpty.png');
+                    this.avatarRemove.hide();
+                }
             }
             else
             {
@@ -223,9 +226,10 @@ var BitprofileFormView = SubPageView.extend({
             this.name.val("");
             this.IPNSOption.prop("checked",false);
             this.avatarImage.attr("src",'img/avatarEmpty.png');
+            this.avatarRemove.hide();
         }
 
-       this.avatar.val("");
+        this.avatar.val("");
         this.bitprofileContext.selectmenu( "refresh" );
         this.IPNSOption.button( "refresh" );
     },
