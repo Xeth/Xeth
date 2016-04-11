@@ -30,8 +30,11 @@ var BitprofileCreatePageView = SubPageView.extend({
         if(!this.form.inProgress()) this.form.renderDetailsPage();
         this.form.onSubmit(this.submit);
         this.form.setFeeModel(this.feeModel);
-        this.form.resetForm();
         this.form.attach(this.$el);
+        if(!args ||args.reset!==false)
+        {
+            this.form.resetForm();
+        }
         if(args && args.address){
             this.form.selectAccount("stealth", args.address);
         }

@@ -44,7 +44,7 @@ var BitprofileEditPageView = SubPageView.extend({
         this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
         this.form.setFeeModel(this.feeAdapter);
         this.form.attach(this.$el);
-        if(!this.form.inProgress()){
+        if(!this.form.inProgress() && (!args ||args.reset!==false)){
             this.form.resetForm();
         }
         if(args && args.address){
