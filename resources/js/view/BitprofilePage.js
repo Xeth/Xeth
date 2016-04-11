@@ -165,7 +165,7 @@ var BitprofilePageView = SubPageView.extend({
     },
     
     add:function(){
-        notifySuccess("bitprofile created");
+        notifySuccess("bitprofile registered");
         this.setExistingProfile();
         this.openPage();
     },
