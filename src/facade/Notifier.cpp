@@ -154,7 +154,8 @@ void Notifier::emitEthereumKey(const QString &address)
         }
     }
     QVariantMap account;
-    account.insert("address", address);
+    EthereumCheckSum checksum;
+    account.insert("address", checksum.compute(address.toStdString()).c_str());
     emit Account(account);
 }
 
