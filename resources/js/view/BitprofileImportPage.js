@@ -21,16 +21,17 @@ var BitprofileImportPageView = SubPageView.extend({
     },
 
     browse:function(){
-        this.filename = this.filesystem.browse({type:"open"});
-        if(this.filename)this.fileInput.val(this.filename);
+        var filename = this.filesystem.browse({type:"open"});
+        if(filename) this.fileInput.val(filename);
     },
 
     submit:function(){
-        if(!this.filename){
+        var filename = this.fileInput.val();
+        if(!filename){
             notifyError("please select a file");
             return false;
         }
-        if(!this.profiles.importKey(this.filename)){
+        if(!this.profiles.importKey(filename)){
             notifyError("failed to import key, file is corrupted");
             return false;
         }

@@ -21,12 +21,13 @@ var ImportKeyPageView = SubPageView.extend({
     },
 
     browse:function(){
-        this.filename = this.filesystem.browse({type:"open"});
-        if(this.filename)this.fileInput.val(this.filename);
+        var filename = this.filesystem.browse({type:"open"});
+        if(filename) this.fileInput.val(filename);
     },
 
     submit:function(){
-        if(!this.filename){
+        var filename = this.fileInput.val();
+        if(!filename){
             notifyError("please select a file");
             return false;
         }
@@ -35,7 +36,7 @@ var ImportKeyPageView = SubPageView.extend({
             notifyError("password is required");
             return false;
         }
-        var address = this.wallet.importKey(this.filename, password.val());
+        var address = this.wallet.importKey(filename, password.val());
         if(!address){
             notifyError("failed to import key, file is corrupted or invalid password");
             return false;
