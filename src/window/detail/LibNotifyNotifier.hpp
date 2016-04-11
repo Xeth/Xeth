@@ -4,7 +4,8 @@
 #if __LIBNOTIFY_ENABLED__
 
 #include <libnotify/notify.h>
-
+#include <QString>
+#include <QSystemTrayIcon>
 
 namespace Xeth{
 
