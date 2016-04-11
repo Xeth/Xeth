@@ -72,11 +72,11 @@ var AccountViewReflection = AccountView.extend({
 
     reset:function(view){
         this.undelegateEvents();
+        if(this.model) this.stopListening(this.model);
         this.view = view;
         if(!view){
             this.$el.html("");
         }else{
-            if(this.model) this.stopListening(this.model);
             this.model = view.model;
             this.$el.html(view.$el.clone().css("opacity", 1));
             if(this.model!=undefined){
@@ -92,7 +92,7 @@ var AccountViewReflection = AccountView.extend({
         this.width = size;
     },
     empty:function(){
-        return this.$el.length==0;
+        return this.$el.length==0||!this.view||this.view.hidden();
     },
 
     setCompact:function(enable){
@@ -201,13 +201,12 @@ var AccountSelect = Backbone.View.extend({
 
     hide:function(ev){
         this.dropdownBox.addClass("off");
-        console.log("off");
         this.hideContainerLater();
         //this.collection.hide();
         //if(ev!=undefined) ev.stopPropagation();
     },
     parseNewItem:function(view){
-        if(this.active.empty()&&!view.$el.hasClass("off")){
+        if(this.active.empty()&&!view.hidden()){
             this.active.reset(view);
         }
     },
