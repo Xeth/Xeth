@@ -117,7 +117,7 @@ var BitprofileEditPageView = SubPageView.extend({
     submitEditDetails:function(skipped){
         var formData = this.form.getFormData();
         var details = this.profile.get("details");
-        if((formData.name!=details.name)||(formData.avatar!==undefined)||(formData.ipns!=this.profile.get("ipns"))){
+        if((formData.name!=(details.name||""))||(formData.avatar!==undefined)||(formData.ipns!=this.profile.get("ipns"))){
             var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, ipns:formData.ipns, password:formData.password, details:{}};
 
             if(formData.name!=details.name){
