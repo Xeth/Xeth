@@ -17,7 +17,7 @@ BigInt SendGasEstimator::estimate(const QString &from, const QString &to, const 
 
 BigInt SendGasEstimator::estimate(const std::string &from, const std::string &to, const BigInt &amount)
 {
-    return (to.length()<42) ? estimateHex(from, to, amount) : estimateStealth(from, to, amount);
+    return (to.length()<43) ? estimateHex(from, to, amount) : estimateStealth(from, to, amount);
 }
 
 
