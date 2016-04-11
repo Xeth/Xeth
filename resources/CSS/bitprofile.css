@@ -44,6 +44,9 @@
 #page_bitprofile .nav.controls li.export a{
 	background-position-y: -466px;
 }
+#page_bitprofile .nav.controls li.uri a{
+	background-position-y: -512px;
+}
 
 #page_bitprofile .bitprofileList{
 	top:92px;
