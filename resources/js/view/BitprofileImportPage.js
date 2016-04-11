@@ -35,7 +35,6 @@ var BitprofileImportPageView = SubPageView.extend({
             return false;
         }
         notifySuccess("bitprofile imported");
-        this.router.redirect("bitprofile", {subpage:"view"});
         return true;
     }
 

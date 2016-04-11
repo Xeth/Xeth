@@ -1,7 +1,7 @@
 var BitprofileViewPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "updateURI", "updateDetails", "updateStealth", "showLoader", "hideLoader");
+        _(this).bindAll("open", "update", "updateURI", "updateDetails", "updateStealth", "showLoader", "hideLoader");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("view_bitprofile");
         this.$el.html(this.template());
@@ -20,7 +20,6 @@ var BitprofileViewPageView = SubPageView.extend({
     },
 
     open:function(args){
-        console.log(args.uri);
         this.exit();
         this.model = this.profiles.find({uri:args.uri});
         this.update();
