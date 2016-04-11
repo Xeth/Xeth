@@ -191,7 +191,6 @@ var SendPageView = SubPageView.extend({
             var amount = this.amount.val();
             var factor = this.feeFactor.getFeeFactor();
             var from = this.accounts.selected().get("address");
-            console.log("computeFee",factor);
             var result = this.feeModel.estimate(from, to, amount, factor);
             if(result){
                 this.gasAmount = result["gas"];
