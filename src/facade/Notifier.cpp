@@ -138,8 +138,9 @@ void Notifier::emitStealthKey(const QString &address)
 void Notifier::emitStealthPayment(const QJsonObject &payment)
 {
     QVariantMap account;
+    EthereumCheckSum checksum;
     account.insert("stealth", payment["stealth"].toString());
-    account.insert("address", payment["address"].toString());
+    account.insert("address", checksum.compute(payment["address"].toString()));
     emit Account(account);
 }
 
