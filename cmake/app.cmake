@@ -1,6 +1,6 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Xml Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
-set(Boost_USE_STATIC_LIBS ON)
+#set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time chrono REQUIRED)
 find_package(LevelDB REQUIRED)
 find_package(GMP)
@@ -114,7 +114,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 
 set(APP_SOURCES ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/icon.cxx  ${PROJECT_BINARY_DIR}/html.cxx)
 
-if(MSVC)
+if(MSVC AND NOT ENABLE_DEBUG)
     add_executable(xeth WIN32 ${APP_SOURCES})
 else()
     add_executable(xeth ${APP_SOURCES})
@@ -157,7 +157,7 @@ target_link_libraries(xeth
     ${CMAKE_THREAD_LIBS_INIT} 
 )
 
-if(MSVC)
+if(MSVC AND NOT ENABLE_DEBUG)
     set_target_properties(xeth PROPERTIES  LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
     target_link_libraries(xeth Qt5::WinMain)
 endif()
