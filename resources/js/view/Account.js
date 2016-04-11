@@ -207,7 +207,7 @@ var AccountSelect = Backbone.View.extend({
         //if(ev!=undefined) ev.stopPropagation();
     },
     parseNewItem:function(view){
-        if(this.active.empty()&&!view.$el.is(":hidden")){
+        if(this.active.empty()&&!view.$el.hasClass("off")){
             this.active.reset(view);
         }
     },
