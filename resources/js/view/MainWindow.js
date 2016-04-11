@@ -21,6 +21,10 @@ var MainWindowView = Backbone.View.extend({
             args = name;
             name = "default";
         }
+        if(name=="default" && !this.models.accounts.length)
+        {
+            name = "generate";
+        }
         var view =  this.subpages[name];
         if(view!=undefined){
             if(this.active && this.active!=view) this.active.hide();
@@ -137,13 +141,9 @@ var MainWindowView = Backbone.View.extend({
 
         this.progress.render();
         for(var i in this.subpages) this.subpages[i].render();
-        if(this.models.accounts.length>0){
-            this.menuAlias = {default: "receive"};
-            this.subpages["default"] = this.subpages.receive;
-        }else{
-            this.menuAlias = {default: "generate"};
-            this.subpages["default"] = this.subpages.generate;
-        }
+        this.menuAlias = {default: "receive"};
+        this.subpages["default"] = this.subpages.receive;
+
         this.show();
     },
     notifyError:function(event){
