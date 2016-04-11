@@ -16,7 +16,7 @@ set(APP_SOURCES src/main.cpp src/Application.cpp ${WINDOW_SOURCES})
 
 if(UNIX AND NOT APPLE)
 
-    if(${Qt5Core_LIBRARIES} VERSION_LESS "5.5.1")
+    if(${Qt5Core_LIBRARIES} VERSION_LESS 5.5.0)
         find_package(AppIndicator)
         find_package(GTK2)
         find_package(LibNotify)
