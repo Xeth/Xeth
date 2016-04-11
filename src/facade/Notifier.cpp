@@ -140,7 +140,7 @@ void Notifier::emitStealthPayment(const QJsonObject &payment)
     QVariantMap account;
     EthereumCheckSum checksum;
     account.insert("stealth", payment["stealth"].toString());
-    account.insert("address", checksum.compute(payment["address"].toString()));
+    account.insert("address", QString(checksum.compute(payment["address"].toString().toStdString()).c_str()));
     emit Account(account);
 }
 
@@ -156,7 +156,7 @@ void Notifier::emitEthereumKey(const QString &address)
     }
     QVariantMap account;
     EthereumCheckSum checksum;
-    account.insert("address", checksum.compute(address.toStdString()).c_str());
+    account.insert("address", QString(checksum.compute(address.toStdString()).c_str()));
     emit Account(account);
 }
 
