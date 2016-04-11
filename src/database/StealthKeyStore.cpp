@@ -13,33 +13,27 @@ StealthKeyStore::StealthKeyStore(const boost::filesystem::path &path) :
 
 bool StealthKeyStore::replace(const StealthKey &key)
 {
-    return Base::replace(makeAddress(key).c_str(), key);
+    std::string address = makeAddress(key);
+    if(Base::replace(address.c_str(), key))
+    {
+        emit NewItem(QString(address.c_str()));
+        return true;
+    }
+    return false;
 }
 
 
-bool StealthKeyStore::replace(const std::string &, const StealthKey &key)
+bool StealthKeyStore::replace(const StealthKey &key, time_t)
 {
-    return Base::replace(makeAddress(key).c_str(), key);
+    return replace(key);
 }
 
 
-bool StealthKeyStore::replace(const char *, const StealthKey &key)
+bool StealthKeyStore::insert(const StealthKey &key, time_t)
 {
-    return Base::replace(makeAddress(key).c_str(), key);
-}
-
-
-bool StealthKeyStore::insert(const std::string &id, const StealthKey &key)
-{
-    //ignore suggested id
     return insert(key);
 }
 
-bool StealthKeyStore::insert(const char *id, const StealthKey &key)
-{
-    //ignore suggested id
-    return insert(key);
-}
 
 
 bool StealthKeyStore::insert(const StealthKey &key) 

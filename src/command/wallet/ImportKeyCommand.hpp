@@ -7,6 +7,7 @@
 #include "process/EthProcessInitializer.hpp"
 #include "io/JsonReader.hpp"
 
+#include "database/KeyImporter.hpp"
 #include "detail/GenericImportKeyCommand.hpp"
 #include "detail/StealthKeyValidator.hpp"
 #include "detail/EthereumKeyValidator.hpp"

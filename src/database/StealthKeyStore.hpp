@@ -5,7 +5,6 @@
 #include "types/StealthKey.hpp"
 
 #include "detail/FileStore.hpp"
-#include "detail/FileImporter.hpp"
 
 
 namespace Xeth{
@@ -28,12 +27,10 @@ class StealthKeyStore :
         StealthKeyStore(const boost::filesystem::path &path);
 
         bool replace(const StealthKey &);
-        bool replace(const std::string &, const StealthKey &);
-        bool replace(const char *, const StealthKey &);
+        bool replace(const StealthKey &, time_t);
 
         bool insert(const StealthKey &);
-        bool insert(const std::string &, const StealthKey &);
-        bool insert(const char *, const StealthKey &);
+        bool insert(const StealthKey &, time_t);
 
         Iterator find(const char *address) const;
         Iterator find(const Ethereum::Stealth::Address &) const;
@@ -51,8 +48,6 @@ class StealthKeyStore :
 
 };
 
-
-typedef FileImporter<StealthKeyStore> StealthKeyImporter;
 
 
 }

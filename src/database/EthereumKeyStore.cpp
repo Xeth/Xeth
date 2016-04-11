@@ -1,5 +1,6 @@
 #include "EthereumKeyStore.hpp"
 #include <cctype>
+#include <QDebug>
 
 namespace Xeth{
 
@@ -14,36 +15,47 @@ EthereumKeyStore::EthereumKeyStore(const boost::filesystem::path &path) :
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
-    if(Base::insert(makeFileName(key).c_str(), key))
-    {
-        emit NewItem(QString(key.getAddress().toString().c_str()));
-        return true;
-    }
-    return false;
+    return insertNoCheck(makeFileName(key).c_str(), key);
 }
 
 
 bool EthereumKeyStore::replace(const EthereumKey &key)
 {
-    return Base::replace(makeFileName(key).c_str(), key);
-}
-
-
-bool EthereumKeyStore::replace(const std::string &filename, const EthereumKey &key)
-{
-    return replace(filename.c_str(), key);
-}
-
-
-bool EthereumKeyStore::replace(const char *filename, const EthereumKey &key)
-{
-    if(!validateId(filename, key))
+    std::string address = key.getAddress().toString();
+    Iterator it = find(address.c_str());
+    std::string path;
+    if(it!=end())
     {
-        return Base::replace(makeFileName(key).c_str(), key);
+        path = it.path().string();
+    }
+    else
+    {
+        path = makeFileName(key);
     }
 
+    if(Base::replace(path.c_str(), key))
+    {
+        emit NewItem(QString(address.c_str()));
+        return true;
+    }
+
+    return false;
+}
+
+
+bool EthereumKeyStore::replace(const EthereumKey &key, time_t time)
+{
+    return replaceNoCheck(makeFileName(key, time).c_str(), key);
+}
+
+
+
+
+bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &key)
+{
     if(Base::replace(filename, key))
     {
+        qDebug()<<"emitting new key event : "<<key.getAddress().toString().c_str();
         emit NewItem(QString(key.getAddress().toString().c_str()));
         return true;
     }
@@ -51,28 +63,26 @@ bool EthereumKeyStore::replace(const char *filename, const EthereumKey &key)
 }
 
 
-bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
+
+bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
 {
-    if(!validateId(id, key))
-    {
-        return Base::insert(makeFileName(key, boost::posix_time::from_time_t(0)).c_str(), key); //creation data unknown
-    }
     if(Base::insert(id, key))
     {
+        qDebug()<<"emitting new key event : "<<key.getAddress().toString().c_str();
         emit NewItem(QString(key.getAddress().toString().c_str()));
         return true;
     }
     return false;
 }
 
-bool EthereumKeyStore::insert(const std::string &id, const EthereumKey &key)
+bool EthereumKeyStore::insert(const EthereumKey &key, time_t time)
 {
-    return insert(id.c_str(), key);
+    return insertNoCheck(makeFileName(key, time).c_str(), key);
 }
 
 bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)
 {
-    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+)$");
+    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+?).*$");
     boost::smatch match;
 
     if (boost::regex_search(id, match, regex))
@@ -142,6 +152,10 @@ std::string EthereumKeyStore::makeFileName(const EthereumKey &key) const
     return makeFileName(key, boost::posix_time::microsec_clock::universal_time());
 }
 
+std::string EthereumKeyStore::makeFileName(const EthereumKey &key, time_t time) const
+{
+    return makeFileName(key, boost::posix_time::ptime(boost::gregorian::date(1970,1,1)) + boost::posix_time::seconds(static_cast<long>(time)));
+}
 
 std::string EthereumKeyStore::makeFileName(const EthereumKey &key, const boost::posix_time::ptime &time) const
 {
