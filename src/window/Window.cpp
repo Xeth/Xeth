@@ -183,7 +183,11 @@ void Window::closeEvent(QCloseEvent *event)
 
 void Window::notifyTransaction(const QVariantMap &tx)
 {
-    _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(tx["amount"]).toString());
+    QString amount = tx["amount"].toString();
+    if(amount!="0")
+    {
+        _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(amount).toString());
+    }
 }
 
 void Window::setUrl(const char *uri)
