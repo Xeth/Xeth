@@ -101,7 +101,7 @@
 	float:none;
 }
 #page_bitprofile_view .formpage .btns {
-	margin-top:41px;
+	margin-top:10px;
 }
 
 #page_bitprofile_view:target,
@@ -110,7 +110,7 @@
 }
 
 #page_bitprofile_view .stealthAddress {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 #page_bitprofile .bitprofileForm .formpage .avatar {

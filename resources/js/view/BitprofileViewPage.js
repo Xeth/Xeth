@@ -1,16 +1,18 @@
 var BitprofileViewPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "update", "updateURI", "updateDetails", "updateStealth", "showLoader", "hideLoader");
+        _(this).bindAll("open", "update", "updateURI", "updateDetails", "updateStealth", "showLoader", "hideLoader", "copyUriToClipboard");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("view_bitprofile");
         this.$el.html(this.template());
         this.profiles = options.profiles;
         this.router = options.router;
+        this.clipboard = options.clipboard;
     },
     
     render:function(){
         this.$el.html(this.template());
+        this.$el.find(".btnURI").click(this.copyUriToClipboard);
     },
     
     exit:function(){
@@ -60,6 +62,11 @@ var BitprofileViewPageView = SubPageView.extend({
 
     hideLoader:function(){
         this.$el.find(".loader").removeClass("pending");
+    },
+
+    copyUriToClipboard:function(){
+        this.clipboard.setText(this.model.get("uri"));
+        notifySuccess("uri copied");
     }
 
 });

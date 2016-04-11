@@ -46,6 +46,7 @@ var BitprofilePageView = SubPageView.extend({
         this.accounts = options.accounts;
         this.profiles = options.profiles;
         this.registrars = options.registrars;
+        this.clipboard = options.clipboard;
         this.fee = options.fee;
         this.router = options.router;//new PageRouter(this);
         this.factory = new ProfileViewFactory(options.templates.get("profile_item"), options.router);
@@ -71,6 +72,7 @@ var BitprofilePageView = SubPageView.extend({
             el:this.$el.find("#page_bitprofile_view"), 
             router:this.router, 
             profiles:this.profiles,
+            clipboard: this.clipboard,
             templates:this.templates
         });
         var form = new BitprofileFormView
@@ -154,6 +156,11 @@ var BitprofilePageView = SubPageView.extend({
         //if(this.menuAlias[name]=="edit" || name=="edit") args.page = "edit";
         if(this.menuAlias[name]=="export" || name=="export"){
             view.submit(args);
+            return;
+        }
+        if(this.menuAlias[name]=="uri" || name=="uri"){
+            this.clipboard.setText(args.uri);
+            notifySuccess("uri copied");
             return;
         }
         if(view!=undefined){

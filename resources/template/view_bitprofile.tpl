@@ -14,6 +14,9 @@
             <span class="address"></span>
         </span>
     </div>
+    <div class="btns">
+        <a href="javascript:void(0);" class="btn highlight btnURI">Copy BitProfile URI</a>
+    </div>
 </div>
 <form>
 <div class="bitprofileForm loader">

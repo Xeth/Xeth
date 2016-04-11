@@ -121,6 +121,7 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.bitprofile = new BitprofilePageView
         ({
+            clipboard: this.models.clipboard,
             filesystem:this.models.filesystem,
             registrars:this.models.registrars,
             accounts:this.models.accounts,
