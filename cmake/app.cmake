@@ -99,8 +99,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 
+set(APP_SOURCES ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/icon.cxx  ${PROJECT_BINARY_DIR}/html.cxx)
 
-add_executable(xeth ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/icon.cxx  ${PROJECT_BINARY_DIR}/html.cxx)
+if(MSVC)
+    add_executable(xeth WIN32 ${APP_SOURCES})
+else()
+    add_executable(xeth ${APP_SOURCES})
+endif()
+
 
 add_dependencies(xeth parse_template)
 add_dependencies(xeth parse_CSS)
@@ -137,6 +143,11 @@ target_link_libraries(xeth
     ${LEVELDB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT} 
 )
+
+if(MSVC)
+    set_target_properties(xeth PROPERTIES  LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+    target_link_libraries(xeth Qt5::WinMain)
+endif()
 
 if(GMP_LIBRARIES)
     target_link_libraries(xeth ${GMP_LIBRARIES})
