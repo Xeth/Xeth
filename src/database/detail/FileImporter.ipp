@@ -58,7 +58,7 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
         }
         KeyAttributesReader<Store> attrs(path, json);
         
-        return _store.insert(value, attrs.getCreationTime());
+        return _store.replace(value, attrs.getCreationTime());
     }
     catch(...)
     {}
