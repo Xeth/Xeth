@@ -46,7 +46,7 @@ var TransactionView = Backbone.View.extend({
             clear: false,
             validate: this.editAlias,
             display: false
-        }).attr('title','edit alias');
+        }).attr('title','edit alias').editable("setValue", this.model.contact?this.model.contact.get("alias"):"");
     },
 
     watchContact:function(contact){
