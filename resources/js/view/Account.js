@@ -83,6 +83,7 @@ var AccountViewReflection = AccountView.extend({
                 this.shortify(this.width, true);
                 this.$balance = this.$el.find(".amount");
                 this.listenTo(view.model, "change:balance", this.update);
+                this.listenTo(view.model, "change:unconfirmed", this.update);
                 if(this.compact) this.$el.find(".amount").hide();
             }
         }
