@@ -240,9 +240,7 @@ var BitprofileFormView = SubPageView.extend({
     computeFee: function(){
         var request = this.getFormData();
         request.factor = this.feeFactor.getFeeFactor();
-        console.log(request);
         var result = this.feeModel.estimate(request);
-        console.log(result);
         if(result){
             this.gasAmount = result["gas"];
             this.gasPrice = result["price"];

@@ -52,7 +52,6 @@ var FeeSlider = Backbone.View.extend({
             }
             fee = this.fee;
         }
-        console.log(fee,this.fee);
         if(factor<90){
             this.feeFactor.addClass("warning");
         }else{

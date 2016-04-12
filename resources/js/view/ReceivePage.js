@@ -57,7 +57,6 @@ var ReceivePageView = SubPageView.extend({
     },
     
     clickGenerate:function(){
-        console.log("clicked on generate");
         this.router.redirect("generate");
     },
 

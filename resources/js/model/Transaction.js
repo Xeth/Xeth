@@ -53,7 +53,6 @@ var TransactionCollection = Backbone.Collection.extend({
     },
 
     model: function(data){
-        console.log("creating model !!!!");
         data.amount = parseFloat(XETH_convert.fromWei(data.amount));
         data.timestamp = parseInt(data.timestamp) * 1000;
         if(data.amount<0.00000001) data.amount = 0;

@@ -232,7 +232,6 @@ var SendPageView = SubPageView.extend({
         }else{
             this.useFullAmount = false;
         }
-        console.log("useFullAmount: ",this.useFullAmount);
     },
     
     resetContact: function(){
@@ -260,11 +259,9 @@ var SendPageView = SubPageView.extend({
     setAddressHint:function(msg){
         this.addressHint.html(shortify(msg,50));
         this.addressHint.val(msg);
-        console.log(this.addressHint.val());
     },
     
     copyAddressHintToClipboard:function(){
-        console.log(this.addressHint.val());
         if(this.clipboard.setText(this.addressHint.val()))
         {
             notifySuccess("address copied to clipboard");
