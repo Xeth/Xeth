@@ -12,7 +12,7 @@ var ProfileSimulator = Profile.extend({
     },
     
     updateURI:function(){
-        this.set("uri",this.get("context")+":"+this.get("id"));
+        this.set("uri",this.get("id")+"@"+this.get("context"));
     },
 
     get:function(key){
@@ -41,7 +41,7 @@ var ProfileSimulator = Profile.extend({
     },
     changePayments:function(data){
         console.log(data);
-        return false;
+        //return false;
         setTimeout(function(model){
             model.set("payments", data.stealth);
         }, 6000, this);
@@ -73,7 +73,7 @@ var ProfileCollectionSimulator = ProfileCollection.extend({
 
     generate:function(request){
         var profile = request;//{context:request.context, id:request.id, stealth:request.stealth, name:request.name, avatar:request.avatar};
-		profile.uri = profile.context+":"+profile.id
+		profile.uri = profile.id+"@"+profile.context;
         this.add(profile);
 		return profile;
     },
@@ -86,7 +86,7 @@ var ProfileCollectionSimulator = ProfileCollection.extend({
     },
 
     edit:function(request){
-        var uri = request.profile.context+":"+request.profile.id;
+        var uri = request.profile.id+"@"+request.profile.context;
         var profile = this.get(uri);
         
         if(!profile.edit(request)) return false;
@@ -103,7 +103,7 @@ var ProfileCollectionSimulator = ProfileCollection.extend({
     sync:function(){},
 
     add:function(data){
-        data.uri = data.context+":"+data.id;
+        data.uri = data.id+"@"+data.context;
         var profile = this.get(data.uri);
         if(!profile)
         {
