@@ -50,7 +50,7 @@ var ReceivePageView = SubPageView.extend({
     open:function(args){
 
         if(args&&args.address){
-            this.accounts.focus(function(model){ return (model.get("address")||model.get("stealth"))==args.address;})
+            this.accounts.focus(function(model){return model&&((model.get("address")==args.address)||(model.get("stealth")==args.address));})
         }
         
         (this.timer)?this.scheduleUpdate():this.update();
