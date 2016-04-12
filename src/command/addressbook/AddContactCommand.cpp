@@ -12,7 +12,7 @@ AddContactCommand::AddContactCommand(DataBase &database) :
 
 QVariant AddContactCommand::operator ()(const QVariantMap &request)
 {
-    if(!request.contains("alias") || (!request.contains("address")&&!request.contains("bitprofile")))
+    if(!request.contains("alias"))
     {
         return QVariant::fromValue(false);
     }
