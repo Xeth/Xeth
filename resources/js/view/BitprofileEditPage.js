@@ -13,7 +13,7 @@ var BitprofileEditFee = function(profile,fee){
         }
         var details = profile.get("details")||{};
         if((formData.name!=(details.name||""))||(formData.avatar!==undefined)||(formData.ipns!=profile.get("ipns"))){
-            this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"));
+            this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"), formData.feeFactor);
             editFee.push(this.editDetailsFee);
          }
         return combineFee(editFee);
