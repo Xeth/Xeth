@@ -9,6 +9,7 @@ var SendPageView = SubPageView.extend({
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
+        this.placeholderErrors = {bitprofile: "selected profile is not accepting payments", address: "invalid"};
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
         this.router = options.router;
@@ -114,6 +115,7 @@ var SendPageView = SubPageView.extend({
     },
 
     updateSendType:function(){
+        this.destination.noerror();
         this.updatePlaceholder();
         if(this.destination.val()) this.updateContact();
         if(this.sendType.val()=="bitprofile"){
@@ -154,12 +156,12 @@ var SendPageView = SubPageView.extend({
 
     riseProfileError:function(){
         this.setAddressHint("");
-        this.destTitle.attr("error", "selected profile is not accepting payments");
         this.destination.error();
     },
 
     updatePlaceholder:function(){
         this.destination.attr("placeholder", this.placeholders[this.sendType.val()]);
+        this.destTitle.attr("error", this.placeholderErrors[this.sendType.val()]);
     },
 
     updateContact: function(){
