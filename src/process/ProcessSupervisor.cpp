@@ -90,7 +90,11 @@ void ProcessSupervisor::start()
 void ProcessSupervisor::stop()
 {
     _timer.stop();
-    if(_process) _process->kill();
+    if(_process)
+    {
+        _process->kill();
+        _process->waitForFinished();
+    }
 }
 
 

@@ -46,6 +46,7 @@ class Facade : public QObject
 
     public:
         Facade(const Settings &);
+        ~Facade();
 
         Notifier & getNotifier();
         AddressBook & getAddressBook();

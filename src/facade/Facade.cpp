@@ -45,6 +45,11 @@ Facade::Facade(const Settings &settings) :
     thread->start();
 }
 
+Facade::~Facade()
+{
+    _eth.stop();
+    _ipfs.stop();
+}
 
 bool Facade::isReady() const
 {
