@@ -25,6 +25,11 @@ var ExportKeyPageView = SubPageView.extend({
         if(path)
         {
             var model = this.accounts.selected();
+            if(!model)
+            {
+                notifyError("no account selected");
+                return false;
+            }
             if(!model.backup(path)){
                 notifyError("failed to backup, please check disk space");
                 return false;
