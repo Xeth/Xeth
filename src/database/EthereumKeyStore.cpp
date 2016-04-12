@@ -1,6 +1,6 @@
 #include "EthereumKeyStore.hpp"
 #include <cctype>
-#include <QDebug>
+
 
 namespace Xeth{
 
@@ -26,7 +26,7 @@ bool EthereumKeyStore::replace(const EthereumKey &key)
     std::string path;
     if(it!=end())
     {
-        path = it.path().string();
+        path = it.path().filename().string();
     }
     else
     {
@@ -38,7 +38,6 @@ bool EthereumKeyStore::replace(const EthereumKey &key)
         emit NewItem(QString(address.c_str()));
         return true;
     }
-
     return false;
 }
 
@@ -55,7 +54,6 @@ bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &k
 {
     if(Base::replace(filename, key))
     {
-        qDebug()<<"emitting new key event : "<<key.getAddress().toString().c_str();
         emit NewItem(QString(key.getAddress().toString().c_str()));
         return true;
     }
