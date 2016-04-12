@@ -254,6 +254,7 @@ var SendPageView = SubPageView.extend({
     paste:function(){
         this.destination.val(this.clipboard.getText());
         this.updateContact();
+        this.updateSendType();
     },
     
     setAddressHint:function(msg){
@@ -389,6 +390,7 @@ var SendPageView = SubPageView.extend({
             _this.password.val("");
             _this.destination.val("");
             _this.amount.val("");
+            _this.setAddressHint("");
 
             _this.router.redirect("transactions", {focusFirst:true});
         };
