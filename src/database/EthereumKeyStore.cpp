@@ -68,7 +68,6 @@ bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
 {
     if(Base::insert(id, key))
     {
-        qDebug()<<"emitting new key event : "<<key.getAddress().toString().c_str();
         emit NewItem(QString(key.getAddress().toString().c_str()));
         return true;
     }
@@ -82,7 +81,7 @@ bool EthereumKeyStore::insert(const EthereumKey &key, time_t time)
 
 bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)
 {
-    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+?).*$");
+    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+?).*$", boost::regex::icase);
     boost::smatch match;
 
     if (boost::regex_search(id, match, regex))
@@ -110,7 +109,7 @@ EthereumKeyStore::Iterator EthereumKeyStore::find(const char *address) const
 
     boost::smatch match;
 
-    boost::regex regex(pattern);
+    boost::regex regex(pattern, boost::regex::icase);
     Iterator it=begin(), e=end();
 
     for(; it!=e; ++it)
