@@ -11,7 +11,7 @@ var BitprofileEditFee = function(profile,fee){
             this.linkStealthFee = fee.estimateStealthLink(profile.get("uri"), formData.stealth, formData.feeFactor);
             editFee.push(this.linkStealthFee);
         }
-        var details = profile.get("details");
+        var details = profile.get("details")||{};
         if((formData.name!=(details.name||""))||(formData.avatar!==undefined)||(formData.ipns!=profile.get("ipns"))){
             this.editDetailsFee = fee.estimateEditProfile(profile.get("uri"));
             editFee.push(this.editDetailsFee);
@@ -35,21 +35,25 @@ var BitprofileEditPageView = SubPageView.extend({
     },
 
     open:function(args){
-        this.profile = this.profiles.find({uri:args.uri});
+
         if(!this.form.inProgress()){
+
+            this.profile = this.profiles.find({uri:args.uri});
+            this.form.onSubmit(this.submit);
+            this.form.setProfileModel(this.profile);
+            this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
+            this.form.setFeeModel(this.feeAdapter);
             this.form.renderDetailsPage();
+
+            this.form.attach(this.$el);
+            if(!this.form.inProgress() && (!args ||args.reset!==false)){
+                this.form.resetForm();
+            }
+            if(args && args.address){
+                this.form.selectAccount("stealth", args.address);
+            }
         }
-        this.form.onSubmit(this.submit);
-        this.form.setProfileModel(this.profile);
-        this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
-        this.form.setFeeModel(this.feeAdapter);
-        this.form.attach(this.$el);
-        if(!this.form.inProgress() && (!args ||args.reset!==false)){
-            this.form.resetForm();
-        }
-        if(args && args.address){
-            this.form.selectAccount("stealth", args.address);
-        }
+
     },
 
     submit:function(){
@@ -116,7 +120,7 @@ var BitprofileEditPageView = SubPageView.extend({
 
     submitEditDetails:function(skipped){
         var formData = this.form.getFormData();
-        var details = this.profile.get("details");
+        var details = this.profile.get("details")||{};
         if((formData.name!=(details.name||""))||(formData.avatar!==undefined)||(formData.ipns!=this.profile.get("ipns"))){
             var request = {gas: this.feeAdapter.editDetailsFee.gas, price:this.feeAdapter.editDetailsFee.price, ipns:formData.ipns, password:formData.password, details:{}};
 
