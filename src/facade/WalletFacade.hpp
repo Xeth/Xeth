@@ -42,19 +42,10 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant send(const QVariantMap &);
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
-        Q_INVOKABLE QVariant exportEthereumKey(const QVariantMap &);
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
-        Q_INVOKABLE QVariant importPresaleKey(const QVariantMap &);
-        Q_INVOKABLE QVariant importEthereumKey(const QVariantMap &);
-        Q_INVOKABLE QVariant importStealthKey(const QVariantMap &);
-        Q_INVOKABLE QVariant exportStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant generateKey(const QVariantMap &);
-        Q_INVOKABLE QVariant generateEthereumKey(const QVariantMap &);
-        Q_INVOKABLE QVariant generateStealthKey(const QVariantMap &);
         Q_INVOKABLE QVariant validateAddress(const QString &);
         Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
-        Q_INVOKABLE QVariant changeEthereumKeyPassword(const QVariantMap &);
-        Q_INVOKABLE QVariant changeStealthKeyPassword(const QVariantMap &);
         Q_INVOKABLE QVariant changePassword(const QVariantMap &);
         Q_INVOKABLE QVariant estimateFee(const QVariantMap &);
 
@@ -63,6 +54,7 @@ class WalletFacade :public QObject
         Invoker _invoker;
         Ethereum::Connector::Provider &_provider;
         DataBase &_database;
+        Notifier &_notifier;
         Synchronizer &_synchronizer;
 
 };

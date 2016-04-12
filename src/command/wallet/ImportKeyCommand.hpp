@@ -2,6 +2,7 @@
 
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
+#include "facade/Notifier.hpp"
 
 #include "conf/Settings.hpp"
 #include "process/EthProcessInitializer.hpp"
@@ -19,7 +20,7 @@ namespace Xeth{
 class ImportKeyCommand
 {
     public:
-        ImportKeyCommand(const Settings &, DataBase &, Synchronizer &);
+        ImportKeyCommand(const Settings &, DataBase &, Synchronizer &, Notifier &);
 
         QVariant operator()(const QVariantMap &);
 
@@ -34,6 +35,7 @@ class ImportKeyCommand
         const Settings &_settings;
         DataBase &_database;
         Synchronizer &_synchronizer;
+        Notifier &_notifier;
 
 };
 
@@ -52,7 +54,7 @@ class ImportEthereumKeyCommand : public GenericImportKeyCommand<EthereumKeyStore
 class ImportPresaleKeyCommand
 {
     public:
-        ImportPresaleKeyCommand(const Settings &, Synchronizer &);
+        ImportPresaleKeyCommand(const Settings &, Synchronizer &, Notifier &notifier);
 
         QVariant operator()(const QVariantMap &);
 
@@ -62,6 +64,7 @@ class ImportPresaleKeyCommand
     private:
         const Settings &_settings;
         Synchronizer &_synchronizer;
+        Notifier &_notifier;
 };
 
 

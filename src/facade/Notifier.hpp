@@ -28,6 +28,7 @@ class Notifier : public QObject
         void emitError(const QString &);
         void emitMessage(const QString &);
         void emitReady();
+        void emitEthereumKey(const QString &);
 
         void emitData(const QString &context, const QString &uri, const QString &key, const QVariant &value);
         void emitData(const QString &context, const QString &key, const QVariant &value);
@@ -51,7 +52,6 @@ class Notifier : public QObject
 
     private slots:
         void emitAddressBookItem(const QJsonObject &);
-        void emitEthereumKey(const QString &);
         void emitStealthPayment(const QJsonObject &);
         void emitStealthKey(const QString &);
         void emitTransaction(const QJsonObject &);

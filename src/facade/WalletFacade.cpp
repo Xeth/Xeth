@@ -16,6 +16,7 @@ WalletFacade::WalletFacade
     _invoker(notifier),
     _provider(provider),
     _database(database),
+    _notifier(notifier),
     _synchronizer(synchronizer)
 {}
 
@@ -52,51 +53,15 @@ QVariant WalletFacade::listTransactions(const QVariantMap &request)
 
 QVariant WalletFacade::importKey(const QVariantMap &request)
 {
-    ImportKeyCommand command(_settings, _database, _synchronizer);
+    ImportKeyCommand command(_settings, _database, _synchronizer, _notifier);
     return _invoker.invoke(command, request);
 }
 
-QVariant WalletFacade::importPresaleKey(const QVariantMap &request)
-{
-    ImportPresaleKeyCommand command(_settings, _synchronizer);
-    return _invoker.invoke(command, request);
-}
 
-QVariant WalletFacade::importEthereumKey(const QVariantMap &request)
-{
-    ImportEthereumKeyCommand command(_database, _synchronizer);
-    return _invoker.invoke(command, request);
-}
-
-QVariant WalletFacade::importStealthKey(const QVariantMap &request)
-{
-    ImportStealthKeyCommand command(_database, _synchronizer);
-    return _invoker.invoke(command, request);
-}
 
 QVariant WalletFacade::exportKey(const QVariantMap &request)
 {
     ExportKeyCommand command(_database);
-    return _invoker.invoke(command, request);
-}
-
-QVariant WalletFacade::exportEthereumKey(const QVariantMap &request)
-{
-    ExportEthereumKeyCommand command(_database);
-    return _invoker.invoke(command, request);
-}
-
-
-QVariant WalletFacade::exportStealthKey(const QVariantMap &request)
-{
-    ExportStealthKeyCommand command(_database);
-    return _invoker.invoke(command, request);
-}
-
-
-QVariant WalletFacade::generateEthereumKey(const QVariantMap &request)
-{
-    GenerateEthereumKeyCommand command(_database, _synchronizer);
     return _invoker.invoke(command, request);
 }
 
@@ -108,11 +73,6 @@ QVariant WalletFacade::generateKey(const QVariantMap &request)
 }
 
 
-QVariant WalletFacade::generateStealthKey(const QVariantMap &request)
-{
-    GenerateStealthKeyCommand command(_database, _synchronizer);
-    return _invoker.invoke(command, request);
-}
 
 QVariant WalletFacade::validateAddress(const QString &request)
 {
@@ -127,18 +87,6 @@ QVariant WalletFacade::validateAddress(const QVariantMap &request)
 }
 
 
-QVariant WalletFacade::changeEthereumKeyPassword(const QVariantMap &request)
-{
-    ChangeEthereumKeyPasswordCommand command(_database);
-    return _invoker.invoke(command, request);
-}
-
-
-QVariant WalletFacade::changeStealthKeyPassword(const QVariantMap &request)
-{
-    ChangeStealthKeyPasswordCommand command(_database);
-    return _invoker.invoke(command, request);
-}
 
 QVariant WalletFacade::changePassword(const QVariantMap &request)
 {
