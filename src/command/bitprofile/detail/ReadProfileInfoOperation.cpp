@@ -15,7 +15,7 @@ void ReadProfileInfoOperation::operator()()
 {
     try
     {
-        QString detailsPath = _profile.get("details").c_str();
+        QString detailsPath =  _profile.get("details").c_str();
 
         if(!detailsPath.length())
         {
