@@ -42,6 +42,8 @@ var ImportKeyPageView = SubPageView.extend({
             return false;
         }
         notifySuccess("key imported");
+        password.val("");
+        this.fileInput.val("");
         this.router.redirect("receive", {address: address});
         return true;
     }
