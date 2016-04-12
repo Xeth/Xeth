@@ -33,10 +33,10 @@ var ChangePasswordPageView = SubPageView.extend({
             return false;
         }
         this.$el.find(".formpage").addClass("waiting");
-        setTimeout(this.sendRequest, 0, oldPassword, newPassword);
+        setTimeout(this.sendRequest, 0, oldPassword, newPassword, repeatPassword);
         return true;
     },
-    sendRequest:function(oldPassword, newPassword){
+    sendRequest:function(oldPassword, newPassword, repeatPassword){
         var model = this.accounts.selected();
         if(!model)
         {
@@ -53,6 +53,7 @@ var ChangePasswordPageView = SubPageView.extend({
         notifySuccess("password changed");
         newPassword.val("");
         oldPassword.val("");
+        repeatPassword.val("");
         this.$el.find(".formpage").removeClass("waiting");
         this.router.redirect(); //go to default page
         return true;
