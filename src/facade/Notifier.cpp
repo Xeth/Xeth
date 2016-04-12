@@ -149,7 +149,7 @@ void Notifier::emitEthereumKey(const QString &address)
     if(_database)
     {
         const StealthPaymentStore & store = _database->getStealthPayments();
-        if(!store.get(address.toStdString().c_str()).empty())
+        if(!store.get(address.toStdString()).empty())
         {
             return; //ignore duplicates
         }

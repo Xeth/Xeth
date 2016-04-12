@@ -154,15 +154,15 @@ bool GenericSendCommand<Sender, Validator, Estimator>::unlockSender(const std::s
     {
         //maybe it was a stealth payment
         StealthPaymentStore &payments = _database.getStealthPayments();
-        StealthPaymentStore::Iterator it = payments.find(from.c_str());
-        if(it==payments.end())
+        QJsonObject payment = payments.get(from);
+        if(payment.empty())
         {
             return false;
         }
         //address found, lets import key
         //finding stealth address
         StealthRedeemKeyFactory factory(_database);
-        EthereumKey key = factory.create(*it, password);
+        EthereumKey key = factory.create(payment, password);
         _database.getEthereumKeys().insert(key);
         if(!_wallet.unlockAccount(from, password, 5))
         {

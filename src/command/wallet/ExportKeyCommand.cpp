@@ -39,7 +39,7 @@ QVariant ExportKeyCommand::exportEthereumKey(const QString &address, const QStri
         {
             return QVariant::fromValue(false);
         }
-        QJsonObject payment = payments.get(addr.c_str());
+        QJsonObject payment = payments.get(addr);
         return exportStealthKey(payment["stealth"].toString(), path);
     }
     return QVariant::fromValue(true);

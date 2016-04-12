@@ -2,6 +2,7 @@
 
 #include <QJsonObject>
 #include <QObject>
+#include <algorithm>
 
 #include "detail/LevelDbStore.hpp"
 
@@ -25,8 +26,16 @@ class StealthPaymentStore :
         StealthPaymentStore(const std::string &);
         StealthPaymentStore(const boost::filesystem::path &);
 
+        Iterator find(const std::string &) const;
+        QJsonObject get(const std::string &) const;
+
         bool insert(const char *address, const char *stealth, const char *secret, const char *txid);
         bool insert(const QJsonObject &);
+
+    private:
+        std::string normalizedAddress(const std::string &) const;
+        using Base::find;
+        using Base::get;
 
     signals:
         void NewItem(const QJsonObject &) const;

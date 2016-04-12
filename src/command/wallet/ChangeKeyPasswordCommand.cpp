@@ -60,7 +60,7 @@ bool ChangeEthereumKeyPasswordCommand::execute(const QString &address, const QSt
 
     //check unredeemed keys
     StealthPaymentStore & stealthPayments = _database.getStealthPayments();
-    QJsonObject payment = stealthPayments.get(address.toLower().toStdString().c_str());
+    QJsonObject payment = stealthPayments.get(address.toStdString());
     if(payment.empty())
     {
         return false;
