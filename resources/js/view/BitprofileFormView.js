@@ -51,6 +51,7 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find(".generate a").click(this.clickGenerate);
         this.avatar.click(this.clickBrowseAvatar);
         this.avatarRemove.click(this.clickRemoveAvatar);
+        this.avatarRemove.hide();
         
         this.listenTo(this.accounts, "change", this.resetAddressError);
         
