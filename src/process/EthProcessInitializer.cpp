@@ -48,6 +48,7 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
     {
         args.push_back("--testnet");
     }
+    args.push_back("--verbosity=0");
 
     return args;
 }
