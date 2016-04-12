@@ -466,7 +466,7 @@ input[type="number"]:focus {
 .ui-selectmenu-menu ul,
 .dropdown3 .holder {
 	background-color: #FFFFFF;
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.9);
 	max-height: 300px;
 	overflow-y: auto;
 	margin: 3px -10px;
