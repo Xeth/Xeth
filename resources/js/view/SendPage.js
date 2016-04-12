@@ -222,8 +222,12 @@ var SendPageView = SubPageView.extend({
         
         if(balanceAvailable<0) balanceAvailable=0;
         if(amount>=balanceAvailable){//||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
-            amount=balanceAvailable;
-            this.amount.val(parseFloat(amount));
+            if(balanceAvailable>0){
+                amount=parseFloat(balanceAvailable);
+            }else{
+                amount="";
+            }
+            this.amount.val(amount);
             this.useFullAmount = true;
         }else{
             this.useFullAmount = false;
