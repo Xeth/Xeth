@@ -1,4 +1,11 @@
-var BitprofileEditFee = function(profile,fee){
+var BitprofileEditFee = function(fee){
+
+    var profile;
+
+    this.setProfile = function(model){
+        profile = model;
+    };
+
     this.estimate = function(formData){
         var editFee=[];
         if((formData.context!=profile.get("context"))||(formData.id!=profile.get("id")))
@@ -28,31 +35,31 @@ var BitprofileEditPageView = SubPageView.extend({
         this.profiles = options.profiles;
         this.feeModel = options.fee;
         this.form = options.form;
+        this.feeAdapter = new BitprofileEditFee(this.feeModel);
     },
     
     exit:function(){
-        this.form.exit();
+//        this.form.exit();
     },
 
     open:function(args){
 
-        if(!this.form.inProgress()){
+        this.profile = this.profiles.find({uri:args.uri});
+        this.feeAdapter.setProfile(this.profile);
+        this.form.onSubmit(this.submit);
+        this.form.setProfileModel(this.profile);
 
-            this.profile = this.profiles.find({uri:args.uri});
-            this.form.onSubmit(this.submit);
-            this.form.setProfileModel(this.profile);
-            this.feeAdapter = new BitprofileEditFee(this.profile, this.feeModel);
-            this.form.setFeeModel(this.feeAdapter);
-            this.form.renderDetailsPage();
+        this.form.setFeeModel(this.feeAdapter);
+        this.form.renderDetailsPage();
 
-            this.form.attach(this.$el);
-            if(!this.form.inProgress() && (!args ||args.reset!==false)){
-                this.form.resetForm();
-            }
-            if(args && args.address){
-                this.form.selectAccount("stealth", args.address);
-            }
+        this.form.attach(this.$el);
+        if(!this.form.inProgress() && (!args ||args.reset!==false)){
+            this.form.resetForm();
         }
+        if(args && args.address){
+            this.form.selectAccount("stealth", args.address);
+        }
+
 
     },
 
@@ -143,7 +150,6 @@ var BitprofileEditPageView = SubPageView.extend({
         }
     },
     clearForm:function(skipped){
-//        alert("clearing form : "+JSON.stringify(arguments));
         if(skipped===true) notifySuccess("There is nothing to change");
         this.form.reset();
         this.stopListening(this.profile);
