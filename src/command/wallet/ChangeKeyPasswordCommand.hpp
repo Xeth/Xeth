@@ -10,6 +10,7 @@
 #include "detail/GenericChangePasswordCommand.hpp"
 #include "detail/ChangeEthereumKeyPasswordOperation.hpp"
 #include "detail/ChangeStealthKeyPasswordOperation.hpp"
+#include "detail/StealthRedeemKeyFactory.hpp"
 
 namespace Xeth{
 
@@ -37,7 +38,10 @@ class ChangeEthereumKeyPasswordCommand :
 
     public:
         ChangeEthereumKeyPasswordCommand(DataBase &);
+        bool execute(const QString &address, const QString &password, const QString &newPassword);
 
+    private:
+        DataBase & _database;
 };
 
 
