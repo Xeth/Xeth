@@ -106,7 +106,6 @@ void ProcessSupervisor::scheduleFork()
 
 void ProcessSupervisor::fork()
 {
-    qDebug()<<"program : "<<_process->program()<<" arguments: "<<_process->arguments();
     _timer.stop();
     _process->start();
 }
