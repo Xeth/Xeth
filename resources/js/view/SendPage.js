@@ -192,7 +192,8 @@ var SendPageView = SubPageView.extend({
         if(to){
             var amount = this.amount.val();
             var factor = this.feeFactor.getFeeFactor();
-            var from = this.accounts.selected().get("address");
+            var account = this.accounts.selected();
+            var from = account? account.get("address") : "";
             var result = this.feeModel.estimate(from, to, amount, factor);
             if(result){
                 this.gasAmount = result["gas"];
@@ -216,7 +217,8 @@ var SendPageView = SubPageView.extend({
     
     checkAmount:function(fee){
         if(!fee) fee=this.fee;
-        var balance = this.accounts.selected().get("balance");
+        var account = this.accounts.selected();
+        var balance = account ? account.get("balance"): 0;
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
@@ -295,7 +297,7 @@ var SendPageView = SubPageView.extend({
         }
         
         var account = this.accounts.selected();
-        if(account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee))){
+        if(!account || (account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee)))){
             this.amount.error();
             notifyError("not enough funds");
             return false;
