@@ -45,8 +45,8 @@ var BitprofileViewPageView = SubPageView.extend({
         this.$el.find(".bitprofileID input").val(this.model.get("id"));
     },
     
-    updateDetails:function(details){
-        if(!details) details = this.model.get("details");
+    updateDetails:function(){
+        var details = this.model.get("details")||{};
         this.$el.find(".avatar img").attr("src",((details && details.avatar)?details.avatar:'img/avatarEmpty.png'));
         this.$el.find("input.name").val((details && details.name) ? details.name : "");
     },
