@@ -57,7 +57,8 @@ class ChainScanner : public QObject
         void scan();
 
     private slots:
-        void processData(const PartialScanResult &);
+        void processPartialData(const PartialScanResult &);
+        void processData(const ScanResult &);
         void updateScanCursor();
         void handleScanComplete();
 

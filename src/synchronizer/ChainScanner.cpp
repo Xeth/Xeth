@@ -33,12 +33,12 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
         throw std::runtime_error("failed to connect timeout signal");
     }
 
-    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Data, this, &ChainScanner::processData))
+    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Data, this, &ChainScanner::processPartialData))
     {
         throw std::runtime_error("failed to connect Data signal");
     }
 
-    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Done, this, &ChainScanner::updateScanCursor))
+    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Done, this, &ChainScanner::processData))
     {
         throw std::runtime_error("failed to connect Data signal");
     }
@@ -162,6 +162,16 @@ void ChainScanner::syncScan()
 }
 
 
+void ChainScanner::processData(const ScanResult &result)
+{
+    if(!result.transactions.size())
+    {
+        updateScanCursor();
+    }
+    //else it was saved in partial result
+}
+
+
 void ChainScanner::updateScanCursor()
 {
     ScanIndexStore & indexStore = _database.getScanIndex();
@@ -171,7 +181,7 @@ void ChainScanner::updateScanCursor()
     }
 }
 
-void ChainScanner::processData(const PartialScanResult &result)
+void ChainScanner::processPartialData(const PartialScanResult &result)
 {
     TransactionStore & transactionStore = _database.getTransactions();
     StealthPaymentStore & stealthPaymentStore = _database.getStealthPayments();
