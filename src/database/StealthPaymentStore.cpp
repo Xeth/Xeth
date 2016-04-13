@@ -20,14 +20,8 @@ StealthPaymentStore::StealthPaymentStore(const boost::filesystem::path &path) :
 
 std::string StealthPaymentStore::normalizedAddress(const std::string &address) const
 {
-    std::string result = address;
-    if(result[1]=='x'||result[1]=='X')
-    {
-        result.erase(0, 2);
-    }
-
-    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return result;
+    HexAddressNormalizer normalizer;
+    return normalizer(address);
 }
 
 
@@ -69,6 +63,17 @@ bool StealthPaymentStore::insert(const QJsonObject &obj)
     }
     return false;
 }
+
+bool StealthPaymentStore::replace(const QJsonObject &obj)
+{
+    if(Base::replace(normalizedAddress(obj["address"].toString().toStdString()).c_str(), obj)) //ToDo: optimize it !!!
+    {
+        emit NewItem(obj);
+        return true;
+    }
+    return false;
+}
+
 
 
 }

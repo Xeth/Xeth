@@ -2,10 +2,9 @@
 
 #include <QJsonObject>
 #include <QObject>
-#include <algorithm>
 
 #include "detail/LevelDbStore.hpp"
-
+#include "detail/HexAddressNormalizer.hpp"
 
 namespace Xeth{
 
@@ -31,11 +30,13 @@ class StealthPaymentStore :
 
         bool insert(const char *address, const char *stealth, const char *secret, const char *txid);
         bool insert(const QJsonObject &);
+        bool replace(const QJsonObject &);
 
     private:
         std::string normalizedAddress(const std::string &) const;
         using Base::find;
         using Base::get;
+        using Base::replace;
 
     signals:
         void NewItem(const QJsonObject &) const;

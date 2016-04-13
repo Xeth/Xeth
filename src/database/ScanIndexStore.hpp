@@ -4,6 +4,7 @@
 #include <string>
 
 #include "detail/LevelDbStore.hpp"
+#include "detail/HexAddressNormalizer.hpp"
 
 
 namespace Xeth{
