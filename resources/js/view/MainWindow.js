@@ -132,6 +132,7 @@ var MainWindowView = Backbone.View.extend({
             accounts:this.models.accounts,
             fee: this.models.fee,
             profiles:this.models.profiles,
+            profileValidator: this.models.profileValidator,
             el:this.$el.find("#page_bitprofile"),
             router:this.router,
             templates:this.templates

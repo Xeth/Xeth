@@ -242,12 +242,21 @@ input[type=number]:-ms-input-placeholder { /* Internet Explorer 10+ */
 	outline-offset: -1px;
 }
 
-.error h1:after {
-	content: attr(error);
+h1:after {
+	content: "";
 	font-family: Regular, Arial, Helvetica, sans-serif;
-	color: #b9676a;
 	font-size: 0.9rem;
 	float: right;
+}
+
+.error h1:after {
+	content: attr(error);
+	color: #b9676a;
+}
+
+.valid h1:after {
+	content: attr(valid);
+	color: #5B945B;
 }
 
 .inputBtnSearch {

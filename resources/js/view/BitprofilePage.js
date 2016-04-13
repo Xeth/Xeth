@@ -49,6 +49,7 @@ var BitprofilePageView = SubPageView.extend({
         this.clipboard = options.clipboard;
         this.fee = options.fee;
         this.router = options.router;//new PageRouter(this);
+        this.profileValidator = options.profileValidator;
         this.factory = new ProfileViewFactory(options.templates.get("profile_item"), options.router);
         this.menuAlias = {default: "create", form: "create"};
         this.subpages = {};
@@ -81,6 +82,7 @@ var BitprofilePageView = SubPageView.extend({
             registrars: this.registrars,
             router:this.router, 
             templates:this.templates,
+            profileValidator:this.profileValidator,
             filesystem:this.filesystem
         });
         this.subpages.create = new BitprofileCreatePageView

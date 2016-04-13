@@ -1,12 +1,13 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "renderDetailsPage");
+        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "validateName", "renderDetailsPage");
 		SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
         this.router = options.router;
         this.filesystem = options.filesystem;
+        this.profileValidator = options.profileValidator;
         this.pending = false;
         this.avatarDeleted = false;
         
@@ -49,6 +50,7 @@ var BitprofileFormView = SubPageView.extend({
         this.$el.find("#bitporfileCreate_details .submitCancel").click(this.resetForm);
         this.$el.find("#bitporfileCreate_payment .submitCancel").click(this.renderDetailsPage);
         this.$el.find(".generate a").click(this.clickGenerate);
+        this.bitprofileId.on("input", this.validateName);
         this.avatar.click(this.clickBrowseAvatar);
         this.avatarRemove.click(this.clickRemoveAvatar);
         this.avatarRemove.hide();
@@ -83,6 +85,25 @@ var BitprofileFormView = SubPageView.extend({
     setProfileModel:function(profileModel){
         if(this.model) this.stopListening(this.model);
         this.model = profileModel;
+    },
+    
+    validateName:function(){
+        var name = this.bitprofileId.val();
+        
+        if(!this.profileValidator.isValidName(name)){
+            this.setIDError("use only ( A-Z, 0-9, _ )");
+            return false;   
+        }
+        if(!this.profileValidator.isAvailable({id:name, context:this.bitprofileContext.val()})){
+            this.setIDError("already taken");
+            return false;
+        }
+        this.bitprofileId.valid();
+        return true;
+    },
+    
+    setIDError:function(msg){
+        this.bitprofileId.error(msg);
     },
 
     clickGenerate:function(){
@@ -195,6 +216,7 @@ var BitprofileFormView = SubPageView.extend({
     resetForm:function(){
         this.resetAddressError();
         this.bitprofileId.noerror();
+        this.bitprofileId.clearvalid();
         this.password.noerror();
         this.password.val("");
         this.avatarDeleted = false;
@@ -284,7 +306,9 @@ var BitprofileFormView = SubPageView.extend({
             notifyError("no stealth address selected");
             return false;
         }
-        this.renderPaymentPage();
+        if(this.validateName()===true){
+            this.renderPaymentPage();
+        }
     },
     
     submit:function(){
@@ -309,7 +333,7 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     getFormData:function(){
-        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:this.bitprofileId.val(), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
+        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:(!this.validateName()?null:this.bitprofileId.val()), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
 
         var avatar = this.avatar.val();
         if(avatar.length)
