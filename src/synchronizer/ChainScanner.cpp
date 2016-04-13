@@ -98,7 +98,7 @@ void ChainScanner::addAddress(const Ethereum::Address &address, time_t time)
 
 size_t ChainScanner::estimateHeight(time_t time)
 {
-    return time/12;
+    return (time > 1438266388) ? (time - 1438266388)/20 : 0;
 }
 
 size_t ChainScanner::getChainHeight()
