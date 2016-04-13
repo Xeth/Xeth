@@ -70,7 +70,7 @@ var StealthAccount = AccountBase.extend({
 var AccountCollection = Backbone.Collection.extend({
 
     initialize:function(models, options){
-        _(this).bindAll("add");
+        _(this).bindAll("add", "parseNew");
         this.profiles = options.profiles;
     },
 
@@ -88,7 +88,7 @@ var AccountCollection = Backbone.Collection.extend({
         this.each(function(model){
             if(model.get("stealth")&&model.get("address"))
             {
-                if(model.get("balance")==0)
+                if(model.get("balance")==0 && model.get("unconfirmed")==0)
                 {
                     //check if is not used in bitprofile
                     if(!self.profiles.find({account:model.get("address")}))
@@ -102,10 +102,23 @@ var AccountCollection = Backbone.Collection.extend({
         {
             this.remove(filtered[i]);
         }
+        this.cleanEnabled = true;
     },
 
     observe: function(){
-        XETH_event.Account.connect(this, this.add);
+        XETH_event.Account.connect(this, this.parseNew);
+    },
+
+    parseNew: function(data){
+        if(this.cleanEnabled && data.stealth && data.address)
+        {
+            var model = new Account(data);
+            if(model.get("balance") != 0 || model.get("unconfirmed") != 0) this.add(model);
+        }
+        else
+        {
+            this.add(data);
+        }
     },
 
     fetch:function(){
