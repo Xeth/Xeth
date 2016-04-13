@@ -16,7 +16,7 @@ var AccountBaseView = Backbone.View.extend({
 
 var AccountView = AccountBaseView.extend({
     initialize:function(options){
-        _(this).bindAll("update", "shortify");
+        _(this).bindAll("update", "shortify", "removing");
         this.template = options.template;
 
         var data = this.model.toJSON();
@@ -27,6 +27,11 @@ var AccountView = AccountBaseView.extend({
         this.$balance = this.$el.find(".amount");
         this.model.on("change:balance",this.update);
         this.model.on("change:unconfirmed", this.update);
+        this.model.on("removing", this.removing);
+    },
+
+    removing:function(){
+        this.$el.addClass("removing");
     },
 
     shortify:function(size, force){
@@ -84,6 +89,7 @@ var AccountViewReflection = AccountView.extend({
                 this.$balance = this.$el.find(".amount");
                 this.listenTo(view.model, "change:balance", this.update);
                 this.listenTo(view.model, "change:unconfirmed", this.update);
+                this.listenTo(view.model, "removing", this.removing);
                 if(this.compact) this.$el.find(".amount").hide();
             }
         }

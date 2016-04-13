@@ -18,8 +18,20 @@ var Account = AccountBase.extend({
     idAttribute: "address",
 
     initialize:function(){
-        _(this).bindAll("update");
+        _(this).bindAll("update", "removeIfEmpty", "destroy");
         this.update();
+        if(this.get("stealth"))
+        {
+            this.on("change:balance", this.removeIfEmpty);
+        }
+    },
+
+    removeIfEmpty: function(){
+        if((this.get("balance")==0)&&(this.get("unconfirmed")==0))
+        {
+            this.trigger("removing");
+            setTimeout(this.destroy, 30000);
+        }
     },
 
     update:function(){
@@ -46,7 +58,12 @@ var Account = AccountBase.extend({
             this.update();
         }
         return txid;
+    },
+
+    destroy: function(){
+        this.trigger("destroy", this);
     }
+
 });
 
 
