@@ -24,6 +24,7 @@ var MainWindowView = Backbone.View.extend({
         if(name=="default" && !this.models.accounts.length)
         {
             name = "generate";
+            args = {message:"generating your very first address"};
         }
         var view =  this.subpages[name];
         if(view!=undefined){

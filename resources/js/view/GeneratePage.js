@@ -10,6 +10,7 @@ var GeneratePageView = SubPageView.extend({
     
     render:function(){
         this.$el.html(this.template());
+        this.message = this.$el.find("h1 .message");
         this.progress = this.$el.find("#newAddressSeedLoader .loader");
         this.seedPage = this.$el.find("#page_newAddress_seed");
         this.formPage = this.$el.find("#page_newAddress_create");
@@ -28,6 +29,7 @@ var GeneratePageView = SubPageView.extend({
     open:function(args){
         if(args)
         {
+            this.setMessage(args.message?args.message:"");
             this.redirectPage = args.redirect ? args.redirect : null;
             this.redirectArgs = (args.redirectArgs && args.redirectArgs instanceof Object) ? args.redirectArgs : {};
             if(args.stealth!=undefined)
@@ -43,11 +45,16 @@ var GeneratePageView = SubPageView.extend({
         }
         else
         {
+            this.setMessage("");
             this.redirectPage = this.redirectArgs = null;
             this.stealth.prop("disabled",false);
             this.stealth.button("refresh");
         }
         this.renderSeedPage();
+    },
+    
+    setMessage:function(msg){
+        this.message.html(msg);
     },
 
     renderSeedPage:function(){

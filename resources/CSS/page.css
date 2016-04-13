@@ -490,6 +490,11 @@
 	margin-top: 0;
 }
 
+.page h1 .message {
+    color: #BB874E;
+    float: right;
+}
+
 .innerpage > h1:first-child,
 .innerpage :first-child > h1:first-child {
 	margin-top: 30px;
