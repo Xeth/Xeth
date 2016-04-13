@@ -89,4 +89,25 @@ QVariant BitProfileFacade::getDetails(const QString &uri)
     return _invoker.invoke(command, uri);
 }
 
+
+QVariant BitProfileFacade::isIdAvailable(const QString &uri)
+{
+    CheckAvailabilityCommand command(_provider, _settings);
+    return _invoker.invoke(command, uri);
+}
+
+QVariant BitProfileFacade::isIdAvailable(const QVariantMap &request)
+{
+    CheckAvailabilityCommand command(_provider, _settings);
+    return _invoker.invoke(command, request);
+}
+
+QVariant BitProfileFacade::isIdValid(const QString &uri)
+{
+    ValidateIdCommand command;
+    return _invoker.invoke(command, uri);
+}
+
+
+
 }

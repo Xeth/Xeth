@@ -20,6 +20,8 @@
 #include "command/bitprofile/GetProfileDataCommand.hpp"
 #include "command/bitprofile/UpdateProfileInfoCommand.hpp"
 #include "command/bitprofile/ReadProfileInfoCommand.hpp"
+#include "command/bitprofile/CheckAvailabilityCommand.hpp"
+#include "command/bitprofile/ValidateIdCommand.hpp"
 
 
 namespace Xeth{
@@ -43,6 +45,9 @@ class BitProfileFacade : public QObject
         Q_INVOKABLE QVariant getData(const QVariantMap &);
         Q_INVOKABLE QVariant updateDetails(const QVariantMap &);
         Q_INVOKABLE QVariant getDetails(const QString &);
+        Q_INVOKABLE QVariant isIdAvailable(const QString &);
+        Q_INVOKABLE QVariant isIdAvailable(const QVariantMap &);
+        Q_INVOKABLE QVariant isIdValid(const QString &);
 
 
     private:
