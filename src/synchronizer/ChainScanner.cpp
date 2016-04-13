@@ -164,11 +164,7 @@ void ChainScanner::syncScan()
 
 void ChainScanner::processData(const ScanResult &result)
 {
-    if(!result.transactions.size())
-    {
-        updateScanCursor();
-    }
-    //else it was saved in partial result
+    updateScanCursor();
 }
 
 
@@ -201,8 +197,6 @@ void ChainScanner::processPartialData(const PartialScanResult &result)
             return;
         }
     }
-
-    updateScanCursor();
 }
 
 const ScanCriteria & ChainScanner::getScanCriteria() const
