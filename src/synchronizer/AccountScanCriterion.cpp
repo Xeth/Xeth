@@ -5,7 +5,9 @@ namespace Xeth{
 AccountScanCriterion::AccountScanCriterion(const char *address) :
     ScanCriterion(address)
 {
-    std::transform(_address.begin(), _address.end(), _address.begin(), ::tolower);
+    HexAddressNormalizer normalizer;
+    normalizer(_address, _address);
+    _address.insert(0, "0x"); //add prefix
 }
 
 void AccountScanCriterion::processHeader
