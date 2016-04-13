@@ -28,6 +28,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
     if(!_criteria.size())
     {
         progress.setValue(100);
+        emit Done(result);
         return 0;
     }
 
@@ -41,6 +42,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
         if(height < minBlock)
         {
             progress.setValue(100);
+            emit Done(result);
             return height;
         }
 
