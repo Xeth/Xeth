@@ -113,7 +113,7 @@ var AccountCollection = Backbone.Collection.extend({
         if(this.cleanEnabled && data.stealth && data.address)
         {
             var model = new Account(data);
-            if(model.get("balance") != 0 || model.get("unconfirmed") != 0) this.add(model);
+            if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || this.profiles.find({account:model.get("address")})) this.add(model);
         }
         else
         {
