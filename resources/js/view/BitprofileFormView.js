@@ -25,6 +25,7 @@ var BitprofileFormView = SubPageView.extend({
 
         this.pending = false;
         this.avatarDeleted = false;
+        this.locks = 0;
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
         //this.accounts.filter(function(model){return model!=undefined;}); //hide text
@@ -312,21 +313,27 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     lockPage:function(msg,details){
-
+        this.locks ++;
         this.pending = true;
-        this.$el.addClass("pending");
-        if(details){
-            this.$el.addClass("details");
-        }else{
-            this.account_payment = this.cloneAccount(this.accountSelect_payment);
+        if(this.locks == 1){
+            this.$el.addClass("pending");
+            if(details){
+                this.$el.addClass("details");
+            }else{
+                this.account_payment = this.cloneAccount(this.accountSelect_payment);
+            }
         }
         this.setLockMessage(msg);
     },
 
     unlockPage:function(){
-        this.pending = false;
-        this.$el.removeClass("pending");
-        this.$el.removeClass("details");
+        this.locks --;
+        if(this.locks <= 0){
+            this.locks = 0;
+            this.pending = false;
+            this.$el.removeClass("pending");
+            this.$el.removeClass("details");
+        }
     },
 
     submitDetails:function(){
