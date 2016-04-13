@@ -314,7 +314,7 @@ var TransactionsPageView = SubPageView.extend({
         var model = view.model;
         if(!view.$el.hasClass("off"))
         {
-            if(model.get("type")=="Sent")
+            if(model.get("category")=="Sent")
                 this.totalSent += model.get("amount");
             else
                 this.totalReceived += model.get("amount"); //including mined
@@ -325,7 +325,7 @@ var TransactionsPageView = SubPageView.extend({
     removeTransaction:function(view){
         if(view.$el.hasClass("off")) return;
         var model = view.model;
-        if(model.get("type")=="Sent")
+        if(model.get("category")=="Sent")
             this.totalSent -= model.get("amount");
         else
             this.totalReceived -= model.get("amount"); //including mined
