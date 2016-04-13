@@ -43,7 +43,7 @@ var MainWindowView = Backbone.View.extend({
     },
 
     render: function(){
-
+        try{
         this.$el.prepend(this.templates.get("main_page")());
 
         this.models.events.onError(this.notifyError);
@@ -133,6 +133,7 @@ var MainWindowView = Backbone.View.extend({
             fee: this.models.fee,
             profiles:this.models.profiles,
             profileValidator: this.models.profileValidator,
+            syncProgress: this.models.progress,
             el:this.$el.find("#page_bitprofile"),
             router:this.router,
             templates:this.templates
@@ -147,6 +148,7 @@ var MainWindowView = Backbone.View.extend({
         this.subpages["default"] = this.subpages.receive;
 
         this.show();
+        }catch(e){alert(e);}
     },
     notifyError:function(event){
         notifyError(event.message);

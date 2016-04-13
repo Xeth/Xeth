@@ -1,13 +1,28 @@
 var BitprofileFormView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("computeFee", "clickGenerate", "clickBrowseAvatar", "clickRemoveAvatar", "submitDetails", "submit", "resetForm", "reset", "lockPage", "validateName", "renderDetailsPage");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll(
+            "computeFee",
+            "clickGenerate",
+            "clickBrowseAvatar",
+            "clickRemoveAvatar",
+            "submitDetails",
+            "submit",
+            "resetForm",
+            "reset",
+            "lockPage",
+            "validateName",
+            "renderDetailsPage",
+            "checkSyncStatus"
+        );
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile_form");
         this.registrars = options.registrars;
         this.router = options.router;
         this.filesystem = options.filesystem;
         this.profileValidator = options.profileValidator;
+        this.syncProgress = options.syncProgress;
+
         this.pending = false;
         this.avatarDeleted = false;
         
@@ -62,6 +77,19 @@ var BitprofileFormView = SubPageView.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
+        if(this.syncProgress.get("sync")<99.99)
+        {
+            this.lockPage("synchronizing with network");
+            this.listenTo(this.syncProgress, "change:sync", this.checkSyncStatus);
+        }
+    },
+
+    checkSyncStatus:function(){
+        if(this.syncProgress.get("sync")>=99.99)
+        {
+            this.stopListening(this.syncProgress);
+            this.unlockPage();
+        }
     },
 
     exit:function(){
