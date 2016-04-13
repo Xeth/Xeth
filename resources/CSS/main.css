@@ -471,6 +471,9 @@ input[type="number"]:focus {
 .dropdownBox .item.off {
     display: none;
 }
+.dropdownBox .item.removing {
+    opacity: 0.3;
+}
 
 .ui-selectmenu-menu ul,
 .dropdown3 .holder {
