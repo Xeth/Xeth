@@ -13,19 +13,25 @@ var ProgressView = Backbone.View.extend({
     },
 
     startSync:function(){
+        this.$icon.removeClass("ok");
         this.setMessage("Synchronizing with network");
         this.listenTo(this.model, "change:sync", this.updateSync);
         this.updateSync();
+    },
+
+    startScan:function(){
+        this.$icon.removeClass("ok");
+        this.setMessage("Scanning blockchain");
+        this.stopListening();
+        this.listenTo(this.model, "change:scan", this.updateScan);
+        this.updateScan();
     },
 
     updateSync:function(){
         var progress = this.model.get("sync");
         this.updateProgressBar(progress);
         if(progress>=99.99){
-            this.setMessage("Scanning blockchain");
-            this.stopListening();
-            this.listenTo(this.model, "change:scan", this.updateScan);
-            this.updateScan();
+            this.startScan();
         }
     },
 
@@ -49,12 +55,19 @@ var ProgressView = Backbone.View.extend({
 
     watchSync:function(){
         var progress = this.model.get("sync");
-        if(progress<97){
-            this.$icon.removeClass("ok");
+        if(progress<99){
             this.stopListening();
             this.startSync();
+        }else{
+            progress = this.model.get("scan");
+            if(progress<99)
+            {
+                this.stopListening();
+                this.startSync();
+            }
         }
     },
+
 
     setMessage:function(txt){
         this.$text.html(txt);
