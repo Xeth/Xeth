@@ -27,6 +27,7 @@ class ChainScanner : public QObject
 
     public:
         ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=1000, size_t scanInterval=10000);
+        ~ChainScanner();
 
         void setScanChunkSize(size_t limit);
         void autoScan(size_t interval);

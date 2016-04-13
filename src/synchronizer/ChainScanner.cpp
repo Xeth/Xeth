@@ -52,6 +52,13 @@ ChainScanner::ChainScanner(const ChainScanner &copy) : /*is private, copy is not
 {}
 
 
+ChainScanner::~ChainScanner()
+{
+    stop();
+    updateScanCursor();
+}
+
+
 void ChainScanner::setScanChunkSize(size_t limit)
 {
     _scanCriteria.setLimit(limit);
