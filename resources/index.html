@@ -60,6 +60,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Profile.js"></script>
 <script type="text/javascript" src="js/model/Registrar.js"></script>
 <script type="text/javascript" src="js/model/ProfileResolver.js"></script>
+<script type="text/javascript" src="js/model/ProfileValidator.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -112,7 +113,8 @@ try{
         events: events,
         profiles: profiles,
         registrars: registrars,
-        resolver: resolver
+        resolver: resolver,
+        profileValidator: new ProfileValidator
     });
 
     XETH_event.Ready.connect(this, function(){

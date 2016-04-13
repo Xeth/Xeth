@@ -1,6 +1,5 @@
 #include "CheckAvailabilityCommand.hpp"
 
-
 namespace Xeth{
 
 
@@ -11,10 +10,11 @@ CheckAvailabilityCommand::CheckAvailabilityCommand(Ethereum::Connector::Provider
 
 
 
-QVariant CheckAvailabilityCommand::operator()(const QString &name)
+QVariant CheckAvailabilityCommand::operator()(const QString &uri)
 {
-    BitProfile::Profile profile = _resolver.lookupProfile(name.toStdString());
-    return QVariant::fromValue(!profile.isNull());
+    BitProfile::Profile profile = _resolver.lookupProfile(uri.toStdString());
+    bool result = profile.isNull();
+    return QVariant::fromValue(result);
 }
 
 
