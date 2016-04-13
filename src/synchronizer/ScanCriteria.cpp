@@ -25,6 +25,7 @@ ScanCriteria::ScanCriteria(size_t limit) :
 void ScanCriteria::registerMetaType()
 {
     qRegisterMetaType<Xeth::PartialScanResult>("Xeth::PartialScanResult");
+    qRegisterMetaType<Xeth::PartialScanResult>("Xeth::ScanResult");
 }
 
 
@@ -114,7 +115,7 @@ void ScanCriteria::addCriterion(size_t minBlock, ScanCriterion *criterion)
     Container::iterator it = std::lower_bound(_criteria.begin(), _criteria.end(), minBlock, CriterionCompare());
     if(it==_criteria.end())
     {
-        _criteria.push_front(std::make_pair(minBlock, criterion));
+        _criteria.push_back(std::make_pair(minBlock, criterion));
     }
     else
     {
@@ -134,14 +135,20 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result)
 
 bool ScanCriteria::CriterionCompare::operator ()(const std::pair<size_t, ScanCriterion *> &criterion, size_t minBlock)
 {
-    return minBlock < criterion.first;
+    return criterion.first < minBlock;
 }
 
 
 ScanCriteria::Iterator::Iterator() : Base() {}
 
 ScanCriteria::Iterator::Iterator(const ScanCriteria::Container::const_iterator & p) :
-    Base(p) {}
+    Base(p)
+{}
+
+size_t ScanCriteria::Iterator::getBlockIndex() const
+{
+    return this->base()->first;
+}
 
 const ScanCriterion & ScanCriteria::Iterator::dereference() const
 {

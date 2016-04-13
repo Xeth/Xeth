@@ -38,6 +38,10 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
         throw std::runtime_error("failed to connect Data signal");
     }
 
+    if(!QObject::connect(&_scanCriteria, &ScanCriteria::Done, this, &ChainScanner::updateScanCursor))
+    {
+        throw std::runtime_error("failed to connect Data signal");
+    }
 }
 
 
@@ -151,33 +155,37 @@ void ChainScanner::syncScan()
 }
 
 
-void ChainScanner::processData(const PartialScanResult &result)
+void ChainScanner::updateScanCursor()
 {
     ScanIndexStore & indexStore = _database.getScanIndex();
+    for(ScanCriteria::Iterator sIt=_scanCriteria.begin(), sEnd=_scanCriteria.end(); sIt!=sEnd; ++sIt)
+    {
+        indexStore.insert(sIt->getAddress(), sIt.getBlockIndex());
+    }
+}
+
+void ChainScanner::processData(const PartialScanResult &result)
+{
     TransactionStore & transactionStore = _database.getTransactions();
     StealthPaymentStore & stealthPaymentStore = _database.getStealthPayments();
 
     for(QJsonArray::const_iterator it = result.transactions.first; it!=result.transactions.second; ++it)
     {
-	const QJsonValue & value = *it;
+        const QJsonValue & value = *it;
         QJsonObject object = value.toObject(); //ToDo : use const reference isntead
         transactionStore.insert(object); //ignore duplicates
     }
 
     for(QJsonArray::const_iterator it = result.stealthPayments.first; it!=result.stealthPayments.second; ++it)
     {
-	const QJsonValue & value = *it;
-        if(!stealthPaymentStore.insert(value.toObject()))
+        const QJsonValue & value = *it;
+        if(!stealthPaymentStore.replace(value.toObject()))
         {
             return;
         }
     }
 
-    for(ScanCriteria::Iterator sIt=_scanCriteria.begin(), sEnd=_scanCriteria.end(); sIt!=sEnd; ++sIt)
-    {
-        indexStore.insert(sIt->getAddress(), result.lastBlock);
-    }
-
+    updateScanCursor();
 }
 
 const ScanCriteria & ChainScanner::getScanCriteria() const

@@ -62,7 +62,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
 
         progress.setRange(minBlock, height);
 
-        result.lastBlock = minIndex;
+        result.lastBlock = minBlock;
 
         size_t processed = 0;
 
@@ -100,8 +100,17 @@ SAVE_CRITERIA_RESULT:
 
     for(Container::iterator it=_criteria.begin(), end=_criteria.end(); it!=end; ++it)
     {
-        it->first = result.lastBlock;
+        if(it->first < result.lastBlock)
+        {
+            it->first = result.lastBlock;
+        }
+        else
+        {
+            break;
+        }
     }
+
+    emit Done(result);
 
     return result.lastBlock;
 
