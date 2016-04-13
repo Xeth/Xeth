@@ -1,10 +1,10 @@
-#include "FacadeInitializer.hpp"
+#include "ChildrenInitializer.hpp"
 #include <QDebug>
 
 namespace Xeth{
 
 
-FacadeInitializer::FacadeInitializer(QThread *parent,Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &settings) : 
+ChildrenInitializer::ChildrenInitializer(QThread *parent,Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &settings) : 
     _parent(parent),
     _provider(provider),
     _eth(eth),
@@ -14,7 +14,7 @@ FacadeInitializer::FacadeInitializer(QThread *parent,Ethereum::Connector::Provid
 {}
 
 
-void FacadeInitializer::initialize()
+void ChildrenInitializer::initialize()
 {
 
     bool success = initializeIpfs()&&initializeEth();
@@ -32,7 +32,7 @@ void FacadeInitializer::initialize()
 
 }
 
-bool FacadeInitializer::initializeIpfs()
+bool ChildrenInitializer::initializeIpfs()
 {
     qDebug()<<"checking ipfs...";
     QProcess client;
@@ -56,7 +56,7 @@ bool FacadeInitializer::initializeIpfs()
 }
 
 
-bool FacadeInitializer::initializeEth()
+bool ChildrenInitializer::initializeEth()
 {
     qDebug()<<"checking geth...";
     if(!_provider.connect(_net))

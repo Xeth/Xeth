@@ -23,7 +23,7 @@
 #include "FileSystemFacade.hpp"
 #include "BitProfileFacade.hpp"
 
-#include "detail/FacadeInitializer.hpp"
+#include "detail/ChildrenInitializer.hpp"
 
 
 namespace Xeth{

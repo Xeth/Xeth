@@ -16,11 +16,11 @@ namespace Xeth{
 
 
 
-class FacadeInitializer : public QObject
+class ChildrenInitializer : public QObject
 {
     Q_OBJECT
     public:
-        FacadeInitializer(QThread *parent, Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &);
+        ChildrenInitializer(QThread *parent, Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &);
         void initialize();
 
     private:

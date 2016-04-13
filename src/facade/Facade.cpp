@@ -22,7 +22,7 @@ Facade::Facade(const Settings &settings) :
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
-    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
+    ChildrenInitializer *initializer = new ChildrenInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _eth.moveToThread(thread);
@@ -32,14 +32,14 @@ Facade::Facade(const Settings &settings) :
     _notifier.watch(_database);
     
 
-    connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
+    connect(thread, &QThread::started, initializer, &ChildrenInitializer::initialize);
     connect(initializer, SIGNAL(Error(const QString &)), &_notifier, SLOT(emitError(const QString &)));
-    connect(initializer, &FacadeInitializer::Done, this, &Facade::setReady);
+    connect(initializer, &ChildrenInitializer::Done, this, &Facade::setReady);
 
-    connect(initializer, &FacadeInitializer::Error, thread, &QThread::quit);
-    connect(initializer, &FacadeInitializer::Error, initializer, &FacadeInitializer::deleteLater);
-    connect(initializer, &FacadeInitializer::Done, thread, &QThread::quit);
-    connect(initializer, &FacadeInitializer::Done, initializer, &FacadeInitializer::deleteLater);
+    connect(initializer, &ChildrenInitializer::Error, thread, &QThread::quit);
+    connect(initializer, &ChildrenInitializer::Error, initializer, &ChildrenInitializer::deleteLater);
+    connect(initializer, &ChildrenInitializer::Done, thread, &QThread::quit);
+    connect(initializer, &ChildrenInitializer::Done, initializer, &ChildrenInitializer::deleteLater);
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     thread->start();
@@ -47,6 +47,7 @@ Facade::Facade(const Settings &settings) :
 
 Facade::~Facade()
 {
+    _synchronizer.stop();
     _eth.stop();
     _ipfs.stop();
 }
