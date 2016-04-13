@@ -88,17 +88,21 @@ var BitprofileFormView = SubPageView.extend({
     },
     
     validateName:function(){
-        var name = this.bitprofileId.val();
+        var name = this.bitprofileId.val().toLowerCase();
         
-        if(!this.profileValidator.isValidName(name)){
-            this.setIDError("use only ( A-Z, 0-9, _ )");
-            return false;   
+        if(this.model&&this.model.get("context")==this.bitprofileContext.val()&&this.model.get("id")==name){
+            this.bitprofileId.clearvalid();
+        }else{
+            if(!this.profileValidator.isValidName(name)){
+                this.setIDError("use only ( A-Z, 0-9, _ )");
+                return false;   
+            }
+            if(!this.profileValidator.isAvailable({id:name, context:this.bitprofileContext.val()})){
+                this.setIDError("already taken");
+                return false;
+            }
+            this.bitprofileId.valid();
         }
-        if(!this.profileValidator.isAvailable({id:name, context:this.bitprofileContext.val()})){
-            this.setIDError("already taken");
-            return false;
-        }
-        this.bitprofileId.valid();
         return true;
     },
     
@@ -333,7 +337,7 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     getFormData:function(){
-        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:(!this.validateName()?null:this.bitprofileId.val()), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
+        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:(!this.validateName()?null:this.bitprofileId.val().toLowerCase()), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
 
         var avatar = this.avatar.val();
         if(avatar.length)
