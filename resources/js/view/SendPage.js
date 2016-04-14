@@ -127,6 +127,7 @@ var SendPageView = SubPageView.extend({
             this.destination.off("input", this.resolveProfileLater);
             this.destination.off("change", this.resolveProfile);
         }
+        this.computeFee();
     },
 
     resolveProfileLater:function(){
