@@ -93,7 +93,8 @@ var StealthAccount = AccountBase.extend({
         this.set("balance",0);
         this.set("unconfirmed", 0);
     },
-
+    pin:function(){},
+    unpin:function(){},
     update:function(){},
     autoUpdate:function(){},
     send:function(){
