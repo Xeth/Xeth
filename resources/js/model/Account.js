@@ -47,7 +47,7 @@ var Account = AccountBase.extend({
         if(this.pinned <= 0)
         {
             this.pinned = 0;
-            this.removeIfEmpty();
+            if(this.get("stealth")) this.removeIfEmpty();
         }
     },
 
