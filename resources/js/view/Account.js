@@ -64,6 +64,8 @@ var AccountView = AccountBaseView.extend({
         var balance = splitAmount(amount);
         this.$balance.find(".int").html(balance.int);
         this.$balance.find(".dec").html(balance.dec);
+        this.trigger("change:balance", amount);
+        this.trigger("change:unconfirmed", unconfirmed);
     }
 });
 

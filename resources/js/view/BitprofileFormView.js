@@ -13,6 +13,8 @@ var BitprofileFormView = SubPageView.extend({
             "lockPage",
             "validateName",
             "renderDetailsPage",
+            "resetAddressError",
+            "updatePaymentAccountBalance",
             "checkSyncStatus"
         );
         SubPageView.prototype.initialize.call(this,options);
@@ -27,8 +29,10 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarDeleted = false;
         this.locks = 0;
         
-        this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        //this.accounts.filter(function(model){return model!=undefined;}); //hide text
+        this.account_details = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.account_payment = new AccountSelect({collection:options.accounts, templates:options.templates});
+        this.account_details.filter(function(model){return model!=undefined&&!model.get("address")&&model.get("stealth");});
+        this.account_payment.filter(function(model){return model!=undefined&&model.get("address");});
     },
 
     render:function(){
@@ -71,7 +75,9 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarRemove.click(this.clickRemoveAvatar);
         this.avatarRemove.hide();
         
-        this.listenTo(this.accounts, "change", this.resetAddressError);
+        this.account_payment.selectedView().on("change:balance", this.updatePaymentAccountBalance);
+        this.account_payment.on("change", this.resetAddressError);
+        this.account_payment.on("change", this.updatePaymentAccountBalance);
         
         this.$el.find('.inputBtn').tooltip({
             position: { my: "center bottom", at: "center top-5" },
@@ -83,6 +89,16 @@ var BitprofileFormView = SubPageView.extend({
             this.lockPage("synchronizing with network");
             this.listenTo(this.syncProgress, "change:sync", this.checkSyncStatus);
         }
+        
+        this.account_details.resize(22);
+        this.account_details.compact(true);
+        this.account_details.attach(this.accountSelect_details);
+        this.account_details.style("mini receive");
+        
+        this.account_payment.resize(28);
+        this.account_payment.compact(true);
+        this.account_payment.attach(this.accountSelect_payment);
+        this.account_payment.style("mini send");
     },
 
     checkSyncStatus:function(){
@@ -93,13 +109,7 @@ var BitprofileFormView = SubPageView.extend({
         }
     },
 
-    exit:function(){
-        //this.stopListening(this.accounts, "change", this.resetAddressError);
-        this.stopListeningPayments();
-    },
-
     attach:function(dom){
-        this.exit();
         this.$el.appendTo(dom);
     },
 
@@ -165,73 +175,24 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     renderDetailsPage:function(){
-        this.stopListeningPayments();
-        
-        if(this.accountSelect_details.find(".accountClone").length>0)
-        this.accountSelect_details.html('');
-        this.account_payment = this.cloneAccount(this.accountSelect_payment);
-        
-        this.accounts.resize(22);
-        this.accounts.compact(true);
-        this.accounts.attach(this.accountSelect_details);
-        this.accounts.filter(function(model){return model!=undefined&&!model.get("address")&&model.get("stealth");});
-        this.accounts.style("mini receive");
-        if(this.account_details) this.selectAccount("stealth",this.account_details.get("stealth"));
-        
         this.detailsPage.addClass("active");
         this.paymentPage.removeClass("active");
     },
 
     renderPaymentPage:function(){
-        this.accountSelect_payment.html('');
-        this.account_details = this.cloneAccount(this.accountSelect_details);
-        
-        this.accounts.resize(28);
-        this.accounts.compact(true);
-        this.accounts.attach(this.accountSelect_payment);
-        this.accounts.filter(function(model){return model!=undefined&&model.get("address");});
-        this.accounts.style("mini send");
-        
         if(this.model){
-            this.accounts.readonly(true);
-            this.selectAccount("address",this.model.get("account"));
-        }else{
-            if(this.account_payment) this.selectAccount("address",this.account_payment.get("address"));
+            var account = this.model.get("account");
+            this.account_payment.readonly(true);
+            this.account_payment.focus(function(model){ return (model)&&(model.get("address"))==account});
         }
         this.computeFee();
+        this.updatePaymentAccountBalance();
         this.detailsPage.removeClass("active");
         this.paymentPage.addClass("active");
-        this.updatePaymentAccount();
-        this.listenTo(this.accounts, "change", this.updatePaymentAccount);
-    },
-
-    stopListeningPayments:function(){
-        this.stopListening(this.accounts, "change", this.updatePaymentAccount);
-        if(this.account_payment) this.stopListening(this.account_payment);
-    },
-
-    cloneAccount:function(dom){
-        if(dom){
-            var currentAccount = '<div class="input accountClone">'+this.accounts.selectedView().$el.html()+'</div>';
-            this.accounts.detach();
-            dom.html(currentAccount);
-        }
-        return this.accounts.selected();
-    },
-
-    selectAccount:function(type,account){
-        this.accounts.focus(function(model){ return (model)&&(model.get(type))==account;});
-    },
-
-    updatePaymentAccount:function(){
-        if(this.account_payment) this.stopListening(this.account_payment);
-        this.account_payment = this.accounts.selected();
-        this.updatePaymentAccountBalance();
-        this.listenTo(this.account_payment, "change:balance",this.updatePaymentAccountBalance);
     },
 
     updatePaymentAccountBalance:function(){
-        var balance = splitAmount(this.account_payment.get("balance"));
+        var balance = splitAmount(this.account_payment.selected().get("balance"));
         this.accountBalance_payment.find(".int").html(balance.int);
         this.accountBalance_payment.find(".dec").html(balance.dec);
     },
@@ -258,10 +219,11 @@ var BitprofileFormView = SubPageView.extend({
 
     fillForm:function(){
         if(this.model){
+            var account = this.model.get("payments");
             this.bitprofileContext.val(this.model.get("context"));
             this.bitprofileId.val(this.model.get("id"));
             this.IPNSOption.prop("checked",this.model.get("ipns"));
-            this.selectAccount("stealth",this.model.get("payments"));
+            this.account_details.focus(function(model){ return (model)&&(model.get("stealth"))==account;});
             if(this.model.get("loaded"))
             {
                 var details = this.model.get("details");
@@ -319,8 +281,6 @@ var BitprofileFormView = SubPageView.extend({
             this.$el.addClass("pending");
             if(details){
                 this.$el.addClass("details");
-            }else{
-                this.account_payment = this.cloneAccount(this.accountSelect_payment);
             }
         }
         this.setLockMessage(msg);
@@ -341,7 +301,7 @@ var BitprofileFormView = SubPageView.extend({
             notifyError("please fill all mandatory fields");
             return false;
         }
-        if(!this.accounts.selected()){
+        if(!this.account_details.selected()){
             notifyError("no stealth address selected");
             return false;
         }
@@ -355,8 +315,7 @@ var BitprofileFormView = SubPageView.extend({
             notifyError("please fill all mandatory fields");
             return false;
         }
-        var account = this.accounts.selected();
-        if(account.get("balance")<parseFloat(this.fee)){
+        if(this.account_payment.selected().get("balance")<parseFloat(this.fee)){
             this.accountSelect_payment.error();
             notifyError("not enough funds");
             return false;
@@ -372,7 +331,7 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     getFormData:function(){
-        var request = {account:this.accounts.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:(!this.validateName()?null:this.bitprofileId.val().toLowerCase()), stealth:this.account_details.get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
+        var request = {account:this.account_payment.selected().get("address"), password:this.password.val(), context:this.bitprofileContext.val(), id:(!this.validateName()?null:this.bitprofileId.val().toLowerCase()), stealth:this.account_details.selected().get("stealth"), ipns:this.IPNSOption.prop("checked"), name:this.name.val()};
 
         var avatar = this.avatar.val();
         if(avatar.length)
