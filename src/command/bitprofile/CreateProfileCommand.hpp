@@ -20,7 +20,7 @@ namespace Xeth{
 class CreateProfileCommand
 {
     public:
-        CreateProfileCommand(Ethereum::Connector::Provider &provider, DataBase &, const Settings &settings, Notifier &notifier);
+        CreateProfileCommand(Ethereum::Connector::Provider &provider, DataBase &, Synchronizer &, const Settings &settings, Notifier &notifier);
 
         QVariant operator()(const QVariantMap &);
 
@@ -30,6 +30,7 @@ class CreateProfileCommand
     private:
         BitProfile::Resolver _resolver;
         DataBase &_database;
+        Synchronizer &_synchronizer;
         Notifier &_notifier;
 };
 

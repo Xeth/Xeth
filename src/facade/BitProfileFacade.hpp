@@ -7,6 +7,7 @@
 #include "Notifier.hpp"
 #include "Invoker.hpp"
 #include "database/DataBase.hpp"
+#include "synchronizer/Synchronizer.hpp"
 
 #include "command/bitprofile/CreateProfileCommand.hpp"
 #include "command/bitprofile/EstimateProfileOperationCommand.hpp"
@@ -31,7 +32,7 @@ class BitProfileFacade : public QObject
 {
     Q_OBJECT
     public:
-        BitProfileFacade(Ethereum::Connector::Provider &, DataBase &, Notifier &, const Settings &);
+        BitProfileFacade(Ethereum::Connector::Provider &, DataBase &, Synchronizer &, Notifier &, const Settings &);
 
         Q_INVOKABLE QVariant createProfile(const QVariantMap &);
         Q_INVOKABLE QVariant listProfiles();
@@ -53,6 +54,7 @@ class BitProfileFacade : public QObject
     private:
         Ethereum::Connector::Provider &_provider;
         DataBase &_database;
+        Synchronizer &_synchronizer;
         BitProfileStore &_store;
         Notifier &_notifier;
         const Settings &_settings;

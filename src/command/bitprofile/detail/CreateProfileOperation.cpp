@@ -11,6 +11,7 @@ CreateProfileOperation::CreateProfileOperation
     const QString &account,
     const QString &password,
     DataBase &database,
+    Synchronizer &synchronizer,
     Notifier &notifier
 ) :
     _registrar(registrar),
@@ -18,6 +19,7 @@ CreateProfileOperation::CreateProfileOperation
     _account(account),
     _password(password),
     _database(database),
+    _synchronizer(synchronizer),
     _notifier(notifier)
 {}
 
@@ -35,7 +37,10 @@ void CreateProfileOperation::operator()()
         {
             //trying to redeem key
             StealthSpendKeyRedeemer redeemer(_database);
-            redeemer.redeem(payer, password);
+            if(redeemer.redeem(payer, password))
+            {
+                _synchronizer.watchAddress(payer);
+            }
         }
 
         BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), payer, password);

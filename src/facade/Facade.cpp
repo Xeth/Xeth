@@ -18,7 +18,7 @@ Facade::Facade(const Settings &settings) :
     _progress(_synchronizer, _notifier),
     _clipboard(_notifier),
     _filesystem(_notifier),
-    _bitprofile(_provider, _database, _notifier, _settings)
+    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));

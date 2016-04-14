@@ -14,20 +14,26 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
 {
     const typename DataBase::ScanIndexStore &indexStore = _database.getScanIndex();
     const typename DataBase::StealthKeyStore & stealthKeys = _database.getStealthKeys();
+    const typename DataBase::BitProfileStore & bitprofileStore = _database.getBitProfiles();
     const typename DataBase::StealthPaymentStore & stealthPayments = _database.getStealthPayments();
-
-    std::set<std::string> accountsRegistry;
 
     try
     {
         typename AccountsFetcher::Result accounts = _accountsFetcher.getAccounts();
 
-        std::map<std::string, bool> skipped;
+        std::set<std::string> skipped;
 
         for(typename DataBase::StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
         {
             QJsonObject payment = *it;
-            skipped.insert(std::make_pair(payment["address"].toString().toStdString(), true));
+            skipped.insert(payment["address"].toString().toStdString());
+        }
+
+        for(typename DataBase::BitProfileStore::Iterator it=bitprofileStore.begin(), end=bitprofileStore.end(); it!=end; ++it)
+        {
+            std::string address = it->getAuthAddress();
+            size_t cursor = indexStore.get(address.c_str());
+            criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
         }
 
 
@@ -38,7 +44,6 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
             {
                 size_t cursor = indexStore.get(address.c_str());
                 criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
-                accountsRegistry.insert(address);
             }
         }
 

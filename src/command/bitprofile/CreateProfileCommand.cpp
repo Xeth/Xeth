@@ -4,9 +4,10 @@
 namespace Xeth{
 
 
-CreateProfileCommand::CreateProfileCommand(Ethereum::Connector::Provider &provider, DataBase &database, const Settings &settings, Notifier &notifier) :
+CreateProfileCommand::CreateProfileCommand(Ethereum::Connector::Provider &provider, DataBase &database, Synchronizer &synchronizer, const Settings &settings, Notifier &notifier) :
     _resolver(provider, GetBitprofileNetwork(settings)),
     _database(database),
+    _synchronizer(synchronizer),
     _notifier(notifier)
 {}
 
@@ -33,6 +34,7 @@ QVariant CreateProfileCommand::operator()(const QVariantMap &request)
         request["account"].toString(),
         request["password"].toString(),
         _database,
+        _synchronizer,
         _notifier
     ));
     action->start();

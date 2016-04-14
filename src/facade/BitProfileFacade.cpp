@@ -4,9 +4,10 @@
 namespace Xeth{
 
 
-BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, DataBase &database, Notifier &notifier, const Settings &settings) :
+BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, DataBase &database, Synchronizer &synchronizer, Notifier &notifier, const Settings &settings) :
     _provider(provider),
     _database(database),
+    _synchronizer(synchronizer),
     _store(database.getBitProfiles()),
     _notifier(notifier),
     _settings(settings),
@@ -16,7 +17,7 @@ BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, Data
 
 QVariant BitProfileFacade::createProfile(const QVariantMap &request)
 {
-    CreateProfileCommand command(_provider, _database, _settings, _notifier);
+    CreateProfileCommand command(_provider, _database, _synchronizer, _settings, _notifier);
     return _invoker.invoke(command, request);
 }
 

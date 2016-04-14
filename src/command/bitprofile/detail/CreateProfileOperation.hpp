@@ -9,6 +9,7 @@
 
 #include "facade/Notifier.hpp"
 #include "database/DataBase.hpp"
+#include "synchronizer/Synchronizer.hpp"
 
 #include "detail/StealthSpendKeyRedeemer.hpp"
 
@@ -26,6 +27,7 @@ class CreateProfileOperation
             const QString &account,
             const QString &password,
             DataBase &,
+            Synchronizer &,
             Notifier &
         );
 
@@ -40,6 +42,7 @@ class CreateProfileOperation
         QString _account;
         QString _password;
         DataBase &_database;
+        Synchronizer &_synchronizer;
         Notifier &_notifier;
 };
 
