@@ -1,4 +1,3 @@
-#include <QDebug>
 
 namespace Xeth{
 
