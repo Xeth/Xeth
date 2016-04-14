@@ -1,3 +1,5 @@
+#include <QDebug>
+
 namespace Xeth{
 
 
@@ -29,10 +31,11 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
             skipped.insert(std::make_pair(payment["address"].toString().toStdString(), false));
         }
 
+
         for(typename AccountsFetcher::Result::Iterator it = accounts.begin(), end=accounts.end(); it!=end; ++it)
         {
             std::string address = *it;
-            if(skipped.find(address)!=skipped.end())
+            if(skipped.find(address)==skipped.end())
             {
                 size_t cursor = indexStore.get(address.c_str());
                 criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
