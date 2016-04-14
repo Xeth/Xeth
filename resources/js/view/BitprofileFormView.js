@@ -134,7 +134,7 @@ var BitprofileFormView = SubPageView.extend({
         }
         return true;
     },
-    
+
     setIDError:function(msg){
         this.bitprofileId.error(msg);
     },
@@ -163,7 +163,7 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarImage.attr("src",'img/avatarEmpty.png');
         this.avatarRemove.hide();
     },
-    
+
     renderDetailsPage:function(){
         this.stopListeningPayments();
         

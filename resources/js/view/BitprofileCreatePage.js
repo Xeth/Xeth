@@ -14,7 +14,7 @@ var BitprofileCreateFee = function(fee){
 var BitprofileCreatePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "submit", "clearForm", "submitCreate", "submitStealth", "submitDetails");
+        _(this).bindAll("open", "submit", "clearForm", "submitCreate", "submitStealth", "submitDetails", "riseError");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
         this.feeModel = new BitprofileCreateFee(options.fee);
@@ -51,10 +51,10 @@ var BitprofileCreatePageView = SubPageView.extend({
         request.gas = this.feeModel.createFee.gas;
         request.price = this.feeModel.createFee.price;
         if(!this.profiles.create(request)){
-            this.form.risePasswordError();
+            this.riseError();
             return false;
         }
-        this.listenToOnce(this.profiles, "error", this.clearForm);
+        this.listenToOnce(this.profiles, "error", this.riseError);
         //notifySuccess("creating bitprofile");
         this.form.lockPage("Registration in progress...");
         this.listenToOnce(this.profiles, "add", this.submitStealth);
@@ -67,7 +67,7 @@ var BitprofileCreatePageView = SubPageView.extend({
         this.form.setLockMessage("Linking stealth address...");
         var profile = this.profiles.first();
         if(!profile.linkStealthAddress(request)){
-            this.form.unlockPage();
+            this.riseError();
             return false;
         }else{
             profile.once("change:payments", this.submitDetails);
@@ -82,7 +82,7 @@ var BitprofileCreatePageView = SubPageView.extend({
             if(formData.name) request.details.name = formData.name;
             var profile = this.profiles.first();
             if(!profile.changeDetails(request)){
-                this.form.unlockPage();
+                this.riseError();
                 return false;
             }else{
                 this.form.lockPage("Changing profile details...");
@@ -97,6 +97,11 @@ var BitprofileCreatePageView = SubPageView.extend({
     clearForm:function(){
         this.form.reset();
         this.stopListening(this.profiles);
-    }
+    },
 
+    riseError:function(){
+        this.form.unlockPage();
+        this.form.renderPaymentPage();
+        this.form.risePasswordError();
+    }
 });

@@ -30,7 +30,7 @@ var BitprofileEditFee = function(fee){
 var BitprofileEditPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "submit", "submitEdit", "clearForm", "submitEditURI", "submitEditStealth", "submitEditDetails");
+        _(this).bindAll("open", "submit", "submitEdit", "clearForm", "submitEditURI", "submitEditStealth", "submitEditDetails", "riseError");
 		SubPageView.prototype.initialize.call(this,options);
         this.profiles = options.profiles;
         this.feeModel = options.fee;
@@ -94,8 +94,7 @@ var BitprofileEditPageView = SubPageView.extend({
             request.gas = this.feeAdapter.renameFee.gas;
             request.price = this.feeAdapter.renameFee.price;
             if(!this.profile.changeURI(request)){
-                this.form.risePasswordError();
-                this.form.unlockPage();
+                this.form.riseError();
                 return false;
             }else{
                 this.form.lockPage("Changing URI...");
@@ -105,7 +104,7 @@ var BitprofileEditPageView = SubPageView.extend({
             this.submitEditStealth(true);
         }
         
-        this.listenTo(this.profile, "error", this.clearForm);
+        this.listenTo(this.profile, "error", this.riseError);
     },
 
     submitEditStealth:function(skipped){
@@ -114,7 +113,7 @@ var BitprofileEditPageView = SubPageView.extend({
             request.gas = this.feeAdapter.linkStealthFee.gas;
             request.price = this.feeAdapter.linkStealthFee.price;
             if(!this.profile.linkStealthAddress(request)){
-                this.riseError(skipped);
+                this.riseError();
                 return false;
             }else{
                 this.form.lockPage("Changing stealth address...");
@@ -139,7 +138,7 @@ var BitprofileEditPageView = SubPageView.extend({
                 request.details.avatar = formData.avatar;
             }
             if(!this.profile.changeDetails(request)){
-                this.riseError(skipped);
+                this.riseError();
                 return false;
             }else{
                 this.form.lockPage("Changing profile details...");
@@ -149,18 +148,16 @@ var BitprofileEditPageView = SubPageView.extend({
             this.clearForm(skipped);
         }
     },
+
     clearForm:function(skipped){
         if(skipped===true) notifySuccess("There is nothing to change");
         this.form.reset();
         this.stopListening(this.profile);
     },
-    riseError:function(skipped){
+
+    riseError:function(){
         this.form.unlockPage();
-        if(skipped===true){
-            this.form.risePasswordError();
-        }else{
-            this.clearForm();
-        }
+        this.form.risePasswordError();
     }
 
 });
