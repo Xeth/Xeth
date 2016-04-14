@@ -29,18 +29,6 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
             accountsRegistry.insert(address);
         }
 
-        //we don't expose spend key until spendind
-        for(typename DataBase::StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
-        {
-            QJsonObject payment = *it;
-            std::string address = payment["address"].toString().toStdString();
-            if(accountsRegistry.find(address) != accountsRegistry.end())
-            {
-                size_t cursor = indexStore.get(address.c_str());
-                criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
-            }
-        }
-
         for(typename DataBase::StealthKeyStore::Iterator it=stealthKeys.begin(), end=stealthKeys.end(); it!=end; ++it)
         {
             StealthKey key = *it;
