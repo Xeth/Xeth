@@ -143,7 +143,7 @@ var SendPageView = SubPageView.extend({
         this.clearResolverTimer();
         var uri = this.destination.val();
         if(uri){
-            var address = this.resolver.getPaymentAddress(uri);
+            var address = this.resolver.getPaymentAddress(uri.trim());
             if(address){
                 this.setAddressHint(address);
                 this.destination.noerror();
