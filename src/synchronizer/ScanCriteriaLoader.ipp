@@ -21,13 +21,26 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
     {
         typename AccountsFetcher::Result accounts = _accountsFetcher.getAccounts();
 
+        std::map<std::string, bool> skipped;
+
+        for(typename DataBase::StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
+        {
+            QJsonObject payment = *it;
+            skipped.insert(std::make_pair(payment["address"].toString().toStdString(), false));
+        }
+
         for(typename AccountsFetcher::Result::Iterator it = accounts.begin(), end=accounts.end(); it!=end; ++it)
         {
             std::string address = *it;
-            size_t cursor = indexStore.get(address.c_str());
-            criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
-            accountsRegistry.insert(address);
+            if(skipped.find(address)!=skipped.end())
+            {
+                size_t cursor = indexStore.get(address.c_str());
+                criteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
+                accountsRegistry.insert(address);
+            }
         }
+
+
 
         for(typename DataBase::StealthKeyStore::Iterator it=stealthKeys.begin(), end=stealthKeys.end(); it!=end; ++it)
         {
