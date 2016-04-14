@@ -10,14 +10,14 @@ CreateProfileOperation::CreateProfileOperation
     const QString &name,
     const QString &account,
     const QString &password,
-    BitProfileStore &store,
+    DataBase &database,
     Notifier &notifier
 ) :
     _registrar(registrar),
     _name(name),
     _account(account),
     _password(password),
-    _store(store),
+    _database(database),
     _notifier(notifier)
 {}
 
@@ -26,14 +26,26 @@ void CreateProfileOperation::operator()()
 {
     try
     {
-        BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), _account.toStdString(), _password.toStdString());
+
+        EthereumKeyStore & keys = _database.getEthereumKeys();
+        std::string payer = _account.toStdString();
+        std::string password = _password.toStdString();
+        
+        if(keys.find(payer)==keys.end())
+        {
+            //trying to redeem key
+            StealthSpendKeyRedeemer redeemer(_database);
+            redeemer.redeem(payer, password);
+        }
+
+        BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), payer, password);
         if(profile.isNull())
         {
             emitError("failed to create account ");
         }
         else
         {
-            if(!_store.insert(BitProfile::ProfileDescriptor(profile)))
+            if(!_database.getBitProfiles().insert(BitProfile::ProfileDescriptor(profile)))
             {
                 emitError("failed to save account ");
             }

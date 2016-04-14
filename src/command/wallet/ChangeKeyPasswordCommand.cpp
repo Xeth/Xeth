@@ -59,17 +59,8 @@ bool ChangeEthereumKeyPasswordCommand::execute(const QString &address, const QSt
     }
 
     //check unredeemed keys
-    StealthPaymentStore & stealthPayments = _database.getStealthPayments();
-    QJsonObject payment = stealthPayments.get(address.toStdString());
-    if(payment.empty())
-    {
-        return false;
-    }
-
-    StealthRedeemKeyFactory factory(_database);
-    EthereumKey key = factory.create(payment, password.toStdString(), newPassword.toStdString());
-    return _database.getEthereumKeys().insert(key);
-
+    StealthSpendKeyRedeemer redeemer(_database);
+    return redeemer.redeem(address.toStdString(), password.toStdString(), newPassword.toStdString());
 }
 
 

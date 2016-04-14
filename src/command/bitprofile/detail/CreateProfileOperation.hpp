@@ -8,6 +8,9 @@
 #include "bitprofile/ProfileStore.hpp"
 
 #include "facade/Notifier.hpp"
+#include "database/DataBase.hpp"
+
+#include "detail/StealthSpendKeyRedeemer.hpp"
 
 
 namespace Xeth{
@@ -22,7 +25,7 @@ class CreateProfileOperation
             const QString &name,
             const QString &account,
             const QString &password,
-            BitProfileStore &,
+            DataBase &,
             Notifier &
         );
 
@@ -36,7 +39,7 @@ class CreateProfileOperation
         QString _name;
         QString _account;
         QString _password;
-        BitProfileStore &_store;
+        DataBase &_database;
         Notifier &_notifier;
 };
 

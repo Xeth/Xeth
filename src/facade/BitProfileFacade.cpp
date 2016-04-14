@@ -16,7 +16,7 @@ BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, Data
 
 QVariant BitProfileFacade::createProfile(const QVariantMap &request)
 {
-    CreateProfileCommand command(_provider, _store, _settings, _notifier);
+    CreateProfileCommand command(_provider, _database, _settings, _notifier);
     return _invoker.invoke(command, request);
 }
 

@@ -10,7 +10,7 @@
 #include "detail/GenericChangePasswordCommand.hpp"
 #include "detail/ChangeEthereumKeyPasswordOperation.hpp"
 #include "detail/ChangeStealthKeyPasswordOperation.hpp"
-#include "detail/StealthRedeemKeyFactory.hpp"
+#include "detail/StealthSpendKeyRedeemer.hpp"
 
 namespace Xeth{
 

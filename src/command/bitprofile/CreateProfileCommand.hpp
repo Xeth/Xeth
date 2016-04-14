@@ -7,7 +7,7 @@
 #include "bitprofile/Resolver.hpp"
 
 #include "facade/Notifier.hpp"
-#include "database/BitProfileStore.hpp"
+#include "database/DataBase.hpp"
 #include "conf/GetBitProfileNetwork.hpp"
 
 #include "detail/BitProfileAction.hpp"
@@ -20,7 +20,7 @@ namespace Xeth{
 class CreateProfileCommand
 {
     public:
-        CreateProfileCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store, const Settings &settings, Notifier &notifier);
+        CreateProfileCommand(Ethereum::Connector::Provider &provider, DataBase &, const Settings &settings, Notifier &notifier);
 
         QVariant operator()(const QVariantMap &);
 
@@ -29,7 +29,7 @@ class CreateProfileCommand
 
     private:
         BitProfile::Resolver _resolver;
-        BitProfileStore &_store;
+        DataBase &_database;
         Notifier &_notifier;
 };
 
