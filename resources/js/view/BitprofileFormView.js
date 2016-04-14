@@ -57,13 +57,7 @@ var BitprofileFormView = SubPageView.extend({
         this.accountBalance_payment = this.$el.find("#bitprofileCreateAccountBalance");
         this.$form = this.paymentPage.find(".formpage");
         this.bitprofileContext = this.$el.find("#bitporfileCreate_context");
-        if(this.registrars.length==0) this.bitprofileContext.append("<option>NONE</option>");
-        else
-        for(var i=0; i<this.registrars.length; i++)
-        {
-            var registrar = this.registrars.at(i);
-            this.bitprofileContext.append("<option>"+registrar.get("uri")+"</option>");
-        }
+        this.renderRegistrars();
         this.bitprofileContext.selectmenu().selectmenu( "widget" ).addClass( "contextSelect" );
         this.$el.find("#bitporfileCreate_details .btnSubmit").click(this.submitDetails);
         this.$el.find("#bitporfileCreate_payment .btnSubmit").click(this.submit);
@@ -87,15 +81,15 @@ var BitprofileFormView = SubPageView.extend({
         if(this.syncProgress.get("sync")<99.99)
         {
             this.lockPage("synchronizing with network");
-            this.listenTo(this.syncProgress, "change:sync", this.checkSyncStatus);
+            this.listenToOnce(this.syncProgress, "change:sync", this.checkSyncStatus);
         }
         
-        this.account_details.resize(22);
+        this.account_details.resize(20);
         this.account_details.compact(true);
         this.account_details.attach(this.accountSelect_details);
         this.account_details.style("mini receive");
         
-        this.account_payment.resize(28);
+        this.account_payment.resize(25);
         this.account_payment.compact(true);
         this.account_payment.attach(this.accountSelect_payment);
         this.account_payment.style("mini send");
@@ -105,7 +99,19 @@ var BitprofileFormView = SubPageView.extend({
         if(this.syncProgress.get("sync")>=99.99)
         {
             this.stopListening(this.syncProgress);
+            this.renderRegistrars();
             this.unlockPage();
+        }
+    },
+    
+    renderRegistrars:function(){
+        this.bitprofileContext.html("");
+        if(this.registrars.length==0) this.bitprofileContext.append("<option>NONE</option>");
+        else
+        for(var i=0; i<this.registrars.length; i++)
+        {
+            var registrar = this.registrars.at(i);
+            this.bitprofileContext.append("<option>"+registrar.get("uri")+"</option>");
         }
     },
 
@@ -129,9 +135,13 @@ var BitprofileFormView = SubPageView.extend({
     validateName:function(){
         var name = this.bitprofileId.val().toLowerCase();
         
-        if(this.model&&this.model.get("context")==this.bitprofileContext.val()&&this.model.get("id")==name){
+        if(this.inProgress()||this.model&&this.model.get("context")==this.bitprofileContext.val()&&this.model.get("id")==name){
             this.bitprofileId.clearvalid();
         }else{
+            if(name.length<3){
+                this.setIDError("3 chars minimum");
+                return false;   
+            }
             if(!this.profileValidator.isValidName(name)){
                 this.setIDError("use only ( A-Z, 0-9, _ )");
                 return false;   
@@ -298,6 +308,7 @@ var BitprofileFormView = SubPageView.extend({
 
     submitDetails:function(){
         if(!$([this.bitprofileId]).validate()){
+            this.setIDError("cannot be empty");
             notifyError("please fill all mandatory fields");
             return false;
         }

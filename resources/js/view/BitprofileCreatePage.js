@@ -47,6 +47,14 @@ var BitprofileCreatePageView = SubPageView.extend({
     },
 
     submitCreate:function(){
+        this.stopListening(this.profile);
+        this.stopListening(this.profiles);
+        this.form.lockPage("Registration in progress...");
+        this.listenToOnce(this.profiles, "error", this.riseError);
+        this.submitProfile();
+    },
+
+    submitProfile:function(){
         var request = this.form.getFormData();
         request.gas = this.feeModel.createFee.gas;
         request.price = this.feeModel.createFee.price;
@@ -54,9 +62,7 @@ var BitprofileCreatePageView = SubPageView.extend({
             this.riseError();
             return false;
         }
-        this.listenToOnce(this.profiles, "error", this.riseError);
-        //notifySuccess("creating bitprofile");
-        this.form.lockPage("Registration in progress...");
+        this.form.setLockMessage("Registration in progress...");
         this.listenToOnce(this.profiles, "add", this.submitStealth);
         return true;
     },
@@ -65,12 +71,12 @@ var BitprofileCreatePageView = SubPageView.extend({
         request.gas = this.feeModel.linkStealthFee.gas;
         request.price = this.feeModel.linkStealthFee.price;
         this.form.setLockMessage("Linking stealth address...");
-        var profile = this.profiles.first();
-        if(!profile.linkStealthAddress(request)){
+        this.profile = this.profiles.first();
+        if(!this.profile.linkStealthAddress(request)){
             this.riseError();
             return false;
         }else{
-            profile.once("change:payments", this.submitDetails);
+            this.profile.once("change:payments", this.submitDetails);
         }
     },
     submitDetails:function(){
@@ -80,13 +86,13 @@ var BitprofileCreatePageView = SubPageView.extend({
             var request = {gas: this.feeModel.detailsFee.gas, price:this.feeModel.detailsFee.price, ipns:formData.ipns, password:formData.password, details:{}};
             if(formData.avatar) request.details.avatar = formData.avatar;
             if(formData.name) request.details.name = formData.name;
-            var profile = this.profiles.first();
-            if(!profile.changeDetails(request)){
+            this.profile = this.profiles.first();
+            if(!this.profile.changeDetails(request)){
                 this.riseError();
                 return false;
             }else{
-                this.form.lockPage("Changing profile details...");
-                this.listenToOnce(profile, "change:details", this.clearForm);
+                this.form.setLockMessage("Changing profile details...");
+                this.listenToOnce(this.profile, "change:details", this.clearForm);
             }
         }
         else
@@ -95,8 +101,9 @@ var BitprofileCreatePageView = SubPageView.extend({
         }
     },
     clearForm:function(){
-        this.form.reset();
         this.stopListening(this.profiles);
+        this.stopListening(this.profile);
+        this.form.reset();
     },
 
     riseError:function(){
