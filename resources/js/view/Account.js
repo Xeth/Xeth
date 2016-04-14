@@ -77,7 +77,10 @@ var AccountViewReflection = AccountView.extend({
 
     reset:function(view){
         this.undelegateEvents();
-        if(this.model) this.stopListening(this.model);
+        if(this.model){
+            this.stopListening(this.model);
+            this.model.unpin();
+        }
         this.view = view;
         if(!view){
             this.$el.html("");
@@ -85,6 +88,7 @@ var AccountViewReflection = AccountView.extend({
             this.model = view.model;
             this.$el.html(view.$el.clone().css("opacity", 1));
             if(this.model!=undefined){
+                this.model.pin();
                 this.shortify(this.width, true);
                 this.$balance = this.$el.find(".amount");
                 this.listenTo(view.model, "change:balance", this.update);

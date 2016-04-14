@@ -24,13 +24,30 @@ var Account = AccountBase.extend({
         {
             this.on("change:balance", this.removeIfEmpty);
         }
+        this.pinned = 0;
     },
 
     removeIfEmpty: function(){
-        if((this.get("balance")==0)&&(this.get("unconfirmed")==0))
+        if(!this.pinned)
         {
-            this.trigger("removing");
-            setTimeout(this.destroy, 30000);
+            if((this.get("balance")==0)&&(this.get("unconfirmed")==0))
+            {
+                this.trigger("removing");
+                setTimeout(this.destroy, 30000);
+            }
+        }
+    },
+
+    pin:function(){
+        this.pinned++;
+    },
+
+    unpin:function(){
+        this.pinned--;
+        if(this.pinned <= 0)
+        {
+            this.pinned = 0;
+            this.removeIfEmpty();
         }
     },
 
