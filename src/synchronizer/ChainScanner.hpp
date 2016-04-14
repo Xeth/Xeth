@@ -40,12 +40,11 @@ class ChainScanner : public QObject
 
         void addAddress(const std::string &);
         void addAddress(const std::string &, time_t);
-
         void addAddress(const Ethereum::Address &);
         void addStealthAddress(const StealthKey &);
-
         void addAddress(const Ethereum::Address &, time_t);
         void addStealthAddress(const StealthKey &, time_t);
+
 
         void stop();
         
@@ -56,7 +55,14 @@ class ChainScanner : public QObject
     public slots:
         void scan();
 
+    signals:
+        void NewAddressCriterion(const std::string &, size_t);
+        void NewStealthCriterion(const Xeth::StealthKey &, size_t);
+
     private slots:
+        void addAddressCriterion(const std::string &, size_t);
+        void addStealthCriterion(const Xeth::StealthKey &, size_t);
+
         void processPartialData(const PartialScanResult &);
         void processData(const ScanResult &);
         void updateScanCursor();

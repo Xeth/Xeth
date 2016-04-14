@@ -28,6 +28,10 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     _scanCriteria(scanChunk),
     _scanInterval(scanInterval)
 {
+    qRegisterMetaType<std::string>("std::string");
+    qRegisterMetaType<Xeth::StealthKey>("Xeth::StealthKey");
+    qRegisterMetaType<size_t>("size_t");
+
     if(!QObject::connect(&_scanTimer, SIGNAL(timeout()), this, SLOT(scan())))
     {
         throw std::runtime_error("failed to connect timeout signal");
@@ -42,6 +46,16 @@ ChainScanner::ChainScanner(Ethereum::Connector::Provider &provider, DataBase &da
     {
         throw std::runtime_error("failed to connect Data signal");
     }
+
+    if(!QObject::connect(this, SIGNAL(NewAddressCriterion(const std::string &, size_t)), this, SLOT(addAddressCriterion(const std::string &, size_t))))
+    {
+        throw std::runtime_error("failed to connect AddressCriterion signal");
+    }
+    if(!QObject::connect(this, SIGNAL(NewStealthCriterion(const Xeth::StealthKey &, size_t)), this, SLOT(addStealthCriterion(const Xeth::StealthKey &, size_t))))
+    {
+        throw std::runtime_error("failed to connect StealtCriterion signal");
+    }
+
 }
 
 
@@ -66,35 +80,47 @@ void ChainScanner::setScanChunkSize(size_t limit)
 
 void ChainScanner::addAddress(const Ethereum::Address &address)
 {
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<AccountScanCriterion>(getChainHeight(), address.toString().c_str());
+    emit NewAddressCriterion(address.toString(), getChainHeight());
 }
-
 
 void ChainScanner::addAddress(const std::string &address)
 {
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<AccountScanCriterion>(getChainHeight(), address.c_str());
+    emit NewAddressCriterion(address, getChainHeight());
 }
 
 
 void ChainScanner::addAddress(const std::string &address, time_t time)
 {
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<AccountScanCriterion>(estimateHeight(time), address.c_str());
+    emit NewAddressCriterion(address, estimateHeight(time));
 }
 
 void ChainScanner::addStealthAddress(const StealthKey &key)
 {
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<StealthScanCriterion>(getChainHeight(), key);
+    emit NewStealthCriterion(key, getChainHeight());
+}
+
+void ChainScanner::addStealthAddress(const StealthKey &key, time_t time)
+{
+    emit NewStealthCriterion(key, estimateHeight(time));
 }
 
 void ChainScanner::addAddress(const Ethereum::Address &address, time_t time)
 {
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<AccountScanCriterion>(estimateHeight(time), address.toString().c_str());
+    emit NewAddressCriterion(address.toString(), estimateHeight(time));
 }
+
+void ChainScanner::addStealthCriterion(const Xeth::StealthKey &key, size_t cursor)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<StealthScanCriterion>(cursor, key);
+}
+
+void ChainScanner::addAddressCriterion(const std::string &address, size_t cursor)
+{
+    ScopedScanPause pause(this);
+    _scanCriteria.addCriterion<AccountScanCriterion>(cursor, address.c_str());
+}
+
 
 size_t ChainScanner::estimateHeight(time_t time)
 {
@@ -108,11 +134,6 @@ size_t ChainScanner::getChainHeight()
 }
 
 
-void ChainScanner::addStealthAddress(const StealthKey &key, time_t time)
-{
-    ScopedScanPause pause(this);
-    _scanCriteria.addCriterion<StealthScanCriterion>(estimateHeight(time), key);
-}
 
 void ChainScanner::loadAddresses()
 {
