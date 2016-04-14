@@ -42,6 +42,14 @@ void CreateProfileOperation::operator()()
                 _synchronizer.watchAddress(payer);
             }
         }
+        else
+        {
+            StealthPaymentStore &payments = _database.getStealthPayments();
+            if(!payments.get(payer).empty())
+            {
+                _synchronizer.watchAddress(payer);
+            }
+        }
 
         BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(_registrar, _name.toStdString(), payer, password);
         if(profile.isNull())
