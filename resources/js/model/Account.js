@@ -61,6 +61,7 @@ var Account = AccountBase.extend({
     },
 
     destroy: function(){
+        if(this.interval) clearInterval(this.interval);
         this.trigger("destroy", this);
     }
 
