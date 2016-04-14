@@ -119,26 +119,7 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     cleanEmptyStealth:function(){
-        var self = this;
-        var filtered = [];
-        this.each(function(model){
-            if(model.get("stealth")&&model.get("address"))
-            {
-                if(model.get("balance")==0 && model.get("unconfirmed")==0)
-                {
-                    //check if is not used in bitprofile
-                    if(!self.profiles.find({account:model.get("address")}))
-                    {
-                        filtered.push(model);
-                    }
-                }
-            }
-        });
-        for(var i in filtered)
-        {
-            this.remove(filtered[i]);
-        }
-        this.cleanEnabled = true;
+
     },
 
     observe: function(){
@@ -146,20 +127,41 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     parseNew: function(data){
-        if(this.cleanEnabled && data.stealth && data.address)
+        var model = this.model(data);
+        var profile = this.profiles.find({account:model.get("address")});
+        if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
         {
-            var model = new Account(data);
-            if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || this.profiles.find({account:model.get("address")})) this.add(model);
-        }
-        else
-        {
-            this.add(data);
+            if(profile) model.set("profile", profile);
+            this.add(model);
         }
     },
 
     fetch:function(){
+        if(!this.profiles.length) this.profiles.fetch();
         var accounts = XETH_wallet.getAccounts();
-        this.reset(accounts);
+        this.reset(this.filterData(accounts));
+    },
+
+    filterData:function(accounts){
+        var result = [];
+        for(var i in accounts)
+        {
+            var model = this.model(accounts[i]);
+            var profile = this.profiles.find({account:model.get("address")});
+            if(profile) model.set("profile", profile);
+            if(!profile && model.get("stealth") && model.get("address"))
+            {
+                if(model.get("balance")!=0 || model.get("unconfirmed")!=0)
+                {
+                    result.push(model);
+                }
+            }
+            else
+            {
+                result.push(model);
+            }
+        }
+        return result;
     },
 
     generate:function(request){
