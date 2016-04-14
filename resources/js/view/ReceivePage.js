@@ -8,7 +8,7 @@ var ReceivePageView = SubPageView.extend({
         this.template = options.templates.get("receive");
                 
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(model){return model!=undefined && !(model.get("address") && model.get("stealth"));}); //hide text and stealth payments
+        this.accounts.filter(function(model){return model!=undefined && (!(model.get("address") && model.get("stealth")) || model.get("bitprofile") );}); //hide text and stealth payments
     },
     
     render:function(){
