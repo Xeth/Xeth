@@ -24,8 +24,12 @@
             <%if(transaction.category=="Sent"){%>
                 <a href="javascript:void(0)"><%=transaction.from%></a>
             <%}else{%>
-                <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                <a href="javascript:void(0)"><%=transaction.to%></a>
+                <%if(transaction.stealth){%>
+                    <span class="stealthIcon" title="<%=transaction.to%>"></span>
+                    <a href="javascript:void(0)"><%=shortify(transaction.stealth,40)%></a>
+                <%}else{%>
+                    <a href="javascript:void(0)"><%=transaction.to%></a>
+                <%}%>
             <%}%>
         </span>
     </div>
@@ -48,8 +52,12 @@
         <div class="detailsRow">
             <span class="address">
                 <%if(transaction.category=="Sent"){%>
-                    <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                    <a href="javascript:void(0)"><%=transaction.to%></a>
+                    <%if(transaction.stealth){%>
+                        <span class="stealthIcon" title="<%=transaction.to%>"></span>
+                        <a href="javascript:void(0)"><%=shortify(transaction.stealth,40)%></a>
+                    <%}else{%>
+                        <a href="javascript:void(0)"><%=transaction.to%></a>
+                    <%}%>
                 <%}else{%>
                     <a href="javascript:void(0)"><%=transaction.from%></a>
                 <%}%>
