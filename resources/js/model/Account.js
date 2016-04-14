@@ -106,7 +106,7 @@ var StealthAccount = AccountBase.extend({
 var AccountCollection = Backbone.Collection.extend({
 
     initialize:function(models, options){
-        _(this).bindAll("add", "parseNew");
+        _(this).bindAll("add", "parseNew", "linkProfile");
         this.profiles = options.profiles;
     },
 
@@ -136,6 +136,7 @@ var AccountCollection = Backbone.Collection.extend({
         if(!this.profiles.length) this.profiles.fetch();
         var accounts = XETH_wallet.getAccounts();
         this.reset(this.filterData(accounts));
+        this.profiles.on("add", this.linkProfile);
     },
 
     filterData:function(accounts){
@@ -158,6 +159,14 @@ var AccountCollection = Backbone.Collection.extend({
             }
         }
         return result;
+    },
+
+    linkProfile:function(profile){
+        var account = this.find({address:profile.get("account")});
+        if(account)
+        {
+            account.set("profile", profile);
+        }
     },
 
     generate:function(request){

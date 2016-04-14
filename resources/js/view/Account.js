@@ -148,6 +148,7 @@ var AccountSelect = Backbone.View.extend({
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
         this.dropdownBox = this.$el.find(".dropdownBox");
+        this.model = this.collection;
         this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.dropdownBox.find(">div")});
         this.active = new AccountViewReflection({el:this.$el.find(".select")});
         this.active.click(this.toggle);

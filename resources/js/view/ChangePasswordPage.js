@@ -1,13 +1,18 @@
 var ChangePasswordPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("submit", "sendRequest");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("submit", "sendRequest", "filterAccounts");
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("change_password");
         this.router = options.router;
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(model){return model!=undefined && !(model.get("address") && model.get("stealth") && !model.get("profile"));});
+        this.filterAccounts();
+        this.accounts.model.on("change:profile", this.filterAccounts);
+    },
+
+    filterAccounts:function(){
+        this.accounts.filter(function(model){return model!=undefined && (!(model.get("address") && model.get("stealth")) || model.get("profile") );}); //hide text and stealth payments
     },
 
     render:function(){
