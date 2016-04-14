@@ -27,7 +27,7 @@ bool GenericScanCriteriaLoader<AccountsFetcher, DataBase>::load(ScanCriteria &cr
         for(typename DataBase::StealthPaymentStore::Iterator it=stealthPayments.begin(), end=stealthPayments.end(); it!=end; ++it)
         {
             QJsonObject payment = *it;
-            skipped.insert(std::make_pair(payment["address"].toString().toStdString(), false));
+            skipped.insert(std::make_pair(payment["address"].toString().toStdString(), true));
         }
 
 

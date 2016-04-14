@@ -8,7 +8,7 @@ var ExportKeyPageView = SubPageView.extend({
         this.router = options.router;
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(model){ return model!=undefined;});
+        this.accounts.filter(function(model){return model!=undefined && !(model.get("address") && model.get("stealth"));});
     },
 
     render:function(){
