@@ -137,6 +137,7 @@ var BitprofileFormView = SubPageView.extend({
         
         if(this.inProgress()||this.model&&this.model.get("context")==this.bitprofileContext.val()&&this.model.get("id")==name){
             this.bitprofileId.clearvalid();
+            this.bitprofileId.noerror();
         }else{
             if(name.length<3){
                 this.setIDError("3 chars minimum");
