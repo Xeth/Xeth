@@ -118,10 +118,6 @@ var AccountCollection = Backbone.Collection.extend({
         }
     },
 
-    cleanEmptyStealth:function(){
-
-    },
-
     observe: function(){
         XETH_event.Account.connect(this, this.parseNew);
     },
