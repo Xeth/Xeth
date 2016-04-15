@@ -11,15 +11,10 @@ void IpfsProcessInitializer::Initialize(QProcess &process)
 QString IpfsProcessInitializer::GetDefaultCommand()
 {
     QString path = QCoreApplication::applicationDirPath();
-    path.append("/bin/");
 #if defined(__WINDOWS_OS__)
-    path.append("/windows-x64/ipfs.exe");
-#elif defined(__LINUX_OS__)
-    path.append("/linux-x64/ipfs");
-#elif defined(__APPLE_OS__)
-    path.append("/darwin-x64/ipfs");
+    path.append("\\vendor\\bin\\ipfs.exe");
 #else
-    #error "Invalid OS"
+    path.append("/vendor/bin/ipfs");
 #endif
     return path;
 }

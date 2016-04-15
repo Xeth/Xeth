@@ -11,15 +11,10 @@ void EthProcessInitializer::Initialize(QProcess &process)
 QString EthProcessInitializer::GetDefaultCommand()
 {
     QString path = QCoreApplication::applicationDirPath();
-    path.append("/bin/");
 #if defined(__WINDOWS_OS__)
-    path.append("/windows-x64/geth.exe");
-#elif defined(__LINUX_OS__)
-    path.append("/linux-x64/geth");
-#elif defined(__APPLE_OS__)
-    path.append("/darwin-x64/geth");
+    path.append("\\vendor\\bin\\geth.exe");
 #else
-    #error "Invalid OS"
+    path.append("/vendor/bin/geth");
 #endif
     return path;
 }
