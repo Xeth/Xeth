@@ -1,4 +1,4 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Xml Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 #set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time chrono REQUIRED)
@@ -138,7 +138,6 @@ target_link_libraries(xeth
     ethrpc
     ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
     ${Qt5Core_LIBRARIES}
