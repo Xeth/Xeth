@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
     try
     {
         Xeth::Settings settings;
+        settings.readConfigFile();
         settings.readCommandLineArgs(argc, argv);
 
         Xeth::Application app(settings, argc, argv);

@@ -1,5 +1,8 @@
 
 #include "Settings.hpp"
+#include "io/Directory.hpp"
+
+#include <boost/filesystem.hpp>
 
 namespace Xeth{
 
@@ -44,6 +47,17 @@ void Settings::set(const char *name, const char *value)
     _data.insert(std::make_pair(name, value));
 }
 
+
+
+void Settings::readConfigFile()
+{
+    boost::filesystem::path path = Directory::GetDefaultPath();
+    path /= "xeth.conf";
+    if(boost::filesystem::exists(path))
+    {
+        readFile(path.string().c_str());
+    }
+}
 
 
 void Settings::readFile(const char *path)

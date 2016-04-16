@@ -48,6 +48,7 @@ class Settings
 
         void set(const char *, const char *);
 
+        void readConfigFile();
         void readFile(const char *);
         void readCommandLineArgs(int, char **);
 
