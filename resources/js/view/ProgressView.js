@@ -30,7 +30,7 @@ var ProgressView = Backbone.View.extend({
     updateSync:function(){
         var progress = this.model.get("sync");
         this.updateProgressBar(progress);
-        if(progress>=100.0){
+        if(progress>=99.99){
             this.startScan();
         }
     },
@@ -38,7 +38,7 @@ var ProgressView = Backbone.View.extend({
     updateScan:function(){
         var progress = this.model.get("scan");
 
-        if(progress>=100.0){
+        if(progress>=99.99){
             this.stopListening();
             this.listenTo(this.model, "change:sync", this.watchSync);
             this.$icon.addClass("ok");
@@ -55,12 +55,12 @@ var ProgressView = Backbone.View.extend({
 
     watchSync:function(){
         var progress = this.model.get("sync");
-        if(progress<99){
+        if(progress<99.8){
             this.stopListening();
             this.startSync();
         }else{
             progress = this.model.get("scan");
-            if(progress<99)
+            if(progress<99.8)
             {
                 this.stopListening();
                 this.startSync();
