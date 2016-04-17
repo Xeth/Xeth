@@ -26,6 +26,7 @@ var Account = AccountBase.extend({
         }
         this.pinned = 0;
         this.timer = undefined;
+        this.autoUpdate();
     },
 
     removeIfEmpty: function(){
@@ -189,7 +190,6 @@ var AccountCollection = Backbone.Collection.extend({
         else{
             account = new Account(attrs, options);
         }
-        account.autoUpdate();
         return account;
     },
 
