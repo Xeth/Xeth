@@ -81,7 +81,7 @@ var BitprofileFormView = SubPageView.extend({
         if(this.syncProgress.get("sync")<99.99)
         {
             this.lockPage("synchronizing with network");
-            this.listenToOnce(this.syncProgress, "change:sync", this.checkSyncStatus);
+            this.listenTo(this.syncProgress, "change:sync", this.checkSyncStatus);
         }
         
         this.account_details.resize(20);
@@ -103,7 +103,7 @@ var BitprofileFormView = SubPageView.extend({
             this.unlockPage();
         }
     },
-    
+
     renderRegistrars:function(){
         this.bitprofileContext.html("");
         if(this.registrars.length==0) this.bitprofileContext.append("<option>NONE</option>");
