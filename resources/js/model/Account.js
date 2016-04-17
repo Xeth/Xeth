@@ -59,11 +59,8 @@ var Account = AccountBase.extend({
         this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
     },
 
-    autoUpdate:function(interval){
-        if(typeof interval==undefined||!interval){
-            interval = 10000;
-        }
-        this.timer = setInterval(this.update, interval);
+    autoUpdate:function(){
+        this.timer = setInterval(this.update, 5000);
     },
 
     send:function(request){
