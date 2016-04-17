@@ -25,6 +25,7 @@ var Account = AccountBase.extend({
             this.on("change:balance", this.removeIfEmpty);
         }
         this.pinned = 0;
+        this.timer = undefined;
     },
 
     removeIfEmpty: function(){
@@ -34,6 +35,7 @@ var Account = AccountBase.extend({
             {
                 this.trigger("removing");
                 setTimeout(this.destroy, 30000);
+                if(this.timer) clearInterval(this.timer)
             }
         }
     },
@@ -61,7 +63,7 @@ var Account = AccountBase.extend({
         if(typeof interval==undefined||!interval){
             interval = 10000;
         }
-        setInterval(this.update, interval);
+        this.timer = setInterval(this.update, interval);
     },
 
     send:function(request){
