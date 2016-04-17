@@ -78,7 +78,7 @@ var BitprofileFormView = SubPageView.extend({
             show: { duration: 200 },
             hide: { duration: 200 }
         });
-        if(this.syncProgress.get("sync")<99.99)
+        if(this.syncProgress.get("sync")<100.0)
         {
             this.lockPage("synchronizing with network");
             this.listenTo(this.syncProgress, "change:sync", this.checkSyncStatus);
@@ -96,7 +96,7 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     checkSyncStatus:function(){
-        if(this.syncProgress.get("sync")>=99.99)
+        if(this.syncProgress.get("sync")>=100.0)
         {
             this.stopListening(this.syncProgress);
             this.renderRegistrars();
