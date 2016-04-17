@@ -15,4 +15,4 @@ for ubuntu 14 you need to compile cryptopp [https://www.cryptopp.com/wiki/Linux]
 and use -DCRYPTOPP_INCLUDE_DIR and -DCRYPTOPP_LIBRARY cmake options to specify cryptopp details
 
 
-next use [linux generic](linux-generic.md) documentation
+next use [linux generic](linux_generic.md) documentation

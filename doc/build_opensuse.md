@@ -6,4 +6,4 @@ sudo zypper install git cmake make gcc-c++ boost-devel leveldb-devel jsoncpp-dev
 ```
 
 
-next use [linux generic](linux-generic.md) documentation
+next use [linux generic](linux_generic.md) documentation
