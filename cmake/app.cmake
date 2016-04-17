@@ -177,4 +177,13 @@ if(GTK2_FOUND)
 endif()
 
 
+if(NOT MSVC AND NOT WIN32)
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/vendor DESTINATION /opt/xeth)
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION /opt/xeth)
+    install(TARGETS xeth DESTINATION /opt/xeth)
+    install(CODE "
+          EXECUTE_PROCESS (COMMAND ln -sf /opt/xeth/xeth /usr/local/bin/xeth)
+    ")
+endif()
+
 

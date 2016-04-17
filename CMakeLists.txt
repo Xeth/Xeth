@@ -4,10 +4,14 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/modules")
 
-set(CMAKE_BUILD_TYPE Relese)
+set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
+
+set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
+set(SKIP_LIBRARY_INSTALL TRUE)
+
 #set(CMAKE_AUTORCC ON)
 
 include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
@@ -33,5 +37,5 @@ include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/bin.cmake)
 
 if(ENABLE_TEST)
-include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
+    include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
 endif()
