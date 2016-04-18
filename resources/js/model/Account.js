@@ -36,7 +36,6 @@ var Account = AccountBase.extend({
             {
                 this.trigger("removing");
                 setTimeout(this.destroy, 30000);
-                if(this.timer) clearInterval(this.timer)
             }
         }
     },
@@ -55,13 +54,22 @@ var Account = AccountBase.extend({
     },
 
     update:function(){
-        var address = this.get("address");
-        this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(address)));
-        this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
+        try
+        {
+            var address = this.get("address");
+            this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(address)));
+            this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
+        }
+        catch(e)
+        {}
     },
 
     autoUpdate:function(){
-        this.timer = setInterval(this.update, 5000);
+        var self = this;
+        this.timer  = setTimeout(function(){
+            self.update();
+            self.autoUpdate();
+        },5000);
     },
 
     send:function(request){
@@ -78,7 +86,7 @@ var Account = AccountBase.extend({
     },
 
     destroy: function(){
-        if(this.interval) clearInterval(this.interval);
+        if(this.interval) clearTimeout(this.interval);
         this.trigger("destroy", this);
     }
 
