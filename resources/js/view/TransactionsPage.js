@@ -181,7 +181,7 @@ var TransactionsPageView = SubPageView.extend({
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router, options.addressbook);
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(model){return !model || !(model.get("address") && model.get("stealth"));}); //show all rows
+        this.accounts.filter(function(model){return !model || !(model.get("address") && model.get("stealth")) || model.get("profile");}); //show all rows
     },
     
     render:function(){
