@@ -3,7 +3,7 @@
 namespace Xeth{
 
 
-ProgressFacade::ProgressFacade(Synchronizer &synchronizer, Notifier &notifier) :
+ProgressFacade::ProgressFacade(Synchronizer &synchronizer, Invoker<Notifier> &) :
     _synchronizer(synchronizer)
 {}
 

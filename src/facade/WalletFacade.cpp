@@ -10,10 +10,11 @@ WalletFacade::WalletFacade
     Ethereum::Connector::Provider &provider, 
     DataBase &database, 
     Notifier &notifier, 
-    Synchronizer &synchronizer
+    Synchronizer &synchronizer,
+    Invoker<Notifier> &invoker
 ) :
     _settings(settings),
-    _invoker(notifier),
+    _invoker(invoker),
     _provider(provider),
     _database(database),
     _notifier(notifier),

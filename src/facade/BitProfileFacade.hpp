@@ -5,10 +5,11 @@
 #include <QVariantMap>
 
 #include "Notifier.hpp"
-#include "Invoker.hpp"
+
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
 
+#include "command/Invoker.hpp"
 #include "command/bitprofile/CreateProfileCommand.hpp"
 #include "command/bitprofile/EstimateProfileOperationCommand.hpp"
 #include "command/bitprofile/LinkStealthAddressCommand.hpp"
@@ -32,7 +33,7 @@ class BitProfileFacade : public QObject
 {
     Q_OBJECT
     public:
-        BitProfileFacade(Ethereum::Connector::Provider &, DataBase &, Synchronizer &, Notifier &, const Settings &);
+        BitProfileFacade(Ethereum::Connector::Provider &, DataBase &, Synchronizer &, Notifier &, const Settings &, Invoker<Notifier> &);
 
         Q_INVOKABLE QVariant createProfile(const QVariantMap &);
         Q_INVOKABLE QVariant listProfiles();
@@ -58,7 +59,7 @@ class BitProfileFacade : public QObject
         BitProfileStore &_store;
         Notifier &_notifier;
         const Settings &_settings;
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 };
 
 

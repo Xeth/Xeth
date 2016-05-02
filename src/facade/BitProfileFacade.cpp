@@ -4,14 +4,22 @@
 namespace Xeth{
 
 
-BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, DataBase &database, Synchronizer &synchronizer, Notifier &notifier, const Settings &settings) :
+BitProfileFacade::BitProfileFacade
+(
+    Ethereum::Connector::Provider &provider,
+    DataBase &database,
+    Synchronizer &synchronizer,
+    Notifier &notifier,
+    const Settings &settings,
+    Invoker<Notifier> &invoker
+) :
     _provider(provider),
     _database(database),
     _synchronizer(synchronizer),
     _store(database.getBitProfiles()),
     _notifier(notifier),
     _settings(settings),
-    _invoker(notifier)
+    _invoker(invoker)
 {}
 
 

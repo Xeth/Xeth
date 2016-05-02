@@ -11,14 +11,15 @@ Facade::Facade(const Settings &settings) :
     _synchronizer(_provider, _database, settings),
     _eth(settings),
     _ipfs(settings),
-    _wallet(settings, _provider, _database, _notifier, _synchronizer),
-    _addressbook(_database, _notifier),
-    _config(_database, _notifier),
-    _converter(_notifier),
-    _progress(_synchronizer, _notifier),
-    _clipboard(_notifier),
-    _filesystem(_notifier),
-    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings)
+    _invoker(_notifier),
+    _wallet(settings, _provider, _database, _notifier, _synchronizer, _invoker),
+    _addressbook(_database, _invoker),
+    _config(_database, _invoker),
+    _converter(_invoker),
+    _progress(_synchronizer, _invoker),
+    _clipboard(_invoker),
+    _filesystem(_invoker),
+    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));

@@ -9,9 +9,9 @@
 #include "command/addressbook/ListContactsCommand.hpp"
 #include "command/addressbook/RemoveContactCommand.hpp"
 #include "command/addressbook/RenameConactCommand.hpp"
+#include "command/Invoker.hpp"
 
-#include "Invoker.hpp"
-
+#include "Notifier.hpp"
 
 namespace Xeth{
 
@@ -20,7 +20,7 @@ class AddressBookFacade : public QObject
     Q_OBJECT
 
     public:
-        AddressBookFacade(DataBase &, Notifier &);
+        AddressBookFacade(DataBase &, Invoker<Notifier> &);
 
 
     public slots:
@@ -33,7 +33,7 @@ class AddressBookFacade : public QObject
 
     private:
         DataBase &_database;
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 
 };
 

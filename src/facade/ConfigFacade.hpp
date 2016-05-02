@@ -7,8 +7,8 @@
 
 #include "database/DataBase.hpp"
 #include "Notifier.hpp"
-#include "Invoker.hpp"
 
+#include "command/Invoker.hpp"
 #include "command/config/AddConfigCommand.hpp"
 #include "command/config/GetConfigCommand.hpp"
 
@@ -21,7 +21,7 @@ class ConfigFacade : public QObject
     Q_OBJECT
 
     public:
-        ConfigFacade(DataBase &, Notifier &);
+        ConfigFacade(DataBase &, Invoker<Notifier> &);
 
         Q_INVOKABLE QVariant set(const QVariantMap &);
         Q_INVOKABLE QVariant get(const QString &);
@@ -29,7 +29,7 @@ class ConfigFacade : public QObject
 
     private:
         DataBase &_database;
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 };
 
 

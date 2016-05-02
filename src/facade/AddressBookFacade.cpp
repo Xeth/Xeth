@@ -5,9 +5,9 @@ namespace Xeth{
 
 
 
-AddressBookFacade::AddressBookFacade(DataBase &database, Notifier &notifier) :
+AddressBookFacade::AddressBookFacade(DataBase &database, Invoker<Notifier> &invoker) :
     _database(database),
-    _invoker(notifier)
+    _invoker(invoker)
 {}
 
 

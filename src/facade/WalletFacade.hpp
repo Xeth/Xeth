@@ -21,8 +21,8 @@
 #include "command/wallet/ExportKeyCommand.hpp"
 #include "command/wallet/ChangeKeyPasswordCommand.hpp"
 #include "command/wallet/EstimateFeeCommand.hpp"
+#include "command/Invoker.hpp"
 
-#include "Invoker.hpp"
 #include "Notifier.hpp"
 
 namespace Xeth{
@@ -32,7 +32,7 @@ class WalletFacade :public QObject
 {
     Q_OBJECT
     public:
-        WalletFacade(const Settings &, Ethereum::Connector::Provider &, DataBase &, Notifier &, Synchronizer &);
+        WalletFacade(const Settings &, Ethereum::Connector::Provider &, DataBase &, Notifier &, Synchronizer &, Invoker<Notifier> &);
 
     public:
 
@@ -51,7 +51,7 @@ class WalletFacade :public QObject
 
     private:
         const Settings &_settings;
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
         Ethereum::Connector::Provider &_provider;
         DataBase &_database;
         Notifier &_notifier;

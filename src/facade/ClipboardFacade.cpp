@@ -4,8 +4,8 @@
 namespace Xeth{
 
 
-ClipboardFacade::ClipboardFacade(Notifier &notifier) :
-    _invoker(notifier)
+ClipboardFacade::ClipboardFacade(Invoker<Notifier> &invoker) :
+    _invoker(invoker)
 {}
 
 
