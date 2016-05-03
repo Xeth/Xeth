@@ -26,7 +26,7 @@ var Account = AccountBase.extend({
         }
         this.pinned = 0;
         this.timer = undefined;
-        this.autoUpdate();
+//        this.autoUpdate();
     },
 
     removeIfEmpty: function(){
@@ -64,11 +64,38 @@ var Account = AccountBase.extend({
         {}
     },
 
+    updateAsync:function(callback){
+        var address = this.get("address");
+        var status = {value: 0};
+        this.watchBalanceFuture(XETH_wallet.getBalanceAsync(address), status, "balance", callback);
+        this.watchBalanceFuture(XETH_wallet.getPendingBalanceAsync(address), status, "unconfirmed", callback);
+    },
+
+    watchBalanceFuture:function(future, status, type, callback){
+        var self = this;
+        future.Finished.connect(function(){
+            self.parseBalanceResult(future, status, type, callback);
+        });
+        if(future.isFinished()){
+            this.parseBalanceResult(future, status, type, callback);
+        }
+    },
+
+    parseBalanceResult:function(future, status, type, callback){
+        var balance = future.getResult();
+//        alert("future complete : "+balance+" address="+this.get("address")+" ("+type+")");
+        this.set(type, XETH_convert.fromWei(balance));
+        status.value++;
+        if(status.value > 1 && callback instanceof Function) callback();
+        future.dispose();
+    },
+
     autoUpdate:function(){
         var self = this;
         this.timer  = setTimeout(function(){
-            self.update();
-            self.autoUpdate();
+            self.updateAsync(function(){
+                self.autoUpdate();
+            });
         },5000);
     },
 
@@ -136,6 +163,7 @@ var AccountCollection = Backbone.Collection.extend({
         if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
         {
             if(profile) model.set("profile", profile);
+            model.autoUpdate();
             this.add(model);
         }
     },
@@ -158,11 +186,13 @@ var AccountCollection = Backbone.Collection.extend({
             {
                 if(model.get("balance")!=0 || model.get("unconfirmed")!=0)
                 {
+                    model.autoUpdate();
                     result.push(model);
                 }
             }
             else
             {
+                model.autoUpdate();
                 result.push(model);
             }
         }
