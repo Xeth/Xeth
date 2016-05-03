@@ -39,6 +39,8 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant getAccounts() ;
         Q_INVOKABLE QVariant getBalance(const QString &);
         Q_INVOKABLE QVariant getPendingBalance(const QString &);
+        Q_INVOKABLE QObject * getBalanceAsync(const QString &);
+        Q_INVOKABLE QObject * getPendingBalanceAsync(const QString &);
         Q_INVOKABLE QVariant send(const QVariantMap &);
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);

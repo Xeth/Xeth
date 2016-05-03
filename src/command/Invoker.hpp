@@ -4,6 +4,7 @@
 #include <QFutureSynchronizer>
 #include <QtConcurrent>
 
+#include "Future.hpp"
 
 namespace Xeth{
 
@@ -28,10 +29,10 @@ class Invoker
         QVariant invoke(Command &);
 
         template<class Command>
-        QVariant invokeAsync(Command &);
+        Future * invokeAsync(Command &);
 
         template<class Command, class Arguments>
-        QVariant invokeAsync(Command &, const Arguments &);
+        Future * invokeAsync(Command &, const Arguments &);
 
         void waitToComplete();
 

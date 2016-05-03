@@ -5,7 +5,9 @@ namespace Xeth{
 template<class Notifier>
 Invoker<Notifier>::Invoker(Notifier &notifier) :
     _notifier(notifier)
-{}
+{
+    qRegisterMetaType<Xeth::Future>("Future");
+}
 
 
 template<class Notifier>
@@ -63,17 +65,17 @@ QVariant Invoker<Notifier>::executeAsync(Command &command, const Request &reques
 
 template<class Notifier>
 template<class Command, class Request>
-QVariant Invoker<Notifier>::invokeAsync(Command &command, const Request &request)
+Future * Invoker<Notifier>::invokeAsync(Command &command, const Request &request)
 {
-    QString uid = QUuid::createUuid().toString();
-    _futures.addFuture(QtConcurrent::run(this, &Invoker<Notifier>::executeAsync<Command, Request>, command, request, uid));
-    return uid;
+    QFuture<QVariant> future = QtConcurrent::run(this, &Invoker<Notifier>::execute<Command, Request>, command, request);
+    _futures.addFuture(future);
+    return new Future(future);
 }
 
 
 template<class Notifier>
 template<class Command>
-QVariant Invoker<Notifier>::invokeAsync(Command &command)
+Future * Invoker<Notifier>::invokeAsync(Command &command)
 {
     return invokeAsync(command, NullCommandArguments());
 }
