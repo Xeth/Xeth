@@ -56,15 +56,6 @@ QVariant Invoker<Notifier>::execute(Command &command, const NullCommandArguments
 
 template<class Notifier>
 template<class Command, class Request>
-QVariant Invoker<Notifier>::executeAsync(Command &command, const Request &request, const QString &uid)
-{
-    QVariant result = invoke(command, request);
-    _notifier.emitData("command", uid, "result", result);
-    return result;
-}
-
-template<class Notifier>
-template<class Command, class Request>
 Future * Invoker<Notifier>::invokeAsync(Command &command, const Request &request)
 {
     QFuture<QVariant> future = QtConcurrent::run(this, &Invoker<Notifier>::execute<Command, Request>, command, request);

@@ -45,9 +45,6 @@ class Invoker
         template<class Command>
         QVariant execute(Command &, const NullCommandArguments &);
 
-        template<class Command, class Request>
-        QVariant executeAsync(Command &, const Request &, const QString &uid);
-
     protected:
         Notifier &_notifier;
         QFutureSynchronizer<QVariant> _futures;
