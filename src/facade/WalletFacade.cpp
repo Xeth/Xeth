@@ -57,6 +57,12 @@ QVariant WalletFacade::send(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QObject * WalletFacade::sendAsync(const QVariantMap &request)
+{
+    SendCommand command(_provider, _database);
+    return _invoker.invokeAsync(command, request);
+}
+
 QVariant WalletFacade::listTransactions(const QVariantMap &request)
 {
     ListTransactionsCommand command(_database);
@@ -70,6 +76,12 @@ QVariant WalletFacade::importKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+
+QObject * WalletFacade::importKeyAsync(const QVariantMap &request)
+{
+    ImportKeyCommand command(_settings, _database, _synchronizer, _notifier);
+    return _invoker.invokeAsync(command, request);
+}
 
 
 QVariant WalletFacade::exportKey(const QVariantMap &request)
@@ -85,6 +97,11 @@ QVariant WalletFacade::generateKey(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QObject * WalletFacade::generateKeyAsync(const QVariantMap &request)
+{
+    GenerateKeyCommand command(_database, _synchronizer);
+    return _invoker.invokeAsync(command, request);
+}
 
 
 QVariant WalletFacade::validateAddress(const QString &request)
@@ -107,6 +124,11 @@ QVariant WalletFacade::changePassword(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
+QObject * WalletFacade::changePasswordAsync(const QVariantMap &request)
+{
+    ChangeKeyPasswordCommand command(_database);
+    return _invoker.invokeAsync(command, request);
+}
 
 QVariant WalletFacade::estimateFee(const QVariantMap &request)
 {

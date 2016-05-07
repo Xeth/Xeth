@@ -39,9 +39,8 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant getAccounts() ;
         Q_INVOKABLE QVariant getBalance(const QString &);
         Q_INVOKABLE QVariant getPendingBalance(const QString &);
-        Q_INVOKABLE QObject * getBalanceAsync(const QString &);
-        Q_INVOKABLE QObject * getPendingBalanceAsync(const QString &);
         Q_INVOKABLE QVariant send(const QVariantMap &);
+
         Q_INVOKABLE QVariant listTransactions(const QVariantMap &);
         Q_INVOKABLE QVariant exportKey(const QVariantMap &);
         Q_INVOKABLE QVariant importKey(const QVariantMap &);
@@ -50,6 +49,14 @@ class WalletFacade :public QObject
         Q_INVOKABLE QVariant validateAddress(const QVariantMap &);
         Q_INVOKABLE QVariant changePassword(const QVariantMap &);
         Q_INVOKABLE QVariant estimateFee(const QVariantMap &);
+
+
+        Q_INVOKABLE QObject * getBalanceAsync(const QString &);
+        Q_INVOKABLE QObject * getPendingBalanceAsync(const QString &);
+        Q_INVOKABLE QObject * sendAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * importKeyAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * generateKeyAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * changePasswordAsync(const QVariantMap &);
 
     private:
         const Settings &_settings;
