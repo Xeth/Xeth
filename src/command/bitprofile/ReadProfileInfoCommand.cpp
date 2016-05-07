@@ -4,10 +4,9 @@
 namespace Xeth{
 
 
-ReadProfileInfoCommand::ReadProfileInfoCommand(Ethereum::Connector::Provider &provider, const Settings &settings, Notifier &notifier) :
+ReadProfileInfoCommand::ReadProfileInfoCommand(Ethereum::Connector::Provider &provider, const Settings &settings) :
     _resolver(provider, GetBitprofileNetwork(settings)),
-    _settings(settings),
-    _notifier(notifier)
+    _settings(settings)
 {}
 
 
@@ -20,9 +19,35 @@ QVariant ReadProfileInfoCommand::operator()(const QString &uri)
         return QVariant::fromValue(false);
     }
 
-    ReadProfileInfoAction *action = ReadProfileInfoAction::Create(ReadProfileInfoOperation(profile, _settings, _notifier));
-    action->start();
-    return QVariant::fromValue(true);
+    QString detailsPath =  profile.get("details").c_str();
+
+    if(!detailsPath.length())
+    {
+        return QString("");
+    }
+    else
+    {
+        IpfsReader reader(_settings);
+        if(detailsPath.contains("ipns://"))
+        {
+            IpfsNameRegistrar namereg(_settings);
+            detailsPath = namereg.resolve(detailsPath.remove(0, 7));
+            if(!detailsPath.length())
+            {
+                return QString("");
+            }
+        }
+        else
+        {
+            detailsPath.remove(0, 7);
+        }
+        QVariantMap details = reader.readJson(detailsPath).toVariantMap();
+        if(details.contains("avatar"))
+        {
+            details["avatar"] = QString(reader.readBytes(details["avatar"].toString().remove(0,7)));
+        }
+        return details;
+    }
 }
 
 

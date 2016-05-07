@@ -35,22 +35,22 @@ class BitProfileFacade : public QObject
     public:
         BitProfileFacade(Ethereum::Connector::Provider &, DataBase &, Synchronizer &, Notifier &, const Settings &, Invoker<Notifier> &);
 
-        Q_INVOKABLE QVariant createProfile(const QVariantMap &);
         Q_INVOKABLE QVariant listProfiles();
         Q_INVOKABLE QVariant listRegistrars(const QVariantMap &);
         Q_INVOKABLE QVariant estimate(const QVariantMap &);
-        Q_INVOKABLE QVariant linkStealthAddress(const QVariantMap &);
-        Q_INVOKABLE QVariant moveProfile(const QVariantMap &);
         Q_INVOKABLE QVariant resolvePaymentAddress(const QString &);
         Q_INVOKABLE QVariant exportProfile(const QVariantMap &);
         Q_INVOKABLE QVariant importProfile(const QString &);
         Q_INVOKABLE QVariant getData(const QVariantMap &);
-        Q_INVOKABLE QVariant updateDetails(const QVariantMap &);
-        Q_INVOKABLE QVariant getDetails(const QString &);
         Q_INVOKABLE QVariant isIdAvailable(const QString &);
         Q_INVOKABLE QVariant isIdAvailable(const QVariantMap &);
         Q_INVOKABLE QVariant isIdValid(const QString &);
 
+        Q_INVOKABLE QObject * createProfileAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * linkStealthAddressAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * moveProfileAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * updateDetailsAsync(const QVariantMap &);
+        Q_INVOKABLE QObject * getDetailsAsync(const QString &);
 
     private:
         Ethereum::Connector::Provider &_provider;

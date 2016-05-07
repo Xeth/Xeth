@@ -4,11 +4,10 @@
 namespace Xeth{
 
 
-MoveProfileCommand::MoveProfileCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store, const Settings &settings, Notifier &notifier) :
+MoveProfileCommand::MoveProfileCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store, const Settings &settings) :
     _provider(provider),
     _store(store),
-    _settings(settings),
-    _notifier(notifier)
+    _settings(settings)
 {}
 
 
@@ -40,10 +39,22 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
     admin.setGasPrice(price);
     registrar.setGasPrice(price);
 
-    QString name = request["id"].toString();
+    std::string name = request["id"].toString().toStdString();
+    std::string password = request["password"].toString().toStdString();
     BigInt gas(request.contains("gas")?request["gas"].toString().toStdString():"0");
-    MoveProfileAction *action = MoveProfileAction::Create(MoveProfileOperation(_store, admin, registrar, name, request["password"].toString(), gas, _notifier));
-    action->start();
+
+    if(!admin.move(registrar, name, password, gas))
+    {
+        return QVariant::fromValue(false);
+    }
+    else
+    {
+        if(!_store.rename(admin.getProfile().getURI(), BitProfile::Profile::URI(registrar.getURI(), name)))
+        {
+            return QVariant::fromValue(false);
+        }
+    }
+
     return QVariant::fromValue(true);
 }
 

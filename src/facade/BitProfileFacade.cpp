@@ -23,10 +23,10 @@ BitProfileFacade::BitProfileFacade
 {}
 
 
-QVariant BitProfileFacade::createProfile(const QVariantMap &request)
+QObject * BitProfileFacade::createProfileAsync(const QVariantMap &request)
 {
-    CreateProfileCommand command(_provider, _database, _synchronizer, _settings, _notifier);
-    return _invoker.invoke(command, request);
+    CreateProfileCommand command(_provider, _database, _synchronizer, _settings);
+    return _invoker.invokeAsync(command, request);
 }
 
 QVariant BitProfileFacade::listProfiles()
@@ -47,16 +47,16 @@ QVariant BitProfileFacade::estimate(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant BitProfileFacade::linkStealthAddress(const QVariantMap &request)
+QObject * BitProfileFacade::linkStealthAddressAsync(const QVariantMap &request)
 {
-    LinkStealthAddressCommand command(_provider, _store, _notifier);
-    return _invoker.invoke(command, request);
+    LinkStealthAddressCommand command(_provider, _store);
+    return _invoker.invokeAsync(command, request);
 }
 
-QVariant BitProfileFacade::moveProfile(const QVariantMap &request)
+QObject * BitProfileFacade::moveProfileAsync(const QVariantMap &request)
 {
-    MoveProfileCommand command(_provider, _store, _settings, _notifier);
-    return _invoker.invoke(command, request);
+    MoveProfileCommand command(_provider, _store, _settings);
+    return _invoker.invokeAsync(command, request);
 }
 
 
@@ -86,16 +86,16 @@ QVariant BitProfileFacade::getData(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant BitProfileFacade::updateDetails(const QVariantMap &request)
+QObject * BitProfileFacade::updateDetailsAsync(const QVariantMap &request)
 {
-    UpdateProfileInfoCommand command(_provider, _store, _notifier, _settings);
-    return _invoker.invoke(command, request);
+    UpdateProfileInfoCommand command(_provider, _store, _settings);
+    return _invoker.invokeAsync(command, request);
 }
 
-QVariant BitProfileFacade::getDetails(const QString &uri)
+QObject * BitProfileFacade::getDetailsAsync(const QString &uri)
 {
-    ReadProfileInfoCommand command(_provider, _settings, _notifier);
-    return _invoker.invoke(command, uri);
+    ReadProfileInfoCommand command(_provider, _settings);
+    return _invoker.invokeAsync(command, uri);
 }
 
 
