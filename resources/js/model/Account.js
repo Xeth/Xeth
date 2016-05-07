@@ -210,8 +210,16 @@ var AccountCollection = Backbone.Collection.extend({
         }
     },
 
-    generate:function(request){
-        return XETH_wallet.generateKey(request);
+    generate:function(request, callback){
+        if(callback){
+            var observer = new FutureObserver(XETH_wallet.generateKeyAsync(request));
+            observer.onFinished(function(result){
+                callback(result);
+                observer.future.dispose();
+            });
+        }else{
+            return XETH_wallet.generateKey(request);
+        }
     },
 
     importKey:function(file, password, callback){
