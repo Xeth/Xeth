@@ -91,17 +91,28 @@ var Account = AccountBase.extend({
         },5000);
     },
 
-    send:function(request){
+    send:function(request, callback){
         request.from = this.get("address");
         if(!isNaN(request.amount))
         {
             request.amount = XETH_convert.toWei(""+request.amount);
         }
-        var txid = XETH_wallet.send(request);
-        if(txid){
-            this.update();
+        
+        if(callback){
+            var observer = new FutureObserver(this.sendAsync(request));
+            var self = this;
+            observer.onFinished(function(result){
+                if(result) self.update();
+                callback(result);
+                observer.future.dispose();
+            });
+        }else{
+            var txid = XETH_wallet.send(request);
+            if(txid){
+                this.update();
+            }
+            return txid;
         }
-        return txid;
     },
 
     destroy: function(){
