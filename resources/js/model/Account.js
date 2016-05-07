@@ -67,27 +67,19 @@ var Account = AccountBase.extend({
     updateAsync:function(callback){
         var address = this.get("address");
         var status = {value: 0};
-        this.watchBalanceFuture(XETH_wallet.getBalanceAsync(address), status, "balance", callback);
-        this.watchBalanceFuture(XETH_wallet.getPendingBalanceAsync(address), status, "unconfirmed", callback);
+        this.watchBalanceFuture(new FutureObserver(XETH_wallet.getBalanceAsync(address)), status, "balance", callback);
+        this.watchBalanceFuture(new FutureObserver(XETH_wallet.getPendingBalanceAsync(address)), status, "unconfirmed", callback);
     },
 
-    watchBalanceFuture:function(future, status, type, callback){
+    watchBalanceFuture:function(observer, status, type, callback){
         var self = this;
-        future.Finished.connect(function(){
-            self.parseBalanceResult(future, status, type, callback);
+        observer.onFinished(function(){
+            var balance = observer.future.getResult();
+            self.set(type, XETH_convert.fromWei(balance));
+            status.value++;
+            if(status.value > 1 && callback instanceof Function) callback();
+            observer.future.dispose();
         });
-        if(future.isFinished()){
-            this.parseBalanceResult(future, status, type, callback);
-        }
-    },
-
-    parseBalanceResult:function(future, status, type, callback){
-        var balance = future.getResult();
-//        alert("future complete : "+balance+" address="+this.get("address")+" ("+type+")");
-        this.set(type, XETH_convert.fromWei(balance));
-        status.value++;
-        if(status.value > 1 && callback instanceof Function) callback();
-        future.dispose();
     },
 
     autoUpdate:function(){
