@@ -4,7 +4,7 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     initialize:function(){
-        _(this).bindAll("setReady", "parseEvent");
+        _(this).bindAll("parseEvent");
         this.set("loaded", false);
         this.fetchDetails();
     },
