@@ -58,7 +58,7 @@ template<class Notifier>
 template<class Command, class Request>
 Future * Invoker<Notifier>::invokeAsync(Command &command, const Request &request)
 {
-    QFuture<QVariant> future = QtConcurrent::run(this, &Invoker<Notifier>::execute<Command, Request>, command, request);
+    QFuture<QVariant> future = QtConcurrent::run(this, &Invoker<Notifier>::invoke<Command, Request>, command, request);
     _futures.addFuture(future);
     return new Future(future);
 }
