@@ -70,10 +70,10 @@ var Profile = Backbone.Model.extend({
         var self = this;
         var observer = new FutureObserver(future);
         observer.onFinished(function(result){
-            if(data===false){
+            if(!result){
                 self.trigger("error", key);
             }else{
-                self.set(key, data);
+                self.set(key, result);
             }
             future.dispose();
             if(callback instanceof Function) callback(result);
@@ -84,16 +84,19 @@ var Profile = Backbone.Model.extend({
     linkStealthAddress:function(request, callback){
         request.uri = this.getURI();
         this.watchFuture(XETH_bitprofile.linkStealthAddressAsync(request), "payments", callback);
+        return true;
     },
 
     changeURI:function(request, callback){
         request.uri = this.getURI();
         this.watchFuture(XETH_bitprofile.moveProfileAsync(request), "uri", callback);
+        return true;
     },
 
     changeDetails:function(request, callback){
         request.uri = this.getURI();
         this.watchFuture(XETH_bitprofile.updateDetailsAsync(request), "details", callback);
+        return true;
     }
 
 });
@@ -112,7 +115,15 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     create:function(data){
-        return XETH_bitprofile.createProfile(data);
+        var future = XETH_bitprofile.createProfileAsync(data);
+        var observer = new FutureObserver(future);
+        var self = this;
+        observer.onFinished(function(result){
+            if(!result){
+                self.trigger("error");
+            }
+        });
+        return true;
     },
     
     importKey:function(path){
