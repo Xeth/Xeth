@@ -28,12 +28,14 @@ QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
     admin.setGasPrice(BigInt(request.contains("price") ? request["price"].toString().toStdString(): "0"));
     admin.setGasLimit(BigInt(request.contains("gas") ? request["gas"].toString().toStdString() : "0"));
 
-    if(!admin.setPaymentAddress(request["stealth"].toString().toStdString(), request["password"].toString().toStdString()))
+    QString address = request["stealth"].toString();
+
+    if(!admin.setPaymentAddress(address.toStdString(), request["password"].toString().toStdString()))
     {
         return QVariant::fromValue(false);
     }
 
-    return QVariant::fromValue(true);
+    return address;
 
 }
 
