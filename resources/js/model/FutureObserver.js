@@ -3,9 +3,15 @@ function FutureObserver(future){
 }
 
 FutureObserver.prototype.onFinished = function(callback){
-    this.future.Finished.connect(callback);
-    if(this.future.isFinished()){
-        setTimeout(callback, 0);
+
+    var future = this.future;
+
+    future.Finished.connect(function(){
+        callback(future.getResult());
+    });
+
+    if(future.isFinished()){
+        setTimeout(callback, 0, future.getResult());
     }
 }
 
