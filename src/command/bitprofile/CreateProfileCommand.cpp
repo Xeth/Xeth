@@ -47,7 +47,7 @@ QVariant CreateProfileCommand::operator()(const QVariantMap &request)
         }
     }
 
-    BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(registrar, request["name"].toString().toStdString(), payer, password);
+    BitProfile::ProfileAdministrator profile = BitProfile::ProfileAdministrator::CreateProfile(registrar, request["id"].toString().toStdString(), payer, password);
     if(profile.isNull())
     {
         return QVariant::fromValue(false);
@@ -56,7 +56,7 @@ QVariant CreateProfileCommand::operator()(const QVariantMap &request)
     {
         if(!_database.getBitProfiles().insert(BitProfile::ProfileDescriptor(profile)))
         {
-            return QVariant::fromValue(false);
+            throw std::runtime_error("failed to save profile");
         }
     }
     return QVariant::fromValue(true);
