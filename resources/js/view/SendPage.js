@@ -371,31 +371,31 @@ var SendPageView = SubPageView.extend({
             request.gas = this.gasAmount;
         }
 
-        var _this = this;
+        var self = this;
         var sendRequest = function(){
-            _this.$form.addClass("waiting");
-            if(!account.send(request)){
-                _this.$form.removeClass("waiting");
-                _this.password.error();
-                return false;
-            }
-            
-            notifySuccess("sent");
+            self.$form.addClass("waiting");
+            account.send(request, function(result){
+                self.$form.removeClass("waiting");
+                if(!result){
+                    self.password.error();
+                    return false;
+                }
+                notifySuccess("sent");
 
-            if(alias.length){
-                var contact = {alias:alias};
-                contact[type] = _this.destination.val();
-                _this.addressbook.create(contact);
-            }
+                if(alias.length){
+                    var contact = {alias:alias};
+                    contact[type] = self.destination.val();
+                    self.addressbook.create(contact);
+                }
 
-            _this.resetContact();
-            _this.$form.removeClass("waiting");
-            _this.password.val("");
-            _this.destination.val("");
-            _this.amount.val("");
-            _this.setAddressHint("");
-
-            _this.router.redirect("transactions", {focusFirst:true});
+                self.resetContact();
+                self.$form.removeClass("waiting");
+                self.password.val("");
+                self.destination.val("");
+                self.amount.val("");
+                self.setAddressHint("");
+                self.router.redirect("transactions", {focusFirst:true});
+           });
         };
         if(this.feeFactor.hasWarning()){
             notie.confirm('<span class="title warning">WARNING!</span>'+

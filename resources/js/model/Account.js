@@ -73,8 +73,7 @@ var Account = AccountBase.extend({
 
     watchBalanceFuture:function(observer, status, type, callback){
         var self = this;
-        observer.onFinished(function(){
-            var balance = observer.future.getResult();
+        observer.onFinished(function(balance){
             self.set(type, XETH_convert.fromWei(balance));
             status.value++;
             if(status.value > 1 && callback instanceof Function) callback();
@@ -98,8 +97,8 @@ var Account = AccountBase.extend({
             request.amount = XETH_convert.toWei(""+request.amount);
         }
         
-        if(callback){
-            var observer = new FutureObserver(this.sendAsync(request));
+        if(callback instanceof Function){
+            var observer = new FutureObserver(XETH_wallet.sendAsync(request));
             var self = this;
             observer.onFinished(function(result){
                 if(result) self.update();
