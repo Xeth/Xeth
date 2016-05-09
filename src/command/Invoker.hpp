@@ -32,7 +32,7 @@ class Invoker
         Future * invokeAsync(Command &);
 
         template<class Command, class Arguments>
-        Future * invokeAsync(Command &, const Arguments &);
+        Future * invokeAsync(Command &, const Arguments &, bool synchronize = false);
 
         void waitToComplete();
 

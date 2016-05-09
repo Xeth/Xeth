@@ -56,10 +56,13 @@ QVariant Invoker<Notifier>::execute(Command &command, const NullCommandArguments
 
 template<class Notifier>
 template<class Command, class Request>
-Future * Invoker<Notifier>::invokeAsync(Command &command, const Request &request)
+Future * Invoker<Notifier>::invokeAsync(Command &command, const Request &request, bool synchronize)
 {
     QFuture<QVariant> future = QtConcurrent::run(this, &Invoker<Notifier>::invoke<Command, Request>, command, request);
-    _futures.addFuture(future);
+    if(synchronize)
+    {
+        _futures.addFuture(future);
+    }
     return new Future(future);
 }
 

@@ -33,6 +33,9 @@ class Window : public QWebView
 
         void moveToScreenCenter();
 
+    signals:
+        void Closing();
+
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
         void setUrl(const char *);

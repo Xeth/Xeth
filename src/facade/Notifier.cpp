@@ -110,6 +110,13 @@ void Notifier::emitReady()
 }
 
 
+void Notifier::emitClosing()
+{
+    qDebug()<<"shutting down...";
+    emit Closing();
+}
+
+
 void Notifier::emitTransaction(const QJsonObject &tx)
 {
     emit Transaction(tx.toVariantMap());

@@ -26,7 +26,7 @@ BitProfileFacade::BitProfileFacade
 QObject * BitProfileFacade::createProfileAsync(const QVariantMap &request)
 {
     CreateProfileCommand command(_provider, _database, _synchronizer, _settings);
-    return _invoker.invokeAsync(command, request);
+    return _invoker.invokeAsync(command, request, true);
 }
 
 QVariant BitProfileFacade::listProfiles()
@@ -56,7 +56,7 @@ QObject * BitProfileFacade::linkStealthAddressAsync(const QVariantMap &request)
 QObject * BitProfileFacade::moveProfileAsync(const QVariantMap &request)
 {
     MoveProfileCommand command(_provider, _store, _settings);
-    return _invoker.invokeAsync(command, request);
+    return _invoker.invokeAsync(command, request, true);
 }
 
 

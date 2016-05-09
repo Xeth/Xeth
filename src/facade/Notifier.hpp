@@ -28,6 +28,7 @@ class Notifier : public QObject
         void emitError(const QString &);
         void emitMessage(const QString &);
         void emitReady();
+        void emitClosing();
         void emitEthereumKey(const QString &);
 
         void emitData(const QString &context, const QString &uri, const QString &key, const QVariant &value);
@@ -35,6 +36,7 @@ class Notifier : public QObject
 
     signals:
         void Ready() const;
+        void Closing() const;
         void Error(const QVariantMap &) const;
         void Message(const QString &) const;
         void Data(const QVariantMap &) const;

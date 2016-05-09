@@ -175,4 +175,12 @@ void Facade::setReady()
 }
 
 
+void Facade::shutdown()
+{
+    _notifier.emitClosing();
+    _synchronizer.stop();
+    _invoker.waitToComplete();
+}
+
+
 }

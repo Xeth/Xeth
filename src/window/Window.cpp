@@ -152,6 +152,7 @@ void Window::toggle()
 
 void Window::close()
 {
+    emit Closing();
     _closing = true;
     QWebView::close();
 }
