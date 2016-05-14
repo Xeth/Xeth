@@ -8,6 +8,7 @@
 #include <QWebSettings>
 #include <QWebInspector>
 #include <QCoreApplication>
+#include <QMessageBox>
 
 namespace Xeth{
 
@@ -152,9 +153,22 @@ void Window::toggle()
 
 void Window::close()
 {
-    emit Closing();
     _closing = true;
     QWebView::close();
+    QMessageBox * msgBox = new QMessageBox(this);
+    msgBox->setText("Xeth shutting down ...");
+    msgBox->setStandardButtons(0);
+    msgBox->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+    msgBox->show();
+
+    QTimer::singleShot(100, this, SLOT(emitClosing()));
+    QTimer::singleShot(100, msgBox, SLOT(close()));
+}
+
+
+void Window::emitClosing()
+{
+    emit Closing();
 }
 
 void Window::changeEvent(QEvent* event)
@@ -248,12 +262,16 @@ void Window::loadTemplates()
 
 void Window::moveToScreenCenter()
 {
-    QRect rect = geometry();
-    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
-    setGeometry(rect);
+    moveToScreenCenter(*this);
 }
 
 
+void Window::moveToScreenCenter(QWebView &view)
+{
+    QRect rect = view.geometry();
+    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
+    view.setGeometry(rect);
+}
 
 
 }

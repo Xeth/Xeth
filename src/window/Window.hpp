@@ -48,6 +48,7 @@ class Window : public QWebView
         void hideTray();
         void initConfig();
         void initConfigOpt(const char *, bool &, bool);
+        void moveToScreenCenter(QWebView &);
 
     private slots:
         void close();
@@ -58,6 +59,7 @@ class Window : public QWebView
         void changeEvent(QEvent* );
         void closeEvent(QCloseEvent *event);
         void updateConfig(const QString &key, const QString &value);
+        void emitClosing();
 
     private:
         bool _showTrayOpt;

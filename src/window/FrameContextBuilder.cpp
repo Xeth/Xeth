@@ -14,7 +14,7 @@ void FrameContextBuilder::buildContext(QWebFrame *frame)
     {
         FacadeLinker linker(frame, &_facade);
         linker.linkAll();
-        QObject::connect(frame, &QWebFrame::loadFinished, &notifier, &Notifier::emitReady);
+        QObject::connect(frame, &QWebFrame::loadFinished, &notifier, &Notifier::emitReady, Qt::UniqueConnection);
     }
     else
     {
