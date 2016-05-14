@@ -1,5 +1,6 @@
 #include "Facade.hpp"
-
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp> 
 
 namespace Xeth{
 
@@ -177,9 +178,11 @@ void Facade::setReady()
 
 void Facade::shutdown()
 {
-    _notifier.emitClosing();
+    qDebug()<<"waiting to complete...";
     _synchronizer.stop();
     _invoker.waitToComplete();
+    qDebug()<<"sleeping ...";
+    boost::this_thread::sleep(boost::posix_time::milliseconds(10000));
 }
 
 

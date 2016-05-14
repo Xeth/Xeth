@@ -58,6 +58,12 @@ class WalletFacade :public QObject
         Q_INVOKABLE QObject * generateKeyAsync(const QVariantMap &);
         Q_INVOKABLE QObject * changePasswordAsync(const QVariantMap &);
 
+    signals:
+        void Balance(const QString &, const QString &, const QString &);
+
+    private slots:
+        void emitBalance(const QString &, const BigInt &, const BigInt &);
+
     private:
         const Settings &_settings;
         Invoker<Notifier> &_invoker;

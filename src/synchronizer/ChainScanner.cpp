@@ -78,6 +78,23 @@ void ChainScanner::setScanChunkSize(size_t limit)
     _scanCriteria.setLimit(limit);
 }
 
+
+void ChainScanner::loadAddress(const std::string &address)
+{
+    emit NewAddressCriterion(address, getScanIndex(address));
+}
+
+void ChainScanner::loadStealthAddress(const Xeth::StealthKey &key)
+{
+    Ethereum::Stealth::Address address(key);
+    emit NewStealthCriterion(key, getScanIndex(address.toString()));
+}
+
+size_t ChainScanner::getScanIndex(const std::string &address)
+{
+    return _database.getScanIndex().get(address.c_str());
+}
+
 void ChainScanner::addAddress(const Ethereum::Address &address)
 {
     emit NewAddressCriterion(address.toString(), getChainHeight());
@@ -132,17 +149,6 @@ size_t ChainScanner::getChainHeight()
     Ethereum::Connector::BlockChain chain(_provider);
     return chain.getHeight();
 }
-
-
-
-void ChainScanner::loadAddresses()
-{
-    ScopedScanPause pause(this);
-    _scanCriteria.clear();
-    ScanCriteriaLoader loader(_provider, _database);
-    loader.load(_scanCriteria);
-}
-
 
 const ScanProgress & ChainScanner::getProgress() const
 {
@@ -249,7 +255,7 @@ void ChainScanner::autoScan(size_t scanInterval)
 
 void ChainScanner::handleScanComplete()
 {
-    scheduleScan((_scanProgress.getValue() >= 100) ? _scanInterval : 100);
+    scheduleScan((_scanProgress.getValue() >= 100) ? _scanInterval : 500);
 }
 
 

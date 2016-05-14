@@ -16,7 +16,6 @@
 #include "ScanAction.hpp"
 #include "AccountScanCriterion.hpp"
 #include "StealthScanCriterion.hpp"
-#include "ScanCriteriaLoader.hpp"
 
 
 namespace Xeth{
@@ -26,7 +25,7 @@ class ChainScanner : public QObject
     Q_OBJECT
 
     public:
-        ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=1000, size_t scanInterval=10000);
+        ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=100, size_t scanInterval=10000);
         ~ChainScanner();
 
         void setScanChunkSize(size_t limit);
@@ -36,7 +35,8 @@ class ChainScanner : public QObject
 
         bool isActive() const;
 
-        void loadAddresses();
+        void loadAddress(const std::string &);
+        void loadStealthAddress(const StealthKey &);
 
         void addAddress(const std::string &);
         void addAddress(const std::string &, time_t);
@@ -73,6 +73,7 @@ class ChainScanner : public QObject
         size_t estimateHeight(time_t);
         size_t getChainHeight();
         void scheduleScan(size_t );
+        size_t getScanIndex(const std::string &);
 
     private:
         Ethereum::Connector::Provider &_provider;

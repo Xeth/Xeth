@@ -1,10 +1,10 @@
-#include "ScanCriteriaLoader.hpp"
+#include "AccountsLoader.hpp"
 
 
 namespace Xeth{
 
 
-ScanCriteriaLoader::ScanCriteriaLoader(Ethereum::Connector::Provider &provider, const DataBase &database):
+AccountsLoader::AccountsLoader(Ethereum::Connector::Provider &provider, const DataBase &database):
     Base(AccountsFetcher(provider), database)
 {}
 

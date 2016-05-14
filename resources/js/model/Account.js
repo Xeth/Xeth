@@ -26,7 +26,6 @@ var Account = AccountBase.extend({
         }
         this.pinned = 0;
         this.timer = undefined;
-//        this.autoUpdate();
     },
 
     removeIfEmpty: function(){
@@ -81,15 +80,6 @@ var Account = AccountBase.extend({
         });
     },
 
-    autoUpdate:function(){
-        var self = this;
-        this.timer  = setTimeout(function(){
-            self.updateAsync(function(){
-                self.autoUpdate();
-            });
-        },5000);
-    },
-
     send:function(request, callback){
         request.from = this.get("address");
         if(!isNaN(request.amount))
@@ -133,7 +123,6 @@ var StealthAccount = AccountBase.extend({
     pin:function(){},
     unpin:function(){},
     update:function(){},
-    autoUpdate:function(){},
     send:function(){
         return false;
     }
@@ -143,7 +132,7 @@ var StealthAccount = AccountBase.extend({
 var AccountCollection = Backbone.Collection.extend({
 
     initialize:function(models, options){
-        _(this).bindAll("add", "parseNew", "linkProfile");
+        _(this).bindAll("add", "linkProfile");
         this.profiles = options.profiles;
     },
 
@@ -157,6 +146,7 @@ var AccountCollection = Backbone.Collection.extend({
 
     observe: function(){
         XETH_event.Account.connect(this, this.parseNew);
+        XETH_wallet.Balance.connect(this, this.updateBalance);
     },
 
     parseNew: function(data){
@@ -165,9 +155,13 @@ var AccountCollection = Backbone.Collection.extend({
         if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
         {
             if(profile) model.set("profile", profile);
-            model.autoUpdate();
             this.add(model);
         }
+    },
+
+    updateBalance: function(address, unconfirmed, confirmed){
+        var account = this.find({address: address});
+        account.set({balance:confirmed, unconfirmed:unconfirmed});
     },
 
     fetch:function(){
@@ -188,13 +182,11 @@ var AccountCollection = Backbone.Collection.extend({
             {
                 if(model.get("balance")!=0 || model.get("unconfirmed")!=0)
                 {
-                    model.autoUpdate();
                     result.push(model);
                 }
             }
             else
             {
-                model.autoUpdate();
                 result.push(model);
             }
         }

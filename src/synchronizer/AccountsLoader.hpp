@@ -5,23 +5,19 @@
 
 #include "database/DataBase.hpp"
 
-#include "ScanCriteria.hpp"
-#include "AccountScanCriterion.hpp"
-#include "StealthScanCriterion.hpp"
-
+#include "ChainScanner.hpp"
+#include "BalanceObserver.hpp"
 
 
 namespace Xeth{
 
 
 template<class AccountsFetcher, class DataBase>
-class GenericScanCriteriaLoader
+class GenericAccountsLoader
 {
     public:
-
-        GenericScanCriteriaLoader(const AccountsFetcher &, const DataBase &);
-        bool load(ScanCriteria &);
-
+        GenericAccountsLoader(const AccountsFetcher &, const DataBase &);
+        bool load(ChainScanner &, BalanceObserver &);
 
     private:
         AccountsFetcher _accountsFetcher;
@@ -46,17 +42,17 @@ class AccountsFetcher
 
 
 
-class ScanCriteriaLoader : public GenericScanCriteriaLoader<AccountsFetcher, DataBase>
+class AccountsLoader : public GenericAccountsLoader<AccountsFetcher, DataBase>
 {
     public:
-        typedef GenericScanCriteriaLoader<AccountsFetcher, DataBase> Base;
+        typedef GenericAccountsLoader<AccountsFetcher, DataBase> Base;
 
     public:
-        ScanCriteriaLoader(Ethereum::Connector::Provider &connector, const DataBase &database);
+        AccountsLoader(Ethereum::Connector::Provider &connector, const DataBase &database);
 
 };
 
 
 }
 
-#include "ScanCriteriaLoader.ipp"
+#include "AccountsLoader.ipp"

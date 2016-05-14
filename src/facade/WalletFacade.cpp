@@ -19,7 +19,14 @@ WalletFacade::WalletFacade
     _database(database),
     _notifier(notifier),
     _synchronizer(synchronizer)
-{}
+{
+    QObject::connect(&synchronizer.getBalanceObserver(), &BalanceObserver::Update, this, &WalletFacade::emitBalance);
+}
+
+void WalletFacade::emitBalance(const QString &address, const BigInt &unconfirmed, const BigInt &confirmed)
+{
+    emit Balance(address, QString(unconfirmed.str().c_str()), QString(confirmed.str().c_str()));
+}
 
 QVariant WalletFacade::getAccounts()
 {
