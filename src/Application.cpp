@@ -15,8 +15,15 @@ int Application::exec()
 {
     _window.moveToScreenCenter();
     _window.show();
-    QObject::connect(&_window, SIGNAL(Closing()), &_facade, SLOT(shutdown()), Qt::DirectConnection);
+    QObject::connect(&_window, SIGNAL(Closing()), this, SLOT(shutdown()), Qt::DirectConnection);
     return _app.exec();
+}
+
+
+void Application::shutdown()
+{
+    _facade.shutdown();
+    QCoreApplication::exit();
 }
 
 

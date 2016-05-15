@@ -19,6 +19,8 @@ class Application : public QObject
         Application(const Settings &, int &argc, char **argv);
         int exec();
 
+    private slots:
+        void shutdown();
 
     private:
         QApplication _app;
