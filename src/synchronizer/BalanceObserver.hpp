@@ -12,6 +12,7 @@
 #include "ethrpc/Wallet.hpp"
 
 #include "types/BigInt.hpp"
+#include "types/EthereumKey.hpp"
 
 
 namespace Xeth{
@@ -21,7 +22,7 @@ class BalanceObserver : public QObject
 {
     Q_OBJECT
     public:
-        BalanceObserver(Ethereum::Connector::Provider &, time_t interval=1000);
+        BalanceObserver(Ethereum::Connector::Provider &, time_t interval=5000);
 
         void watch();
         void watch(const std::string &);
@@ -31,9 +32,12 @@ class BalanceObserver : public QObject
 
     signals:
         void Update(const QString &, const BigInt &, const BigInt &) const;
+        void processed();
+
 
     private slots:
         void checkBalanceAsync();
+        void checkBalanceLater();
 
     private:
         struct AccountInfo

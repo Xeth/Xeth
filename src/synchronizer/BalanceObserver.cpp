@@ -1,6 +1,5 @@
 #include "BalanceObserver.hpp"
 
-
 namespace Xeth{
 
 
@@ -13,6 +12,12 @@ BalanceObserver::BalanceObserver(Ethereum::Connector::Provider &provider, time_t
     {
         throw std::runtime_error("failed to connect timeout signal");
     }
+
+    if(!QObject::connect(this, SIGNAL(processed()), this, SLOT(checkBalanceLater())))
+    {
+        throw std::runtime_error("failed to connect timeout signal");
+    }
+
 }
 
 
@@ -20,26 +25,31 @@ BalanceObserver::BalanceObserver(Ethereum::Connector::Provider &provider, time_t
 void BalanceObserver::watch(const std::string &address)
 {
     AccountInfo info;
-    info.address = address;
+    EthereumCheckSum checksum;
+    info.address = checksum.compute(address);
     _accounts.push_back(info);
 }
 
 
 void BalanceObserver::start()
 {
-    _timer.start(_interval);
+    checkBalanceLater();
 }
 
+void BalanceObserver::checkBalanceLater()
+{
+    _timer.setSingleShot(true);
+    _timer.start(_interval);
+}
 
 time_t BalanceObserver::getUpdateInterval() const
 {
     return _interval;
 }
 
-
 void BalanceObserver::checkBalanceAsync()
 {
-    QtConcurrent::run(this, &BalanceObserver::checkBalance);
+    QFuture<void> future = QtConcurrent::run(this, &BalanceObserver::checkBalance);
 }
 
 
@@ -52,7 +62,7 @@ void BalanceObserver::checkBalance()
     {
         checkBalance(_accounts[i]);
     }
-    _timer.start(_interval);
+    emit processed();
 }
 
 
