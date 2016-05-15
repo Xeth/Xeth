@@ -145,7 +145,7 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     observe: function(){
-        XETH_event.Account.connect(this, this.parseNew);
+        XETH_wallet.Account.connect(this, this.parseNew);
         XETH_wallet.Balance.connect(this, this.updateBalance);
     },
 
@@ -161,7 +161,7 @@ var AccountCollection = Backbone.Collection.extend({
 
     updateBalance: function(address, unconfirmed, confirmed){
         var account = this.find({address: address});
-        account.set({balance:confirmed, unconfirmed:unconfirmed});
+        if(account) account.set({balance:XETH_convert.fromWei(confirmed), unconfirmed: XETH_convert.fromWei(unconfirmed)});
     },
 
     fetch:function(){
