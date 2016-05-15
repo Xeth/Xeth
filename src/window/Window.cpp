@@ -160,9 +160,9 @@ void Window::close()
     msgBox->setStandardButtons(0);
     msgBox->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
     msgBox->show();
-
+    hideTray();
     QTimer::singleShot(100, this, SLOT(emitClosing()));
-    QTimer::singleShot(100, msgBox, SLOT(close()));
+//    QTimer::singleShot(100, msgBox, SLOT(close()));
 }
 
 
