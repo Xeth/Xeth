@@ -20,8 +20,31 @@ BitProfileFacade::BitProfileFacade
     _notifier(notifier),
     _settings(settings),
     _invoker(invoker)
-{}
+{
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::NewItem, this, &BitProfileFacade::emitProfile);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::Renamed, this, &BitProfileFacade::emitProfileRename);
+}
 
+
+void BitProfileFacade::emitProfileRename(const QString &oldURI, const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["oldURI"] = oldURI;
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    event["id"] = descriptor.getName().c_str();
+    emit Renamed(event);
+}
+
+void BitProfileFacade::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["id"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    event["account"] = descriptor.getAuthAddress().c_str();
+    emit Profile(event);
+}
 
 QObject * BitProfileFacade::createProfileAsync(const QVariantMap &request)
 {

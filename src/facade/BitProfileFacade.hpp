@@ -52,6 +52,14 @@ class BitProfileFacade : public QObject
         Q_INVOKABLE QObject * updateDetailsAsync(const QVariantMap &);
         Q_INVOKABLE QObject * getDetailsAsync(const QString &);
 
+    signals:
+        void Profile(const QVariantMap &) const;
+        void Renamed(const QVariantMap &) const;
+
+    private slots:
+        void emitProfile(const BitProfile::ProfileDescriptor &);
+        void emitProfileRename(const QString &old, const BitProfile::ProfileDescriptor &);
+
     private:
         Ethereum::Connector::Provider &_provider;
         DataBase &_database;

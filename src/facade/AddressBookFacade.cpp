@@ -8,7 +8,9 @@ namespace Xeth{
 AddressBookFacade::AddressBookFacade(DataBase &database, Invoker<Notifier> &invoker) :
     _database(database),
     _invoker(invoker)
-{}
+{
+    QObject::connect(&database.getAddressBook(), &AddressBookStore::NewItem, this, &AddressBookFacade::emitContact);
+}
 
 
 QVariant AddressBookFacade::addContact(const QVariantMap &request)
@@ -43,6 +45,12 @@ QVariant AddressBookFacade::listContacts()
 {
     ListContactsCommand command(_database);
     return _invoker.invoke(command, NullCommandArguments());
+}
+
+
+void AddressBookFacade::emitContact(const QJsonObject &item)
+{
+    emit Contact(item.toVariantMap());
 }
 
 

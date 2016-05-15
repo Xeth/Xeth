@@ -22,7 +22,6 @@ class AddressBookFacade : public QObject
     public:
         AddressBookFacade(DataBase &, Invoker<Notifier> &);
 
-
     public slots:
         QVariant addContact(const QVariantMap &);
         QVariant editContact(const QVariantMap &);
@@ -30,6 +29,12 @@ class AddressBookFacade : public QObject
         QVariant listContacts();
         QVariant removeContact(const QString &);
 
+
+    signals:
+        void Contact(const QVariantMap &) const;
+
+    private slots:
+        void emitContact(const QJsonObject &);
 
     private:
         DataBase &_database;

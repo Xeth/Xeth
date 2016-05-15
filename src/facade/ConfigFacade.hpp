@@ -26,6 +26,11 @@ class ConfigFacade : public QObject
         Q_INVOKABLE QVariant set(const QVariantMap &);
         Q_INVOKABLE QVariant get(const QString &);
 
+    signals:
+        void Change(const QString &, const QString &) const;
+
+    private slots:
+        void emitChange(const QString &, const QString &);
 
     private:
         DataBase &_database;

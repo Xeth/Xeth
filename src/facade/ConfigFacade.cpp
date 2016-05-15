@@ -7,7 +7,15 @@ namespace Xeth{
 ConfigFacade::ConfigFacade(DataBase &database, Invoker<Notifier> &invoker):
     _database(database),
     _invoker(invoker)
-{}
+{
+    QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &ConfigFacade::emitChange);
+}
+
+
+void ConfigFacade::emitChange(const QString &name, const QString &value)
+{
+    emit Change(name, value);
+}
 
 
 QVariant ConfigFacade::get(const QString &name)

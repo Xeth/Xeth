@@ -59,10 +59,16 @@ class WalletFacade :public QObject
         Q_INVOKABLE QObject * changePasswordAsync(const QVariantMap &);
 
     signals:
-        void Balance(const QString &, const QString &, const QString &);
+        void Balance(const QString &, const QString &, const QString &) const;
+        void Account(const QVariantMap &) const;
+        void Transaction(const QVariantMap &) const;
 
     private slots:
         void emitBalance(const QString &, const BigInt &, const BigInt &);
+        void emitStealthPayment(const QJsonObject &);
+        void emitStealthKey(const QString &);
+        void emitTransaction(const QJsonObject &);
+        void emitEthereumKey(const QString &);
 
     private:
         const Settings &_settings;

@@ -124,7 +124,7 @@ bool ImportPresaleKeyCommand::import(const QString &path, const QString &passwor
             std::string addr = json["ethaddr"].asString();
             _synchronizer.watchAddress(addr);
             address = addr.c_str();
-            _notifier.emitEthereumKey(address);
+//            _notifier.emitEthereumKey(address);
         }
     }
 

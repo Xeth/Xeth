@@ -30,10 +30,6 @@ Facade::Facade(const Settings &settings) :
     _eth.moveToThread(thread);
     _ipfs.moveToThread(thread);
 
-    _notifier.watch(_synchronizer);
-    _notifier.watch(_database);
-    
-
     connect(thread, &QThread::started, initializer, &ChildrenInitializer::initialize);
     connect(initializer, SIGNAL(Error(const QString &)), &_notifier, SLOT(emitError(const QString &)));
     connect(initializer, &ChildrenInitializer::Done, this, &Facade::setReady);

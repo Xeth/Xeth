@@ -19,6 +19,13 @@ class ProgressFacade : public QObject
         Q_INVOKABLE QVariant getScan() const;
         Q_INVOKABLE QVariant getSync() const;
 
+    signals:
+        void Scan(const QVariant &) const;
+        void Sync(const QVariant &) const;
+
+    private slots:
+        void emitScanProgress(double);
+        void emitSyncProgress(double);
 
     private:
         Synchronizer &_synchronizer;

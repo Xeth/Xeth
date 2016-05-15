@@ -21,12 +21,55 @@ WalletFacade::WalletFacade
     _synchronizer(synchronizer)
 {
     QObject::connect(&synchronizer.getBalanceObserver(), &BalanceObserver::Update, this, &WalletFacade::emitBalance);
+    QObject::connect(&database.getEthereumKeys(), &EthereumKeyStore::NewItem, this, &WalletFacade::emitEthereumKey);
+    QObject::connect(&database.getStealthKeys(), &StealthKeyStore::NewItem, this, &WalletFacade::emitStealthKey);
+    QObject::connect(&database.getStealthPayments(), &StealthPaymentStore::NewItem, this, &WalletFacade::emitStealthPayment);
+    QObject::connect(&database.getTransactions(), &TransactionStore::NewItem, this, &WalletFacade::emitTransaction);
 }
+
+void WalletFacade::emitTransaction(const QJsonObject &tx)
+{
+    emit Transaction(tx.toVariantMap());
+}
+
 
 void WalletFacade::emitBalance(const QString &address, const BigInt &unconfirmed, const BigInt &confirmed)
 {
     emit Balance(address, QString(unconfirmed.str().c_str()), QString(confirmed.str().c_str()));
 }
+
+
+void WalletFacade::emitStealthKey(const QString &address)
+{
+    QVariantMap account;
+    account.insert("stealth", address);
+    emit Account(account);
+
+}
+
+void WalletFacade::emitStealthPayment(const QJsonObject &payment)
+{
+    QVariantMap account;
+    EthereumCheckSum checksum;
+    account.insert("stealth", payment["stealth"].toString());
+    account.insert("address", QString(checksum.compute(payment["address"].toString().toStdString()).c_str()));
+    emit Account(account);
+}
+
+
+void WalletFacade::emitEthereumKey(const QString &address)
+{
+    if(!_database.getStealthPayments().get(address.toStdString()).empty())
+    {
+        return; //ignore duplicates
+    }
+    QVariantMap account;
+    EthereumCheckSum checksum;
+    account.insert("address", QString(checksum.compute(address.toStdString()).c_str()));
+    emit Account(account);
+}
+
+
 
 QVariant WalletFacade::getAccounts()
 {
