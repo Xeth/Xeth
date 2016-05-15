@@ -118,7 +118,7 @@ try{
         profileValidator: new ProfileValidator
     });
 
-    XETH_event.Ready.connect(this, function(){
+    XETH_event.Ready.connect(function(){
         var config = new Config;
         events.listen();
         profiles.fetch();
@@ -144,9 +144,8 @@ try{
         });
 
         view.render();
-
-
     });
+
 }
 catch(e)
 {
