@@ -59,7 +59,7 @@ void Window::initConfig()
     initConfigOpt("tray", _showTrayOpt, true);
     initConfigOpt("tray_minimize", _minimizeToTrayOpt, false);
     initConfigOpt("tray_close", _closeToTrayOpt, false);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Config, this, &Window::updateConfig);
+    QObject::connect(&_facade.getConfig(), &ConfigFacade::Change, this, &Window::updateConfig);
     if(_showTrayOpt)
     {
         showTray();
@@ -126,13 +126,13 @@ void Window::initConfigOpt(const char *name, bool &opt, bool defaultVal)
 void Window::showTray()
 {
     _trayIcon->setVisible(true);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::connect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::hideTray()
 {
     _trayIcon->setVisible(false);
-    QObject::disconnect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::disconnect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::toggle()
