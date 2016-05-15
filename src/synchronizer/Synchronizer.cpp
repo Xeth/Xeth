@@ -70,6 +70,7 @@ void Synchronizer::loadAddresses()
 void Synchronizer::scan()
 {
     _scanner.syncScan();
+
 }
 
 
@@ -101,6 +102,7 @@ void Synchronizer::synchronize()
     size_t scanInterval = 24000, syncInterval = 12000;
     _syncProgress.autoUpdate(syncInterval);
     _scanner.autoScan(scanInterval);
+    _balanceObserver.start();
 }
 
 
