@@ -37,7 +37,7 @@ var TransactionCollection = Backbone.Collection.extend({
     },
 
     observe:function(){
-        XETH_event.Transaction.connect(this, this.add);
+        XETH_wallet.Transaction.connect(this, this.add);
     },
 
     add:function(model){

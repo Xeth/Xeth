@@ -4,7 +4,6 @@ var Profile = Backbone.Model.extend({
     idAttribute: "uri",
 
     initialize:function(){
-        _(this).bindAll("parseEvent");
         this.set("loaded", false);
         this.fetchDetails();
     },
@@ -41,21 +40,6 @@ var Profile = Backbone.Model.extend({
         }
     },
 
-    observe:function(){
-        XETH_event.Data.connect(this, this.parseEvent);
-    },
-
-    parseEvent:function(event){
-        if(event.context=="bitprofile"&&event.uri==this.getURI())
-        {
-            this.set(event.key, event.value);
-        }
-    },
-
-    stopListening:function(){
-        Backbone.Model.prototype.stopListening.call(this);
-        XETH_event.Data.disconnect(this, this.parseEvent);
-    },
 
     getURI:function(){
         return Backbone.Model.prototype.get.call(this, "uri");
@@ -142,7 +126,13 @@ var ProfileCollection = Backbone.Collection.extend({
     },
 
     observe:function(){
-        XETH_event.Profile.connect(this, this.add);
+        XETH_bitprofile.Profile.connect(this, this.add);
+        XETH_bitprofile.Renamed.connect(this, this.rename);
+    },
+
+    rename:function(data){
+        var profile = this.find({uri: data.oldURI});
+        if(profile) profile.set(data);
     },
 
     model: Profile

@@ -64,7 +64,6 @@ var ContactView = Backbone.View.extend({
             if(!icon.hasClass("on")) icon.addClass("on");
             icon.attr("title", bitprofile);
             this.bitprofile = new Profile({uri: bitprofile});
-            this.bitprofile.observe();
             this.listenTo(this.bitprofile, "change:details", this.updateBitProfileDetails);
             if(this.bitprofile.get("loaded"))
             {

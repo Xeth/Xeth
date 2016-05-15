@@ -119,7 +119,7 @@ var AddressBook = Backbone.Collection.extend({
     },
 
     observe:function(){
-        XETH_event.Contact.connect(this, this.upsert);
+        XETH_addressbook.Contact.connect(this, this.upsert);
     },
 
     model: function(data, options){
