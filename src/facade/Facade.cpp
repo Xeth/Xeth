@@ -174,11 +174,11 @@ void Facade::setReady()
 
 void Facade::shutdown()
 {
-    qDebug()<<"waiting to complete...";
-    _synchronizer.stop();
+    qDebug()<<"shutting down ...";
     _invoker.waitToComplete();
-    qDebug()<<"sleeping ...";
-    boost::this_thread::sleep(boost::posix_time::milliseconds(10000));
+    _synchronizer.stop();
+    _ipfs.stop();
+    _eth.stop();
 }
 
 
