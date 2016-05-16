@@ -13,7 +13,12 @@ namespace Xeth{
 
 //Ugly, use lambda instead
 Application * g_App;
+
+#ifdef __WINDOWS_OS__
+void SignalHandler(DWORD)
+#else
 void SignalHandler(int)
+#endif
 {
     g_App->getWindow().close();
 }
@@ -40,6 +45,7 @@ int Application::exec()
     g_App = this;
 
 #ifdef __WINDOWS_OS__
+    SetConsoleCtrlHandler(SignalHandler, true);
 #else
     signal(SIGINT, SignalHandler);
 
