@@ -62,11 +62,4 @@ void Application::shutdown()
 }
 
 
-//template<Application *app>
-//void Application::HandleSignal(int)
-//{
-//    app->shutdown();
-//}
-
-
 }
