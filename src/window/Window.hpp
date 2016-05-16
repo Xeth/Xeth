@@ -36,6 +36,9 @@ class Window : public QWebView
     signals:
         void Closing();
 
+    public slots:
+        void close();
+
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
         void setUrl(const char *);
@@ -51,7 +54,6 @@ class Window : public QWebView
         void moveToScreenCenter(QWebView &);
 
     private slots:
-        void close();
         void initObjects();
         void loadTemplates();
         void toggle();
