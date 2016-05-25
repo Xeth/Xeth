@@ -15,12 +15,25 @@ namespace Xeth{
 Application * g_App;
 
 #ifdef __WINDOWS_OS__
-void SignalHandler(DWORD)
+BOOL WINAPI SignalHandler(DWORD type)
+{
+    switch(type)
+    {
+        case CTRL_CLOSE_EVENT:
+        case CTRL_LOGOFF_EVENT:
+        case CTRL_SHUTDOWN_EVENT:
 #else
 void SignalHandler(int)
-#endif
 {
+#endif
+
     g_App->getWindow().close();
+#ifdef __WINDOWS_OS__
+    default: 
+        break;
+    }
+#endif
+
 }
 
 
