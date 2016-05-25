@@ -32,6 +32,7 @@ void SignalHandler(int)
     default: 
         break;
     }
+    return true;
 #endif
 
 }
