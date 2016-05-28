@@ -16,7 +16,18 @@ QString IpfsProcessInitializer::GetDefaultCommand()
 #else
     path.append("/vendor/bin/ipfs");
 #endif
-    return path;
+
+    QFileInfo info(path);
+    if(info.exists())
+    {
+        return path;
+    }
+
+#if defined(__WINDOWS_OS__)
+    return "ipfs.exe";
+#else
+    return "ipfs";
+#endif
 }
 
 void IpfsProcessInitializer::Initialize(QProcess &process, const Settings &settings)

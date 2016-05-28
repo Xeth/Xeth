@@ -16,7 +16,17 @@ QString EthProcessInitializer::GetDefaultCommand()
 #else
     path.append("/vendor/bin/geth");
 #endif
-    return path;
+
+    QFileInfo info(path);
+    if(info.exists())
+    {
+        return path;
+    }
+#if defined(__WINDOWS_OS__)
+    return "geth.exe";
+#else
+    return "geth";
+#endif
 }
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
