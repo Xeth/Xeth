@@ -238,11 +238,20 @@ var BitprofileFormView = SubPageView.extend({
             if(this.model.get("loaded"))
             {
                 var details = this.model.get("details");
-                this.name.val(details.name);
-                if(details.avatar){
-                    this.avatarImage.attr("src",details.avatar);
-                    this.avatarRemove.show();
-                }else{
+                if(details)
+                {
+                    this.name.val(details.name);
+                    if(details.avatar){
+                        this.avatarImage.attr("src",details.avatar);
+                        this.avatarRemove.show();
+                    }else{
+                        this.avatarImage.attr("src",'img/avatarEmpty.png');
+                        this.avatarRemove.hide();
+                    }
+                }
+                else
+                {
+                    this.name.val("");
                     this.avatarImage.attr("src",'img/avatarEmpty.png');
                     this.avatarRemove.hide();
                 }
