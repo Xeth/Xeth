@@ -98,7 +98,7 @@ var Account = AccountBase.extend({
         }else{
             var txid = XETH_wallet.send(request);
             if(txid){
-                this.update();
+                this.updateAsync();
             }
             return txid;
         }
