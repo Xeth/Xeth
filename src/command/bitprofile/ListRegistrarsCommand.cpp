@@ -13,7 +13,7 @@ QVariant ListRegistrarsCommand::operator()(const QVariantMap &request)
 {
     BitProfile::MasterRegistrar master(_provider, GetBitprofileNetwork(_settings));
     BitProfile::MasterRegistrar::URIList uris = master.getURIList();
-
+    
     return makeList(request.contains("offset")?uris.at(request["offset"].toInt()): uris.begin(), uris.end(), request.contains("limit")?request["limit"].toInt():100);
 
 }
