@@ -152,6 +152,14 @@ bool GenericSendCommand<Sender, Validator, Estimator>::unlockSender(const std::s
 {
     if(!_wallet.unlockAccount(from, password, 5))
     {
+        EthereumKeyStore & store = _database.getEthereumKeys();
+        EthereumKeyStore::Iterator it = store.find(from.c_str());
+
+        if(it != store.end())
+        {
+            return false;
+        }
+
         //maybe it was a stealth payment
         StealthSpendKeyRedeemer redeemer(_database);
         if(!redeemer.redeem(from, password))
