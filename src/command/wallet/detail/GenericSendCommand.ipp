@@ -67,9 +67,18 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
         throw std::runtime_error("invalid address");
     }
 
-    if(!unlockSender(from, password))
+    EthereumKeyStore & store = _database.getEthereumKeys();
+    EthereumKeyStore::Iterator it = store.find(from.c_str());
+
+    if(it == store.end())
     {
-        throw std::runtime_error("invalid password");
+        //maybe it was a stealth payment
+        StealthSpendKeyRedeemer redeemer(_database);
+        if(!redeemer.redeem(from, password))
+        {
+            throw std::runtime_error("invalid password");
+        }
+
     }
 
     TransactionObjectBuilder builder;
@@ -94,7 +103,7 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
         amount = BigInt(amountStr);
     }
 
-    QString txid = _sender(_wallet, builder, from, to, amount).c_str();
+    QString txid = _sender(_wallet, builder, from, password, to, amount).c_str();
     _database.getTransactions().insert(builder.build());
 
     return txid;
@@ -146,34 +155,6 @@ bool GenericSendCommand<Sender, Validator, Estimator>::validateDestination(const
     return validator(to, strict);
 }
 
-
-template<class Sender, class Validator, class Estimator>
-bool GenericSendCommand<Sender, Validator, Estimator>::unlockSender(const std::string &from, const std::string &password)
-{
-    if(!_wallet.unlockAccount(from, password, 5))
-    {
-        EthereumKeyStore & store = _database.getEthereumKeys();
-        EthereumKeyStore::Iterator it = store.find(from.c_str());
-
-        if(it != store.end())
-        {
-            return false;
-        }
-
-        //maybe it was a stealth payment
-        StealthSpendKeyRedeemer redeemer(_database);
-        if(!redeemer.redeem(from, password))
-        {
-            return false;
-        }
-
-        if(!_wallet.unlockAccount(from, password, 5))
-        {
-            return false;
-        }
-    }
-    return true;
-}
 
 
 
