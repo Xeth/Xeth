@@ -21,8 +21,8 @@ WalletFacade::WalletFacade
     _synchronizer(synchronizer)
 {
     QObject::connect(&synchronizer.getBalanceObserver(), &BalanceObserver::Update, this, &WalletFacade::emitBalance);
-    QObject::connect(&database.getEthereumKeys(), &EthereumKeyStore::NewItem, this, &WalletFacade::emitEthereumKey);
-    QObject::connect(&database.getStealthKeys(), &StealthKeyStore::NewItem, this, &WalletFacade::emitStealthKey);
+    QObject::connect(&database.getEthereumKeys(), &EthereumKeyStore::Key, this, &WalletFacade::emitEthereumKey);
+    QObject::connect(&database.getStealthKeys(), &StealthKeyStore::Key, this, &WalletFacade::emitStealthKey);
     QObject::connect(&database.getStealthPayments(), &StealthPaymentStore::NewItem, this, &WalletFacade::emitStealthPayment);
     QObject::connect(&database.getTransactions(), &TransactionStore::NewItem, this, &WalletFacade::emitTransaction);
 }

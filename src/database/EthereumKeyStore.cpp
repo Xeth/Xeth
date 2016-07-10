@@ -35,7 +35,7 @@ bool EthereumKeyStore::replace(const EthereumKey &key)
 
     if(Base::replace(path.c_str(), key))
     {
-        emit NewItem(QString(address.c_str()));
+        emit Key(QString(address.c_str()));
         return true;
     }
     return false;
@@ -48,13 +48,21 @@ bool EthereumKeyStore::replace(const EthereumKey &key, time_t time)
 }
 
 
+void EthereumKeyStore::touch(const char *address) const
+{
+    Iterator it = find(address);
+    if(it!=end())
+    {
+        emit Key(it->getAddress().toString().c_str());
+    }
+}
 
 
 bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &key)
 {
     if(Base::replace(filename, key))
     {
-        emit NewItem(QString(key.getAddress().toString().c_str()));
+        emit Key(QString(key.getAddress().toString().c_str()));
         return true;
     }
     return false;
@@ -66,7 +74,7 @@ bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
 {
     if(Base::insert(id, key))
     {
-        emit NewItem(QString(key.getAddress().toString().c_str()));
+        emit Key(QString(key.getAddress().toString().c_str()));
         return true;
     }
     return false;
