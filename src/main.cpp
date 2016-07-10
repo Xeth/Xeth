@@ -18,6 +18,12 @@ int main(int argc, char* argv[])
         settings.readConfigFile();
         settings.readCommandLineArgs(argc, argv);
 
+        if(settings.has("version"))
+        {
+            std::cout<<"Version: 0.2.1 (BETA)"<<std::endl;
+            return 0;
+        }
+
         Xeth::Application app(settings, argc, argv);
         return app.exec();
     }
