@@ -1,4 +1,4 @@
-var ProfileSimulator = Profile.extend({
+var ProfileSimulator = Backbone.Model.extend({
 
     idAttribute: "uri",
 
@@ -7,7 +7,7 @@ var ProfileSimulator = Profile.extend({
         this.updateURI();
     },
     
-    export:function(){
+    exportKey:function(){
         return true;
     },
     
