@@ -54,7 +54,7 @@ class ImportEthereumKeyCommand : public GenericImportKeyCommand<EthereumKeyStore
 class ImportPresaleKeyCommand
 {
     public:
-        ImportPresaleKeyCommand(const Settings &, Synchronizer &, Notifier &notifier);
+        ImportPresaleKeyCommand(const Settings &, Synchronizer &, DataBase &);
 
         QVariant operator()(const QVariantMap &);
 
@@ -64,7 +64,7 @@ class ImportPresaleKeyCommand
     private:
         const Settings &_settings;
         Synchronizer &_synchronizer;
-        Notifier &_notifier;
+        DataBase &_database;
 };
 
 
