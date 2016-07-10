@@ -150,6 +150,10 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     parseNew: function(data){
+        if(data.address && this.find({address:data.address}))
+        {
+            return false;
+        }
         var model = this.model(data);
         var profile = this.profiles.find({account:model.get("address")});
         if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
