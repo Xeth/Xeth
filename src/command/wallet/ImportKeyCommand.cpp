@@ -4,10 +4,11 @@
 namespace Xeth{
 
 
-ImportKeyCommand::ImportKeyCommand(const Settings &settings, DataBase &database, Synchronizer &synchronizer) : 
+ImportKeyCommand::ImportKeyCommand(const Settings &settings, DataBase &database, Synchronizer &synchronizer, Notifier &notifier) : 
     _settings(settings),
     _database(database),
-    _synchronizer(synchronizer)
+    _synchronizer(synchronizer),
+    _notifier(notifier)
 {}
 
 
@@ -60,7 +61,7 @@ bool ImportKeyCommand::importStealthKey(const QString &file, const QString &pass
 
 bool ImportKeyCommand::importPresaleKey(const QString &file, const QString &password, QString &address)
 {
-    ImportPresaleKeyCommand command(_settings, _synchronizer);
+    ImportPresaleKeyCommand command(_settings, _synchronizer, _database);
     return command.import(file, password, address);
 }
 
@@ -76,20 +77,21 @@ ImportStealthKeyCommand::ImportStealthKeyCommand(DataBase &database, Synchronize
 
 
 
-ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer) :
+ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer, DataBase &database) :
     _settings(settings),
-    _synchronizer(synchronizer)
+    _synchronizer(synchronizer),
+    _database(database)
 {}
 
 
 bool ImportPresaleKeyCommand::import(const QString &path, const QString &password, QString &address)
 {
 
+    qDebug()<<"import "<<path<<" password="<<password;
+
     QStringList args;
     Json::Value json;
 
-    args.push_back("--password");
-    args.push_back(password);
     args.push_back("wallet");
     args.push_back("import");
     args.push_back(path);
@@ -98,10 +100,15 @@ bool ImportPresaleKeyCommand::import(const QString &path, const QString &passwor
     EthProcessInitializer::Initialize(process, _settings, args);
 
     process.start();
+    process.waitForStarted();
+
+    process.write(password.toLocal8Bit());
+    process.write("\n");
     process.waitForFinished();
 
-    if(process.exitStatus() != 0)
+    if(process.exitCode()!=0)
     {
+        qDebug()<<process.readAllStandardError();
         return false;
     }
     else
@@ -117,6 +124,7 @@ bool ImportPresaleKeyCommand::import(const QString &path, const QString &passwor
             std::string addr = json["ethaddr"].asString();
             _synchronizer.watchAddress(addr);
             address = addr.c_str();
+            _database.getEthereumKeys().touch(addr.c_str());
         }
     }
 

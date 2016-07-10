@@ -58,12 +58,13 @@ std::string Sender::send
     Ethereum::Connector::Wallet &wallet,
     TransactionObjectBuilder &builder,
     const std::string &from,
+    const std::string &password,
     const std::string &to,
     const BigInt &amount,
     const std::string &data
 )
 {
-    std::string txid = send(wallet, from, to, amount, data);
+    std::string txid = send(wallet, from, password, to, amount, data);
     builder.setDetails(txid, TransactionCategory::Sent, from, to, amount, time(NULL));
     return txid;
 }
@@ -73,6 +74,7 @@ std::string Sender::send
 (
     Ethereum::Connector::Wallet &wallet,
     const std::string &from,
+    const std::string &password,
     const std::string &to,
     const BigInt &amount,
     const std::string &data
@@ -82,16 +84,16 @@ std::string Sender::send
     {
         if(_hasGasPrice)
         {
-            return wallet.sendTransaction(from, to, amount, data, _gas, _price);
+            return wallet.signAndSendTransaction(from, password, to, amount, data, _gas, _price);
         }
         else
         {
-            return wallet.sendTransaction(from, to, amount, data, _gas);
+            return wallet.signAndSendTransaction(from, password, to, amount, data, _gas);
         }
     }
     else
     {
-        return wallet.sendTransaction(from, to, amount, data);
+        return wallet.signAndSendTransaction(from, password, to, amount, data);
     }
 }
 
@@ -100,11 +102,12 @@ std::string AddressSender::operator()
     Ethereum::Connector::Wallet &wallet,
     TransactionObjectBuilder &builder,
     const std::string &from,
+    const std::string &password,
     const std::string &to,
     const BigInt &amount
 )
 {
-    return send(wallet, builder, from, to, amount, "");
+    return send(wallet, builder, from, password, to, amount, "");
 }
 
 
@@ -113,6 +116,7 @@ std::string StealthSender::operator()
     Ethereum::Connector::Wallet &wallet,
     TransactionObjectBuilder &txBuilder,
     const std::string &from,
+    const std::string &password,
     const std::string &to,
     const BigInt &amount
 )
@@ -126,7 +130,7 @@ std::string StealthSender::operator()
     std::string destination = paymentAddr.getAddresses()[0].toString();
 
     txBuilder.setStealth(address);
-    return send(wallet, txBuilder, from, destination, amount, data);
+    return send(wallet, txBuilder, from, password, destination, amount, data);
 }
 
 

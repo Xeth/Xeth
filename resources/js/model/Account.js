@@ -18,35 +18,97 @@ var Account = AccountBase.extend({
     idAttribute: "address",
 
     initialize:function(){
-        _(this).bindAll("update");
+        _(this).bindAll("update", "removeIfEmpty", "destroy");
         this.update();
+        if(this.get("stealth"))
+        {
+            this.on("change:balance", this.removeIfEmpty);
+        }
+        this.pinned = 0;
+        this.timer = undefined;
+    },
+
+    removeIfEmpty: function(){
+        if(!this.pinned)
+        {
+            if((this.get("balance")==0)&&(this.get("unconfirmed")==0))
+            {
+                this.trigger("removing");
+                setTimeout(this.destroy, 30000);
+            }
+        }
+    },
+
+    pin:function(){
+        this.pinned++;
+    },
+
+    unpin:function(){
+        this.pinned--;
+        if(this.pinned <= 0)
+        {
+            this.pinned = 0;
+            if(this.get("stealth")) this.removeIfEmpty();
+        }
     },
 
     update:function(){
-        var address = this.get("address");
-        this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(address)));
-        this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
-    },
-
-    autoUpdate:function(interval){
-        if(typeof interval==undefined||!interval){
-            interval = 10000;
+        try
+        {
+            var address = this.get("address");
+            this.set("balance", XETH_convert.fromWei(XETH_wallet.getBalance(address)));
+            this.set("unconfirmed", XETH_convert.fromWei(XETH_wallet.getPendingBalance(address)));
         }
-        setInterval(this.update, interval);
+        catch(e)
+        {}
     },
 
-    send:function(request){
+    updateAsync:function(callback){
+        var address = this.get("address");
+        var status = {value: 0};
+        this.watchBalanceFuture(new FutureObserver(XETH_wallet.getBalanceAsync(address)), status, "balance", callback);
+        this.watchBalanceFuture(new FutureObserver(XETH_wallet.getPendingBalanceAsync(address)), status, "unconfirmed", callback);
+    },
+
+    watchBalanceFuture:function(observer, status, type, callback){
+        var self = this;
+        observer.onFinished(function(balance){
+            self.set(type, XETH_convert.fromWei(balance));
+            status.value++;
+            if(status.value > 1 && callback instanceof Function) callback();
+            observer.future.dispose();
+        });
+    },
+
+    send:function(request, callback){
         request.from = this.get("address");
         if(!isNaN(request.amount))
         {
             request.amount = XETH_convert.toWei(""+request.amount);
         }
-        var txid = XETH_wallet.send(request);
-        if(txid){
-            this.update();
+        
+        if(callback instanceof Function){
+            var observer = new FutureObserver(XETH_wallet.sendAsync(request));
+            var self = this;
+            observer.onFinished(function(result){
+                if(result) self.update();
+                callback(result);
+                observer.future.dispose();
+            });
+        }else{
+            var txid = XETH_wallet.send(request);
+            if(txid){
+                this.updateAsync();
+            }
+            return txid;
         }
-        return txid;
+    },
+
+    destroy: function(){
+        if(this.interval) clearTimeout(this.interval);
+        this.trigger("destroy", this);
     }
+
 });
 
 
@@ -58,9 +120,9 @@ var StealthAccount = AccountBase.extend({
         this.set("balance",0);
         this.set("unconfirmed", 0);
     },
-
+    pin:function(){},
+    unpin:function(){},
     update:function(){},
-    autoUpdate:function(){},
     send:function(){
         return false;
     }
@@ -69,9 +131,9 @@ var StealthAccount = AccountBase.extend({
 
 var AccountCollection = Backbone.Collection.extend({
 
-    initialize:function(){
-    
-        _(this).bindAll("add");
+    initialize:function(models, options){
+        _(this).bindAll("add", "linkProfile");
+        this.profiles = options.profiles;
     },
 
     add:function(data){
@@ -83,21 +145,93 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     observe: function(){
-        XETH_event.Account.connect(this, this.add);
+        XETH_wallet.Account.connect(this, this.parseNew);
+        XETH_wallet.Balance.connect(this, this.updateBalance);
+    },
+
+    parseNew: function(data){
+        if(this.filter(function (account) {
+            return account.get("stealth") == data.stealth && account.get("address") == data.address;
+        }))
+        {
+            return false;
+        }
+
+        var model = this.model(data);
+        var profile = this.profiles.find({account:model.get("address")});
+        if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
+        {
+            if(profile) model.set("profile", profile);
+            this.add(model);
+        }
+    },
+
+    updateBalance: function(address, unconfirmed, confirmed){
+        var account = this.find({address: address});
+        if(account) account.set({balance:XETH_convert.fromWei(confirmed), unconfirmed: XETH_convert.fromWei(unconfirmed)});
     },
 
     fetch:function(){
+        if(!this.profiles.length) this.profiles.fetch();
         var accounts = XETH_wallet.getAccounts();
-        this.reset(accounts);
+        this.reset(this.filterData(accounts));
+        this.profiles.on("add", this.linkProfile);
     },
 
-    generate:function(request){
-        return XETH_wallet.generateKey(request);
+    filterData:function(accounts){
+        var result = [];
+        for(var i in accounts)
+        {
+            var model = this.model(accounts[i]);
+            var profile = this.profiles.find({account:model.get("address")});
+            if(profile) model.set("profile", profile);
+            if(!profile && model.get("stealth") && model.get("address"))
+            {
+                if(model.get("balance")!=0 || model.get("unconfirmed")!=0)
+                {
+                    result.push(model);
+                }
+            }
+            else
+            {
+                result.push(model);
+            }
+        }
+        return result;
     },
 
-    importKey:function(file, password){
+    linkProfile:function(profile){
+        var account = this.find({address:profile.get("account")});
+        if(account)
+        {
+            account.set("profile", profile);
+        }
+    },
+
+    generate:function(request, callback){
+        if(callback){
+            var observer = new FutureObserver(XETH_wallet.generateKeyAsync(request));
+            observer.onFinished(function(result){
+                callback(result);
+                observer.future.dispose();
+            });
+        }else{
+            return XETH_wallet.generateKey(request);
+        }
+    },
+
+    importKey:function(file, password, callback){
         var request = {file:file, password:password};
-        return XETH_wallet.importKey(request);
+        if(callback){
+            var observer = new FutureObserver(XETH_wallet.importKeyAsync(request));
+            observer.onFinished(function(result){
+                callback(result);
+                observer.future.dispose();
+            });
+        }
+        else{
+            return XETH_wallet.importKey(request);
+        }
     },
 
     modelId: function(attrs){
@@ -112,7 +246,6 @@ var AccountCollection = Backbone.Collection.extend({
         else{
             account = new Account(attrs, options);
         }
-        account.autoUpdate();
         return account;
     },
 

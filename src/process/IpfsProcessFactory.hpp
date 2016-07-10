@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QProcess>
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "IpfsProcessInitializer.hpp"
 
 namespace Xeth{

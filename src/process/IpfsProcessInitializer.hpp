@@ -3,8 +3,10 @@
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+#include <QApplication>
+#include <QFileInfo>
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 
 namespace Xeth{
@@ -23,6 +25,7 @@ class IpfsProcessInitializer
 
         static QString GetCommand(const Settings &);
         static QStringList GetDaemonArguments();
+        static QString GetDefaultCommand();
 };
 
 

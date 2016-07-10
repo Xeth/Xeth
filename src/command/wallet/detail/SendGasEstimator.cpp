@@ -1,6 +1,5 @@
 #include "SendGasEstimator.hpp"
 
-
 namespace Xeth{
 
 
@@ -17,7 +16,7 @@ BigInt SendGasEstimator::estimate(const QString &from, const QString &to, const 
 
 BigInt SendGasEstimator::estimate(const std::string &from, const std::string &to, const BigInt &amount)
 {
-    return (to.length()<42) ? estimateHex(from, to, amount) : estimateStealth(from, to, amount);
+    return (to.length()<43) ? estimateHex(from, to, amount) : estimateStealth(from, to, amount);
 }
 
 
@@ -27,9 +26,9 @@ BigInt SendGasEstimator::estimateHex(const QString &from, const QString &to, con
 }
 
 
-BigInt SendGasEstimator::estimateHex(const std::string &from, const std::string &to, const BigInt &amount)
+BigInt SendGasEstimator::estimateHex(const std::string &from, const std::string &, const BigInt &amount)
 {
-    return _estimator.estimate(from, to, amount);
+    return _estimator.estimate(from.c_str(), "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", amount);
 }
 
 

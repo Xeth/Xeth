@@ -18,7 +18,7 @@ QString IpfsWriter::writeData(const QVariantMap &content)
 QString IpfsWriter::writeData(const QJsonObject &content)
 {
     QJsonDocument document(content);
-    return writeData(document.toJson());
+    return writeData(document.toJson(QJsonDocument::Compact));
 }
 
 
@@ -39,10 +39,20 @@ QString IpfsWriter::writeFile(const QString &path)
 
 QString IpfsWriter::writeData(const QByteArray &content)
 {
+    QTemporaryFile temp;
+    temp.setAutoRemove(false);
+    if(!temp.open())
+    {
+        return QString();
+    }
+
+    temp.write(content);
+
     QProcess process;
     process.setProcessChannelMode(QProcess::MergedChannels);
-    IpfsProcessInitializer::Initialize(process, _settings, QStringList()<<"add"<<"-q");
-    process.write(content);
+    temp.close();
+    IpfsProcessInitializer::Initialize(process, _settings, QStringList()<<"add"<<"-q"<<temp.fileName());
+
     return execute(process);
 }
 
@@ -55,7 +65,7 @@ inline QString IpfsWriter::execute(QProcess &process)
     {
         return QString();
     }
-    return process.readAllStandardOutput();
+    return QString(process.readAllStandardOutput()).remove(QRegExp("[\\n\\t\\r]"));
 }
 
 

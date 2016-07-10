@@ -46,9 +46,22 @@ bool ChangeKeyPasswordCommand::changeStealthKeyPassword(const QString &address, 
 
 
 ChangeEthereumKeyPasswordCommand::ChangeEthereumKeyPasswordCommand(DataBase &database) :
-    Base(database.getEthereumKeys())
+    Base(database.getEthereumKeys()),
+    _database(database)
 {}
 
+
+bool ChangeEthereumKeyPasswordCommand::execute(const QString &address, const QString &password, const QString &newPassword)
+{
+    if(Base::execute(address, password, newPassword))
+    {
+        return true;
+    }
+
+    //check unredeemed keys
+    StealthSpendKeyRedeemer redeemer(_database);
+    return redeemer.redeem(address.toStdString(), password.toStdString(), newPassword.toStdString());
+}
 
 
 ChangeStealthKeyPasswordCommand::ChangeStealthKeyPasswordCommand(DataBase &database) :

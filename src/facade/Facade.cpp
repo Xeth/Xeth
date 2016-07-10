@@ -1,5 +1,6 @@
 #include "Facade.hpp"
-
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp> 
 
 namespace Xeth{
 
@@ -7,45 +8,47 @@ namespace Xeth{
 Facade::Facade(const Settings &settings) :
     _settings(settings),
     _ready(false),
-    _provider(settings.get("rpc_retry", 1), settings.get("rpc_retry_interval", 10)),
     _database(settings),
     _synchronizer(_provider, _database, settings),
     _eth(settings),
     _ipfs(settings),
-    _wallet(settings, _provider, _database, _notifier, _synchronizer),
-    _addressbook(_database, _notifier),
-    _config(_database, _notifier),
-    _converter(_notifier),
-    _progress(_synchronizer, _notifier),
-    _clipboard(_notifier),
-    _filesystem(_notifier),
-    _bitprofile(_provider, _database, _notifier, _settings)
+    _invoker(_notifier),
+    _wallet(settings, _provider, _database, _notifier, _synchronizer, _invoker),
+    _addressbook(_database, _invoker),
+    _config(_database, _invoker),
+    _converter(_invoker),
+    _progress(_synchronizer, _invoker),
+    _clipboard(_invoker),
+    _filesystem(_invoker),
+    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
-    FacadeInitializer *initializer = new FacadeInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
+    ChildrenInitializer *initializer = new ChildrenInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _eth.moveToThread(thread);
     _ipfs.moveToThread(thread);
 
-    _notifier.watch(_synchronizer);
-    _notifier.watch(_database);
-    
-
-    connect(thread, &QThread::started, initializer, &FacadeInitializer::initialize);
+    connect(thread, &QThread::started, initializer, &ChildrenInitializer::initialize);
     connect(initializer, SIGNAL(Error(const QString &)), &_notifier, SLOT(emitError(const QString &)));
-    connect(initializer, &FacadeInitializer::Done, this, &Facade::setReady);
+    connect(initializer, &ChildrenInitializer::Done, this, &Facade::setReady);
 
-    connect(initializer, &FacadeInitializer::Error, thread, &QThread::quit);
-    connect(initializer, &FacadeInitializer::Error, initializer, &FacadeInitializer::deleteLater);
-    connect(initializer, &FacadeInitializer::Done, thread, &QThread::quit);
-    connect(initializer, &FacadeInitializer::Done, initializer, &FacadeInitializer::deleteLater);
+    connect(initializer, &ChildrenInitializer::Error, thread, &QThread::quit);
+    connect(initializer, &ChildrenInitializer::Error, initializer, &ChildrenInitializer::deleteLater);
+    connect(initializer, &ChildrenInitializer::Done, thread, &QThread::quit);
+    connect(initializer, &ChildrenInitializer::Done, initializer, &ChildrenInitializer::deleteLater);
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     thread->start();
 }
 
+Facade::~Facade()
+{
+    _synchronizer.stop();
+    _eth.stop();
+    _ipfs.stop();
+}
 
 bool Facade::isReady() const
 {
@@ -159,10 +162,23 @@ const Facade::BitProfile & Facade::getBitProfile() const
 
 void Facade::setReady()
 {
-    _ready = true;
-    _synchronizer.loadAddresses();
-    _synchronizer.synchronize();
-    _notifier.emitReady();
+    if(!_ready)
+    {
+        _ready = true;
+        _synchronizer.loadAddresses();
+        _synchronizer.synchronize();
+        _notifier.emitReady();
+    }
+}
+
+
+void Facade::shutdown()
+{
+    qDebug()<<"shutting down ...";
+    _invoker.waitToComplete();
+    _synchronizer.stop();
+    _ipfs.stop();
+    _eth.stop();
 }
 
 

@@ -1,15 +1,12 @@
 var ProfileView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateURI", "updateDetails", "updateName", "updateAvatar", "goToPreview");
+        _(this).bindAll("updateURI", "updateDetails", "goToPreview");
         this.router = options.router;
         var data = {profile:this.model.toJSON()};
         this.$el = $(options.template(data));
         this.listenTo(this.model, "change:uri", this.updateURI);
         this.listenTo(this.model, "change:details", this.updateDetails);
-        this.listenTo(this.model, "change:name", this.updateName);
-        this.listenTo(this.model, "change:avatar", this.updateAvatar);
-        
         this.$el.click(this.goToPreview);
 
     },
@@ -20,16 +17,9 @@ var ProfileView = Backbone.View.extend({
     },
 
     updateDetails:function(){
-        this.updateName();
-        this.updateAvatar();
-    },
-
-    updateName:function(){
-        this.$el.find(".name").html(this.model.get("name"));
-    },
-
-    updateAvatar:function(){
-        this.$el.find(".avatar img").attr("src", this.model.get("avatar"));
+        var details = this.model.get("details");
+        this.$el.find(".name").html(details&&details.name?details.name:"");
+        this.$el.find(".avatar img").attr("src", (details && details.avatar)?details.avatar:"img/avatarEmpty.png");
     },
 
     goToPreview: function(){
@@ -48,17 +38,20 @@ var BitprofilePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("open", "openPage", "add", "setExistingProfile");
-		SubPageView.prototype.initialize.call(this,options);
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile");
         this.templates = options.templates;
         this.filesystem = options.filesystem;
         this.accounts = options.accounts;
         this.profiles = options.profiles;
         this.registrars = options.registrars;
+        this.clipboard = options.clipboard;
         this.fee = options.fee;
+        this.syncProgress = options.syncProgress;
         this.router = options.router;//new PageRouter(this);
+        this.profileValidator = options.profileValidator;
         this.factory = new ProfileViewFactory(options.templates.get("profile_item"), options.router);
-        this.menuAlias = {default: "create"};
+        this.menuAlias = {default: "create", form: "create"};
         this.subpages = {};
     },
     
@@ -68,18 +61,19 @@ var BitprofilePageView = SubPageView.extend({
         this.menu = new MenuView({el: this.menuEl});
         
         this.collection = new CollectionView({
-			collection: this.profiles, 
-			factory:this.factory,
-			scroll:{scrollPage: this.$el.find(".bitprofileList")/*, step: 71*/},
-			el: this.$el.find(".bitprofileList .holder"), 
+            collection: this.profiles, 
+            factory:this.factory,
+            scroll:{scrollPage: this.$el.find(".bitprofileList")/*, step: 71*/},
+            el: this.$el.find(".bitprofileList .holder"), 
             empty:this.$el.find(".empty")
-		});
+        });
         this.collection.render();
         this.subpages.view = new BitprofileViewPageView
         ({
             el:this.$el.find("#page_bitprofile_view"), 
             router:this.router, 
             profiles:this.profiles,
+            clipboard: this.clipboard,
             templates:this.templates
         });
         var form = new BitprofileFormView
@@ -88,6 +82,8 @@ var BitprofilePageView = SubPageView.extend({
             registrars: this.registrars,
             router:this.router, 
             templates:this.templates,
+            profileValidator:this.profileValidator,
+            syncProgress: this.syncProgress,
             filesystem:this.filesystem
         });
         this.subpages.create = new BitprofileCreatePageView
@@ -128,6 +124,7 @@ var BitprofilePageView = SubPageView.extend({
             this.listenTo(this.profiles, "create", this.setPendingCreation);
             this.collection.collection.on("add", this.add);
             this.subpages["default"] = this.subpages.create;
+            this.subpages["form"] = this.subpages.create;
         }
         
         form.render();
@@ -141,8 +138,11 @@ var BitprofilePageView = SubPageView.extend({
 
     open:function(args){
         if(args&&args.subpage){
-            console.log(args);
-            this.openPage(args.subpage,args.args);
+            var subpageArgs = args.args||{};
+            if(args.address){
+                subpageArgs.address = args.address; //from generate
+            }
+            this.openPage(args.subpage,subpageArgs);
         }
         else{
             this.openPage();
@@ -161,6 +161,11 @@ var BitprofilePageView = SubPageView.extend({
             view.submit(args);
             return;
         }
+        if(this.menuAlias[name]=="uri" || name=="uri"){
+            this.clipboard.setText(args.uri);
+            notifySuccess("uri copied");
+            return;
+        }
         if(view!=undefined){
             if(this.active && this.active!=view) this.active.hide();
             this.active = view;
@@ -170,7 +175,7 @@ var BitprofilePageView = SubPageView.extend({
     },
     
     add:function(){
-        notifySuccess("bitprofile created");
+        notifySuccess("bitprofile registered");
         this.setExistingProfile();
         this.openPage();
     },
@@ -180,7 +185,8 @@ var BitprofilePageView = SubPageView.extend({
         this.menuEl.removeClass("pending");
         
         this.subpages["default"] = this.subpages.view;
-        this.menuAlias = {default: "view"};
+        this.subpages["form"] = this.subpages.edit;
+        this.menuAlias = {default: "view", form: "edit"};
     },
     
     setPendingCreation: function(){

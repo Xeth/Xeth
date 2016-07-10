@@ -1,8 +1,8 @@
 var BitprofileImportPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "render", "submit");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("open", "render", "submit", "browse");
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import_bitprofile");
         this.filesystem = options.filesystem;
         this.profiles = options.profiles;
@@ -11,27 +11,31 @@ var BitprofileImportPageView = SubPageView.extend({
     
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".btn.browse").click(this.open);
+        this.$el.find(".btn.browse").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importBitprofile_address");
     },
 
     open:function(){
-        this.filename = this.filesystem.browse({type:"open"});
-        this.fileInput.val(this.filename||"");
+        setTimeout(this.browse, 500);
+    },
+
+    browse:function(){
+        var filename = this.filesystem.browse({type:"open"});
+        if(filename) this.fileInput.val(filename);
     },
 
     submit:function(){
-        if(!this.filename){
+        var filename = this.fileInput.val();
+        if(!filename){
             notifyError("please select a file");
             return false;
         }
-        if(!this.profiles.importKey(this.filename)){
+        if(!this.profiles.importKey(filename)){
             notifyError("failed to import key, file is corrupted");
             return false;
         }
         notifySuccess("bitprofile imported");
-        //this.router.redirect("bitprofile",{subpage:"view"});
         return true;
     }
 

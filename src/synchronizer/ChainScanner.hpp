@@ -16,7 +16,6 @@
 #include "ScanAction.hpp"
 #include "AccountScanCriterion.hpp"
 #include "StealthScanCriterion.hpp"
-#include "ScanCriteriaLoader.hpp"
 
 
 namespace Xeth{
@@ -26,7 +25,8 @@ class ChainScanner : public QObject
     Q_OBJECT
 
     public:
-        ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=1000, size_t scanInterval=10000);
+        ChainScanner(Ethereum::Connector::Provider &, DataBase &, size_t scanChunk=100, size_t scanInterval=10000);
+        ~ChainScanner();
 
         void setScanChunkSize(size_t limit);
         void autoScan(size_t interval);
@@ -35,16 +35,16 @@ class ChainScanner : public QObject
 
         bool isActive() const;
 
-        void loadAddresses();
+        void loadAddress(const std::string &);
+        void loadStealthAddress(const StealthKey &);
 
         void addAddress(const std::string &);
         void addAddress(const std::string &, time_t);
-
         void addAddress(const Ethereum::Address &);
         void addStealthAddress(const StealthKey &);
-
         void addAddress(const Ethereum::Address &, time_t);
         void addStealthAddress(const StealthKey &, time_t);
+
 
         void stop();
         
@@ -55,8 +55,17 @@ class ChainScanner : public QObject
     public slots:
         void scan();
 
+    signals:
+        void NewAddressCriterion(const std::string &, size_t);
+        void NewStealthCriterion(const Xeth::StealthKey &, size_t);
+
     private slots:
-        void processData(const PartialScanResult &);
+        void addAddressCriterion(const std::string &, size_t);
+        void addStealthCriterion(const Xeth::StealthKey &, size_t);
+
+        void processPartialData(const PartialScanResult &);
+        void processData(const ScanResult &);
+        void updateScanCursor();
         void handleScanComplete();
 
     private:
@@ -64,6 +73,7 @@ class ChainScanner : public QObject
         size_t estimateHeight(time_t);
         size_t getChainHeight();
         void scheduleScan(size_t );
+        size_t getScanIndex(const std::string &);
 
     private:
         Ethereum::Connector::Provider &_provider;

@@ -18,6 +18,7 @@
         <file>js/vendor/underscore-min.js</file>
         <file>js/vendor/backbone-min.js</file>
 
+        <file>js/model/FutureObserver.js</file>
         <file>js/model/Account.js</file>
         <file>js/model/Transaction.js</file>
         <file>js/model/AddressBook.js</file>
@@ -29,6 +30,7 @@
         <file>js/model/Profile.js</file>
         <file>js/model/Registrar.js</file>
         <file>js/model/ProfileResolver.js</file>
+        <file>js/model/ProfileValidator.js</file>
 
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>

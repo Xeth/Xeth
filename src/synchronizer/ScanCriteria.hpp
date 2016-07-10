@@ -62,8 +62,9 @@ class ScanCriteria : public QObject
         size_t size() const;
 
     signals:
-        bool Data(const Xeth::PartialScanResult &);
-        bool Test();
+        void Data(const Xeth::PartialScanResult &);
+        void Done(const Xeth::ScanResult &);
+
 
     private:
         typedef std::list<std::pair<size_t, ScanCriterion *> > Container;
@@ -108,6 +109,7 @@ class ScanCriteria::Iterator : public boost::iterator_adaptor<
     public:
         Iterator();
         explicit Iterator(const ScanCriteria::Container::const_iterator &);
+        size_t getBlockIndex() const;
 
     private:
         friend class boost::iterator_core_access;

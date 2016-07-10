@@ -3,8 +3,10 @@
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+#include <QApplication>
+#include <QFileInfo>
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 
 namespace Xeth{
@@ -18,6 +20,7 @@ class EthProcessInitializer
         static void Initialize(QProcess &, const Settings &, const QStringList &args);
 
         static QString GetCommand(const Settings &);
+        static QString GetDefaultCommand();
         static QStringList GetArguments(const Settings &);
 };
 

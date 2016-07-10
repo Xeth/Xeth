@@ -18,6 +18,7 @@
             <ul class="nav holder" page="page_bitprofile_view"></ul>
         </div>
         <ul class="nav controls">
+            <li class="uri"><a rel="uri" page="page_bitprofile_uri">Copy BitProfile URI</a></li>
             <li class="edit"><a rel="edit" page="page_bitprofile_edit">Edit BitProfile Account</a></li>
             <li class="export"><a rel="export" page="page_bitprofile_export">Backup Current BitProfile</a></li>
         </ul>

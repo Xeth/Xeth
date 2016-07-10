@@ -4,7 +4,7 @@
 
     <div class="formpage">
         <div class="section_id section_mandatory">
-            <h1 error="invalid id">Details:</h1>
+            <h1 valid="id available" error="invalid id">Details:</h1>
             <div class="input bitprofileID">
                 <input id="bitprofileCreate_id" type="text" class="mandatory" placeholder="bitprofile ID" />
             </div>

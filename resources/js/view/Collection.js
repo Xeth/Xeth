@@ -126,8 +126,11 @@ var CollectionView = Backbone.View.extend({
     show:function(){this.$el.show();},
     toggle:function(){this.$el.toggle();},
     
-    itemFresh:function(view){
+    itemDisableAnimation:function(view){
         view.$el.removeClass("new");
+    },
+    itemEnableAnimation:function(view){
+        view.$el.addClass("new");
     },
     itemShow:function(view){
         view.$el.removeClass("off");
@@ -165,7 +168,6 @@ var CollectionView = Backbone.View.extend({
         if(this.filterHandler){
             if(this.filterHandler(view)) this.hideEmpty();
         }else{
-            console.log("new hide empty",this.$el);
             this.itemShow(view);
             this.hideEmpty();
         } 
@@ -208,7 +210,7 @@ var CollectionView = Backbone.View.extend({
     },
 
     add:function(model){
-        var view = this.register(this.create(model));
+        var view = this.register(this.create(model,true));
         this.container.append(view.$el);
         this.filterNewItem(view);
         this.trigger("add", view);
@@ -216,7 +218,7 @@ var CollectionView = Backbone.View.extend({
 
     insert:function(model){
         var indx = this.collection.indexOf(model);
-        var view = this.register(this.create(model));
+        var view = this.register(this.create(model,true));
         this.container.insert(view.$el, indx);
         this.filterNewItem(view);
         this.trigger("add", view);
@@ -235,11 +237,13 @@ var CollectionView = Backbone.View.extend({
         return view;
     },
 
-    create:function(model){
+    create:function(model,animate){
         var view = this.factory.create(model);
-        //this.itemHide(view);
+        if(animate===true){
+            this.itemEnableAnimation(view);
+            setTimeout(this.itemDisableAnimation,50,view);
+        }
         view.render();
-        setTimeout(this.itemFresh,50,view);
         return view;
     },
 
@@ -250,7 +254,7 @@ var CollectionView = Backbone.View.extend({
             if(!this.itemIsHiden(view)) this.updateEmpty();            
             this.trigger("remove", view);
             view.unbind();
-            this.itemHide(view);
+            this.itemEnableAnimation(view);
             setTimeout(function(){
                 view.remove();
             },300);
@@ -267,7 +271,6 @@ var CollectionView = Backbone.View.extend({
 
     updateEmpty:function(){
         var empty = true;
-        console.log("coll",this.collection.length,this.$empty);
         if(this.collection.length)
         {
             for(var i in this.items){
@@ -277,11 +280,9 @@ var CollectionView = Backbone.View.extend({
                     break;
                 }
             }
-            console.log("updateEmpty check",this.$el,empty);
             (empty)?this.showEmpty():this.hideEmpty();
         }else{ 
             this.showEmpty();
-            console.log("updateEmpty showEmpty",this.$el);
         }
     }
 

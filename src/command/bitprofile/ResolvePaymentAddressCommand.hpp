@@ -6,8 +6,8 @@
 #include "bitprofile/Resolver.hpp"
 #include "bitprofile/Profile.hpp"
 
-#include "env/Settings.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "conf/Settings.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 
 
 namespace Xeth{

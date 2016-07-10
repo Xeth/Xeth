@@ -46,7 +46,7 @@ var TransactionView = Backbone.View.extend({
             clear: false,
             validate: this.editAlias,
             display: false
-        }).attr('title','edit alias');
+        }).attr('title','edit alias').editable("setValue", this.model.contact?this.model.contact.get("alias"):"");
     },
 
     watchContact:function(contact){
@@ -181,7 +181,7 @@ var TransactionsPageView = SubPageView.extend({
         this.factory = new TransactionViewFactory(options.templates.get("transaction_item"), options.clipboard, options.router, options.addressbook);
         
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(){return true;}); //show all rows
+        this.accounts.filter(function(model){return !model || !(model.get("address") && model.get("stealth")) || model.get("profile");}); //show all rows
     },
     
     render:function(){
@@ -238,11 +238,11 @@ var TransactionsPageView = SubPageView.extend({
         this.listenTo(this.collection, "add", this.processNewTransaction);
         this.listenTo(this.collection, "remove", this.removeTransaction);
         this.listenTo(this.collection, "reset", this.computeTotals); 
-        this.applyFilters();
     },
     
-    open:function(args){       
+    open:function(args){
         if(args && args.focusFirst) this.collection.focusFirst();
+        this.applyFilters();
     },
 
     setTimeFilter:function(start, end, label){
@@ -262,7 +262,18 @@ var TransactionsPageView = SubPageView.extend({
     },
 
     setAddressFilter:function(model){
-        var address = !model ? null : model.get("address")||model.get("stealth");
+        var address;
+        if(model){
+            address = model.get("address");
+            if(address){
+                address = address.toLowerCase();
+            }
+            else{
+                address = model.get("stealth");
+            }
+        }else{
+            address = null;
+        }
         this.filters.address = address;
         this.applyFilters();
     },
@@ -287,7 +298,7 @@ var TransactionsPageView = SubPageView.extend({
         var sent = 0;
         var received = 0;
         this.collection.each(function(view){
-            if(view.$el.is(":hidden")) return;
+            if(view.$el.hasClass("off")) return;
             var model = view.model;
             if(model.get("category")=="Sent")
                 sent += model.get("amount");
@@ -301,9 +312,9 @@ var TransactionsPageView = SubPageView.extend({
 
     processNewTransaction: function(view){
         var model = view.model;
-        if(!view.$el.is(":hidden"))
+        if(!view.$el.hasClass("off"))
         {
-            if(model.get("type")=="Sent")
+            if(model.get("category")=="Sent")
                 this.totalSent += model.get("amount");
             else
                 this.totalReceived += model.get("amount"); //including mined
@@ -312,9 +323,9 @@ var TransactionsPageView = SubPageView.extend({
     },
 
     removeTransaction:function(view){
-        if(view.$el.is(":hidden")) return;
+        if(view.$el.hasClass("off")) return;
         var model = view.model;
-        if(model.get("type")=="Sent")
+        if(model.get("category")=="Sent")
             this.totalSent -= model.get("amount");
         else
             this.totalReceived -= model.get("amount"); //including mined

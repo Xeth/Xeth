@@ -82,6 +82,7 @@
 	font-size: 0.8rem;
 	float: right;
 	margin-right:30px;
+    padding: 11px 0;
 }
 
 .page .input .account.originated {
@@ -198,6 +199,7 @@
 	display: block;
 	height: 38px;
 	/*width: 144px;*/
+	width: 100%;
 	width: calc(100% - 2px);
 	background-color: #8C9596;
 	background-color: rgba(28, 46, 48, 0.4);
@@ -210,10 +212,12 @@
 }
 
 .page .formpage .btns.x2 .btn {
+	width: 289px;
 	width: calc(50% - 2px);
 }
 
 .page .formpage .btns.x3 .btn {
+	width: 191px;
 	width: calc(33.333% - 2px);
 }
 
@@ -342,6 +346,7 @@
 .page .input.date input {
 	padding-left: 30px;
 	width: calc(100% - 20px) !important;
+    cursor: pointer;
 }
 
 .page .input.date:after {

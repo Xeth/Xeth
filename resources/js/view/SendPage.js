@@ -9,6 +9,7 @@ var SendPageView = SubPageView.extend({
         this.accounts = options.accounts;
         this.template = options.templates.get("send");
         this.placeholders = {bitprofile: "BitProfile ID", address: "Address"};
+        this.placeholderErrors = {bitprofile: "selected profile is not accepting payments", address: "invalid"};
         this.clipboard = options.clipboard;
         this.addressValidator = options.addressValidator;
         this.router = options.router;
@@ -114,6 +115,7 @@ var SendPageView = SubPageView.extend({
     },
 
     updateSendType:function(){
+        this.destination.noerror();
         this.updatePlaceholder();
         if(this.destination.val()) this.updateContact();
         if(this.sendType.val()=="bitprofile"){
@@ -125,6 +127,7 @@ var SendPageView = SubPageView.extend({
             this.destination.off("input", this.resolveProfileLater);
             this.destination.off("change", this.resolveProfile);
         }
+        this.computeFee();
     },
 
     resolveProfileLater:function(){
@@ -141,7 +144,7 @@ var SendPageView = SubPageView.extend({
         this.clearResolverTimer();
         var uri = this.destination.val();
         if(uri){
-            var address = this.resolver.getPaymentAddress(uri);
+            var address = this.resolver.getPaymentAddress(uri.trim());
             if(address){
                 this.setAddressHint(address);
                 this.destination.noerror();
@@ -154,12 +157,12 @@ var SendPageView = SubPageView.extend({
 
     riseProfileError:function(){
         this.setAddressHint("");
-        this.destTitle.attr("error", "selected profile is not accepting payments");
         this.destination.error();
     },
 
     updatePlaceholder:function(){
         this.destination.attr("placeholder", this.placeholders[this.sendType.val()]);
+        this.destTitle.attr("error", this.placeholderErrors[this.sendType.val()]);
     },
 
     updateContact: function(){
@@ -185,40 +188,49 @@ var SendPageView = SubPageView.extend({
         this.computeFee();
     },
 
-    computeFee: function(input){
-        var amount = this.amount.val();
-        var factor = this.feeFactor.getFeeFactor();
-        var from = this.accounts.selected().get("address");
+    computeFee: function(){
         var to = this.getDestination();
-        var result = this.feeModel.estimate(from, to, amount, factor);
-        if(result){
-            this.gasAmount = result["gas"];
-            this.gasPrice = result["price"];
-            this.fee = result["fee"];
-        }else
-        {
-            this.fee=0;
-            this.gasAmount = this.gasPrice = undefined;
+        if(to){
+            var amount = this.amount.val();
+            var factor = this.feeFactor.getFeeFactor();
+            var account = this.accounts.selected();
+            var from = account? account.get("address") : "";
+            var result = this.feeModel.estimate(from, to, amount, factor);
+            if(result){
+                this.gasAmount = result["gas"];
+                this.gasPrice = result["price"];
+                this.fee = result["fee"];
+            }else{
+                this.fee=0;
+                this.gasAmount = this.gasPrice = undefined;
+            }
+            this.feeFactor.update(result);
+        }else{
+            this.fee = 0;
         }
-        this.feeFactor.update(result);
-        this.checkAmount(this.fee, input===true);
+        this.checkAmount(this.fee);
     },
     
     inputAmount:function(){
 //        this.checkAmount(this.fee,true);
-        this.computeFee(true);
+        this.computeFee();
     },
     
-    checkAmount:function(fee,input){
+    checkAmount:function(fee){
         if(!fee) fee=this.fee;
-        var balance = this.accounts.selected().get("balance");
+        var account = this.accounts.selected();
+        var balance = account ? account.get("balance"): 0;
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
         if(balanceAvailable<0) balanceAvailable=0;
-        if(amount>balanceAvailable||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
-            amount=balanceAvailable;
-            this.amount.val(parseFloat(amount));
+        if(amount>=balanceAvailable){//||(!input&&amount<=balanceAvailable&&this.useFullAmount==true)){
+            if(balanceAvailable>0){
+                amount=parseFloat(balanceAvailable);
+            }else{
+                amount="";
+            }
+            this.amount.val(amount);
             this.useFullAmount = true;
         }else{
             this.useFullAmount = false;
@@ -244,16 +256,16 @@ var SendPageView = SubPageView.extend({
 
     paste:function(){
         this.destination.val(this.clipboard.getText());
+        this.updateContact();
+        this.updateSendType();
     },
     
     setAddressHint:function(msg){
         this.addressHint.html(shortify(msg,50));
         this.addressHint.val(msg);
-        console.log(this.addressHint.val());
     },
     
     copyAddressHintToClipboard:function(){
-        console.log(this.addressHint.val());
         if(this.clipboard.setText(this.addressHint.val()))
         {
             notifySuccess("address copied to clipboard");
@@ -286,7 +298,7 @@ var SendPageView = SubPageView.extend({
         }
         
         var account = this.accounts.selected();
-        if(account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee))){
+        if(!account || (account.get("balance")<(parseFloat(this.amount.val()) + parseFloat(this.fee)))){
             this.amount.error();
             notifyError("not enough funds");
             return false;
@@ -359,30 +371,31 @@ var SendPageView = SubPageView.extend({
             request.gas = this.gasAmount;
         }
 
-        var _this = this;
+        var self = this;
         var sendRequest = function(){
-            _this.$form.addClass("waiting");
-            if(!account.send(request)){
-                _this.$form.removeClass("waiting");
-                _this.password.error();
-                return false;
-            }
-            
-            notifySuccess("sent");
+            self.$form.addClass("waiting");
+            account.send(request, function(result){
+                self.$form.removeClass("waiting");
+                if(!result){
+                    self.password.error();
+                    return false;
+                }
+                notifySuccess("sent");
 
-            if(alias.length){
-                var contact = {alias:alias};
-                contact[type] = _this.destination.val();
-                _this.addressbook.create(contact);
-            }
+                if(alias.length){
+                    var contact = {alias:alias};
+                    contact[type] = self.destination.val();
+                    self.addressbook.create(contact);
+                }
 
-            _this.resetContact();
-            _this.$form.removeClass("waiting");
-            _this.password.val("");
-            _this.destination.val("");
-            _this.amount.val("");
-
-            _this.router.redirect("transactions", {focusFirst:true});
+                self.resetContact();
+                self.$form.removeClass("waiting");
+                self.password.val("");
+                self.destination.val("");
+                self.amount.val("");
+                self.setAddressHint("");
+                self.router.redirect("transactions", {focusFirst:true});
+           });
         };
         if(this.feeFactor.hasWarning()){
             notie.confirm('<span class="title warning">WARNING!</span>'+

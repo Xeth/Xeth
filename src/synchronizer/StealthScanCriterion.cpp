@@ -39,21 +39,21 @@ void StealthScanCriterion::uncoverStealthPayment
         if(resolver.uncover(Ethereum::Address(to), ephem, secret))
         {
             QJsonObject tx;
-            tx.insert("category", TransactionCategory::ToString(TransactionCategory::Received));
-            tx.insert("hash", hash.c_str());
-            tx.insert("from",  from.c_str());
-            tx.insert("to", to.c_str());
-            tx.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+            tx.insert("category", QString(TransactionCategory::ToString(TransactionCategory::Received)));
+            tx.insert("hash", QString(hash.c_str()));
+            tx.insert("from",  QString(from.c_str()));
+            tx.insert("to", QString(to.c_str()));
+            tx.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
             tx.insert("timestamp", (int)timestamp);
-            tx.insert("stealth", getAddress());
+            tx.insert("stealth", QString(getAddress()));
             result.transactions.push_back(tx);
 
             HexEncoder encoder;
             QJsonObject sp;
-            sp.insert("address", to.c_str());
-            sp.insert("secret", encoder.encode(secret.begin(), secret.end()).c_str());
-            sp.insert("txid", hash.c_str());
-            sp.insert("stealth", getAddress());
+            sp.insert("address", QString(to.c_str()));
+            sp.insert("secret", QString(encoder.encode(secret.begin(), secret.end()).c_str()));
+            sp.insert("txid", QString(hash.c_str()));
+            sp.insert("stealth", QString(getAddress()));
             result.stealthPayments.push_back(sp);
         }
     }

@@ -41,8 +41,8 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
 {
     JsonReader reader;
 
-    boost::filesystem::path source = boost::filesystem::absolute(path);
-    if(!reader.read(source.string().c_str(), json))
+    std::string absolutePath = boost::filesystem::absolute(path).string();
+    if(!reader.read(absolutePath.c_str(), json))
     {
         return false;
     }
@@ -56,7 +56,9 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
         {
             return false;
         }
-        return _store.insert(source.filename().string(), value);
+        KeyAttributesReader<Store> attrs(path, json);
+        
+        return _store.replace(value, attrs.getCreationTime());
     }
     catch(...)
     {}

@@ -5,7 +5,7 @@
 #include <QString>
 #include <QStringList>
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 
 namespace Xeth{

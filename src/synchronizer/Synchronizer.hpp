@@ -7,6 +7,7 @@
 
 #include "ChainProgressFetcher.hpp"
 #include "ChainScanner.hpp"
+#include "AccountsLoader.hpp"
 
 namespace Xeth{
 
@@ -41,6 +42,7 @@ class Synchronizer : public QObject
         const SyncProgress & getSyncProgressFetcher() const;
         const Scanner & getScanner() const;
         const ScanCriteria & getScanCriteria() const;
+        const BalanceObserver & getBalanceObserver() const;
 
         void loadAddresses();
 
@@ -52,8 +54,10 @@ class Synchronizer : public QObject
         bool isActive() const;
 
     private:
+        AccountsLoader _loader;
         SyncProgress _syncProgress;
         ChainScanner _scanner;
+        BalanceObserver _balanceObserver;
 };
 
 }

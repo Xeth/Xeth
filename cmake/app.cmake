@@ -1,13 +1,46 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
+#set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time chrono REQUIRED)
 find_package(LevelDB REQUIRED)
 find_package(GMP)
 
+
 set(CMAKE_THREAD_PREFER_PTHREAD ON)
 find_package(Threads REQUIRED)
 
-set(APP_SOURCES src/main.cpp src/Application.cpp src/window/Window.cpp)
+file(GLOB_RECURSE WINDOW_SOURCES "src/window/*.cpp")
+set(APP_SOURCES src/main.cpp src/Application.cpp ${WINDOW_SOURCES})
+
+#set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+
+if(UNIX AND NOT APPLE)
+
+    if(${Qt5Core_LIBRARIES} VERSION_LESS 5.5.0)
+        find_package(AppIndicator)
+        find_package(GTK2)
+        find_package(LibNotify)
+
+        if(LIBNOTIFY_FOUND)
+            message("libnotify support enabled")
+            add_definitions(-D__LIBNOTIFY_ENABLED__)
+            include_directories(${LIBNOTIFY_INCLUDE_DIR})
+        endif()
+
+        if(GTK2_FOUND)
+            message("gtk support enabled")
+            add_definitions(-D__GTK_ENABLED__)
+            include_directories(${GTK2_INCLUDE_DIRS})
+        endif()
+
+        if(APPINDICATOR_FOUND AND GTK2_FOUND)
+            message("appindicator support enabled")
+            add_definitions(-D__UNITY_ENABLED__)
+            include_directories(${APPINDICATOR_INCLUDE_DIRS})
+        endif()
+    endif()
+
+endif()
 
 
 include_directories(
@@ -54,26 +87,48 @@ function(PARSE_RESOURCES RESOURCE_FILES DIR QRC PARSER)
 
 endfunction(PARSE_RESOURCES)
 
+function(COMPILE_RESOURCE RESOURCE)
+    set(RESOURCE_CPP ${PROJECT_BINARY_DIR}/${RESOURCE}.cxx)
+    set_source_files_properties(${RESOURCE_CPP} PROPERTIES GENERATED TRUE)
+    add_custom_target(compile_${RESOURCE} COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name ${RESOURCE} -o ${RESOURCE_CPP} ${PROJECT_SOURCE_DIR}/resources/${RESOURCE}.qrc)
+endfunction(COMPILE_RESOURCE)
+
 file(GLOB RESOURCE_FILES "resources/*")
 
 PARSE_RESOURCES(RESOURCE_FILES template template compiler)
 PARSE_RESOURCES(RESOURCE_FILES js js jsmin )
 PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
-
+COMPILE_RESOURCE(html)
+COMPILE_RESOURCE(icon)
 
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
+file(COPY ${PROJECT_SOURCE_DIR}/resources/icon DESTINATION ${PROJECT_BINARY_DIR})
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 
+set(APP_SOURCES ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/icon.cxx  ${PROJECT_BINARY_DIR}/html.cxx)
 
-add_executable(xeth ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINARY_DIR}/CSS.cxx ${PROJECT_BINARY_DIR}/js.cxx ${PROJECT_BINARY_DIR}/resources/icon.qrc ${PROJECT_BINARY_DIR}/resources/html.qrc)
+if(MSVC AND NOT ENABLE_DEBUG)
+    add_executable(xeth WIN32 ${APP_SOURCES})
+else()
+    add_executable(xeth ${APP_SOURCES})
+endif()
+
 
 add_dependencies(xeth parse_template)
 add_dependencies(xeth parse_CSS)
 add_dependencies(xeth parse_js)
+add_dependencies(xeth compile_html)
+add_dependencies(xeth compile_icon)
 
 
 
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.lib;.so;.dll")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.la;.lib;.so;.dll")
 
 
 target_link_libraries(xeth
@@ -83,7 +138,6 @@ target_link_libraries(xeth
     ethrpc
     ethcrypto
     ${Qt5WebKitWidgets_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}
     ${Qt5Concurrent_LIBRARIES}
     ${Qt5Core_LIBRARIES}
@@ -98,12 +152,38 @@ target_link_libraries(xeth
     ${Boost_CHRONO_LIBRARY}
     ${CRYPTOPP_LIBRARY}
     ${LEVELDB_LIBRARIES}
-    ${CMAKE_THREAD_LIBS_INIT}
+    ${CMAKE_THREAD_LIBS_INIT} 
 )
 
+if(MSVC AND NOT ENABLE_DEBUG)
+    set_target_properties(xeth PROPERTIES  LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+    target_link_libraries(xeth Qt5::WinMain)
+endif()
 
 if(GMP_LIBRARIES)
     target_link_libraries(xeth ${GMP_LIBRARIES})
+endif()
+
+if(APPINDICATOR_FOUND)
+    target_link_libraries(xeth ${APPINDICATOR_LIBRARIES})
+endif()
+
+if(LIBNOTIFY_FOUND)
+    target_link_libraries(xeth ${LIBNOTIFY_LIBRARIES})
+endif()
+
+if(GTK2_FOUND)
+    target_link_libraries(xeth ${GTK2_LIBRARIES})
+endif()
+
+
+if(NOT MSVC AND NOT WIN32)
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/vendor DESTINATION /opt/xeth)
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION /opt/xeth)
+    install(TARGETS xeth DESTINATION /opt/xeth)
+    install(CODE "
+          EXECUTE_PROCESS (COMMAND ln -sf /opt/xeth/xeth /usr/local/bin/xeth)
+    ")
 endif()
 
 

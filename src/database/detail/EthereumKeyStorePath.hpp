@@ -5,7 +5,7 @@
 
 #include "ethrpc/transport/Path.hpp"
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 
 
 namespace Xeth{

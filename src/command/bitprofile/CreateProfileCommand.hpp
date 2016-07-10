@@ -5,32 +5,30 @@
 
 #include "bitprofile/MasterRegistrar.hpp"
 #include "bitprofile/Resolver.hpp"
+#include "bitprofile/ProfileAdministrator.hpp"
+#include "bitprofile/Registrar.hpp"
 
-#include "facade/Notifier.hpp"
-#include "database/BitProfileStore.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "database/DataBase.hpp"
+#include "synchronizer/Synchronizer.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 
-#include "detail/BitProfileAction.hpp"
-#include "detail/CreateProfileOperation.hpp"
+#include "detail/StealthSpendKeyRedeemer.hpp"
 
 
 namespace Xeth{
 
 
+
 class CreateProfileCommand
 {
     public:
-        CreateProfileCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store, const Settings &settings, Notifier &notifier);
-
+        CreateProfileCommand(Ethereum::Connector::Provider &, DataBase &, Synchronizer &, const Settings &);
         QVariant operator()(const QVariantMap &);
 
     private:
-        typedef BitProfileAction<CreateProfileOperation> CreateProfileAction;
-
-    private:
         BitProfile::Resolver _resolver;
-        BitProfileStore &_store;
-        Notifier &_notifier;
+        DataBase &_database;
+        Synchronizer &_synchronizer;
 };
 
 

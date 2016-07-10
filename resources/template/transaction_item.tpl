@@ -1,7 +1,7 @@
 
 
 <%if(transaction.category=="Mined"){%>
-<div class="listItem new mined">
+<div class="listItem mined">
     <div class="header icon">
         <span class="detail s_titled userAddress"><a href="javascript:void(0)"><%=transaction.to%></a></span>
     </div>
@@ -18,14 +18,18 @@
     </div>
 </div>
 <%}else{%>
-<div class="listItem new <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
+<div class="listItem <%=((""+transaction.category).toLowerCase())%>" <%if(transaction.contact){%>contact="true"<%}%>>
     <div class="header icon">
         <span class="detail s_titled userAddress">
             <%if(transaction.category=="Sent"){%>
                 <a href="javascript:void(0)"><%=transaction.from%></a>
             <%}else{%>
-                <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                <a href="javascript:void(0)"><%=transaction.to%></a>
+                <%if(transaction.stealth){%>
+                    <span class="stealthIcon" title="<%=transaction.to%>"></span>
+                    <a href="javascript:void(0)"><%=shortify(transaction.stealth,40)%></a>
+                <%}else{%>
+                    <a href="javascript:void(0)"><%=transaction.to%></a>
+                <%}%>
             <%}%>
         </span>
     </div>
@@ -38,7 +42,7 @@
         <div class="detailsRow">
             <span class="userProfile">
                 <span class="name editableTxt" tabindex="-1" title=""><%=((transaction.contact && transaction.contact.alias)?transaction.contact.alias:"unnamed")%></span>
-                <span class="bitprofileIcon<%if(transaction.contact && transaction.contact.bitprofile){%> on<%}%>" title="<%=(transaction.contact && transaction.contact.bitprofile)?transaction.contact.bitprofile:'no bitprofile'%>"></span>
+                <span class="bitprofileIcon<%if(transaction.bitprofile||(transaction.contact && transaction.contact.bitprofile)){%> on<%}%>" title="<%=transaction.bitprofile||(transaction.contact && transaction.contact.bitprofile ?transaction.contact.bitprofile:'no bitprofile') %>"></span>
             </span>
             <a class="detail s_titled hash" title="copy hash"><%=shortify(transaction.hash, 20)%></a>
             <span class="detail txtBalance">
@@ -48,8 +52,12 @@
         <div class="detailsRow">
             <span class="address">
                 <%if(transaction.category=="Sent"){%>
-                    <%if(transaction.stealth){%><span class="stealthIcon" title="<%=transaction.stealth%>"></span><%}%>
-                    <a href="javascript:void(0)"><%=transaction.to%></a>
+                    <%if(transaction.stealth){%>
+                        <span class="stealthIcon" title="<%=transaction.to%>"></span>
+                        <a href="javascript:void(0)"><%=shortify(transaction.stealth,40)%></a>
+                    <%}else{%>
+                        <a href="javascript:void(0)"><%=transaction.to%></a>
+                    <%}%>
                 <%}else{%>
                     <a href="javascript:void(0)"><%=transaction.from%></a>
                 <%}%>

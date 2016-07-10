@@ -22,13 +22,15 @@ ScanIndexStore::ScanIndexStore()
 
 bool ScanIndexStore::insert(const char *key, size_t index)
 {
-    return replace(key, index);
+    HexAddressNormalizer normalizer;
+    return replace(normalizer(key).c_str(), index);
 }
 
 size_t ScanIndexStore::get(const char *key) const
 {
     size_t result = 0;
-    Base::get(key, result);
+    HexAddressNormalizer normalizer;
+    Base::get(normalizer(key).c_str(), result);
     return result;
 }
 

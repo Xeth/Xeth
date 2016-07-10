@@ -6,6 +6,7 @@
 #include <boost/filesystem.hpp>
 
 #include "io/JsonReader.hpp"
+#include "../KeyAttributesReader.hpp"
 
 
 namespace Xeth{

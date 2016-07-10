@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/gregorian/conversion.hpp>
 #include <boost/regex.hpp> 
 #include <boost/filesystem.hpp>
 
@@ -9,7 +10,6 @@
 #include "types/EthereumKey.hpp"
 
 #include "detail/FileStore.hpp"
-#include "detail/FileImporter.hpp"
 
 
 namespace Xeth{
@@ -32,13 +32,13 @@ class EthereumKeyStore :
         EthereumKeyStore(const std::string &path);
         EthereumKeyStore(const boost::filesystem::path &path);
 
+        void touch(const char *address) const;
+
         bool replace(const EthereumKey &);
-        bool replace(const char *path, const EthereumKey &);
-        bool replace(const std::string &path, const EthereumKey &);
+        bool replace(const EthereumKey &, time_t);
 
         bool insert(const EthereumKey &);
-        bool insert(const char *, const EthereumKey &);
-        bool insert(const std::string &, const EthereumKey &);
+        bool insert(const EthereumKey &, time_t);
 
         Iterator find(const char *address) const;
         Iterator find(const Ethereum::Address &) const;
@@ -48,16 +48,19 @@ class EthereumKeyStore :
         using Base::end;
 
     signals:
-        void NewItem(const QString &) const;
+        void Key(const QString &) const;
 
     private:
+        bool insertNoCheck(const char *, const EthereumKey &);
+        bool replaceNoCheck(const char *, const EthereumKey &);
         std::string makeFileName(const EthereumKey &) const;
+        std::string makeFileName(const EthereumKey &, time_t time) const;
         std::string makeFileName(const EthereumKey &, const boost::posix_time::ptime &time) const;
         bool validateId(const std::string &id, const EthereumKey &);
 };
 
 
-typedef FileImporter<EthereumKeyStore> EthereumKeyImporter;
+
 
 
 }

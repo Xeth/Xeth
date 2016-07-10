@@ -90,7 +90,11 @@ void ProcessSupervisor::start()
 void ProcessSupervisor::stop()
 {
     _timer.stop();
-    if(_process) _process->kill();
+    if(_process)
+    {
+        _process->kill();
+        _process->waitForFinished();
+    }
 }
 
 
@@ -102,7 +106,6 @@ void ProcessSupervisor::scheduleFork()
 
 void ProcessSupervisor::fork()
 {
-    qDebug()<<"program : "<<_process->program()<<" arguments: "<<_process->arguments();
     _timer.stop();
     _process->start();
 }

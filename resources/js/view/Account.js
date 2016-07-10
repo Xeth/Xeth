@@ -16,7 +16,7 @@ var AccountBaseView = Backbone.View.extend({
 
 var AccountView = AccountBaseView.extend({
     initialize:function(options){
-        _(this).bindAll("update", "shortify");
+        _(this).bindAll("update", "shortify", "removing");
         this.template = options.template;
 
         var data = this.model.toJSON();
@@ -27,6 +27,11 @@ var AccountView = AccountBaseView.extend({
         this.$balance = this.$el.find(".amount");
         this.model.on("change:balance",this.update);
         this.model.on("change:unconfirmed", this.update);
+        this.model.on("removing", this.removing);
+    },
+
+    removing:function(){
+        this.$el.addClass("removing");
     },
 
     shortify:function(size, force){
@@ -59,6 +64,8 @@ var AccountView = AccountBaseView.extend({
         var balance = splitAmount(amount);
         this.$balance.find(".int").html(balance.int);
         this.$balance.find(".dec").html(balance.dec);
+        this.trigger("change:balance", amount);
+        this.trigger("change:unconfirmed", unconfirmed);
     }
 });
 
@@ -72,17 +79,23 @@ var AccountViewReflection = AccountView.extend({
 
     reset:function(view){
         this.undelegateEvents();
+        if(this.model){
+            this.stopListening(this.model);
+            this.model.unpin();
+        }
         this.view = view;
         if(!view){
             this.$el.html("");
         }else{
-            if(this.model) this.stopListening(this.model);
             this.model = view.model;
             this.$el.html(view.$el.clone().css("opacity", 1));
             if(this.model!=undefined){
+                this.model.pin();
                 this.shortify(this.width, true);
                 this.$balance = this.$el.find(".amount");
                 this.listenTo(view.model, "change:balance", this.update);
+                this.listenTo(view.model, "change:unconfirmed", this.update);
+                this.listenTo(view.model, "removing", this.removing);
                 if(this.compact) this.$el.find(".amount").hide();
             }
         }
@@ -92,7 +105,7 @@ var AccountViewReflection = AccountView.extend({
         this.width = size;
     },
     empty:function(){
-        return this.$el.length==0;
+        return this.$el.length==0||!this.view||this.view.hidden();
     },
 
     setCompact:function(enable){
@@ -135,6 +148,7 @@ var AccountSelect = Backbone.View.extend({
         this.factory = new AccountSelectItemFactory(this, options.templates.get("account_item"));
         this.$el = $(template());
         this.dropdownBox = this.$el.find(".dropdownBox");
+        this.model = this.collection;
         this.collection = new CollectionView({factory:this.factory, collection:this.collection, el:this.dropdownBox.find(">div")});
         this.active = new AccountViewReflection({el:this.$el.find(".select")});
         this.active.click(this.toggle);
@@ -201,13 +215,12 @@ var AccountSelect = Backbone.View.extend({
 
     hide:function(ev){
         this.dropdownBox.addClass("off");
-        console.log("off");
         this.hideContainerLater();
         //this.collection.hide();
         //if(ev!=undefined) ev.stopPropagation();
     },
     parseNewItem:function(view){
-        if(this.active.empty()&&!view.$el.is(":hidden")){
+        if(this.active.empty()&&!view.hidden()){
             this.active.reset(view);
         }
     },

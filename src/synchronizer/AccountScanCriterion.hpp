@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 
 #include <QJsonArray>
@@ -7,7 +8,7 @@
 
 #include "ScanCriterion.hpp"
 #include "ScanResult.hpp"
-
+#include "detail/HexAddressNormalizer.hpp"
 
 namespace Xeth{
 

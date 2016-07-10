@@ -1,7 +1,7 @@
 #pragma once
 
-#include "env/Settings.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "conf/Settings.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 
 #include "detail/DataBaseDirectory.hpp"
 #include "detail/EthereumKeyStorePath.hpp"

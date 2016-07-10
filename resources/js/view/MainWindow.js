@@ -21,6 +21,11 @@ var MainWindowView = Backbone.View.extend({
             args = name;
             name = "default";
         }
+        if(name=="default" && !this.models.accounts.length)
+        {
+            name = "generate";
+            args = {message:"generating your very first address"};
+        }
         var view =  this.subpages[name];
         if(view!=undefined){
             if(this.active && this.active!=view) this.active.hide();
@@ -38,13 +43,12 @@ var MainWindowView = Backbone.View.extend({
     },
 
     render: function(){
-
+        try{
         this.$el.prepend(this.templates.get("main_page")());
 
         this.models.events.onError(this.notifyError);
 
         this.router = new PageRouter(this);
-        this.menuAlias = {default: "send"};
         this.subpages = {};
         this.subpages.send = new SendPageView
         ({
@@ -122,11 +126,14 @@ var MainWindowView = Backbone.View.extend({
         });
         this.subpages.bitprofile = new BitprofilePageView
         ({
+            clipboard: this.models.clipboard,
             filesystem:this.models.filesystem,
             registrars:this.models.registrars,
             accounts:this.models.accounts,
             fee: this.models.fee,
             profiles:this.models.profiles,
+            profileValidator: this.models.profileValidator,
+            syncProgress: this.models.progress,
             el:this.$el.find("#page_bitprofile"),
             router:this.router,
             templates:this.templates
@@ -137,8 +144,11 @@ var MainWindowView = Backbone.View.extend({
 
         this.progress.render();
         for(var i in this.subpages) this.subpages[i].render();
-        this.subpages["default"] = this.subpages.send;
+        this.menuAlias = {default: "receive"};
+        this.subpages["default"] = this.subpages.receive;
+
         this.show();
+        }catch(e){alert(e);}
     },
     notifyError:function(event){
         notifyError(event.message);

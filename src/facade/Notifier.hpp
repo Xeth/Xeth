@@ -19,15 +19,13 @@ class Notifier : public QObject
 
         Notifier();
 
-        void watch(const DataBase &);
-        void watch(const Synchronizer &);
-
     public slots:
         void emitObjectError(const QString &context, const QString &uri, const QString &msg);
         void emitError(const QString &context, const QString &msg);
         void emitError(const QString &);
         void emitMessage(const QString &);
         void emitReady();
+
 
         void emitData(const QString &context, const QString &uri, const QString &key, const QVariant &value);
         void emitData(const QString &context, const QString &key, const QVariant &value);
@@ -38,31 +36,6 @@ class Notifier : public QObject
         void Message(const QString &) const;
         void Data(const QVariantMap &) const;
 
-        void Profile(const QVariantMap &) const;
-        void ProfileRename(const QVariantMap &) const;
-
-        void Transaction(const QVariantMap &) const;
-        void ScanProgress(const QVariant &) const;
-        void SyncProgress(const QVariant &) const;
-        void Account(const QVariantMap &) const;
-        void Contact(const QVariantMap &) const;
-        void Config(const QString &, const QString &) const;
-
-
-    private slots:
-        void emitAddressBookItem(const QJsonObject &);
-        void emitEthereumKey(const QString &);
-        void emitStealthPayment(const QJsonObject &);
-        void emitStealthKey(const QString &);
-        void emitTransaction(const QJsonObject &);
-        void emitScanProgress(double);
-        void emitSyncProgress(double);
-        void emitConfig(const QString &, const QString &);
-        void emitProfile(const BitProfile::ProfileDescriptor &);
-        void emitProfileRename(const QString &old, const BitProfile::ProfileDescriptor &);
-
-    private:
-        const DataBase *_database;
 };
 
 

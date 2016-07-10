@@ -4,7 +4,11 @@ namespace Xeth{
 
 AccountScanCriterion::AccountScanCriterion(const char *address) :
     ScanCriterion(address)
-{}
+{
+    HexAddressNormalizer normalizer;
+    normalizer(_address, _address);
+    _address.insert(0, "0x"); //add prefix
+}
 
 void AccountScanCriterion::processHeader
 (
@@ -16,7 +20,7 @@ void AccountScanCriterion::processHeader
     ScanResult &result
 )
 {
-    if(miner == _address)
+    if(miner == _address && _address.size())
     {
         saveTransaction(TransactionCategory::Mined, hash, "", miner, amount, timestamp, result);
     }
@@ -33,13 +37,16 @@ void AccountScanCriterion::processTransaction
     ScanResult &result
 )
 {
-    if(from == _address)
+    if(_address.size())
     {
-        saveTransaction(TransactionCategory::Sent, hash, from, to, amount, timestamp, result);
-    }
-    else if(to == _address)
-    {
-        saveTransaction(TransactionCategory::Received, hash, from, to, amount, timestamp, result);
+        if(from == _address)
+        {
+            saveTransaction(TransactionCategory::Sent, hash, from, to, amount, timestamp, result);
+        }
+        else if(to == _address)
+        {
+            saveTransaction(TransactionCategory::Received, hash, from, to, amount, timestamp, result);
+        }
     }
 }
 
@@ -55,14 +62,14 @@ void AccountScanCriterion::saveTransaction
 )
 {
     QJsonObject obj;
-    obj.insert("category", category.toString());
-    obj.insert("hash", hash.c_str());
+    obj.insert("category", QString(category.toString()));
+    obj.insert("hash", QString(hash.c_str()));
     if(from.size())
     {
-        obj.insert("from",  from.c_str());
+        obj.insert("from",  QString(from.c_str()));
     }
-    obj.insert("to", to.c_str());
-    obj.insert("amount", boost::lexical_cast<std::string>(amount).c_str());
+    obj.insert("to", QString(to.c_str()));
+    obj.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
     obj.insert("timestamp", (qint64)timestamp);
 
     result.transactions.push_back(obj);

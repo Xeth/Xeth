@@ -35,20 +35,22 @@ var StealthAccountSimulator = StealthAccount.extend({
 
 var AccountCollectionSimulator = AccountCollection.extend({
 
+    initialize: function(){},
     observe: function(){},
     fetch:function(){},
 
     generate:function(request){
 		console.log(request);
 		var account = {balance:0};
-		var address = Math.random();
+		var address = "0x0NeW1"+Math.random();
 		account[(request.type=="stealth")? "stealth":"address"] = address;
 		this.add(account);
 		return address;
     },
 
     importKey:function(file, password){
-        return false;
+        this.add({balance:0,address:"0ximpOrt"+Math.random()});
+        return true;
     },
 
     modelId: function(attrs){

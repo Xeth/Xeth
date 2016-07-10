@@ -1,7 +1,7 @@
 var FeeSlider = Backbone.View.extend({
 
     initialize:function(){
-        _(this).bindAll("change", "renderFee");
+        _(this).bindAll("change", "renderFee", "disable");
         
         this.lastFeeFactor = 100;
         this.feeHolder = this.$el.find(".fee .eth");
@@ -17,7 +17,13 @@ var FeeSlider = Backbone.View.extend({
         });
     },
     
+    disable:function(result){
+        this.update({gas:0,price:0,fee:"0.0000000000000"});
+        this.$el.addClass("readonly");
+    },
+    
     update:function(result){
+        this.$el.removeClass("readonly");
         this.gasAmount = result["gas"];
         this.gasPrice = result["price"];
         this.fee = result["fee"];
@@ -34,24 +40,25 @@ var FeeSlider = Backbone.View.extend({
         
         if(event!=false){
             var factorMovement = factor/this.lastFeeFactor;
-            var fee = this.lastFee*factorMovement;
+            fee = this.lastFee*factorMovement;
             fee = ((isNaN(fee))?0:fee).toFixed(13);
             this.trigger("autoupdate", fee);
         }else{
-            fee = this.fee;
-            if(fee>0){
+            if(factor==0){
+                this.fee="0.0000000000000";
+            }else{
                 this.lastFeeFactor = this.getFeeFactor();
                 this.lastFee = this.fee;
             }
+            fee = this.fee;
         }
-        console.log(fee,this.fee);
         if(factor<90){
             this.feeFactor.addClass("warning");
         }else{
             this.feeFactor.removeClass("warning");
         }
         
-        this.feeHolder.html(fee?fee.substr(0, 15):0);
+        this.feeHolder.html(isNaN(fee)? 0 : fee.substr(0, 15));
         this.gasHolder.html(((this.gasAmount)?this.gasAmount:0));
     },
     

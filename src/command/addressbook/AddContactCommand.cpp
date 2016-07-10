@@ -12,14 +12,20 @@ AddContactCommand::AddContactCommand(DataBase &database) :
 
 QVariant AddContactCommand::operator ()(const QVariantMap &request)
 {
-    if(!request.contains("alias") || (!request.contains("address")&&!request.contains("bitprofile")))
+    if(!request.contains("alias"))
+    {
+        return QVariant::fromValue(false);
+    }
+    QString alias = request["alias"].toString();
+
+    if(alias.length() == 0)
     {
         return QVariant::fromValue(false);
     }
 
     AddressBookStore & addressbook = _database.getAddressBook();
 
-    return QVariant::fromValue(addressbook.insert(request["alias"].toString().toStdString().c_str(), QJsonObject::fromVariantMap(request)));
+    return QVariant::fromValue(addressbook.insert(alias.toStdString().c_str(), QJsonObject::fromVariantMap(request)));
 }
 
 

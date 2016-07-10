@@ -117,8 +117,8 @@
 }
 
 .transactions_total {
-	height: 20px;
-	line-height: 20px;
+	height: 16px;
+	line-height: 16px;
 	position:absolute;
 	width: 100%;
 	bottom: -30px;

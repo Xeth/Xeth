@@ -6,7 +6,7 @@
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/Network.hpp"
 
-#include "env/Settings.hpp"
+#include "conf/Settings.hpp"
 #include "database/DataBase.hpp"
 #include "synchronizer/Synchronizer.hpp"
 #include "process/ProcessSupervisor.hpp"
@@ -23,7 +23,9 @@
 #include "FileSystemFacade.hpp"
 #include "BitProfileFacade.hpp"
 
-#include "detail/FacadeInitializer.hpp"
+#include "detail/ChildrenInitializer.hpp"
+
+#include "command/Invoker.hpp"
 
 
 namespace Xeth{
@@ -46,6 +48,7 @@ class Facade : public QObject
 
     public:
         Facade(const Settings &);
+        ~Facade();
 
         Notifier & getNotifier();
         AddressBook & getAddressBook();
@@ -70,6 +73,9 @@ class Facade : public QObject
         const Settings & getSettings() const;
         bool isReady() const;
 
+    public slots:
+        void shutdown();
+
     private slots:
         void setReady();
 
@@ -85,6 +91,8 @@ class Facade : public QObject
 
         ProcessSupervisor _eth;
         ProcessSupervisor _ipfs;
+
+        Invoker<Notifier> _invoker;
 
         Wallet _wallet;
         AddressBook _addressbook;

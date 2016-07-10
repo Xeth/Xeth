@@ -55,7 +55,7 @@ void KeyAttributesReader<EthereumKeyStore>::throwIfNotExists()
 
 std::string KeyAttributesReader<EthereumKeyStore>::getAddress() const
 {
-    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+)$");
+    boost::regex regex("UTC\\-\\-.+\\-\\-([0-9a-fA-F]+)");
     boost::smatch match;
 
     if (boost::regex_search(_path, match, regex))
@@ -69,7 +69,7 @@ std::string KeyAttributesReader<EthereumKeyStore>::getAddress() const
 
 time_t KeyAttributesReader<EthereumKeyStore>::getCreationTime() const
 {
-    boost::regex regex("UTC\\-\\-(.+)\\-\\-[0-9a-fA-F]+$");
+    boost::regex regex("UTC\\-\\-(.+)\\-\\-[0-9a-fA-F]+");
     boost::smatch match;
 
     if (boost::regex_search(_path, match, regex))

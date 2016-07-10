@@ -376,8 +376,8 @@
 
 #page_splash .logo {
 	width: 450px;
-	/*margin: 50% auto 0 auto;*/
-	margin: calc(30% - 50px) auto 0 auto;
+	margin: 25% auto 0 auto;
+	margin-top: calc(30% - 50px);
 	background-image: url(../img/logo-01.png);
 	background-repeat: no-repeat;
 	background-position: center top;
@@ -490,6 +490,11 @@
 	margin-top: 0;
 }
 
+.page h1 .message {
+    color: #BB874E;
+    float: right;
+}
+
 .innerpage > h1:first-child,
 .innerpage :first-child > h1:first-child {
 	margin-top: 30px;
@@ -509,13 +514,16 @@
 	transition: opacity 300ms, max-height 300ms, padding 300ms;
 }
 
-.listItem.new,
-.listItem.off {
+.listItem.new {
     max-height: 0;
     opacity: 0;
     padding: 0 9px;
     margin-bottom: -1px;
     pointer-events: none;
+}
+
+.listItem.off {
+    display: none;
 }
 /*
 .listItem:first-child {

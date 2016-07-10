@@ -49,6 +49,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
 
+<script type="text/javascript" src="js/model/FutureObserver.js"></script>
 <script type="text/javascript" src="js/model/Account.js"></script>
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
@@ -60,6 +61,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Profile.js"></script>
 <script type="text/javascript" src="js/model/Registrar.js"></script>
 <script type="text/javascript" src="js/model/ProfileResolver.js"></script>
+<script type="text/javascript" src="js/model/ProfileValidator.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -91,12 +93,13 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 
 <script type="text/javascript">
 try{
-    var accounts = new AccountCollection;
+
     var transactions = new TransactionCollection;
     var addressbook = new AddressBook;
     var progress = new Progress;
     var events = new EventListener;
     var profiles = new ProfileCollection([], {events: events});
+    var accounts = new AccountCollection([], {profiles:profiles});
     var registrars = new RegistrarCollection;
     var resolver = new ProfileResolver;
 
@@ -111,10 +114,11 @@ try{
         events: events,
         profiles: profiles,
         registrars: registrars,
-        resolver: resolver
+        resolver: resolver,
+        profileValidator: new ProfileValidator
     });
 
-    XETH_event.Ready.connect(this, function(){
+    XETH_event.Ready.connect(function(){
         var config = new Config;
         events.listen();
         profiles.fetch();
@@ -140,9 +144,8 @@ try{
         });
 
         view.render();
-
-
     });
+
 }
 catch(e)
 {

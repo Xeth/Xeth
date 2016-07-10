@@ -1,16 +1,29 @@
 var ReceivePageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "update", "scheduleUpdate", "copyAddressToClipboard", "copyUriToClipboard", "clickGenerate");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll(
+            "open",
+            "update",
+            "scheduleUpdate",
+            "copyAddressToClipboard",
+            "copyUriToClipboard",
+            "clickGenerate",
+            "filterAccounts"
+        );
+        SubPageView.prototype.initialize.call(this,options);
         this.clipboard = options.clipboard;
         this.router = options.router;
         this.template = options.templates.get("receive");
                 
         this.accounts = new AccountSelect({collection:options.accounts, templates:options.templates});
-        this.accounts.filter(function(model){return model!=undefined;}); //hide text
+        this.filterAccounts();
+        this.accounts.model.on("change:profile", this.filterAccounts);
     },
-    
+
+    filterAccounts:function(){
+        this.accounts.filter(function(model){return model!=undefined && (!(model.get("address") && model.get("stealth")) || model.get("profile") );}); //hide text and stealth payments
+    },
+
     render:function(){
         this.$el.html(this.template());
         this.msg = this.$el.find("#receiveMessage");
@@ -50,14 +63,13 @@ var ReceivePageView = SubPageView.extend({
     open:function(args){
 
         if(args&&args.address){
-            this.accounts.focus(function(model){ return (model.get("address")||model.get("stealth"))==args.address;})
+            this.accounts.focus(function(model){return model&&((model.get("address")==args.address)||(model.get("stealth")==args.address));})
         }
         
         (this.timer)?this.scheduleUpdate():this.update();
     },
     
     clickGenerate:function(){
-        console.log("clicked on generate");
         this.router.redirect("generate");
     },
 

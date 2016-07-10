@@ -7,8 +7,8 @@
 #include "bitprofile/GasEstimator.hpp"
 #include "bitprofile/Resolver.hpp"
 
-#include "env/Settings.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "conf/Settings.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 #include "database/BitProfileStore.hpp"
 #include "types/BigInt.hpp"
 

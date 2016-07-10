@@ -4,16 +4,15 @@
 namespace Xeth{
 
 
-LinkStealthAddressCommand::LinkStealthAddressCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store, Notifier &notifier) :
+LinkStealthAddressCommand::LinkStealthAddressCommand(Ethereum::Connector::Provider &provider, BitProfileStore &store) :
     _provider(provider),
-    _store(store),
-    _notifier(notifier)
+    _store(store)
 {}
 
 
 QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
 {
-    if(!request.contains("uri")||!request.contains("stealth"))
+    if(!request.contains("uri")||!request.contains("stealth")||!request.contains("password"))
     {
         return QVariant::fromValue(false);
     }
@@ -29,16 +28,14 @@ QVariant LinkStealthAddressCommand::operator()(const QVariantMap &request)
     admin.setGasPrice(BigInt(request.contains("price") ? request["price"].toString().toStdString(): "0"));
     admin.setGasLimit(BigInt(request.contains("gas") ? request["gas"].toString().toStdString() : "0"));
 
-    LinkAddressAction * action = LinkAddressAction::Create(LinkAddressOperation
-    (
-        admin, 
-        request["stealth"].toString(),
-        request["password"].toString(),
-        _notifier
-    ));
+    QString address = request["stealth"].toString();
 
-    action->start();
-    return QVariant::fromValue(true);
+    if(!admin.setPaymentAddress(address.toStdString(), request["password"].toString().toStdString()))
+    {
+        return QVariant::fromValue(false);
+    }
+
+    return address;
 
 }
 

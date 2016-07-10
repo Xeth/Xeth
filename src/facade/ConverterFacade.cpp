@@ -4,8 +4,8 @@
 namespace Xeth{
 
 
-ConverterFacade::ConverterFacade(Notifier &notifier) :
-    _invoker(notifier)
+ConverterFacade::ConverterFacade(Invoker<Notifier> &invoker) :
+    _invoker(invoker)
 {}
 
 QVariant ConverterFacade::fromWei(const QVariant &request)

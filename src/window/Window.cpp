@@ -8,6 +8,7 @@
 #include <QWebSettings>
 #include <QWebInspector>
 #include <QCoreApplication>
+#include <QMessageBox>
 
 namespace Xeth{
 
@@ -26,7 +27,7 @@ Window::Window(Facade &facade) :
 //    inspector->setPage(page());
 //    inspector->show();
 
-    _trayIcon = new QSystemTrayIcon(this);
+    _trayIcon = new Tray(this);
     QObject::connect(page()->mainFrame(), &QWebFrame::loadFinished, this, &Window::loadTemplates);
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
     setContextMenuPolicy(Qt::NoContextMenu);
@@ -35,7 +36,7 @@ Window::Window(Facade &facade) :
     _trayIcon->hide();
     setIcon(":/icon/ethereum.ico");
 
-    _trayIcon->setToolTip("Ethereum Wallet");
+//    _trayIcon->setToolTip("Ethereum Wallet");
     _trayMenu = new QMenu(this);
     _trayMenu->addSeparator();
 
@@ -58,7 +59,7 @@ void Window::initConfig()
     initConfigOpt("tray", _showTrayOpt, true);
     initConfigOpt("tray_minimize", _minimizeToTrayOpt, false);
     initConfigOpt("tray_close", _closeToTrayOpt, false);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Config, this, &Window::updateConfig);
+    QObject::connect(&_facade.getConfig(), &ConfigFacade::Change, this, &Window::updateConfig);
     if(_showTrayOpt)
     {
         showTray();
@@ -125,13 +126,13 @@ void Window::initConfigOpt(const char *name, bool &opt, bool defaultVal)
 void Window::showTray()
 {
     _trayIcon->setVisible(true);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::connect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::hideTray()
 {
     _trayIcon->setVisible(false);
-    QObject::disconnect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::disconnect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::toggle()
@@ -154,6 +155,20 @@ void Window::close()
 {
     _closing = true;
     QWebView::close();
+    QMessageBox * msgBox = new QMessageBox(this);
+    msgBox->setText("Xeth shutting down ...");
+    msgBox->setStandardButtons(0);
+    msgBox->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+    msgBox->show();
+    hideTray();
+    QTimer::singleShot(100, this, SLOT(emitClosing()));
+//    QTimer::singleShot(100, msgBox, SLOT(close()));
+}
+
+
+void Window::emitClosing()
+{
+    emit Closing();
 }
 
 void Window::changeEvent(QEvent* event)
@@ -183,7 +198,11 @@ void Window::closeEvent(QCloseEvent *event)
 
 void Window::notifyTransaction(const QVariantMap &tx)
 {
-    _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(tx["amount"]).toString());
+    QString amount = tx["amount"].toString();
+    if(amount!="0")
+    {
+        _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(amount).toString());
+    }
 }
 
 void Window::setUrl(const char *uri)
@@ -196,7 +215,7 @@ void Window::setIcon(const char *uri)
 {
     QIcon icon(uri);
     setWindowIcon(icon);
-    _trayIcon->setIcon(icon);
+//    _trayIcon->setIcon(icon);
 }
 
 void Window::javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID )
@@ -243,12 +262,16 @@ void Window::loadTemplates()
 
 void Window::moveToScreenCenter()
 {
-    QRect rect = geometry();
-    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
-    setGeometry(rect);
+    moveToScreenCenter(*this);
 }
 
 
+void Window::moveToScreenCenter(QWebView &view)
+{
+    QRect rect = view.geometry();
+    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
+    view.setGeometry(rect);
+}
 
 
 }

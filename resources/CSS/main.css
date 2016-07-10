@@ -242,12 +242,21 @@ input[type=number]:-ms-input-placeholder { /* Internet Explorer 10+ */
 	outline-offset: -1px;
 }
 
-.error h1:after {
-	content: attr(error);
+h1:after {
+	content: "";
 	font-family: Regular, Arial, Helvetica, sans-serif;
-	color: #b9676a;
 	font-size: 0.9rem;
 	float: right;
+}
+
+.error h1:after {
+	content: attr(error);
+	color: #b9676a;
+}
+
+.valid h1:after {
+	content: attr(valid);
+	color: #5B945B;
 }
 
 .inputBtnSearch {
@@ -350,6 +359,8 @@ input[type="number"]:focus {
 .txtBalance,
 .txtBalance * {
 	vertical-align: top;
+    line-height: 16px;
+    height: 16px;
 }
 .txtBalance .int {
 	font-family: Bold, Arial, Helvetica, sans-serif;
@@ -365,18 +376,17 @@ input[type="number"]:focus {
 	content: "eth";
 	background-image: url(../img/icons-01.png);
 	background-repeat: no-repeat;
-	background-position: left -40px;
+	background-position: left -39px;
 	display: inline-block;
-	vertical-align: middle;
-	height: 14px;
-	line-height: 14px !important;
+	vertical-align: top;
+	height: 16px;
+	line-height: 16px !important;
 	padding-left: 18px;
 	/*margin: -8px 0px 0px -2px;*/
 	margin-left: -2px;
     padding-bottom: 3px;
 	text-transform: uppercase;
 	font-size:0.7rem;
-	line-height:16px;
 	color:#1C2E30;
 }
 .txtBalance.pending .int {
@@ -461,11 +471,14 @@ input[type="number"]:focus {
 .dropdownBox .item.off {
     display: none;
 }
+.dropdownBox .item.removing {
+    opacity: 0.3;
+}
 
 .ui-selectmenu-menu ul,
 .dropdown3 .holder {
 	background-color: #FFFFFF;
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgba(255,255,255,0.9);
 	max-height: 300px;
 	overflow-y: auto;
 	margin: 3px -10px;

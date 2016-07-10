@@ -1,7 +1,7 @@
 var ContactView = Backbone.View.extend({
 
     initialize:function(options){
-        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove", "goToSend");
+        _(this).bindAll("updateAlias", "updateAddress", "updateAvatar", "updateBitProfile", "editName", "removeLater", "cancelRemove", "goToSend", "updateBitProfileDetails");
         this.router = options.router;
         var data = {contact:this.model.toJSON()};
         this.$el = $(options.template(data));
@@ -10,6 +10,7 @@ var ContactView = Backbone.View.extend({
         this.listenTo(this.model, "change:avatar", this.updateAvatar);
         this.listenTo(this.model, "change:bitprofile", this.updateBitProfile);
         this.listenTo(this.model, "change:transactions", this.updateTransactions);
+        this.updateBitProfile();
 
         this.$el.find('.name.editableTxt').editable({
             mode: 'inline',
@@ -28,7 +29,7 @@ var ContactView = Backbone.View.extend({
         this.$el.find(".remove").click(this.removeLater);
         this.$el.find(".removing .cancel").click(this.cancelRemove);
         this.$el.find(".send").click(this.goToSend);
-
+        
     },
 
     updateAlias:function(){
@@ -43,16 +44,35 @@ var ContactView = Backbone.View.extend({
         this.$el.find(".avatar img").attr("src", this.model.get("avatar"));
     },
 
+    updateBitProfileDetails:function(){
+        var details = this.bitprofile.get("details");
+        var avatar = (details && details.avatar)? details.avatar: "img/avatarEmpty.png";
+        this.$el.find(".avatar img").attr("src", avatar);
+        this.model.set("avatar", avatar);
+    },
+
     updateBitProfile:function(){
         var icon = this.$el.find(".bitprofileIcon");
         var bitprofile = this.model.get("bitprofile");
 
+        if(this.bitprofile){
+            this.stopListening(this.bitprofile);
+            this.bitprofile.stopListening();
+        }
+
         if(bitprofile){
             if(!icon.hasClass("on")) icon.addClass("on");
             icon.attr("title", bitprofile);
+            this.bitprofile = new Profile({uri: bitprofile});
+            this.listenTo(this.bitprofile, "change:details", this.updateBitProfileDetails);
+            if(this.bitprofile.get("loaded"))
+            {
+                this.updateBitProfileDetails();
+            }
         }else{
             icon.attr("title", "no bitprofile");
             icon.removeClass("on");
+            this.bitprofile = null;
         }
     },
 
@@ -120,9 +140,11 @@ var AddressBookPageView = SubPageView.extend({
             empty:this.$el.find(".empty")
         });
         this.collection.render();
+        this.$search = this.$el.find("#inputSearchContacts");
         this.$filter = this.$el.find("#filterContacts");
         this.$filter.selectmenu();
         this.$filter.on("selectmenuchange",this.applyFilter);
+        this.$search.on("input",this.applyFilter);
         
         this.collection.collection.on("add", this.applyFilter);
         this.collection.collection.on("insert", this.applyFilter);
@@ -130,13 +152,28 @@ var AddressBookPageView = SubPageView.extend({
     },
 
     applyFilter:function(){
-        var criterion = this.$filter.val();
-        if(criterion=="all"){
-            this.collection.filter(function(){return true;});
+        var type = this.$filter.val();
+        var searchVal = this.$search.val();
+        var pattern = new RegExp(searchVal);
+        var matchPattern = function(model){
+            return pattern.test(model.get("alias"))||
+            pattern.test(model.get("bitprofile"))||
+            pattern.test(model.get("address"));
+        };
+        if(type=="all"){
+            if(searchVal){
+                this.collection.filter(matchPattern);
+            }else{
+                this.collection.filter(function(){return true;});
+            }
         }
         else{
-            var local = (criterion!="bitprofile");
-            this.collection.filter(function(model){return local == !model.get("bitprofile"); });
+            var local = (type!="bitprofile");
+            if(searchVal){
+                this.collection.filter(function(model){return local == !model.get("bitprofile")&&matchPattern(model);});
+            }else{
+                this.collection.filter(function(model){return local == !model.get("bitprofile");});
+            }
         }
     }
 

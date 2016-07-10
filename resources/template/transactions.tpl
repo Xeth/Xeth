@@ -8,7 +8,7 @@
 			<option value="Sent">Sent</option>
 			<option value="Mined">Mined</option>
 		</select>
-        <div class="input date"><input type="text" id="filterTransactionTime" class="daterange" placeholder="date" /></div>
+        <div class="input date"><input type="text" id="filterTransactionTime" class="daterange" readonly placeholder="date" /></div>
     </div>
     <div class="controls">
         <div id="filterTransactionAddress" ></div>

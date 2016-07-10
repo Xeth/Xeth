@@ -35,6 +35,7 @@ class Sender
             Ethereum::Connector::Wallet &,
             TransactionObjectBuilder &,
             const std::string &from,
+            const std::string &password,
             const std::string &to,
             const BigInt &amount,
             const std::string &data
@@ -44,6 +45,7 @@ class Sender
         (
             Ethereum::Connector::Wallet &,
             const std::string &from,
+            const std::string &password,
             const std::string &to,
             const BigInt &amount,
             const std::string &data
@@ -65,6 +67,7 @@ class AddressSender : public Sender
             Ethereum::Connector::Wallet &,
             TransactionObjectBuilder &,
             const std::string &from,
+            const std::string &password,
             const std::string &to,
             const BigInt &amount
         );
@@ -79,6 +82,7 @@ class StealthSender : public Sender
             Ethereum::Connector::Wallet &,
             TransactionObjectBuilder &,
             const std::string &from,
+            const std::string &password,
             const std::string &to,
             const BigInt &amount
         );

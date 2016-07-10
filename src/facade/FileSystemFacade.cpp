@@ -4,8 +4,8 @@
 namespace Xeth{
 
 
-FileSystemFacade::FileSystemFacade(Notifier &notifier) :
-    _invoker(notifier)
+FileSystemFacade::FileSystemFacade(Invoker<Notifier> &invoker) :
+    _invoker(invoker)
 {}
 
 

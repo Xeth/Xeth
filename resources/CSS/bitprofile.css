@@ -44,6 +44,9 @@
 #page_bitprofile .nav.controls li.export a{
 	background-position-y: -466px;
 }
+#page_bitprofile .nav.controls li.uri a{
+	background-position-y: -512px;
+}
 
 #page_bitprofile .bitprofileList{
 	top:92px;
@@ -101,7 +104,7 @@
 	float:none;
 }
 #page_bitprofile_view .formpage .btns {
-	margin-top:41px;
+	margin-top:10px;
 }
 
 #page_bitprofile_view:target,
@@ -110,7 +113,7 @@
 }
 
 #page_bitprofile_view .stealthAddress {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 #page_bitprofile .bitprofileForm .formpage .avatar {
@@ -238,6 +241,9 @@
 
 .bitprofileForm.pending #bitporfileCreate_payment {
     opacity: 1;
+}
+.bitprofileForm.pending.details #bitporfileCreate_payment {
+    opacity: 0;
 }
 .bitprofileForm #bitporfileCreate_payment .formpage {
     position: absolute;

@@ -4,7 +4,8 @@ namespace Xeth{
 
 std::string AddressBuilder::build(const EthereumKey &key) const
 {
-    return key.getAddress().toString();
+    EthereumCheckSum checksum;
+    return checksum.compute(key.getAddress().toString());
 }
 
 std::string AddressBuilder::build(const StealthKey &key) const

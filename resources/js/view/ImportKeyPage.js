@@ -1,8 +1,8 @@
 var ImportKeyPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "render", "submit");
-		SubPageView.prototype.initialize.call(this,options);
+        _(this).bindAll("open", "render", "submit", "browse", "importKey");
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import");
         this.filesystem = options.filesystem;
         this.wallet = options.wallet;
@@ -11,32 +11,44 @@ var ImportKeyPageView = SubPageView.extend({
 
     render:function(){
         this.$el.html(this.template());
-        this.$el.find(".browse a").click(this.open);
+        this.$el.find(".browse a").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importAddress_address");
+        this.password = this.$el.find("#importAddress_password");
     },
 
     open:function(){
-        this.filename = this.filesystem.browse({type:"open"});
-        this.fileInput.val(this.filename||"");
+        setTimeout(this.browse, 500);
+    },
+
+    browse:function(){
+        var filename = this.filesystem.browse({type:"open"});
+        if(filename) this.fileInput.val(filename);
     },
 
     submit:function(){
-        if(!this.filename){
+        var filename = this.fileInput.val();
+        if(!filename){
             notifyError("please select a file");
             return false;
         }
-        var password = this.$el.find("#importAddress_password");
-        if(!password.validate()){
+        if(!this.password.validate()){
             notifyError("password is required");
             return false;
         }
-        var address = this.wallet.importKey(this.filename, password.val());
+        this.$el.find(".formpage").addClass("waiting");
+        setTimeout(this.importKey, 0, filename);
+    },
+    importKey: function(filename){
+        var address = this.wallet.importKey(filename, this.password.val());
+        this.$el.find(".formpage").removeClass("waiting");
         if(!address){
             notifyError("failed to import key, file is corrupted or invalid password");
             return false;
         }
         notifySuccess("key imported");
+        this.password.val("");
+        this.fileInput.val("");
         this.router.redirect("receive", {address: address});
         return true;
     }

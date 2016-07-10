@@ -34,7 +34,7 @@ bool GenericChangePasswordCommand<Store, ChangePasswordOperation>::execute(const
     try
     {
         typename Store::Data newKey = operation(*it, password, newPassword);
-        return _store.replace(it.path().filename().string().c_str(), newKey);
+        return _store.replace(newKey);
     }
     catch(...)
     {}

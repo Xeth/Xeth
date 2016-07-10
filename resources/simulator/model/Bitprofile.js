@@ -14,6 +14,13 @@ var ProfileSimulator = Backbone.Model.extend({
     updateURI:function(){
         this.set("uri",this.get("id")+"@"+this.get("context"));
     },
+
+    get:function(key){
+        if(key=="uri"||key=="id"||key=="context"||key=="account"||key=="details"||key=="loaded")
+        {
+            return Backbone.Model.prototype.get.call(this, key);
+        }
+    },
     
     linkStealthAddress:function(data){
         console.log(data);
@@ -34,7 +41,7 @@ var ProfileSimulator = Backbone.Model.extend({
     },
     changePayments:function(data){
         console.log(data);
-        return false;
+        //return false;
         setTimeout(function(model){
             model.set("payments", data.stealth);
         }, 6000, this);
@@ -66,7 +73,7 @@ var ProfileCollectionSimulator = ProfileCollection.extend({
 
     generate:function(request){
         var profile = request;//{context:request.context, id:request.id, stealth:request.stealth, name:request.name, avatar:request.avatar};
-		profile.uri = profile.id+"@"+profile.context
+		profile.uri = profile.id+"@"+profile.context;
         this.add(profile);
 		return profile;
     },

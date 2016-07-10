@@ -22,7 +22,7 @@ var Config = Backbone.Model.extend({
     },
 
     observe: function(){
-        XETH_event.Config.connect(this, this.triggerChange);
+        XETH_config.Change.connect(this, this.triggerChange);
     },
 
     triggerChange: function(name, value){

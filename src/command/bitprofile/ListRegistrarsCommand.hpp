@@ -7,8 +7,8 @@
 #include "ethrpc/Provider.hpp"
 #include "bitprofile/MasterRegistrar.hpp"
 
-#include "env/Settings.hpp"
-#include "env/GetBitProfileNetwork.hpp"
+#include "conf/Settings.hpp"
+#include "conf/GetBitProfileNetwork.hpp"
 
 namespace Xeth{
 
