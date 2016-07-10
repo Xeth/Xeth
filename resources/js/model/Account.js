@@ -150,10 +150,13 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     parseNew: function(data){
-        if((data.address && this.find({address:data.address}))||(!data.address && this.find({stealth: data.stealth, address: ""})))
+        if(this.filter(function (account) {
+            return account.get("stealth") == data.stealth && account.get("address") == data.address;
+        }))
         {
             return false;
         }
+
         var model = this.model(data);
         var profile = this.profiles.find({account:model.get("address")});
         if(model.get("balance") != 0 || model.get("unconfirmed") != 0 || !model.get("stealth") || !model.get("address") || profile)
