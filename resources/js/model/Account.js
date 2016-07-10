@@ -150,7 +150,7 @@ var AccountCollection = Backbone.Collection.extend({
     },
 
     parseNew: function(data){
-        if(data.address && this.find({address:data.address}))
+        if((data.address && this.find({address:data.address}))||(!data.address && this.find({stealth: data.stealth, address: ""})))
         {
             return false;
         }
