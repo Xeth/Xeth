@@ -7,4 +7,4 @@ Follow the appropriate link below to find installation instructions for your pla
     * [OpenSuse](build_opensuse.md)
     * [Linux Generic](linux_generic.md)
 * Windows
-* OSX
+* [OSX](build_osx.md)
