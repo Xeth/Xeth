@@ -52,7 +52,7 @@ void ImportProfileCommand::importKeys(const Json::Value &keys, const Serializer 
 {
     for(Json::Value::const_iterator it = keys.begin(), end = keys.end(); it!=end; ++it)
     {
-        store.insert(serializer.unserialize(*it));
+        store.replace(serializer.unserialize(*it));
     }
 }
 
