@@ -40,7 +40,7 @@ var TransactionView = Backbone.View.extend({
         setTimeout(this.setTimeago, 50);
         this.$el.find(".data .address a").click(this.redirectSend);
         this.$el.find(".header .userAddress a").click(this.redirectReceive);
-        this.$el.find(".data .name.editableTxt").editable({
+        this.aliasHolder.editable({
             mode: 'inline',
             autotext: 'always',
             clear: false,
@@ -81,6 +81,7 @@ var TransactionView = Backbone.View.extend({
 
     updateAlias:function(contact, alias){
         this.aliasHolder.html(alias);
+        this.aliasHolder.editable("option", "value", alias);
     },
 
     updateBitProfile: function(contact, bitprofile){
@@ -113,6 +114,7 @@ var TransactionView = Backbone.View.extend({
         this.bitprofileIcon.removeClass("on");
         this.bitprofileIcon.attr("title", "");
         this.aliasHolder.html("unnamed");
+        this.aliasHolder.editable("option", "value", "");
         this.$el.find(".avatar").remove();
     },
 

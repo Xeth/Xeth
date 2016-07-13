@@ -11,8 +11,10 @@ var ContactView = Backbone.View.extend({
         this.listenTo(this.model, "change:bitprofile", this.updateBitProfile);
         this.listenTo(this.model, "change:transactions", this.updateTransactions);
         this.updateBitProfile();
+        
+        this.name = this.$el.find('.name.editableTxt');
 
-        this.$el.find('.name.editableTxt').editable({
+        this.name.editable({
             mode: 'inline',
             autotext: 'always',
             clear: false,
@@ -33,7 +35,9 @@ var ContactView = Backbone.View.extend({
     },
 
     updateAlias:function(){
-        this.$el.find(".name").html(this.model.get("alias"));
+        var alias = this.model.get("alias");
+        this.name.html(alias);
+        this.name.editable("option", "value", alias);
     },
 
     updateAddress:function(){
