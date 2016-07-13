@@ -146,12 +146,16 @@ var TransactionView = Backbone.View.extend({
                 }else{
                     contact.address = this.model.get("to");
                 }
+                var bitprofile = this.model.get("bitprofile");
+                if(bitprofile)
+                {
+                    contact.bitprofile = bitprofile;
+                }
             }
             else
             {
                 contact.address = this.model.get("from");
             }
-
             this.addressbook.create(contact);
         }
     }

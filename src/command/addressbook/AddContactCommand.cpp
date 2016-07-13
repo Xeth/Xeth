@@ -1,6 +1,5 @@
 #include "AddContactCommand.hpp"
 
-
 namespace Xeth{
 
 
@@ -25,7 +24,7 @@ QVariant AddContactCommand::operator ()(const QVariantMap &request)
 
     AddressBookStore & addressbook = _database.getAddressBook();
 
-    return QVariant::fromValue(addressbook.insert(alias.toStdString().c_str(), QJsonObject::fromVariantMap(request)));
+    return QVariant::fromValue(addressbook.replace(alias.toStdString().c_str(), QJsonObject::fromVariantMap(request)));
 }
 
 
