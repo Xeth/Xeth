@@ -52,7 +52,7 @@ var ChangePasswordPageView = SubPageView.extend({
         if(!model.changePassword(oldPassword.val(), newPassword.val())){
             notifyError("invalid password");
             this.$el.find(".formpage").removeClass("waiting");
-            newPassword.error();
+            oldPassword.error();
             return false;
         }
         notifySuccess("password changed");
