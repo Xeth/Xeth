@@ -8,6 +8,7 @@ var BitprofileFormView = SubPageView.extend({
             "clickRemoveAvatar",
             "submitDetails",
             "submit",
+            "selectAccount",
             "resetForm",
             "reset",
             "lockPage",
@@ -226,6 +227,10 @@ var BitprofileFormView = SubPageView.extend({
         this.password.val("");
         this.avatarDeleted = false;
         this.fillForm();  
+    },
+
+    selectAccount:function(account){
+        this.account_details.focus(function(model){ return (model)&&(model.get("stealth"))==account;});
     },
 
     fillForm:function(){

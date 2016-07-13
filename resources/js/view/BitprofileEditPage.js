@@ -67,7 +67,7 @@ var BitprofileEditPageView = SubPageView.extend({
             this.form.resetForm();
         }
         if(args && args.address){
-            this.form.selectAccount("stealth", args.address);
+            this.form.selectAccount(args.address);
         }
 
 
