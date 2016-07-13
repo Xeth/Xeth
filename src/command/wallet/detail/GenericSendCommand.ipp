@@ -1,3 +1,6 @@
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp> 
+
 namespace Xeth{
 
 template<class Sender, class Validator, class Estimator>
@@ -78,7 +81,7 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
         {
             throw std::runtime_error("invalid password");
         }
-
+        boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
     }
 
     TransactionObjectBuilder builder;
@@ -102,6 +105,7 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
     {
         amount = BigInt(amountStr);
     }
+
 
     QString txid = _sender(_wallet, builder, from, password, to, amount).c_str();
     _database.getTransactions().insert(builder.build());
