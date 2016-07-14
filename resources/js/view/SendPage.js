@@ -310,7 +310,7 @@ var SendPageView = SubPageView.extend({
             }
             else
             {
-                this.submit();
+                this.submitStealthPayment();
             }
         }
         else
@@ -335,11 +335,27 @@ var SendPageView = SubPageView.extend({
             }
             else
             {
-                this.submit();
+                this.submitStealthPayment();
             }
         }
     },
-    
+
+    submitStealthPayment:function(callback)
+    {
+        if(this.amount.val() > 5)
+        {
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+                'Stealth payment is currently in beta!<br />'+
+                'Is not recommended to use it with big amounts<br />'+
+                '<span class="question">Proceed with this transaction?<span>', 
+                'Yes, Send it', 
+                'No, I will use regular address', 
+                this.submit);
+        }else{
+            this.submit();
+        }
+    },
+
     submit:function(checksum){
         var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
