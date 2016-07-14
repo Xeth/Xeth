@@ -346,7 +346,7 @@ var SendPageView = SubPageView.extend({
         {
             notie.confirm('<span class="title warning">WARNING!</span>'+
                 'Stealth payment is currently in beta!<br />'+
-                'Is not recommended to use it with big amounts<br />'+
+                'It\'s recommended to send smaller payments<br />'+
                 '<span class="question">Proceed with this transaction?<span>', 
                 'Yes, Send it', 
                 'No, I will use regular address', 
