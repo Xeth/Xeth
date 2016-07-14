@@ -12,47 +12,22 @@
 namespace Xeth{
 
 
-template<class AccountsFetcher, class DataBase>
-class GenericAccountsLoader
+class AccountsLoader
 {
-    public:
-        GenericAccountsLoader(const AccountsFetcher &, const DataBase &);
-        bool load(ChainScanner &, BalanceObserver &);
-
     private:
-        AccountsFetcher _accountsFetcher;
-        const DataBase &_database;
-
-};
-
-
-
-class AccountsFetcher
-{
-    public:
-        typedef Ethereum::Connector::Collection<std::string> Result;
-
-    public:
-        AccountsFetcher(Ethereum::Connector::Provider &);
-        Result getAccounts();
-
-    private:
-        Ethereum::Connector::Provider &_provider;
-};
-
-
-
-class AccountsLoader : public GenericAccountsLoader<AccountsFetcher, DataBase>
-{
-    public:
-        typedef GenericAccountsLoader<AccountsFetcher, DataBase> Base;
+        typedef Ethereum::Connector::Collection<std::string> AccountsList;
 
     public:
         AccountsLoader(Ethereum::Connector::Provider &connector, const DataBase &database);
 
+        bool load(ChainScanner &, BalanceObserver &);
+
+    private:
+        Ethereum::Connector::Provider &_provider;
+        const DataBase &_database;
 };
+
 
 
 }
 
-#include "AccountsLoader.ipp"

@@ -54,6 +54,7 @@ void StealthScanCriterion::uncoverStealthPayment
             sp.insert("secret", QString(encoder.encode(secret.begin(), secret.end()).c_str()));
             sp.insert("txid", QString(hash.c_str()));
             sp.insert("stealth", QString(getAddress()));
+            tx.insert("timestamp", (int)timestamp);
             result.stealthPayments.push_back(sp);
         }
     }
