@@ -134,6 +134,7 @@ var AccountCollection = Backbone.Collection.extend({
     initialize:function(models, options){
         _(this).bindAll("add", "linkProfile");
         this.profiles = options.profiles;
+        this.ignored = {};
     },
 
     add:function(data){
@@ -164,11 +165,24 @@ var AccountCollection = Backbone.Collection.extend({
             if(profile) model.set("profile", profile);
             this.add(model);
         }
+        else
+        {
+            this.ignored[model.get("address")] = model;
+        }
     },
 
     updateBalance: function(address, unconfirmed, confirmed){
         var account = this.find({address: address});
-        if(account) account.set({balance:XETH_convert.fromWei(confirmed), unconfirmed: XETH_convert.fromWei(unconfirmed)});
+        if(!account)
+        {
+            account = this.ignored[address];
+            this.add(account);
+            this.ignored[address] = undefined;
+        }
+
+        if(account){
+            account.set({balance:XETH_convert.fromWei(confirmed), unconfirmed: XETH_convert.fromWei(unconfirmed)});
+        }
     },
 
     fetch:function(){
