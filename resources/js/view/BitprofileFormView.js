@@ -100,6 +100,7 @@ var BitprofileFormView = SubPageView.extend({
         if(this.syncProgress.get("sync")>=99.99)
         {
             this.stopListening(this.syncProgress);
+            this.registrars.fetch();
             this.renderRegistrars();
 //            this.unlockPage();
             this.reset();
