@@ -33,6 +33,7 @@ var SendPageView = SubPageView.extend({
         this.alias = this.aliasHolder.find("input");
         this.destination = this.$el.find("#sendToInput");
         this.amount = this.$el.find("#sendAmount");
+        this.amount.numeric();
         this.password = this.$el.find("#sendPassword");
         this.addressHint = this.$el.find("#sendToHint");
         this.destination.change(this.updateContact);

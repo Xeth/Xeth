@@ -17,6 +17,7 @@
         <file>js/vendor/jquery-editable-poshytip.min.js</file>
         <file>js/vendor/underscore-min.js</file>
         <file>js/vendor/backbone-min.js</file>
+        <file>js/vendor/jquery.numeric.min.js</file>
 
         <file>js/model/FutureObserver.js</file>
         <file>js/model/Account.js</file>

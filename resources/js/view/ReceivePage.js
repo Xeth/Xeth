@@ -28,6 +28,7 @@ var ReceivePageView = SubPageView.extend({
         this.$el.html(this.template());
         this.msg = this.$el.find("#receiveMessage");
         this.amount = this.$el.find("#receiveAmount");
+        this.amount.numeric();
         this.uri = this.$el.find(".txtURI");
         
         this.qr = new QRCode(this.$el.find("#receiveQR").get(0), {
