@@ -1,5 +1,5 @@
 ##Stealth payments
-Stealth payments is a private exchange of funds which protects the privacy of the recipient and prevents observers from knowing user's transaction history.
+Stealth payment is a private exchange of funds which protects the privacy of the recipient and prevents observers from knowing user's transaction history.
 
 
 On each payment the sender generates a new address using the recipient's stealth address data. 
