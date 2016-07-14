@@ -101,7 +101,8 @@ var BitprofileFormView = SubPageView.extend({
         {
             this.stopListening(this.syncProgress);
             this.renderRegistrars();
-            this.unlockPage();
+//            this.unlockPage();
+            this.reset();
         }
     },
     
