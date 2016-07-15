@@ -17,7 +17,13 @@ QVariant RenameConactCommand::operator ()(const QVariantMap &request)
         return QVariant::fromValue(false);
     }
 
-    return QVariant::fromValue(_database.getAddressBook().move(request["previous"].toString().toStdString().c_str(), request["alias"].toString().toStdString().c_str()));
+    QString alias = request["alias"].toString();
+    if(!alias.length())
+    {
+        return QVariant::fromValue(false);
+    }
+
+    return QVariant::fromValue(_database.getAddressBook().move(request["previous"].toString().toStdString().c_str(), alias.toStdString().c_str()));
 
 }
 
