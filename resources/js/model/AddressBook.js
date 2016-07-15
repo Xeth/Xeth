@@ -66,7 +66,7 @@ var AddressBook = Backbone.Collection.extend({
     create:function(data){
         var model = this.model(data);
         if(!XETH_addressbook.addContact(model.toJSON())) return false;
-        this.add(model);
+//        this.add(model);
         return true;
     },
 
