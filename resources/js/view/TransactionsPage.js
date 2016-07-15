@@ -295,7 +295,11 @@ var TransactionsPageView = SubPageView.extend({
             var time = model.get("timestamp");
             if(time<filters.timeStart||time>filters.timeEnd) return false;
         }
-        if(filters.address && filters.address != model.get("from") && filters.address != model.get("to") && (filters.address!=model.get("stealth"))) return false;
+        if(	filters.address &&
+			filters.address != (model.get("from")||"").toLowerCase() && 
+			filters.address != (model.get("to")||"").toLowerCase() && 
+			filters.address != model.get("stealth")
+		) return false;
         if(filters.type && filters.type!=model.get("category")) return false;
         return true;
     },
