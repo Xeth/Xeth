@@ -220,7 +220,7 @@ var SendPageView = SubPageView.extend({
     checkAmount:function(fee){
         if(!fee) fee=this.fee;
         var account = this.accounts.selected();
-        var balance = account ? account.get("balance"): 0;
+        var balance = account ? account.get("unconfirmed"): 0;
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
