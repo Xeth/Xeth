@@ -31,7 +31,7 @@ bool AccountsLoader::load(ChainScanner &scanner, BalanceObserver &balanceObserve
         {
             QJsonObject payment = *it;
             std::string address = payment["address"].toString().toStdString();
-            if(wallet.getBalance(address) == 0 && payment["timestamp"].toInt() < lastBlockTime)
+            if(wallet.getBalance(address) == 0 && (!payment["timestamp"].isNull() && payment["timestamp"].toInt() < lastBlockTime))
             {
                 skipped.insert(address);
             }
