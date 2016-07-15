@@ -1,5 +1,5 @@
 ##Stealth payments
-Stealth payment is a private exchange of funds which protects the privacy of the recipient and prevents observers from knowing user's transaction history.
+Stealth payment is a private exchange of funds which protects the privacy of the recipient and prevents observers from knowing the user's transaction history.
 
 
 On each payment the sender generates a new address using the recipient's stealth address data. 
@@ -9,7 +9,7 @@ Only the recipient is able to spend those funds. The spending private key can be
 ##Dual-key stealth
 
 Dual key allows scanning for payments without exposing the spending private key. 
-In this scheme two keys are used - one for spending and one for scanning. The spend key is decrypted only when spending funds and it requires user interaction. 
+In this scheme two keys are used - one for spending and one for scanning. The spending key is decrypted only when spending funds and it requires user interaction. 
 The scan key is not encrypted.
 
 
