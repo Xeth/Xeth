@@ -55,6 +55,15 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
     }
     args.push_back("--verbosity=0");
 
+    if(! settings.get<int>("dao-fork", 1))
+    {
+        args.push_back("--oppose-dao-fork");
+    }
+    else
+    {
+        args.push_back("--support-dao-fork");
+    }
+
     return args;
 }
 
