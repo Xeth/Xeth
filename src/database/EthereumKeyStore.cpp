@@ -15,7 +15,7 @@ EthereumKeyStore::EthereumKeyStore(const boost::filesystem::path &path) :
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
-    return insertNoCheck(makeFileName(key).c_str(), key);
+    return insert(makeFileName(key).c_str(), key);
 }
 
 
@@ -70,8 +70,14 @@ bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &k
 
 
 
-bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
+bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
 {
+    Iterator it = find(key.getAddress().toString().c_str());
+    if(it!=end())
+    {
+        return false;
+    }
+
     if(Base::insert(id, key))
     {
         emit Key(QString(key.getAddress().toString().c_str()));
@@ -82,7 +88,7 @@ bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
 
 bool EthereumKeyStore::insert(const EthereumKey &key, time_t time)
 {
-    return insertNoCheck(makeFileName(key, time).c_str(), key);
+    return insert(makeFileName(key, time).c_str(), key);
 }
 
 bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)

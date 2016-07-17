@@ -51,7 +51,7 @@ class EthereumKeyStore :
         void Key(const QString &) const;
 
     private:
-        bool insertNoCheck(const char *, const EthereumKey &);
+        bool insert(const char *, const EthereumKey &);
         bool replaceNoCheck(const char *, const EthereumKey &);
         std::string makeFileName(const EthereumKey &) const;
         std::string makeFileName(const EthereumKey &, time_t time) const;
