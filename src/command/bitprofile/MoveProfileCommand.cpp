@@ -43,19 +43,21 @@ QVariant MoveProfileCommand::operator()(const QVariantMap &request)
     std::string password = request["password"].toString().toStdString();
     BigInt gas(request.contains("gas")?request["gas"].toString().toStdString():"0");
 
+    BitProfile::Profile::URI uri(registrar.getURI(), name);
+
     if(!admin.move(registrar, name, password, gas))
     {
         return QVariant::fromValue(false);
     }
     else
     {
-        if(!_store.rename(admin.getProfile().getURI(), BitProfile::Profile::URI(registrar.getURI(), name)))
+        if(!_store.rename(admin.getProfile().getURI(), uri))
         {
             return QVariant::fromValue(false);
         }
     }
 
-    return QVariant::fromValue(true);
+    return QVariant::fromValue(QString(uri.toString().c_str()));
 }
 
 }
