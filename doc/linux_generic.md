@@ -11,9 +11,9 @@ cd Xeth/build
 Xeth requires geth and ipfs binaries. 
 
 
-To download binaries, use --BIN-DOWNLOAD flag
+To download binaries, use -DBIN_DOWNLOAD=1 flag
 ```
-cmake -DBIN-DOWNLOAD ..
+cmake -DBIN_DOWNLOAD=1 ..
 ```
 
 
