@@ -1,4 +1,5 @@
 #include "IpfsProcessInitializer.hpp"
+#include "detail/defines.hpp"
 
 namespace Xeth{
 
@@ -10,6 +11,9 @@ void IpfsProcessInitializer::Initialize(QProcess &process)
 
 QString IpfsProcessInitializer::GetDefaultCommand()
 {
+#if defined(__IPFS_PATH__)
+    return STRINGIFY(__IPFS_PATH__);
+#else
     QString path = QCoreApplication::applicationDirPath();
 #if defined(__WINDOWS_OS__)
     path.append("\\vendor\\bin\\ipfs.exe");
@@ -27,6 +31,7 @@ QString IpfsProcessInitializer::GetDefaultCommand()
     return "ipfs.exe";
 #else
     return "ipfs";
+#endif
 #endif
 }
 
