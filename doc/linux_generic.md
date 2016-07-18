@@ -1,6 +1,6 @@
 ## Build Xeth
 
-### get xeth project
+### get sources
 ```
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
