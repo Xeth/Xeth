@@ -19,9 +19,9 @@ cd Xeth/build
 Xeth requires geth and ipfs binaries. 
 
 
-To download binaries, use --BIN-DOWNLOAD flag
+To download binaries, use -DBIN_DOWNLOAD=1 flag
 ```
-cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/ -DWITH_QT5=1 -DBIN-DOWNLOAD ..
+cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/ -DWITH_QT5=1 -DBIN_DOWNLOAD=1 ..
 ```
 
 
