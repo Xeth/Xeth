@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "inputAmount", "changeAccount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
+        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "inputAmount", "changeAccount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook", "checkDestinationSubmit");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.resolver = options.resolver;
@@ -304,6 +304,23 @@ var SendPageView = SubPageView.extend({
             notifyError("not enough funds");
             return false;
         }
+        if(account.get("balance")!=account.get("unconfirmed"))
+        {
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+              'Account has unconfirmed balance!<br>'+
+              'It is safier to wait until account balance is confirmed, usually it takes under a minute.<br>'+
+              '<span class="question">Proceed with this transaction?<span>', 
+              'Yes, Send it anyway', 
+              'No, Wait for balance confirmation', 
+              this.checkDestinationSubmit);
+        }
+        else
+        {
+            this.checkDestinationSubmit();
+        }
+    },
+
+    checkDestinationSubmit:function(){
         if(this.sendType.val()=="bitprofile"){
             if(!this.addressHint.val()){
                 this.riseProfileError();
