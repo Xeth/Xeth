@@ -1,4 +1,3 @@
-## Build Xeth
 
 ### get sources
 ```
