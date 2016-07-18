@@ -4,12 +4,32 @@
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
 cd Xeth/build
+```
+
+Xeth requires geth and ipfs binaries. 
+
+To download binaries, use --BIN-DOWNLOAD flag
+```
+cmake -DBIN-DOWNLOAD ..
+```
+
+To specify binary path'es, use --GETH_PATH=path_to_geth --IPFS_PATH=path_to_ipfs. Where path_to_geth is the absolute path to geth binary (ex: /usr/local/bin/geth) and path_to_ipfs is the absolute path to ipfs binary 
+
+```
+cmake -DGETH_PATH=path_to_geth -DIPFS_PATH=path_to_ipfs
+
+```
+
+If geth/ipfs is installed in a standard location (ex: /usr/bin, /usr/local/bin), cmake can be used without flags
+
+```
 cmake ..
+```
+
+
+To build
+
+```
 make
 ```
 
-to install
-
-```
-sudo make install
-```
