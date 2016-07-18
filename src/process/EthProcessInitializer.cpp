@@ -1,6 +1,4 @@
 #include "EthProcessInitializer.hpp"
-#include "detail/defines.hpp"
-
 
 namespace Xeth{
 
@@ -13,7 +11,7 @@ void EthProcessInitializer::Initialize(QProcess &process)
 QString EthProcessInitializer::GetDefaultCommand()
 {
 #if defined(__GETH_PATH__)
-    return STRINGIFY(__GETH_PATH__);
+    return __GETH_PATH__;
 #else
     QString path = QCoreApplication::applicationDirPath();
 #if defined(__WINDOWS_OS__)
