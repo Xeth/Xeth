@@ -6,5 +6,5 @@ Follow the appropriate link below to find installation instructions for your pla
     * [Ubuntu 14 / Mint](build_ubuntu14.md)
     * [OpenSuse](build_opensuse.md)
     * [Linux Generic](linux_generic.md)
-* Windows
+* [Windows](build_windows.md)
 * [OSX](build_osx.md)
