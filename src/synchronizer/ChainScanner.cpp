@@ -218,7 +218,8 @@ void ChainScanner::processPartialData(const PartialScanResult &result)
 
     for(QJsonArray::const_iterator it = result.stealthPayments.first; it!=result.stealthPayments.second; ++it)
     {
-        QJsonObject obj = it->toObject();
+        const QJsonValue & val = *it;
+        QJsonObject obj = val.toObject();
         if(!stealthPaymentStore.replace(obj))
         {
             return;
