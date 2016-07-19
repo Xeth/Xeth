@@ -115,6 +115,8 @@ set(APP_SOURCES ${APP_SOURCES} ${PROJECT_BINARY_DIR}/template.cxx ${PROJECT_BINA
 
 if(MSVC AND NOT ENABLE_DEBUG)
     add_executable(xeth WIN32 ${APP_SOURCES})
+elseif(APPLE)
+    add_executable(xeth MACOSX_BUNDLE ${APP_SOURCES})
 else()
     add_executable(xeth ${APP_SOURCES})
 endif()
