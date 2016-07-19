@@ -9,7 +9,7 @@ ChainProgressFetcher::ChainProgressFetcher(Ethereum::Connector::Provider &provid
     _chain(provider),
     _progress(_chain)
 {
-    QObject::connect(&_timer, SIGNAL(timeout()), this, SLOT(update()));
+    QObject::connect(&_timer, SIGNAL(timeout()), this, SLOT(updateAsync()));
 }
 
 
@@ -19,6 +19,11 @@ void ChainProgressFetcher::autoUpdate(size_t interval)
     _timer.start(interval);
 }
 
+
+void ChainProgressFetcher::updateAsync()
+{
+    QtConcurrent::run(this, &ChainProgressFetcher::update);
+}
 
 void ChainProgressFetcher::update()
 {

@@ -48,7 +48,9 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/vendor/notie.min.js"></script>
 <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 <script type="text/javascript" src="js/vendor/backbone-min.js"></script>
+<script type="text/javascript" src="js/vendor/jquery.numeric.min.js"></script>
 
+<script type="text/javascript" src="js/model/FutureObserver.js"></script>
 <script type="text/javascript" src="js/model/Account.js"></script>
 <script type="text/javascript" src="js/model/Transaction.js"></script>
 <script type="text/javascript" src="js/model/AddressBook.js"></script>
@@ -117,7 +119,7 @@ try{
         profileValidator: new ProfileValidator
     });
 
-    XETH_event.Ready.connect(this, function(){
+    XETH_event.Ready.connect(function(){
         var config = new Config;
         events.listen();
         profiles.fetch();
@@ -143,9 +145,8 @@ try{
         });
 
         view.render();
-
-
     });
+
 }
 catch(e)
 {

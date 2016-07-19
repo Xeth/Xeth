@@ -15,7 +15,7 @@ EthereumKeyStore::EthereumKeyStore(const boost::filesystem::path &path) :
 
 bool EthereumKeyStore::insert(const EthereumKey &key) 
 {
-    return insertNoCheck(makeFileName(key).c_str(), key);
+    return insert(makeFileName(key).c_str(), key);
 }
 
 
@@ -35,7 +35,7 @@ bool EthereumKeyStore::replace(const EthereumKey &key)
 
     if(Base::replace(path.c_str(), key))
     {
-        emit NewItem(QString(address.c_str()));
+        emit Key(QString(address.c_str()));
         return true;
     }
     return false;
@@ -48,13 +48,21 @@ bool EthereumKeyStore::replace(const EthereumKey &key, time_t time)
 }
 
 
+void EthereumKeyStore::touch(const char *address) const
+{
+    Iterator it = find(address);
+    if(it!=end())
+    {
+        emit Key(it->getAddress().toString().c_str());
+    }
+}
 
 
 bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &key)
 {
     if(Base::replace(filename, key))
     {
-        emit NewItem(QString(key.getAddress().toString().c_str()));
+        emit Key(QString(key.getAddress().toString().c_str()));
         return true;
     }
     return false;
@@ -62,11 +70,17 @@ bool EthereumKeyStore::replaceNoCheck(const char *filename, const EthereumKey &k
 
 
 
-bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
+bool EthereumKeyStore::insert(const char *id, const EthereumKey &key)
 {
+    Iterator it = find(key.getAddress().toString().c_str());
+    if(it!=end())
+    {
+        return false;
+    }
+
     if(Base::insert(id, key))
     {
-        emit NewItem(QString(key.getAddress().toString().c_str()));
+        emit Key(QString(key.getAddress().toString().c_str()));
         return true;
     }
     return false;
@@ -74,7 +88,7 @@ bool EthereumKeyStore::insertNoCheck(const char *id, const EthereumKey &key)
 
 bool EthereumKeyStore::insert(const EthereumKey &key, time_t time)
 {
-    return insertNoCheck(makeFileName(key, time).c_str(), key);
+    return insert(makeFileName(key, time).c_str(), key);
 }
 
 bool EthereumKeyStore::validateId(const std::string &id, const EthereumKey &key)

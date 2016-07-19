@@ -5,9 +5,10 @@
 #include "command/filesystem/BrowseCommand.hpp"
 #include "command/filesystem/SaveImageCommand.hpp"
 #include "command/filesystem/ReadImageCommand.hpp"
+#include "command/Invoker.hpp"
 
 #include "Notifier.hpp"
-#include "Invoker.hpp"
+
 
 
 namespace Xeth{
@@ -17,7 +18,7 @@ class FileSystemFacade : public QObject
 {
     Q_OBJECT
     public:
-        FileSystemFacade(Notifier &);
+        FileSystemFacade(Invoker<Notifier> &);
 
 
         Q_INVOKABLE QVariant browse(const QVariantMap &);
@@ -25,7 +26,7 @@ class FileSystemFacade : public QObject
         Q_INVOKABLE QVariant readImage(const QString &);
 
     private:
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 };
 
 

@@ -20,7 +20,6 @@ var ExportKeyPageView = SubPageView.extend({
     render:function(){
         this.$el.html(this.template());
         this.$el.find(".btnSubmit").click(this.submit);
-
         this.accounts.compact(false);
         this.accounts.resize(); //default size
         this.accounts.attach(this.$el.find("#exportAddress_account"));

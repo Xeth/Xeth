@@ -8,6 +8,7 @@
 #include <QWebSettings>
 #include <QWebInspector>
 #include <QCoreApplication>
+#include <QMessageBox>
 
 namespace Xeth{
 
@@ -58,7 +59,7 @@ void Window::initConfig()
     initConfigOpt("tray", _showTrayOpt, true);
     initConfigOpt("tray_minimize", _minimizeToTrayOpt, false);
     initConfigOpt("tray_close", _closeToTrayOpt, false);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Config, this, &Window::updateConfig);
+    QObject::connect(&_facade.getConfig(), &ConfigFacade::Change, this, &Window::updateConfig);
     if(_showTrayOpt)
     {
         showTray();
@@ -125,13 +126,13 @@ void Window::initConfigOpt(const char *name, bool &opt, bool defaultVal)
 void Window::showTray()
 {
     _trayIcon->setVisible(true);
-    QObject::connect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::connect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::hideTray()
 {
     _trayIcon->setVisible(false);
-    QObject::disconnect(&_facade.getNotifier(), &Notifier::Transaction, this, &Window::notifyTransaction);
+    QObject::disconnect(&_facade.getWallet(), &WalletFacade::Transaction, this, &Window::notifyTransaction);
 }
 
 void Window::toggle()
@@ -154,6 +155,20 @@ void Window::close()
 {
     _closing = true;
     QWebView::close();
+    QMessageBox * msgBox = new QMessageBox(this);
+    msgBox->setText("Xeth shutting down ...");
+    msgBox->setStandardButtons(0);
+    msgBox->setWindowFlags(Qt::Window | Qt::CustomizeWindowHint);
+    msgBox->show();
+    hideTray();
+    QTimer::singleShot(100, this, SLOT(emitClosing()));
+//    QTimer::singleShot(100, msgBox, SLOT(close()));
+}
+
+
+void Window::emitClosing()
+{
+    emit Closing();
 }
 
 void Window::changeEvent(QEvent* event)
@@ -247,12 +262,16 @@ void Window::loadTemplates()
 
 void Window::moveToScreenCenter()
 {
-    QRect rect = geometry();
-    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
-    setGeometry(rect);
+    moveToScreenCenter(*this);
 }
 
 
+void Window::moveToScreenCenter(QWebView &view)
+{
+    QRect rect = view.geometry();
+    rect.moveCenter(QApplication::desktop()->availableGeometry().center());
+    view.setGeometry(rect);
+}
 
 
 }

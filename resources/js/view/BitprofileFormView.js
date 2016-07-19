@@ -8,6 +8,7 @@ var BitprofileFormView = SubPageView.extend({
             "clickRemoveAvatar",
             "submitDetails",
             "submit",
+            "selectAccount",
             "resetForm",
             "reset",
             "lockPage",
@@ -70,6 +71,7 @@ var BitprofileFormView = SubPageView.extend({
         this.avatarRemove.hide();
         
         this.account_payment.selectedView().on("change:balance", this.updatePaymentAccountBalance);
+        this.account_payment.selectedView().on("change:unconfirmed", this.updatePaymentAccountBalance);
         this.account_payment.on("change", this.resetAddressError);
         this.account_payment.on("change", this.updatePaymentAccountBalance);
         
@@ -99,8 +101,10 @@ var BitprofileFormView = SubPageView.extend({
         if(this.syncProgress.get("sync")>=99.99)
         {
             this.stopListening(this.syncProgress);
+            this.registrars.fetch();
             this.renderRegistrars();
-            this.unlockPage();
+//            this.unlockPage();
+            this.reset();
         }
     },
     
@@ -203,9 +207,19 @@ var BitprofileFormView = SubPageView.extend({
     },
 
     updatePaymentAccountBalance:function(){
-        var balance = splitAmount(this.account_payment.selected().get("balance"));
-        this.accountBalance_payment.find(".int").html(balance.int);
-        this.accountBalance_payment.find(".dec").html(balance.dec);
+        var paymentAccount = this.account_payment.selected();
+        var balance = paymentAccount.get("unconfirmed");
+        var balanceData = splitAmount(balance);
+        this.accountBalance_payment.find(".int").html(balanceData.int);
+        this.accountBalance_payment.find(".dec").html(balanceData.dec);
+        if(balance != paymentAccount.get("balance"))
+        {
+            this.accountBalance_payment.find(".amount").addClass("pending");
+        }
+        else
+        {
+            this.accountBalance_payment.find(".amount").removeClass("pending");
+        }
     },
 
     resetAddressError: function(){
@@ -228,6 +242,10 @@ var BitprofileFormView = SubPageView.extend({
         this.fillForm();  
     },
 
+    selectAccount:function(account){
+        this.account_details.focus(function(model){ return (model)&&(model.get("stealth"))==account;});
+    },
+
     fillForm:function(){
         if(this.model){
             var account = this.model.get("payments");
@@ -238,11 +256,20 @@ var BitprofileFormView = SubPageView.extend({
             if(this.model.get("loaded"))
             {
                 var details = this.model.get("details");
-                this.name.val(details.name);
-                if(details.avatar){
-                    this.avatarImage.attr("src",details.avatar);
-                    this.avatarRemove.show();
-                }else{
+                if(details)
+                {
+                    this.name.val(details.name);
+                    if(details.avatar){
+                        this.avatarImage.attr("src",details.avatar);
+                        this.avatarRemove.show();
+                    }else{
+                        this.avatarImage.attr("src",'img/avatarEmpty.png');
+                        this.avatarRemove.hide();
+                    }
+                }
+                else
+                {
+                    this.name.val("");
                     this.avatarImage.attr("src",'img/avatarEmpty.png');
                     this.avatarRemove.hide();
                 }

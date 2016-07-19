@@ -40,6 +40,8 @@ class AddressBookStore :
 
         bool insert(const char *, const char *);
         bool insert(const char *, const QJsonObject &);
+        bool replace(const char *, const char *);
+        bool replace(const char *, const QJsonObject &);
 
     signals:
         void NewItem(const QJsonObject &) const;

@@ -61,7 +61,7 @@ bool ImportKeyCommand::importStealthKey(const QString &file, const QString &pass
 
 bool ImportKeyCommand::importPresaleKey(const QString &file, const QString &password, QString &address)
 {
-    ImportPresaleKeyCommand command(_settings, _synchronizer, _notifier);
+    ImportPresaleKeyCommand command(_settings, _synchronizer, _database);
     return command.import(file, password, address);
 }
 
@@ -77,10 +77,10 @@ ImportStealthKeyCommand::ImportStealthKeyCommand(DataBase &database, Synchronize
 
 
 
-ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer, Notifier &notifier) :
+ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synchronizer &synchronizer, DataBase &database) :
     _settings(settings),
     _synchronizer(synchronizer),
-    _notifier(notifier)
+    _database(database)
 {}
 
 
@@ -124,7 +124,7 @@ bool ImportPresaleKeyCommand::import(const QString &path, const QString &passwor
             std::string addr = json["ethaddr"].asString();
             _synchronizer.watchAddress(addr);
             address = addr.c_str();
-            _notifier.emitEthereumKey(address);
+            _database.getEthereumKeys().touch(addr.c_str());
         }
     }
 

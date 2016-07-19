@@ -3,14 +3,15 @@
 #include <QVariant>
 #include <QVariantMap>
 
-#include "Invoker.hpp"
-
+#include "command/Invoker.hpp"
 #include "command/converter/FromSzaboCommand.hpp"
 #include "command/converter/ToSzaboCommand.hpp"
 #include "command/converter/FromFinneyCommand.hpp"
 #include "command/converter/ToFinneyCommand.hpp"
 #include "command/converter/FromWeiCommand.hpp"
 #include "command/converter/ToWeiCommand.hpp"
+
+#include "Notifier.hpp"
 
 
 namespace Xeth{
@@ -22,7 +23,7 @@ class ConverterFacade : public QObject
 
     public:
 
-        ConverterFacade(Notifier &notifier);
+        ConverterFacade(Invoker<Notifier> &invoker);
 
         Q_INVOKABLE QVariant fromFinney(const QVariant &);
         Q_INVOKABLE QVariant toFinney(const QVariant &);
@@ -33,7 +34,7 @@ class ConverterFacade : public QObject
 
 
     private:
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 };
 
 

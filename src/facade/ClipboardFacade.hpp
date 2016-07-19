@@ -8,9 +8,10 @@
 
 #include "command/clipboard/CopyToClipboardCommand.hpp"
 #include "command/clipboard/GetFromClipboardCommand.hpp"
+#include "command/Invoker.hpp"
 
 #include "Notifier.hpp"
-#include "Invoker.hpp"
+
 
 
 namespace Xeth{
@@ -22,13 +23,13 @@ class ClipboardFacade : public QObject
 
     public:
 
-        ClipboardFacade(Notifier &);
+        ClipboardFacade(Invoker<Notifier> &);
 
         Q_INVOKABLE QVariant getText();
         Q_INVOKABLE QVariant setText(const QString &);
 
     private:
-        Invoker _invoker;
+        Invoker<Notifier> &_invoker;
 };
 
 

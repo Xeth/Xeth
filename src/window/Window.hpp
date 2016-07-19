@@ -33,6 +33,12 @@ class Window : public QWebView
 
         void moveToScreenCenter();
 
+    signals:
+        void Closing();
+
+    public slots:
+        void close();
+
     protected:
         void javaScriptConsoleMessage ( const QString & message, int lineNumber, const QString & sourceID );
         void setUrl(const char *);
@@ -45,9 +51,9 @@ class Window : public QWebView
         void hideTray();
         void initConfig();
         void initConfigOpt(const char *, bool &, bool);
+        void moveToScreenCenter(QWebView &);
 
     private slots:
-        void close();
         void initObjects();
         void loadTemplates();
         void toggle();
@@ -55,6 +61,7 @@ class Window : public QWebView
         void changeEvent(QEvent* );
         void closeEvent(QCloseEvent *event);
         void updateConfig(const QString &key, const QString &value);
+        void emitClosing();
 
     private:
         bool _showTrayOpt;

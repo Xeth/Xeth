@@ -5,33 +5,39 @@
 namespace Xeth{
 
 Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &database):
+    _loader(provider, database),
     _syncProgress(provider),
-    _scanner(provider, database)
+    _scanner(provider, database),
+    _balanceObserver(provider)
 {}
 
 Synchronizer::Synchronizer(Ethereum::Connector::Provider &provider, DataBase &database, const Settings &settings):
+    _loader(provider, database),
     _syncProgress(provider),
-    _scanner(provider, database, settings.get("scan_chunk", 500), settings.get("scan_interval", 10000))
+    _scanner(provider, database, settings.get("scan_chunk", 500), settings.get("scan_interval", 10000)),
+    _balanceObserver(provider)
 {}
 
 void Synchronizer::watchAddress(const std::string &address)
 {
     _scanner.addAddress(address);
+    _balanceObserver.watch(address);
 }
 
 void Synchronizer::watchAddress(const std::string &address, time_t scanStart)
 {
     _scanner.addAddress(address, scanStart);
+    _balanceObserver.watch(address);
 }
 
 void Synchronizer::watch(const EthereumKey &key)
 {
-    _scanner.addAddress(key.getAddress());
+    watchAddress(key.getAddress());
 }
 
 void Synchronizer::watch(const Ethereum::Address &address)
 {
-    _scanner.addAddress(address);
+    watchAddress(address.toString());
 }
 
 void Synchronizer::watch(const StealthKey &key)
@@ -42,12 +48,12 @@ void Synchronizer::watch(const StealthKey &key)
 
 void Synchronizer::watch(const EthereumKey &key, time_t startTime)
 {
-    _scanner.addAddress(key.getAddress(), startTime);
+    watchAddress(key.getAddress(), startTime);
 }
 
 void Synchronizer::watch(const Ethereum::Address &address, time_t startTime)
 {
-    _scanner.addAddress(address, startTime);
+    watchAddress(address, startTime);
 }
 
 void Synchronizer::watch(const StealthKey &key, time_t startTime)
@@ -57,18 +63,26 @@ void Synchronizer::watch(const StealthKey &key, time_t startTime)
 
 void Synchronizer::loadAddresses()
 {
-    _scanner.loadAddresses();
+    _loader.load(_scanner, _balanceObserver);
 }
+
 
 void Synchronizer::scan()
 {
     _scanner.syncScan();
+
 }
 
 
 const ScanCriteria & Synchronizer::getScanCriteria() const
 {
     return _scanner.getScanCriteria();
+}
+
+
+const BalanceObserver & Synchronizer::getBalanceObserver() const
+{
+    return _balanceObserver;
 }
 
 
@@ -88,6 +102,7 @@ void Synchronizer::synchronize()
     size_t scanInterval = 24000, syncInterval = 12000;
     _syncProgress.autoUpdate(syncInterval);
     _scanner.autoScan(scanInterval);
+    _balanceObserver.start();
 }
 
 

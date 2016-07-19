@@ -16,7 +16,7 @@ bool StealthKeyStore::replace(const StealthKey &key)
     std::string address = makeAddress(key);
     if(Base::replace(address.c_str(), key))
     {
-        emit NewItem(QString(address.c_str()));
+        emit Key(QString(address.c_str()));
         return true;
     }
     return false;
@@ -41,7 +41,7 @@ bool StealthKeyStore::insert(const StealthKey &key)
     std::string address = makeAddress(key);
     if(Base::insert(address.c_str(), key))
     {
-        emit NewItem(QString(address.c_str()));
+        emit Key(QString(address.c_str()));
         return true;
     }
     return false;

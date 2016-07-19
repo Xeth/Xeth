@@ -18,6 +18,20 @@ int main(int argc, char* argv[])
         settings.readConfigFile();
         settings.readCommandLineArgs(argc, argv);
 
+        if(settings.has("version"))
+        {
+            std::cout<<"Version: 0.2.1 (BETA)"<<std::endl;
+            return 0;
+        }
+
+        if(settings.has("help"))
+        {
+            std::cout<<"--testnet         | to run on testnet"<<std::endl;
+            std::cout<<"--dao-fork=[1|0]  | enable/disable dao hard fork, by default dao-fork is 1"<<std::endl;
+            std::cout<<"--version         | Xeth version"<<std::endl;
+            return 0;
+        }
+
         Xeth::Application app(settings, argc, argv);
         return app.exec();
     }

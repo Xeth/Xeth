@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QtConcurrent>
 
 #include "ethrpc/Provider.hpp"
 #include "ethrpc/BlockChain.hpp"
@@ -27,6 +28,7 @@ class ChainProgressFetcher : public QObject
 
     public slots:
         void update();
+        void updateAsync();
 
     signals:
         void Progress(double) const;

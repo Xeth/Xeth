@@ -11,6 +11,7 @@
 namespace Xeth{
 
 
+
 class Application : public QObject
 {
     Q_OBJECT
@@ -18,12 +19,19 @@ class Application : public QObject
     public:
         Application(const Settings &, int &argc, char **argv);
         int exec();
+        Window & getWindow();
 
+    private:
+
+
+    private slots:
+        void shutdown();
 
     private:
         QApplication _app;
         Facade _facade;
         Window _window;
 };
+
 
 }

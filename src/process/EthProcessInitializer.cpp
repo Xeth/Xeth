@@ -10,13 +10,27 @@ void EthProcessInitializer::Initialize(QProcess &process)
 
 QString EthProcessInitializer::GetDefaultCommand()
 {
+#if defined(__GETH_PATH__)
+    return __GETH_PATH__;
+#else
     QString path = QCoreApplication::applicationDirPath();
 #if defined(__WINDOWS_OS__)
     path.append("\\vendor\\bin\\geth.exe");
 #else
     path.append("/vendor/bin/geth");
 #endif
-    return path;
+
+    QFileInfo info(path);
+    if(info.exists())
+    {
+        return path;
+    }
+#if defined(__WINDOWS_OS__)
+    return "geth.exe";
+#else
+    return "geth";
+#endif
+#endif
 }
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
@@ -44,6 +58,15 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
         args.push_back("--testnet");
     }
     args.push_back("--verbosity=0");
+
+    if(! settings.get<int>("dao-fork", 1))
+    {
+        args.push_back("--oppose-dao-fork");
+    }
+    else
+    {
+        args.push_back("--support-dao-fork");
+    }
 
     return args;
 }

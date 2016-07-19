@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QApplication>
+#include <QFileInfo>
 
 #include "conf/Settings.hpp"
 

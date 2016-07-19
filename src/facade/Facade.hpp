@@ -25,6 +25,8 @@
 
 #include "detail/ChildrenInitializer.hpp"
 
+#include "command/Invoker.hpp"
+
 
 namespace Xeth{
 
@@ -71,6 +73,9 @@ class Facade : public QObject
         const Settings & getSettings() const;
         bool isReady() const;
 
+    public slots:
+        void shutdown();
+
     private slots:
         void setReady();
 
@@ -86,6 +91,8 @@ class Facade : public QObject
 
         ProcessSupervisor _eth;
         ProcessSupervisor _ipfs;
+
+        Invoker<Notifier> _invoker;
 
         Wallet _wallet;
         AddressBook _addressbook;

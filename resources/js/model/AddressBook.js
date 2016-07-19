@@ -13,20 +13,16 @@ var Contact = Backbone.Model.extend({
     },
 
     save:function(){
-        if(!this.hasChanged()){
-            return XETH_addressbook.addContact(this.toJSON());
-        }else{
-            if(this.hasChanged("alias")){
-                if(!XETH_addressbook.renameContact({previous:this.previous("alias"), alias: this.get("alias")})){
-                    return false;
-                }
-                if(Object.keys(this.changedAttributes()).length>1){
-                    return XETH_addressbook.editContact(this.toJSON());
-                }
+        if(this.hasChanged("alias")){
+            if(!XETH_addressbook.renameContact({previous:this.previous("alias"), alias: this.get("alias")})){
+                return false;
             }
-            else{
+            if(Object.keys(this.changedAttributes()).length>1){
                 return XETH_addressbook.editContact(this.toJSON());
             }
+        }
+        else{
+            return XETH_addressbook.editContact(this.toJSON());
         }
         return true;
     },
@@ -69,8 +65,8 @@ var AddressBook = Backbone.Collection.extend({
 
     create:function(data){
         var model = this.model(data);
-        if(!model.save()) return false;
-        this.add(model);
+        if(!XETH_addressbook.addContact(model.toJSON())) return false;
+//        this.add(model);
         return true;
     },
 
@@ -119,7 +115,7 @@ var AddressBook = Backbone.Collection.extend({
     },
 
     observe:function(){
-        XETH_event.Contact.connect(this, this.upsert);
+        XETH_addressbook.Contact.connect(this, this.upsert);
     },
 
     model: function(data, options){

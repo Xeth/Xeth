@@ -4,21 +4,52 @@
 namespace Xeth{
 
 
-BitProfileFacade::BitProfileFacade(Ethereum::Connector::Provider &provider, DataBase &database, Synchronizer &synchronizer, Notifier &notifier, const Settings &settings) :
+BitProfileFacade::BitProfileFacade
+(
+    Ethereum::Connector::Provider &provider,
+    DataBase &database,
+    Synchronizer &synchronizer,
+    Notifier &notifier,
+    const Settings &settings,
+    Invoker<Notifier> &invoker
+) :
     _provider(provider),
     _database(database),
     _synchronizer(synchronizer),
     _store(database.getBitProfiles()),
     _notifier(notifier),
     _settings(settings),
-    _invoker(notifier)
-{}
-
-
-QVariant BitProfileFacade::createProfile(const QVariantMap &request)
+    _invoker(invoker)
 {
-    CreateProfileCommand command(_provider, _database, _synchronizer, _settings, _notifier);
-    return _invoker.invoke(command, request);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::NewItem, this, &BitProfileFacade::emitProfile);
+    QObject::connect(&database.getBitProfiles(), &BitProfileStore::Renamed, this, &BitProfileFacade::emitProfileRename);
+}
+
+
+void BitProfileFacade::emitProfileRename(const QString &oldURI, const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["oldURI"] = oldURI;
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    event["id"] = descriptor.getName().c_str();
+    emit Renamed(event);
+}
+
+void BitProfileFacade::emitProfile(const BitProfile::ProfileDescriptor &descriptor)
+{
+    QVariantMap event;
+    event["id"] = descriptor.getName().c_str();
+    event["uri"] = descriptor.getURI().c_str();
+    event["context"] = descriptor.getContext().c_str();
+    event["account"] = descriptor.getAuthAddress().c_str();
+    emit Profile(event);
+}
+
+QObject * BitProfileFacade::createProfileAsync(const QVariantMap &request)
+{
+    CreateProfileCommand command(_provider, _database, _synchronizer, _settings);
+    return _invoker.invokeAsync(command, request, true);
 }
 
 QVariant BitProfileFacade::listProfiles()
@@ -39,16 +70,16 @@ QVariant BitProfileFacade::estimate(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant BitProfileFacade::linkStealthAddress(const QVariantMap &request)
+QObject * BitProfileFacade::linkStealthAddressAsync(const QVariantMap &request)
 {
-    LinkStealthAddressCommand command(_provider, _store, _notifier);
-    return _invoker.invoke(command, request);
+    LinkStealthAddressCommand command(_provider, _store);
+    return _invoker.invokeAsync(command, request);
 }
 
-QVariant BitProfileFacade::moveProfile(const QVariantMap &request)
+QObject * BitProfileFacade::moveProfileAsync(const QVariantMap &request)
 {
-    MoveProfileCommand command(_provider, _store, _settings, _notifier);
-    return _invoker.invoke(command, request);
+    MoveProfileCommand command(_provider, _store, _settings);
+    return _invoker.invokeAsync(command, request, true);
 }
 
 
@@ -78,16 +109,16 @@ QVariant BitProfileFacade::getData(const QVariantMap &request)
     return _invoker.invoke(command, request);
 }
 
-QVariant BitProfileFacade::updateDetails(const QVariantMap &request)
+QObject * BitProfileFacade::updateDetailsAsync(const QVariantMap &request)
 {
-    UpdateProfileInfoCommand command(_provider, _store, _notifier, _settings);
-    return _invoker.invoke(command, request);
+    UpdateProfileInfoCommand command(_provider, _store, _settings);
+    return _invoker.invokeAsync(command, request);
 }
 
-QVariant BitProfileFacade::getDetails(const QString &uri)
+QObject * BitProfileFacade::getDetailsAsync(const QString &uri)
 {
-    ReadProfileInfoCommand command(_provider, _settings, _notifier);
-    return _invoker.invoke(command, uri);
+    ReadProfileInfoCommand command(_provider, _settings);
+    return _invoker.invokeAsync(command, uri);
 }
 
 

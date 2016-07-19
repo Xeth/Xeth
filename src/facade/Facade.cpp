@@ -1,5 +1,6 @@
 #include "Facade.hpp"
-
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp> 
 
 namespace Xeth{
 
@@ -11,14 +12,15 @@ Facade::Facade(const Settings &settings) :
     _synchronizer(_provider, _database, settings),
     _eth(settings),
     _ipfs(settings),
-    _wallet(settings, _provider, _database, _notifier, _synchronizer),
-    _addressbook(_database, _notifier),
-    _config(_database, _notifier),
-    _converter(_notifier),
-    _progress(_synchronizer, _notifier),
-    _clipboard(_notifier),
-    _filesystem(_notifier),
-    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings)
+    _invoker(_notifier),
+    _wallet(settings, _provider, _database, _notifier, _synchronizer, _invoker),
+    _addressbook(_database, _invoker),
+    _config(_database, _invoker),
+    _converter(_invoker),
+    _progress(_synchronizer, _invoker),
+    _clipboard(_invoker),
+    _filesystem(_invoker),
+    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
@@ -27,10 +29,6 @@ Facade::Facade(const Settings &settings) :
     initializer->moveToThread(thread);
     _eth.moveToThread(thread);
     _ipfs.moveToThread(thread);
-
-    _notifier.watch(_synchronizer);
-    _notifier.watch(_database);
-    
 
     connect(thread, &QThread::started, initializer, &ChildrenInitializer::initialize);
     connect(initializer, SIGNAL(Error(const QString &)), &_notifier, SLOT(emitError(const QString &)));
@@ -171,6 +169,16 @@ void Facade::setReady()
         _synchronizer.synchronize();
         _notifier.emitReady();
     }
+}
+
+
+void Facade::shutdown()
+{
+    qDebug()<<"shutting down ...";
+    _invoker.waitToComplete();
+    _synchronizer.stop();
+    _ipfs.stop();
+    _eth.stop();
 }
 
 

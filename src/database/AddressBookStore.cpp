@@ -54,5 +54,23 @@ bool AddressBookStore::insert(const char *alias, const QJsonObject &object)
 }
 
 
+bool AddressBookStore::replace(const char *alias, const char *address)
+{
+    QJsonObject object;
+    object.insert("address", QString(address));
+
+    return replace(alias, object);
+}
+
+bool AddressBookStore::replace(const char *alias, const QJsonObject &object)
+{
+    if(Base::replace(alias, object))
+    {
+        emit NewItem(object);
+        return true;
+    }
+    return false;
+}
+
 
 }

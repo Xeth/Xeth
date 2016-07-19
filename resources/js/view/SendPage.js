@@ -1,7 +1,7 @@
 var SendPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "inputAmount", "changeAccount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook");
+        _(this).bindAll("open", "toggleAlias", "updateContact", "resetContact", "scheduleUpdateContact", "updateSendType", "updatePlaceholder", "submit", "checkSubmit", "paste", "computeFee", "checkAmount", "inputAmount", "changeAccount", "copyAddressHintToClipboard", "resolveProfile", "resolveProfileLater", "clickAddressbook", "checkDestinationSubmit");
         SubPageView.prototype.initialize.call(this,options);
         this.addressbook = options.addressbook;
         this.resolver = options.resolver;
@@ -33,6 +33,7 @@ var SendPageView = SubPageView.extend({
         this.alias = this.aliasHolder.find("input");
         this.destination = this.$el.find("#sendToInput");
         this.amount = this.$el.find("#sendAmount");
+        this.amount.numeric();
         this.password = this.$el.find("#sendPassword");
         this.addressHint = this.$el.find("#sendToHint");
         this.destination.change(this.updateContact);
@@ -219,7 +220,7 @@ var SendPageView = SubPageView.extend({
     checkAmount:function(fee){
         if(!fee) fee=this.fee;
         var account = this.accounts.selected();
-        var balance = account ? account.get("balance"): 0;
+        var balance = account ? account.get("unconfirmed"): 0;
         var amount = this.amount.val();
         var balanceAvailable = balance-fee;
         
@@ -303,13 +304,30 @@ var SendPageView = SubPageView.extend({
             notifyError("not enough funds");
             return false;
         }
+        if(account.get("balance")!=account.get("unconfirmed"))
+        {
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+              'Account has unconfirmed balance!<br>'+
+              'It is safier to wait until account balance is confirmed, usually it takes under a minute.<br>'+
+              '<span class="question">Proceed with this transaction?<span>', 
+              'Yes, Send it anyway', 
+              'No, Wait for balance confirmation', 
+              this.checkDestinationSubmit);
+        }
+        else
+        {
+            this.checkDestinationSubmit();
+        }
+    },
+
+    checkDestinationSubmit:function(){
         if(this.sendType.val()=="bitprofile"){
             if(!this.addressHint.val()){
                 this.riseProfileError();
             }
             else
             {
-                this.submit();
+                this.submitStealthPayment();
             }
         }
         else
@@ -334,11 +352,27 @@ var SendPageView = SubPageView.extend({
             }
             else
             {
-                this.submit();
+                this.submitStealthPayment();
             }
         }
     },
-    
+
+    submitStealthPayment:function(callback)
+    {
+        if(this.amount.val() > 5)
+        {
+            notie.confirm('<span class="title warning">WARNING!</span>'+
+                'Stealth payment is currently in beta!<br />'+
+                'It&#39;s recommended to send smaller payments<br />'+
+                '<span class="question">Proceed with this transaction?<span>', 
+                'Yes, Send it', 
+                'No, I will use regular address', 
+                this.submit);
+        }else{
+            this.submit();
+        }
+    },
+
     submit:function(checksum){
         var alias = !this.saveOption.prop("disabled")&&this.saveOption.prop("checked") ? this.alias.val() : "";
         var type = this.sendType.val();
@@ -371,31 +405,31 @@ var SendPageView = SubPageView.extend({
             request.gas = this.gasAmount;
         }
 
-        var _this = this;
+        var self = this;
         var sendRequest = function(){
-            _this.$form.addClass("waiting");
-            if(!account.send(request)){
-                _this.$form.removeClass("waiting");
-                _this.password.error();
-                return false;
-            }
-            
-            notifySuccess("sent");
+            self.$form.addClass("waiting");
+            account.send(request, function(result){
+                self.$form.removeClass("waiting");
+                if(!result){
+                    self.password.error();
+                    return false;
+                }
+                notifySuccess("sent");
 
-            if(alias.length){
-                var contact = {alias:alias};
-                contact[type] = _this.destination.val();
-                _this.addressbook.create(contact);
-            }
+                if(alias.length){
+                    var contact = {alias:alias};
+                    contact[type] = self.destination.val();
+                    self.addressbook.create(contact);
+                }
 
-            _this.resetContact();
-            _this.$form.removeClass("waiting");
-            _this.password.val("");
-            _this.destination.val("");
-            _this.amount.val("");
-            _this.setAddressHint("");
-
-            _this.router.redirect("transactions", {focusFirst:true});
+                self.resetContact();
+                self.$form.removeClass("waiting");
+                self.password.val("");
+                self.destination.val("");
+                self.amount.val("");
+                self.setAddressHint("");
+                self.router.redirect("transactions", {focusFirst:true});
+           });
         };
         if(this.feeFactor.hasWarning()){
             notie.confirm('<span class="title warning">WARNING!</span>'+

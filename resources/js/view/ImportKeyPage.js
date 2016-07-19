@@ -1,7 +1,7 @@
 var ImportKeyPageView = SubPageView.extend({
 
     initialize:function(options){
-        _(this).bindAll("open", "render", "submit", "browse");
+        _(this).bindAll("open", "render", "submit", "browse", "importKey");
         SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("import");
         this.filesystem = options.filesystem;
@@ -14,6 +14,7 @@ var ImportKeyPageView = SubPageView.extend({
         this.$el.find(".browse a").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#importAddress_address");
+        this.password = this.$el.find("#importAddress_password");
     },
 
     open:function(){
@@ -31,18 +32,22 @@ var ImportKeyPageView = SubPageView.extend({
             notifyError("please select a file");
             return false;
         }
-        var password = this.$el.find("#importAddress_password");
-        if(!password.validate()){
+        if(!this.password.validate()){
             notifyError("password is required");
             return false;
         }
-        var address = this.wallet.importKey(filename, password.val());
+        this.$el.find(".formpage").addClass("waiting");
+        setTimeout(this.importKey, 0, filename);
+    },
+    importKey: function(filename){
+        var address = this.wallet.importKey(filename, this.password.val());
+        this.$el.find(".formpage").removeClass("waiting");
         if(!address){
             notifyError("failed to import key, file is corrupted or invalid password");
             return false;
         }
         notifySuccess("key imported");
-        password.val("");
+        this.password.val("");
         this.fileInput.val("");
         this.router.redirect("receive", {address: address});
         return true;

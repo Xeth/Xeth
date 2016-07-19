@@ -32,6 +32,8 @@ class EthereumKeyStore :
         EthereumKeyStore(const std::string &path);
         EthereumKeyStore(const boost::filesystem::path &path);
 
+        void touch(const char *address) const;
+
         bool replace(const EthereumKey &);
         bool replace(const EthereumKey &, time_t);
 
@@ -46,10 +48,10 @@ class EthereumKeyStore :
         using Base::end;
 
     signals:
-        void NewItem(const QString &) const;
+        void Key(const QString &) const;
 
     private:
-        bool insertNoCheck(const char *, const EthereumKey &);
+        bool insert(const char *, const EthereumKey &);
         bool replaceNoCheck(const char *, const EthereumKey &);
         std::string makeFileName(const EthereumKey &) const;
         std::string makeFileName(const EthereumKey &, time_t time) const;

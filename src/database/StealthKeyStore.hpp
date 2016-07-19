@@ -41,7 +41,7 @@ class StealthKeyStore :
         using Base::end;
 
     signals:
-        void NewItem(const QString &) const;
+        void Key(const QString &) const;
 
     private:
         std::string makeAddress(const StealthKey &) const;

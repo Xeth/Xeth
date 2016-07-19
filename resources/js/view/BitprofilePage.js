@@ -7,7 +7,6 @@ var ProfileView = Backbone.View.extend({
         this.$el = $(options.template(data));
         this.listenTo(this.model, "change:uri", this.updateURI);
         this.listenTo(this.model, "change:details", this.updateDetails);
-        
         this.$el.click(this.goToPreview);
 
     },
@@ -39,7 +38,7 @@ var BitprofilePageView = SubPageView.extend({
 
     initialize:function(options){
         _(this).bindAll("open", "openPage", "add", "setExistingProfile");
-		SubPageView.prototype.initialize.call(this,options);
+        SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("bitprofile");
         this.templates = options.templates;
         this.filesystem = options.filesystem;
@@ -62,12 +61,12 @@ var BitprofilePageView = SubPageView.extend({
         this.menu = new MenuView({el: this.menuEl});
         
         this.collection = new CollectionView({
-			collection: this.profiles, 
-			factory:this.factory,
-			scroll:{scrollPage: this.$el.find(".bitprofileList")/*, step: 71*/},
-			el: this.$el.find(".bitprofileList .holder"), 
+            collection: this.profiles, 
+            factory:this.factory,
+            scroll:{scrollPage: this.$el.find(".bitprofileList")/*, step: 71*/},
+            el: this.$el.find(".bitprofileList .holder"), 
             empty:this.$el.find(".empty")
-		});
+        });
         this.collection.render();
         this.subpages.view = new BitprofileViewPageView
         ({

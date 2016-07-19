@@ -10,13 +10,28 @@ void IpfsProcessInitializer::Initialize(QProcess &process)
 
 QString IpfsProcessInitializer::GetDefaultCommand()
 {
+#if defined(__IPFS_PATH__)
+    return __IPFS_PATH__;
+#else
     QString path = QCoreApplication::applicationDirPath();
 #if defined(__WINDOWS_OS__)
     path.append("\\vendor\\bin\\ipfs.exe");
 #else
     path.append("/vendor/bin/ipfs");
 #endif
-    return path;
+
+    QFileInfo info(path);
+    if(info.exists())
+    {
+        return path;
+    }
+
+#if defined(__WINDOWS_OS__)
+    return "ipfs.exe";
+#else
+    return "ipfs";
+#endif
+#endif
 }
 
 void IpfsProcessInitializer::Initialize(QProcess &process, const Settings &settings)
