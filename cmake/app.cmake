@@ -184,7 +184,7 @@ if(NOT MSVC AND NOT WIN32)
     install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION /opt/xeth)
     install(TARGETS xeth DESTINATION /opt/xeth)
 if(UNIX AND NOT APPLE)
-    install(DIRECTORY ${PROJECT_SOURCE_DIR}/shortcuts/usr/share/applications DESTINATION /usr/share/applications)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/shortcuts/usr/share/applications DESTINATION /usr/share)
 endif()
 endif()
 
