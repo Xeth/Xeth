@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Xeth (TestNet)
+Exec=/opt/xeth/xeth --testnet
+Icon=/opt/xeth/icon/ethereum.png
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=Money;Application; 
+Name[en_US]=Xeth (TestNet)

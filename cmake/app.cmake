@@ -183,9 +183,10 @@ if(NOT MSVC AND NOT WIN32)
     install(DIRECTORY ${PROJECT_BINARY_DIR}/vendor DESTINATION /opt/xeth)
     install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION /opt/xeth)
     install(TARGETS xeth DESTINATION /opt/xeth)
-    install(CODE "
-          EXECUTE_PROCESS (COMMAND ln -sf /opt/xeth/xeth /usr/local/bin/xeth)
-    ")
+if(UNIX AND NOT APPLE)
+    install(FILE ${PROJECT_SOURCE_DIR}/shortcuts/xeth.desktop /usr/share/applications)
+    install(FILE ${PROJECT_SOURCE_DIR}/shortcuts/xeth_testnet.desktop /usr/share/applications)
+endif()
 endif()
 
 
