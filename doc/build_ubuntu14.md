@@ -2,7 +2,7 @@
 ###install dependecies
 
 ```
-sudo apt-get svn install git cmake make g++ libleveldb-dev libjsoncpp-dev libqt5webkit5-dev libappindicator-dev libnotify-dev libgtk2.0-dev
+sudo apt-get svn install git cmake make g++ libboost-all-dev libleveldb-dev libjsoncpp-dev libqt5webkit5-dev libappindicator-dev libnotify-dev libgtk2.0-dev
 ```
 
 
