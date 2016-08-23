@@ -17,10 +17,11 @@ make -C /tmp/xeth_deps/cryptopp static
 ### build Xeth
 
 ```
+cd /tmp
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
 cd Xeth/build
-cmake -DCRYPTOPP_INCLUDE_DIR=/tmp/xeth_deps -DCRYPTOPP_LIBRARY=/tmp/xeth_deps/cryptopp/libcryptopp.a ..
+cmake -DBIN_DOWNLOAD=1 -DCRYPTOPP_INCLUDE_DIR=/tmp/xeth_deps -DCRYPTOPP_LIBRARY=/tmp/xeth_deps/cryptopp/libcryptopp.a ..
 make
 ```
 
