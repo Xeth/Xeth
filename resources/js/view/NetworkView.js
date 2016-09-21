@@ -12,7 +12,7 @@ var NetworkView = Backbone.View.extend({
 
     update:function(){
         var peers = this.model.get("peers");
-        if(peers < 3) this.$icon.removeClass("ok");
+        if(peers < 5) this.$icon.removeClass("ok");
         else{
             if(!this.$icon.hasClass("ok")) this.$icon.addClass("ok");
         } 
