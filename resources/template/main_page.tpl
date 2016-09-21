@@ -33,8 +33,8 @@
         </div>
         <div class="icons">
             <div class="icon secure ok">&nbsp;</div>
-            <div class="icon network ok">&nbsp;</div>
-            <div class="icon updated">&nbsp;</div>
+            <div class="icon network ok" title="">&nbsp;</div>
+            <div class="icon updated" title="">&nbsp;</div>
         </div>
     </div>
 </div>

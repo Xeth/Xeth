@@ -10,6 +10,7 @@ var ProgressView = Backbone.View.extend({
 
     render:function(){
         this.startSync();
+        this.watchChainHeight();
     },
 
     startSync:function(){
@@ -68,6 +69,15 @@ var ProgressView = Backbone.View.extend({
         }
     },
 
+    watchChainHeight:function(){
+        this.listenTo(this.model, "change:height", this.updateChainHeight);
+        this.updateChainHeight();
+    },
+
+    updateChainHeight:function(){
+        var height = this.model.get("height");
+        this.$icon.attr("title", "last block "+height);
+    },
 
     setMessage:function(txt){
         this.$text.html(txt);
