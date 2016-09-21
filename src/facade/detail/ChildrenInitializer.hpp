@@ -20,7 +20,7 @@ class ChildrenInitializer : public QObject
 {
     Q_OBJECT
     public:
-        ChildrenInitializer(QThread *parent, Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &);
+        ChildrenInitializer(QThread *parent, Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::NetworkParams net, const Settings &);
         void initialize();
 
     private:
@@ -36,7 +36,7 @@ class ChildrenInitializer : public QObject
         Ethereum::Connector::Provider &_provider;
         ProcessSupervisor &_eth;
         ProcessSupervisor &_ipfs;
-        Ethereum::Connector::Network _net;
+        Ethereum::Connector::NetworkParams _net;
         const Settings &_settings;
 };
 

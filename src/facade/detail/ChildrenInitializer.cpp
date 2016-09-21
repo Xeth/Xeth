@@ -4,7 +4,7 @@
 namespace Xeth{
 
 
-ChildrenInitializer::ChildrenInitializer(QThread *parent,Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::Network net, const Settings &settings) : 
+ChildrenInitializer::ChildrenInitializer(QThread *parent,Ethereum::Connector::Provider &provider, ProcessSupervisor &eth, ProcessSupervisor &ipfs, Ethereum::Connector::NetworkParams net, const Settings &settings) : 
     _parent(parent),
     _provider(provider),
     _eth(eth),
