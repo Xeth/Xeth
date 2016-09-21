@@ -5,12 +5,12 @@ var Progress = Backbone.Model.extend({
     },
 
     observe:function(){
-        XETH_progress.Scan.connect(this, this.updateScan);
-        XETH_progress.Sync.connect(this, this.updateSync);
+        XETH_blockchain.ScanProgress.connect(this, this.updateScan);
+        XETH_blockchain.SyncProgress.connect(this, this.updateSync);
     },
 
     fetch:function(){
-        this.set({"sync": XETH_progress.getSync(), "scan":XETH_progress.getScan()});
+        this.set({"sync": XETH_blockchain.getSyncProgress(), "scan":XETH_blockchain.getScanProgress()});
     },
 
     updateScan:function(value){

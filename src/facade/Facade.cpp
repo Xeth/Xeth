@@ -21,7 +21,8 @@ Facade::Facade(const Settings &settings) :
     _clipboard(_invoker),
     _filesystem(_invoker),
     _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker),
-    _network(_provider, _invoker)
+    _network(_provider, _invoker),
+    _blockchain(_provider, _notifier, _synchronizer, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
@@ -112,6 +113,13 @@ Facade::Network & Facade::getNetwork()
     return _network;
 }
 
+
+Facade::BlockChain & Facade::getBlockChain()
+{
+    return _blockchain;
+}
+
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -170,6 +178,12 @@ const Facade::BitProfile & Facade::getBitProfile() const
 const Facade::Network & Facade::getNetwork() const
 {
     return _network;
+}
+
+
+const Facade::BlockChain & Facade::getBlockChain() const
+{
+    return _blockchain;
 }
 
 

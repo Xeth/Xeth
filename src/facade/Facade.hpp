@@ -23,6 +23,7 @@
 #include "FileSystemFacade.hpp"
 #include "BitProfileFacade.hpp"
 #include "NetworkFacade.hpp"
+#include "BlockChainFacade.hpp"
 
 #include "detail/ChildrenInitializer.hpp"
 
@@ -47,6 +48,7 @@ class Facade : public QObject
         typedef Xeth::FileSystemFacade FileSystem;
         typedef Xeth::BitProfileFacade BitProfile;
         typedef Xeth::NetworkFacade Network;
+        typedef Xeth::BlockChainFacade BlockChain;
 
     public:
         Facade(const Settings &);
@@ -62,6 +64,7 @@ class Facade : public QObject
         FileSystem & getFileSystem();
         BitProfile & getBitProfile();
         Network & getNetwork();
+        BlockChain & getBlockChain();
 
         const Notifier & getNotifier() const;
         const AddressBook & getAddressBook() const;
@@ -73,6 +76,7 @@ class Facade : public QObject
         const FileSystem & getFileSystem() const;
         const BitProfile & getBitProfile() const;
         const Network & getNetwork() const;
+        const BlockChain & getBlockChain() const;
 
         const Settings & getSettings() const;
         bool isReady() const;
@@ -107,6 +111,7 @@ class Facade : public QObject
         FileSystem _filesystem;
         BitProfile _bitprofile;
         Network _network;
+        BlockChain _blockchain;
 };
 
 
