@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "Application.hpp"
-
+#include "version.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
         if(settings.has("version"))
         {
-            std::cout<<"Version: 0.3.1 (BETA)"<<std::endl;
+            std::cout<<"Version: "<<XETH_VERSION<<std::endl;
             return 0;
         }
 

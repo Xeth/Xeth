@@ -11,6 +11,7 @@
 #include "command/Invoker.hpp"
 #include "command/config/AddConfigCommand.hpp"
 #include "command/config/GetConfigCommand.hpp"
+#include "command/config/GetVersionCommand.hpp"
 
 
 namespace Xeth{
@@ -25,6 +26,7 @@ class ConfigFacade : public QObject
 
         Q_INVOKABLE QVariant set(const QVariantMap &);
         Q_INVOKABLE QVariant get(const QString &);
+        Q_INVOKABLE QVariant getVersion();
 
     signals:
         void Change(const QString &, const QString &) const;
