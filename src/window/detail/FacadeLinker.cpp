@@ -32,6 +32,7 @@ void FacadeLinker::linkObjects()
     _frame->addToJavaScriptWindowObject("XETH_clipboard", &_facade->getClipboard());
     _frame->addToJavaScriptWindowObject("XETH_filesystem", &_facade->getFileSystem());
     _frame->addToJavaScriptWindowObject("XETH_bitprofile", &_facade->getBitProfile());
+    _frame->addToJavaScriptWindowObject("XETH_network", &_facade->getNetwork());
 }
 
 

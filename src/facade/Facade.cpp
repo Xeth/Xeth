@@ -20,7 +20,8 @@ Facade::Facade(const Settings &settings) :
     _progress(_synchronizer, _invoker),
     _clipboard(_invoker),
     _filesystem(_invoker),
-    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker)
+    _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker),
+    _network(_provider, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
@@ -106,6 +107,11 @@ Facade::BitProfile & Facade::getBitProfile()
     return _bitprofile;
 }
 
+Facade::Network & Facade::getNetwork()
+{
+    return _network;
+}
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -159,6 +165,13 @@ const Facade::BitProfile & Facade::getBitProfile() const
 {
     return _bitprofile;
 }
+
+
+const Facade::Network & Facade::getNetwork() const
+{
+    return _network;
+}
+
 
 void Facade::setReady()
 {

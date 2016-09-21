@@ -22,6 +22,7 @@
 #include "ClipboardFacade.hpp"
 #include "FileSystemFacade.hpp"
 #include "BitProfileFacade.hpp"
+#include "NetworkFacade.hpp"
 
 #include "detail/ChildrenInitializer.hpp"
 
@@ -45,6 +46,7 @@ class Facade : public QObject
         typedef Xeth::ClipboardFacade Clipboard;
         typedef Xeth::FileSystemFacade FileSystem;
         typedef Xeth::BitProfileFacade BitProfile;
+        typedef Xeth::NetworkFacade Network;
 
     public:
         Facade(const Settings &);
@@ -59,6 +61,7 @@ class Facade : public QObject
         Clipboard & getClipboard();
         FileSystem & getFileSystem();
         BitProfile & getBitProfile();
+        Network & getNetwork();
 
         const Notifier & getNotifier() const;
         const AddressBook & getAddressBook() const;
@@ -69,6 +72,7 @@ class Facade : public QObject
         const Clipboard & getClipboard() const;
         const FileSystem & getFileSystem() const;
         const BitProfile & getBitProfile() const;
+        const Network & getNetwork() const;
 
         const Settings & getSettings() const;
         bool isReady() const;
@@ -102,6 +106,7 @@ class Facade : public QObject
         Clipboard _clipboard;
         FileSystem _filesystem;
         BitProfile _bitprofile;
+        Network _network;
 };
 
 
