@@ -68,6 +68,11 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
         args.push_back("--support-dao-fork");
     }
 
+    if(settings.get<int>("fast", 1))
+    {
+        args.push_back("--fast");
+    }
+
     return args;
 }
 
