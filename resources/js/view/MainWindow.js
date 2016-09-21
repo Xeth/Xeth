@@ -141,8 +141,10 @@ var MainWindowView = Backbone.View.extend({
         this.menu = new MenuView({el:this.$el.find(".mainNav")});
         this.menu.on("change", this.openPage);
         this.progress = new ProgressView({el:this.$el.find(".footer"), model:this.models.progress});
+        this.network = new NetworkView({el:this.$el.find(".footer"), model:this.models.network});
 
         this.progress.render();
+        this.network.render();
         for(var i in this.subpages) this.subpages[i].render();
         this.menuAlias = {default: "receive"};
         this.subpages["default"] = this.subpages.receive;

@@ -63,6 +63,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/Registrar.js"></script>
 <script type="text/javascript" src="js/model/ProfileResolver.js"></script>
 <script type="text/javascript" src="js/model/ProfileValidator.js"></script>
+<script type="text/javascript" src="js/model/Network.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -89,7 +90,9 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/view/MenuView.js"></script>
 <script type="text/javascript" src="js/view/FeeSlider.js"></script>
 <script type="text/javascript" src="js/view/SettingsPage.js"></script>
+<script type="text/javascript" src="js/view/NetworkView.js"></script>
 <script type="text/javascript" src="js/view/MainWindow.js"></script>
+
 
 
 <script type="text/javascript">
@@ -103,6 +106,7 @@ try{
     var accounts = new AccountCollection([], {profiles:profiles});
     var registrars = new RegistrarCollection;
     var resolver = new ProfileResolver;
+    var net = new Network;
 
     var view = new MainWindowView
     ({
@@ -116,7 +120,8 @@ try{
         profiles: profiles,
         registrars: registrars,
         resolver: resolver,
-        profileValidator: new ProfileValidator
+        profileValidator: new ProfileValidator,
+        network: net
     });
 
     XETH_event.Ready.connect(function(){
@@ -135,6 +140,8 @@ try{
         progress.observe();
         config.observe();
         registrars.fetch();
+        net.fetch();
+        net.observe();
 
         view.bindModels
         ({
