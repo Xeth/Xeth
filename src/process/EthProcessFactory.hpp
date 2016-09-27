@@ -3,16 +3,11 @@
 #include <QProcess>
 #include "conf/Settings.hpp"
 #include "EthProcessInitializer.hpp"
+#include "GenericProcessFactory.hpp"
 
 namespace Xeth{
 
-class EthProcessFactory
-{
-    public:
-
-        static QProcess * Create(const Settings &);
-        static QProcess * Create();
-};
+typedef GenericProcessFactory<EthProcessInitializer> EthProcessFactory;
 
 
 }
