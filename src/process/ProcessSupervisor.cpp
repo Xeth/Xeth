@@ -60,8 +60,9 @@ bool ProcessSupervisor::isActive() const
 
 
 
-void ProcessSupervisor::handleError(QProcess::ProcessError)
+void ProcessSupervisor::handleError(QProcess::ProcessError error)
 {
+    qDebug()<<"process error : "<<error;
     if(++_respawnCnt > _respawnLimit)
     {
         emit Error(_process->errorString());
@@ -107,8 +108,11 @@ void ProcessSupervisor::scheduleFork()
 void ProcessSupervisor::fork()
 {
     _timer.stop();
+    _process->setProcessChannelMode(QProcess::MergedChannels);
     _process->start();
 }
+
+
 
 
 
