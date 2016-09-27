@@ -22,6 +22,12 @@ class EthProcessInitializer
         static QString GetCommand(const Settings &);
         static QString GetDefaultCommand();
         static QStringList GetArguments(const Settings &);
+
+    private:
+        static QString GetVendorPath(const char *name);
+        static QString GetVendorPath(const QString &root, const char *name);
+        static bool FileExists(const QString &path);
+
 };
 
 

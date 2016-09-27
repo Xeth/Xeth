@@ -1,4 +1,6 @@
 #include "EthProcessInitializer.hpp"
+#include "database/EthereumKeyStorePath.hpp"
+#include <QDebug>
 
 namespace Xeth{
 
@@ -8,42 +10,79 @@ void EthProcessInitializer::Initialize(QProcess &process)
     process.setProgram(GetDefaultCommand());
 }
 
-QString EthProcessInitializer::GetDefaultCommand()
+
+QString EthProcessInitializer::GetVendorPath(const QString &rootPath, const char *name)
 {
-#if defined(__GETH_PATH__)
-    return __GETH_PATH__;
-#else
-    QString path = QCoreApplication::applicationDirPath();
+
+    QString path = rootPath;
+
 #if defined(__WINDOWS_OS__)
-    path.append("\\vendor\\bin\\geth.exe");
+    path.append("\\vendor\\bin\\");
+    path.append(name);
+    path.append(".exe");
 #else
-    path.append("/vendor/bin/geth");
+    path.append("/vendor/bin/");
+    path.append(name);
 #endif
 
+    return path;
+}
+
+
+QString EthProcessInitializer::GetVendorPath(const char *name)
+{
+    QString rootPath = QCoreApplication::applicationDirPath();
+    return GetVendorPath(rootPath, name);
+}
+
+
+bool EthProcessInitializer::FileExists(const QString &path)
+{
     QFileInfo info(path);
-    if(info.exists())
+    return info.exists();
+}
+
+
+QString EthProcessInitializer::GetDefaultCommand()
+{
+    QString rootPath = QCoreApplication::applicationDirPath();
+    QString parityPath = GetVendorPath(rootPath, "parity");
+
+    if(FileExists(parityPath))
     {
-        return path;
+        return parityPath;
     }
-#if defined(__WINDOWS_OS__)
-    return "geth.exe";
+
+    QString gethPath = GetVendorPath(rootPath, "geth");
+    if(FileExists(gethPath))
+    {
+        return gethPath;
+    }
+
+#if defined(__DEFAULT_ETH_COMMAND__)
+    return __DEFAULT_ETH_COMMAND__;
 #else
-    return "geth";
+#if defined(__WINDOWS_OS__)
+    return "parity.exe";
+#else
+    return "parity";
 #endif
 #endif
 }
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
 {
+    qDebug()<<"**************************** command : "<<GetCommand(settings);
+    qDebug()<<"****************************    args : "<<GetArguments(settings);
     process.setProgram(GetCommand(settings));
     process.setArguments(GetArguments(settings));
 }
 
 QString EthProcessInitializer::GetCommand(const Settings &settings)
 {
-    if(settings.has("eth"))
+    if(settings.has("command"))
     {
-        return settings.get("eth");
+        return settings.get("command");
     }
     //else
     return GetDefaultCommand();
@@ -57,22 +96,47 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
     {
         args.push_back("--testnet");
     }
-    args.push_back("--verbosity=0");
 
-    if(! settings.get<int>("dao-fork", 1))
+    if(!settings.has("command")||QString(settings.get("command")).contains(QRegExp("parity")))
     {
-        args.push_back("--oppose-dao-fork");
+        if(! settings.get<int>("dao-fork", 1))
+        {
+            args.push_back("--chain=homestead-dogmatic");
+        }
+        args.push_back("--geth");
+        args.push_back("--no-dapps");
+        args.push_back("--cache-size-db=1024");
+        args.push_back("--gas-floor-target=1500000");
+        args.push_back("--gasprice=20000000000");
+        args.push_back("--gas-cap=1500000");
+        EthereumKeyStorePath path(settings);
+        QString pathArg = "--keys-path=";
+        pathArg += path.toString().c_str();
+        args.push_back(pathArg);
     }
     else
     {
-        args.push_back("--support-dao-fork");
-    }
 
-    if(settings.get<int>("fast", 1))
-    {
-        args.push_back("--fast");
-    }
+        args.push_back("--verbosity=0");
+        args.push_back("--cache=1024");
+        args.push_back("--targetgaslimit=1500000");
+        args.push_back("--gasprice=20000000000");
 
+        if(! settings.get<int>("dao-fork", 1))
+        {
+            args.push_back("--oppose-dao-fork");
+        }
+        else
+        {
+            args.push_back("--support-dao-fork");
+        }
+
+        if(settings.get<int>("fast", 1))
+        {
+            args.push_back("--fast");
+        }
+
+    }
     return args;
 }
 
