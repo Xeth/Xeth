@@ -4,7 +4,7 @@
 #include "conf/GetBitProfileNetwork.hpp"
 
 #include "detail/DataBaseDirectory.hpp"
-#include "detail/EthereumKeyStorePath.hpp"
+#include "EthereumKeyStorePath.hpp"
 
 #include "TransactionStore.hpp"
 #include "ScanIndexStore.hpp"
