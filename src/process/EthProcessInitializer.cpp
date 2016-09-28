@@ -63,7 +63,7 @@ QString EthProcessInitializer::GetDefaultCommand()
     return __DEFAULT_ETH_COMMAND__;
 #else
 #if defined(__WINDOWS_OS__)
-    return "parity.exe";
+    return "C:\\Program Files\\Ethcore\\Parity\\parity.exe";
 #else
     return "parity";
 #endif
