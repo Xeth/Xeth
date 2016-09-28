@@ -72,8 +72,6 @@ QString EthProcessInitializer::GetDefaultCommand()
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
 {
-    qDebug()<<"**************************** command : "<<GetCommand(settings);
-    qDebug()<<"****************************    args : "<<GetArguments(settings);
     process.setProgram(GetCommand(settings));
     process.setArguments(GetArguments(settings));
 }
@@ -105,6 +103,7 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
         }
         args.push_back("--geth");
         args.push_back("--no-dapps");
+        args.push_back("--pruning=archive");
         args.push_back("--cache-size-db=1024");
         args.push_back("--gas-floor-target=1500000");
         args.push_back("--gasprice=20000000000");
