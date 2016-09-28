@@ -93,6 +93,12 @@ void ProcessSupervisor::start()
 }
 
 
+void ProcessSupervisor::restart()
+{
+    stop();
+    start();
+}
+
 void ProcessSupervisor::stop()
 {
     _timer.stop();

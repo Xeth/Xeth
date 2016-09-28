@@ -1,6 +1,8 @@
 #include "Facade.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp> 
+#include "process/ProcessErrorHandler.hpp"
+
 
 namespace Xeth{
 
@@ -25,6 +27,7 @@ Facade::Facade(const Settings &settings) :
     _blockchain(_provider, _notifier, _synchronizer, _invoker)
 {
     _eth.attach(EthProcessFactory::Create(settings));
+    _provider.onError(ProcessErrorHandler(_eth, settings.get("restart_limit", 10)));
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
     ChildrenInitializer *initializer = new ChildrenInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
     QThread *thread = new QThread;

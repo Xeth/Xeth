@@ -25,6 +25,7 @@ class ProcessSupervisor : public QObject
         void attach(QProcess *);
         void stop();
         void start();
+        void restart();
 
         void setRespawnLimit(size_t );
         bool isActive() const;
