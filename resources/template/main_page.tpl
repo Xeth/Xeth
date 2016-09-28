@@ -36,6 +36,10 @@
             <div class="icon network ok" title="">&nbsp;</div>
             <div class="icon updated" title="">&nbsp;</div>
         </div>
+        <div class="about">
+            <span class="ver">0.3.1</span>
+            <span>&copy; 2016 XETH (GPLv2)</span>
+        </div>
     </div>
 </div>
 

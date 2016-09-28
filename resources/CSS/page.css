@@ -245,6 +245,18 @@
 	margin-bottom: 15px;
 	opacity: 0;
 }
+.mainNav .footer .about {
+    margin: -10px;
+    font-size: 0.7rem;
+    color: #3E4E5A;
+    margin-top: 20px;
+}
+.mainNav .footer .about .ver {
+    float: right;
+}
+.mainNav .footer .about .ver:before {
+    content: "v.";
+}
 #newAddressSeedLoader[loader="100"] .loader .txt {
 	opacity: 0;
 }
