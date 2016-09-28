@@ -30,6 +30,7 @@ class ProcessSupervisor : public QObject
         bool isActive() const;
 
         void moveToThread(QThread *);
+        QString getProgram() const;
 
     signals:
         void Error(const QString &);

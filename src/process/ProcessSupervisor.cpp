@@ -53,6 +53,11 @@ void ProcessSupervisor::stopListening()
 }
 
 
+QString ProcessSupervisor::getProgram() const
+{
+    return _process ? _process->program() : "";
+}
+
 bool ProcessSupervisor::isActive() const
 {
     return _process!=NULL && (_process->atEnd() ||_timer.isActive());

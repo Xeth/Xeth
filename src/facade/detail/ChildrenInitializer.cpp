@@ -58,7 +58,7 @@ bool ChildrenInitializer::initializeIpfs()
 
 bool ChildrenInitializer::initializeEth()
 {
-    qDebug()<<"checking geth...";
+    qDebug()<<"checking "<<_eth.getProgram()<<"...";
     if(!_provider.connect(_net))
     {
         qDebug()<<"failed to connect, forking new process";
