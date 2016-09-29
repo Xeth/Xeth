@@ -90,16 +90,19 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
 {
     QStringList args;
 
-    if(settings.get<bool>("testnet", false))
-    {
-        args.push_back("--testnet");
-    }
-
     if(!settings.has("command")||QString(settings.get("command")).contains(QRegExp("parity")))
     {
-        if(! settings.get<int>("dao-fork", 1))
+
+        if(settings.get<bool>("testnet", false))
         {
-            args.push_back("--chain=homestead-dogmatic");
+            args.push_back("--chain=morden");
+        }
+        else
+        {
+            if(! settings.get<int>("dao-fork", 1))
+            {
+                args.push_back("--chain=homestead-dogmatic");
+            }
         }
         args.push_back("--geth");
         args.push_back("--no-dapps");
@@ -116,6 +119,10 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
     else
     {
 
+        if(settings.get<bool>("testnet", false))
+        {
+            args.push_back("--testnet");
+        }
         args.push_back("--verbosity=0");
         args.push_back("--cache=1024");
         args.push_back("--targetgaslimit=1500000");
