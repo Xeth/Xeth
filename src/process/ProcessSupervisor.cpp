@@ -7,7 +7,8 @@ ProcessSupervisor::ProcessSupervisor() :
     _respawnLimit(10),
     _respawnCnt(0),
     _respawnInterval(1000),
-    _process(NULL)
+    _process(NULL),
+    _starting(0)
 {
     initSignals();
 }
@@ -16,7 +17,8 @@ ProcessSupervisor::ProcessSupervisor(const Settings &settings) :
     _respawnLimit(settings.get<size_t>("respawn_limit", 10)),
     _respawnCnt(0),
     _respawnInterval(settings.get<size_t>("respawn_interval", 1000)),
-    _process(NULL)
+    _process(NULL),
+    _starting(0)
 {
     initSignals();
 }
@@ -89,14 +91,22 @@ void ProcessSupervisor::moveToThread(QThread *thread)
 
 void ProcessSupervisor::start()
 {
-    fork();
+    if(_starting.testAndSetAcquire(0, 1))
+    {
+        fork();
+        _starting = 0;
+    }
 }
 
 
 void ProcessSupervisor::restart()
 {
-    stop();
-    start();
+    if(_starting.testAndSetAcquire(0, 1))
+    {
+        stop();
+        fork();
+        _starting = 0;
+    }
 }
 
 void ProcessSupervisor::stop()
@@ -104,8 +114,12 @@ void ProcessSupervisor::stop()
     _timer.stop();
     if(_process)
     {
-        _process->kill();
+        _process->terminate();
         _process->waitForFinished();
+        if(_process->state() != QProcess::NotRunning)
+        {
+            _process->kill();
+        }
     }
 }
 

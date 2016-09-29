@@ -4,6 +4,7 @@
 #include <QProcess>
 #include <QString>
 #include <QStringList>
+#include <QAtomicInt>
 
 #include "conf/Settings.hpp"
 
@@ -53,6 +54,7 @@ class ProcessSupervisor : public QObject
         size_t _respawnInterval;
         QTimer _timer;
         QProcess *_process;
+        QAtomicInt _starting;
 };
 
 
