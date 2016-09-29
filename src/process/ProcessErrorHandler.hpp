@@ -18,6 +18,7 @@ class ProcessErrorHandler
         ProcessSupervisor &_process;
         size_t _limit;
         size_t _errors;
+        time_t _lastErrorTime;
 };
 
 
