@@ -2,9 +2,12 @@
 
 #include <QTimer>
 #include <QProcess>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QString>
 #include <QStringList>
 #include <QAtomicInt>
+#include <boost/signals2.hpp>
 
 #include "conf/Settings.hpp"
 
@@ -34,6 +37,9 @@ class ProcessSupervisor : public QObject
         void moveToThread(QThread *);
         QString getProgram() const;
 
+        template<class Loader>
+        void addLoader(const Loader &);
+
     signals:
         void Error(const QString &);
 
@@ -46,6 +52,7 @@ class ProcessSupervisor : public QObject
         void fork();
         void scheduleFork();
         void handleError(QProcess::ProcessError error);
+        void forkAndInitialize();
 
 
     private:
@@ -54,8 +61,11 @@ class ProcessSupervisor : public QObject
         size_t _respawnInterval;
         QTimer _timer;
         QProcess *_process;
-        QAtomicInt _starting;
+        QMutex _mutex;
+        time_t _lastStart;
+        boost::signals2::signal<void()> _loaders;
 };
 
 
 }
+#include "ProcessSupervisor.ipp"

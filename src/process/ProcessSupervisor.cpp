@@ -8,7 +8,7 @@ ProcessSupervisor::ProcessSupervisor() :
     _respawnCnt(0),
     _respawnInterval(1000),
     _process(NULL),
-    _starting(0)
+    _lastStart(0)
 {
     initSignals();
 }
@@ -18,7 +18,7 @@ ProcessSupervisor::ProcessSupervisor(const Settings &settings) :
     _respawnCnt(0),
     _respawnInterval(settings.get<size_t>("respawn_interval", 1000)),
     _process(NULL),
-    _starting(0)
+    _lastStart(0)
 {
     initSignals();
 }
@@ -91,23 +91,32 @@ void ProcessSupervisor::moveToThread(QThread *thread)
 
 void ProcessSupervisor::start()
 {
-    if(_starting.testAndSetAcquire(0, 1))
+    QMutexLocker lock(&_mutex);
+    if((time(NULL) - _lastStart) > 1)
     {
-        fork();
-        _starting = 0;
+        forkAndInitialize();
     }
 }
 
 
 void ProcessSupervisor::restart()
 {
-    if(_starting.testAndSetAcquire(0, 1))
+    QMutexLocker lock(&_mutex);
+    if((time(NULL) - _lastStart) > 1)
     {
         stop();
-        fork();
-        _starting = 0;
+        forkAndInitialize();
     }
 }
+
+
+void ProcessSupervisor::forkAndInitialize()
+{
+    fork();
+    _loaders();
+    _lastStart = time(NULL);
+}
+
 
 void ProcessSupervisor::stop()
 {
@@ -136,11 +145,6 @@ void ProcessSupervisor::fork()
     _process->setProcessChannelMode(QProcess::MergedChannels);
     _process->start();
 }
-
-
-
-
-
 
 
 
