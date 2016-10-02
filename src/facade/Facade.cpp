@@ -2,6 +2,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread/thread.hpp> 
 #include "process/ProcessErrorHandler.hpp"
+#include "detail/WaitForRpcServer.hpp"
 
 
 namespace Xeth{
@@ -26,10 +27,16 @@ Facade::Facade(const Settings &settings) :
     _network(_provider, _invoker),
     _blockchain(_provider, _notifier, _synchronizer, _invoker)
 {
+
+    Ethereum::Connector::NetworkParams netParams = settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net;
     _eth.attach(EthProcessFactory::Create(settings));
+    _eth.addLoader(WaitForRpcServer(_provider, netParams));
+
     _provider.onError(ProcessErrorHandler(_eth, settings.get("restart_limit", 10)));
+
     _ipfs.attach(IpfsProcessFactory::CreateDaemon(settings));
-    ChildrenInitializer *initializer = new ChildrenInitializer(QThread::currentThread(), _provider, _eth, _ipfs, settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net, settings);
+
+    ChildrenInitializer *initializer = new ChildrenInitializer(QThread::currentThread(), _provider, _eth, _ipfs, netParams, settings);
     QThread *thread = new QThread;
     initializer->moveToThread(thread);
     _eth.moveToThread(thread);

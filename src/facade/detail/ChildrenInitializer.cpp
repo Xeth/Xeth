@@ -62,22 +62,14 @@ bool ChildrenInitializer::initializeEth()
     if(!_provider.connect(_net))
     {
         qDebug()<<"failed to connect, forking new process";
-
         _eth.start();
-        size_t cnt = 0;
-        while(!_provider.connect(_net)&&cnt<30)
-        {
-            qDebug()<<"failed to connect, retrying in 1 sec";
-            cnt++;
-            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-        }
-
-
         if(!_provider.isConnected())
         {
-            qDebug()<<"failed to initialize";
-            return false;
-
+            if(!_provider.connect(_net))
+            {
+                qDebug()<<"failed to initialize";
+                return false;
+            }
         }
     }
     return true;
