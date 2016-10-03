@@ -13,6 +13,7 @@ WaitForRpcServer::WaitForRpcServer(Ethereum::Connector::Provider &provider,  Eth
 
 void WaitForRpcServer::operator()()
 {
+    qDebug()<<"waiting for RPC server ...";
     size_t cnt = 0;
     while(!_provider.connect(_net)&&cnt<30)
     {
@@ -20,6 +21,7 @@ void WaitForRpcServer::operator()()
         cnt++;
         boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     }
+    qDebug()<<(_provider.isConnected() ? "RPC server connected" : "RPC server not connected");
 
 }
 
