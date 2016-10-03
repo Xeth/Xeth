@@ -26,6 +26,7 @@ void ProcessErrorHandler::operator()(const char *error)
     {
         if(++_errors > _limit)
         {
+            qDebug()<<error;
             throw std::runtime_error(error);
         }
     }
@@ -36,10 +37,7 @@ void ProcessErrorHandler::operator()(const char *error)
 
     _lastErrorTime =  now;
     qDebug()<<"restarting "<<_process.getProgram()<<" process";
-    QThread *parentThread = _process.thread();
-    _process.moveToThread(QThread::currentThread());
     _process.restart();
-    _process.moveToThread(parentThread);
 }
 
 

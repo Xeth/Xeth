@@ -7,6 +7,8 @@
 #include <QString>
 #include <QStringList>
 #include <QAtomicInt>
+#include <QMetaObject>
+#include <QMetaObject>
 #include <boost/signals2.hpp>
 
 #include "conf/Settings.hpp"
@@ -42,6 +44,8 @@ class ProcessSupervisor : public QObject
 
     signals:
         void Error(const QString &);
+        void Restart();
+        void Stop();
 
     private:
         void initSignals();
@@ -53,6 +57,9 @@ class ProcessSupervisor : public QObject
         void scheduleFork();
         void handleError(QProcess::ProcessError error);
         void forkAndInitialize();
+        void restartProcess();
+        void stopProcess();
+        void invokeMethod(const char *);
 
 
     private:

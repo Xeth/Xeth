@@ -1,5 +1,6 @@
 #include "ProcessSupervisor.hpp"
 #include <QDebug>
+#include <QThread>
 
 namespace Xeth{
 
@@ -33,6 +34,8 @@ ProcessSupervisor::~ProcessSupervisor()
 void ProcessSupervisor::initSignals()
 {
     QObject::connect(&_timer, &QTimer::timeout, this, &ProcessSupervisor::fork);
+//    QObject::connect(this, &ProcessSupervisor::Restart, this, &ProcessSupervisor::restartProcess);
+//    QObject::connect(this, &ProcessSupervisor::Stop, this, &ProcessSupervisor::stopProcess);
 }
 
 
@@ -66,6 +69,34 @@ bool ProcessSupervisor::isActive() const
 }
 
 
+void ProcessSupervisor::stop()
+{
+    invokeMethod("stopProcess");
+    emit Stop();
+}
+
+void ProcessSupervisor::restart()
+{
+    invokeMethod("restartProcess");
+    emit Restart();
+}
+
+
+void ProcessSupervisor::invokeMethod(const char *method)
+{
+    try
+    {
+        QMetaObject::invokeMethod(this, method, QThread::currentThread() == thread() ? Qt::DirectConnection : Qt::BlockingQueuedConnection);
+    }
+    catch(const std::exception &e)
+    {
+        qDebug()<<"got exception : "<<e.what();
+    }
+    catch(...)
+    {
+        qDebug()<<"got unknown exception";
+    }
+}
 
 void ProcessSupervisor::handleError(QProcess::ProcessError error)
 {
@@ -92,20 +123,24 @@ void ProcessSupervisor::moveToThread(QThread *thread)
 void ProcessSupervisor::start()
 {
     QMutexLocker lock(&_mutex);
-    if((time(NULL) - _lastStart) > 1)
-    {
-        forkAndInitialize();
-    }
+    forkAndInitialize();
 }
 
 
-void ProcessSupervisor::restart()
+void ProcessSupervisor::restartProcess()
 {
-    QMutexLocker lock(&_mutex);
-    if((time(NULL) - _lastStart) > 1)
+    try
     {
-        stop();
-        forkAndInitialize();
+        QMutexLocker lock(&_mutex);
+        if((time(NULL) - _lastStart) > 1)
+        {
+            stopProcess();
+            forkAndInitialize();
+        }
+    }
+    catch(const std::exception &e)
+    {
+        qDebug()<<"restart exception : "<<e.what();
     }
 }
 
@@ -114,21 +149,28 @@ void ProcessSupervisor::forkAndInitialize()
 {
     fork();
     _loaders();
-    _lastStart = time(NULL);
 }
 
 
-void ProcessSupervisor::stop()
+void ProcessSupervisor::stopProcess()
 {
-    _timer.stop();
-    if(_process)
+    try
     {
-        _process->terminate();
-        _process->waitForFinished();
-        if(_process->state() != QProcess::NotRunning)
+        _timer.stop();
+        if(_process)
         {
-            _process->kill();
+            _process->terminate();
+            _process->waitForFinished();
+            if(_process->state() != QProcess::NotRunning)
+            {
+                _process->kill();
+                _process->waitForFinished();
+            }
         }
+    }
+    catch(const std::exception &e)
+    {
+        qDebug()<<"stop exception : "<<e.what();
     }
 }
 
@@ -144,6 +186,7 @@ void ProcessSupervisor::fork()
     _timer.stop();
     _process->setProcessChannelMode(QProcess::MergedChannels);
     _process->start();
+    _lastStart = time(NULL);
 }
 
 
