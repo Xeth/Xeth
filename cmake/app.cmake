@@ -194,6 +194,7 @@ else()
     endif()
     install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION c:\\Program Files\\XETH)
     install(TARGETS xeth DESTINATION c:\\Program Files\\XETH)
+    install(FILES ${Qt5WebKitWidgets_LIBRARIES} ${Qt5WebKit_LIBRARIES} ${Qt5Concurrent_LIBRARIES} ${Qt5Core_LIBRARIES} DESTINATION c:\\Program Files\\XETH)
     install(CODE mklink "%userprofile%\Start Menu\Programs\XETH\xeth" "c:\\Program Files\\XETH\xeth.exe")
 endif()
 
