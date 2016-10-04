@@ -34,6 +34,8 @@
  | [official site](https://www.cryptopp.com/) 
  | [direct download](https://www.cryptopp.com/cryptopp562.zip)
 
+* IPFS [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
+* Parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
 
 ### Get the XETH source code
 
