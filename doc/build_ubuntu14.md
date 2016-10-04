@@ -15,7 +15,7 @@ make -C /tmp/xeth_deps/cryptopp static
 ```
 
 * compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
-* compile parity (https://github.com/ethcore/parity)[https://github.com/ethcore/parity]
+* compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
 
 
 
