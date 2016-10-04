@@ -71,6 +71,7 @@ bool ProcessSupervisor::isActive() const
 
 void ProcessSupervisor::stop()
 {
+    stopListening();
     invokeMethod("stopProcess");
     emit Stop();
 }
