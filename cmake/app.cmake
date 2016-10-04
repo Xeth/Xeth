@@ -188,6 +188,13 @@ if(NOT MSVC AND NOT WIN32)
 if(UNIX AND NOT APPLE)
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/shortcuts/usr/share/applications DESTINATION /usr/share )
 endif()
+else()
+    if(EXISTS ${PROJECT_BINARY_DIR}/vendor)
+        install(DIRECTORY ${PROJECT_BINARY_DIR}/vendor DESTINATION c:\\Program Files\\XETH PATTERN * PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    endif()
+    install(DIRECTORY ${PROJECT_BINARY_DIR}/icon DESTINATION c:\\Program Files\\XETH)
+    install(TARGETS xeth DESTINATION c:\\Program Files\\XETH)
+    install(CODE mklink "%userprofile%\Start Menu\Programs\XETH\xeth" "c:\\Program Files\\XETH\xeth.exe")
 endif()
 
 
