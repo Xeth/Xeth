@@ -6,13 +6,19 @@ sudo apt-get install subversion git cmake make g++ libboost-all-dev libleveldb-d
 ```
 
 
-compile [cryptopp](https://www.cryptopp.com/wiki/Linux) library
+* compile [cryptopp](https://www.cryptopp.com/wiki/Linux) library
 
 ```
 mkdir -p /tmp/xeth_deps
 svn checkout https://cryptopp.svn.sourceforge.net/svnroot/cryptopp/trunk/c5 /tmp/xeth_deps/cryptopp
 make -C /tmp/xeth_deps/cryptopp static
 ```
+
+* compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
+* compile parity (https://github.com/ethcore/parity)[https://github.com/ethcore/parity]
+
+
+
 
 ### build Xeth
 
@@ -21,7 +27,7 @@ cd /tmp
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
 cd Xeth/build
-cmake -DBIN_DOWNLOAD=1 -DCRYPTOPP_INCLUDE_DIR=/tmp/xeth_deps -DCRYPTOPP_LIBRARY=/tmp/xeth_deps/cryptopp/libcryptopp.a ..
+cmake -DCRYPTOPP_INCLUDE_DIR=/tmp/xeth_deps -DCRYPTOPP_LIBRARY=/tmp/xeth_deps/cryptopp/libcryptopp.a ..
 make
 ```
 
