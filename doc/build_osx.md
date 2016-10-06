@@ -15,7 +15,7 @@ brew link --force qt55
 
 ### install [ipfs](https://ipfs.io/docs/install/)
 ```
-wget https://dist.ipfs.io/go-ipfs/v0.4.3/go-ipfs_v0.4.3_darwin-amd64.tar.gz
+curl -O https://dist.ipfs.io/go-ipfs/v0.4.3/go-ipfs_v0.4.3_darwin-amd64.tar.gz
 tar xvzf go-ipfs_v0.4.3_darwin-amd64.tar.gz
 sudo cp go-ipfs/ipfs /usr/local/bin
 ```
