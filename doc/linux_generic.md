@@ -21,7 +21,7 @@ install parity
 cargo install --git https://github.com/ethcore/parity.git parity
 ```
 
-alternatively compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+alternatively use [https://github.com/ethcore/parity](https://github.com/ethcore/parity) documentation
 
 ### get sources and compile
 ```
