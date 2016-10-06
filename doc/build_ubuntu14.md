@@ -29,6 +29,7 @@ alternatively compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](h
 install stable RUST
 ```
 curl https://sh.rustup.rs -sSf | sh
+source $HOME/.cargo/env
 ```
 
 install parity
