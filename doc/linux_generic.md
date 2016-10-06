@@ -34,5 +34,5 @@ make
 
 to install
 ```
-make install
+sudo make install
 ```
