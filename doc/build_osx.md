@@ -1,3 +1,8 @@
+### install homebrew package manager
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
 ### install dependecies
 
 ```
@@ -7,46 +12,39 @@ brew install qt55
 brew link --force qt55
 
 ```
-* compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
-* compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+
+### install [ipfs](https://ipfs.io/docs/install/)
+```
+wget https://dist.ipfs.io/go-ipfs/v0.4.3/go-ipfs_v0.4.3_darwin-amd64.tar.gz
+tar xvzf go-ipfs_v0.4.3_darwin-amd64.tar.gz
+sudo cp go-ipfs/ipfs /usr/local/bin
+```
+alternatively you can compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
 
 
-### get sources
+### install [parity](https://ethcore.io/parity.html)
+```
+brew tap ethcore/ethcore
+brew install parity
+```
+
+or if you have old version of parity already installed
+```
+brew update && brew upgrade
+brew reinstall parity
+```
+
+alternatively you can compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+
+
+
+###  get sources and compile project
+
 ```
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
 cd Xeth/build
-```
-
-### configure project
-Xeth requires geth and ipfs binaries. 
-
-
-To download binaries, use -DBIN_DOWNLOAD=1 flag
-```
-cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/ -DBIN_DOWNLOAD=1 ..
-```
-
-
-To specify binary path'es, use --GETH_PATH=path_to_geth --IPFS_PATH=path_to_ipfs. Where path_to_geth is the absolute path to geth binary (ex: /usr/local/bin/geth) and path_to_ipfs is the absolute path to ipfs binary 
-
-```
-cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/ -DGETH_PATH=path_to_geth -DIPFS_PATH=path_to_ipfs
-
-```
-
-
-If geth/ipfs is installed in a standard location (ex: /usr/bin, /usr/local/bin), cmake can be used without flags
-
-```
-cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/ ..
-```
-
-
-
-### build project
-
-```
+cmake -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt55/5.5.1/  ..
 make
 ```
 
