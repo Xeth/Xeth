@@ -1,42 +1,38 @@
-* compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
-* compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+### install ipfs
 
-### get sources
+```
+wget https://dist.ipfs.io/go-ipfs/v0.4.3/go-ipfs_v0.4.3_linux-amd64.tar.gz
+tar xvzf go-ipfs_v0.4.3_linux-amd64.tar.gz
+sudo cp go-ipfs/ipfs /usr/local/bin
+```
+alternatively compile ipfs [https://github.com/ipfs/go-ipfs#build-from-source](https://github.com/ipfs/go-ipfs#build-from-source)
+
+
+### install parity
+
+install stable RUST 
+
+```
+curl https://sh.rustup.rs -sSf | sh
+```
+
+install parity  
+```
+cargo install --git https://github.com/ethcore/parity.git parity
+```
+
+alternatively compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+
+### get sources and compile
 ```
 git clone --recursive https://github.com/BitProfile/Xeth.git
 mkdir -p Xeth/build
 cd Xeth/build
-```
-
-### configure project
-Xeth requires geth and ipfs binaries. 
-
-
-To download binaries, use -DBIN_DOWNLOAD=1 flag
-```
-cmake -DBIN_DOWNLOAD=1 ..
-```
-
-
-To specify binary path'es, use --GETH_PATH=path_to_geth --IPFS_PATH=path_to_ipfs. Where path_to_geth is the absolute path to geth binary (ex: /usr/local/bin/geth) and path_to_ipfs is the absolute path to ipfs binary 
-
-```
-cmake -DGETH_PATH=path_to_geth -DIPFS_PATH=path_to_ipfs
-
-```
-
-
-If geth/ipfs is installed in a standard location (ex: /usr/bin, /usr/local/bin), cmake can be used without flags
-
-```
 cmake ..
-```
-
-
-
-### build project
-
-```
 make
 ```
 
+to install
+```
+make install
+```
