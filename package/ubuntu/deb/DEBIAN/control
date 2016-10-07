@@ -1,0 +1,9 @@
+Package: xeth
+Version: 0.3-1
+Section: base
+Priority: optional
+Architecture: amd64
+Installed-Size: 74312
+Depends: libqt5webkit5, libjsoncpp1, libleveldb1v5, libsnappy1v5, libgmp10, libappindicator1, libnotify4, libgtk2.0-0, libboost-system1.58.0, libboost-filesystem1.58.0, libboost-thread1.58.0, libboost-program-options1.58.0, libboost-random1.58.0, libboost-regex1.58.0, libboost-date-time1.58.0, libboost-chrono1.58.0
+Maintainer: Victor Bucataru <ping@devktor.com>
+Description: Ethereum GUI wallet
