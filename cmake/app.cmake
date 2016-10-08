@@ -119,7 +119,7 @@ elseif(APPLE)
     set(MACOSX_BUNDLE_ICON_FILE xeth.icns)
     set(APP_ICON ${PROJECT_SOURCE_DIR}/resources/icon/xeth.icns)
     set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-    add_executable(myApp MACOSX_BUNDLE ${APP_ICON} ${APP_SOURCES})
+    add_executable(xeth MACOSX_BUNDLE ${APP_ICON} ${APP_SOURCES})
 
 else()
     add_executable(xeth ${APP_ICON} ${APP_SOURCES})
