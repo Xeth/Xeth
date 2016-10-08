@@ -27,6 +27,7 @@ class EthProcessInitializer
         static QString GetVendorPath(const char *name);
         static QString GetVendorPath(const QString &root, const char *name);
         static bool FileExists(const QString &path);
+        static void SetEnvironment(QProcess &process);
 
 };
 

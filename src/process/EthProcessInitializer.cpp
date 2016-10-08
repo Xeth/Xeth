@@ -72,6 +72,7 @@ QString EthProcessInitializer::GetDefaultCommand()
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings)
 {
+    SetEnvironment(process);
     process.setProgram(GetCommand(settings));
     process.setArguments(GetArguments(settings));
 }
@@ -148,12 +149,27 @@ QStringList EthProcessInitializer::GetArguments(const Settings &settings)
 
 void EthProcessInitializer::Initialize(QProcess &process, const Settings &settings, const QStringList &extraArgs)
 {
+    SetEnvironment(process);
     process.setProgram(GetCommand(settings));
     QStringList args = GetArguments(settings);
     args.append(extraArgs);
     process.setArguments(args);
 }
 
+
+void EthProcessInitializer::SetEnvironment(QProcess &process)
+{
+#if  defined(__APPLE_OS__)
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QString path = env.value("PATH");
+    if(path != "") path += ":";
+    path += "/usr/local/bin:/usr/bin:~/.multirust/toolchains/stable/cargo/bin";
+    env.remove("PATH");
+    env.insert("PATH", path);
+
+    process.setProcessEnvironment(env);
+#endif
+}
 
 
 
