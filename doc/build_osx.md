@@ -31,7 +31,10 @@ multirust default stable
 ```
 install latest parity
 ```
-cargo install --git https://github.com/ethcore/parity.git parity
+cd && git clone https://github.com/ethcore/parity.git
+cd parity
+cargo build --release
+sudo cp target/release/parity /usr/local/bin
 ```
 
 
