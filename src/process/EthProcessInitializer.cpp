@@ -168,6 +168,7 @@ void EthProcessInitializer::SetEnvironment(QProcess &process)
     env.insert("PATH", path);
 
     process.setProcessEnvironment(env);
+    setenv("PATH", path.toLatin1().constData(), true);
 #endif
 }
 
