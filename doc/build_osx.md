@@ -23,18 +23,19 @@ alternatively you can compile ipfs [https://github.com/ipfs/go-ipfs#build-from-s
 
 
 ### install [parity](https://ethcore.io/parity.html)
+install RUST
 ```
-brew tap ethcore/ethcore
-brew install parity
+brew install multirust
+multirust default stable
+
+```
+install latest parity
+```
+cargo install --git https://github.com/ethcore/parity.git parity
 ```
 
-or if you have old version of parity already installed
-```
-brew update && brew upgrade
-brew reinstall parity
-```
 
-alternatively you can compile parity [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
+alternatively you can use this documentation [https://github.com/ethcore/parity](https://github.com/ethcore/parity)
 
 
 
