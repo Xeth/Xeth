@@ -44,7 +44,7 @@ void ScanCriteria::setLimit(size_t limit)
 }
 
 
-void ScanCriteria::processBlock(size_t blockIndex, Ethereum::Connector::Block &block, Container::iterator end, ScanResult &result)
+void ScanCriteria::processBlock(BlockChain &chain, size_t blockIndex, Ethereum::Connector::Block &block, Container::iterator end, ScanResult &result)
 {
     static BigInt blockReward("5000000000000000000");
     size_t prevTxSize = result.transactions.size();
@@ -59,15 +59,17 @@ void ScanCriteria::processBlock(size_t blockIndex, Ethereum::Connector::Block &b
         it->second->processHeader(blockIndex, blockHash, miner, blockReward, blockTime, result);
     }
 
-    TransactionCollection transactions = block.getTransactions();
+    Collection<std::string> hashes = block.getTransactionsHashes();
 
-    for(TransactionCollection::Iterator tIt=transactions.begin(), tEnd=transactions.end(); tIt!=tEnd; ++tIt)
+    for(Collection<std::string>::Iterator tIt=hashes.begin(), tEnd=hashes.end(); tIt!=tEnd; ++tIt)
     {
-        std::string sender = tIt->getSender();
-        std::string receiver = tIt->getReceiver();
-        std::string txid = tIt->getHash();
-        BigInt amount = tIt->getAmount();
-        std::string data = tIt->getInput();
+        std::string hash = *tIt;
+        Transaction transaction = chain.getTransaction(hash.c_str());
+        std::string sender = transaction.getSender();
+        std::string receiver = transaction.getReceiver();
+        std::string txid = transaction.getHash();
+        BigInt amount = transaction.getAmount();
+        std::string data = transaction.getInput();
 
         for(Container::iterator it=_criteria.begin(); it!=end; ++it)
         {

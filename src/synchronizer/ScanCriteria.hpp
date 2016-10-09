@@ -23,6 +23,8 @@ typedef Ethereum::Connector::Collection<Ethereum::Connector::Transaction> Transa
 
 using Ethereum::Connector::BlockChain;
 using Ethereum::Connector::Block;
+using Ethereum::Connector::Transaction;
+using Ethereum::Connector::Collection;
 
 
 class ScanCriteria : public QObject
@@ -72,7 +74,7 @@ class ScanCriteria : public QObject
 
     private:
         ScanCriteria(const ScanCriteria &);
-        void processBlock(size_t index, Ethereum::Connector::Block &, Container::iterator, ScanResult &);
+        void processBlock(BlockChain &, size_t index, Ethereum::Connector::Block &, Container::iterator, ScanResult &);
         void addCriterion(size_t minBlock, ScanCriterion *);
         void registerMetaType();
 

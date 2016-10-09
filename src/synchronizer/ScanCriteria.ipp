@@ -35,7 +35,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
 
     try
     {
-        blockchain.retrieveBlockDetails(true);
+        blockchain.retrieveBlockDetails(false);
         size_t height = blockchain.getHeight();
         size_t minBlock = _criteria.begin()->first;
 
@@ -75,7 +75,7 @@ size_t ScanCriteria::parse(BlockChain &blockchain, ScanResult &result, Progress 
             for(; result.lastBlock <= it->first; result.lastBlock++)
             {
                 Block block = blockchain.getBlock(result.lastBlock);
-                processBlock(result.lastBlock, block, it->second, result);
+                processBlock(blockchain, result.lastBlock, block, it->second, result);
                 progress.next();
                 InterruptionPoint interruption;
                 if(_limit && (++processed > _limit))
