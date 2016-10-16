@@ -21,7 +21,9 @@ class EthProcessInitializer
 
         static QString GetCommand(const Settings &);
         static QString GetDefaultCommand();
-        static QStringList GetArguments(const Settings &);
+        static QStringList GetArguments(const QString &, const Settings &);
+        static QStringList GetGethArguments(const Settings &);
+        static QStringList GetParityArguments(const Settings &);
 
     private:
         static QString GetVendorPath(const char *name);
