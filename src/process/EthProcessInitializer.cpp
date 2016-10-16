@@ -144,7 +144,7 @@ QStringList EthProcessInitializer::GetArguments(const QString &command, const Se
 {
     QStringList args;
 
-    if(!command.contains(QRegExp("parity")))
+    if(command.contains(QRegExp("parity")))
     {
         return GetParityArguments(settings);
 
