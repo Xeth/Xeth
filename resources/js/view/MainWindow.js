@@ -44,7 +44,7 @@ var MainWindowView = Backbone.View.extend({
 
     render: function(){
         try{
-        this.$el.prepend(this.templates.get("main_page")());
+        this.$el.prepend(this.templates.get("main_page")({info:this.models.info}));
 
         this.models.events.onError(this.notifyError);
 

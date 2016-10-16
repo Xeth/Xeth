@@ -130,6 +130,12 @@ Facade::BlockChain & Facade::getBlockChain()
 }
 
 
+Facade::Info & Facade::getInfo()
+{
+    return _info;
+}
+
+
 const Settings & Facade::getSettings() const
 {
     return _settings;
@@ -194,6 +200,12 @@ const Facade::Network & Facade::getNetwork() const
 const Facade::BlockChain & Facade::getBlockChain() const
 {
     return _blockchain;
+}
+
+
+const Facade::Info & Facade::getInfo() const
+{
+    return _info;
 }
 
 

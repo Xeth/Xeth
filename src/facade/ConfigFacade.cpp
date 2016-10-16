@@ -33,11 +33,6 @@ QVariant ConfigFacade::set(const QVariantMap &request)
 }
 
 
-QVariant ConfigFacade::getVersion()
-{
-    GetVersionCommand command;
-    return _invoker.invoke(command, NullCommandArguments());
-}
 
 
 
