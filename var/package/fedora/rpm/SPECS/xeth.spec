@@ -5,7 +5,7 @@
 Summary: A Ethereum GUI wallet
 Name: xeth
 Version: 0.3
-Release: 1
+Release: 2
 License: GPLv2
 Group: Money
 SOURCE0 : %{name}-%{version}.tar.gz
