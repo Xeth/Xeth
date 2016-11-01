@@ -44,7 +44,8 @@ The receiver can do the same, as the long term public key A is public knowledge:
     => a'G = aG + sG   
     => a' = (a + s)G [after decryption of wallet]
 
-It can be proven that only the holder of the original private key, a, can form a' and spend the money held at the new account with address K(A'). An adversary would be required to find the preimage or a hash collision, and break the ECDLP. These are both assumed very, very hard.
+It can be proven that only the holder of the original private key, a, can form a' and spend the money held at the new account (the one with address K(A')). To forge this key, an attacker would have to find the preimage (or a collision) in the hash function H, and would also have to break the ECDLP. These problems are both assumed very, very hard.
+If the ECDLP were to be broken, for example, ECDSA signatures would also be unusable.
 
 
 ### [BitProfile](http://bitprofile.org)
@@ -52,7 +53,7 @@ BitProfile is a 'decentralised user namespace system'.
 It was created so that a user can share the same profile across multiple DApps, taking advantage of the user's global reputation.
 A DApp can use default BitProfile registrar or deploy its own (with its own registration rules), without losing the advantage of the global user reputation.
 
-The profile address can be used to receive direct payments anonymously, using stealth addresses as explained above. 
+The profile address can be used to receive direct payments anonymously, using stealth addresses as explained above.
 The wallet also allows a user to link their own stealth addresses, meaning that multiple accounts of theirs can contribute towards this global reputation.
 
 Bitprofile implements multiple levels of profile authentication and access control security policies, allowing use of the same profile across multiple devices (phone, watch, tablet). Having different keys with different privileges enables the profile to remain usable even in the case of a leaked or lost key.

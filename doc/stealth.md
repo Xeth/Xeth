@@ -2,7 +2,7 @@
 Stealth payment is a private exchange of funds which protects the privacy of the recipient and prevents observers from knowing the user's transaction history.
 
 
-On each payment the sender generates a new address using the recipient's stealth address data. 
+On each payment the sender generates a new address using the recipient's stealth address data.
 Only the recipient is able to spend those funds. The spending private key can be generated only by the receiver.
 
 The stealth address generated from the published public key is entirely indistinguishable from random to any parties not directly involved in the transaction (ie everyone but the sender and recipient).
@@ -37,8 +37,7 @@ K(A') = K(A + sG) [without decrypting wallet]
 => a'G = aG + sG   
 => a' = (a + s)G [after decryption of wallet]
 
-It can be proven that only the holder of the original private key, a, can form a' and spend the money held at the new account with address K(A'). An adversary would be required to find the preimage or a hash collision, and break the ECDLP. These are both assumed very, very hard.
-
+It can be proven that only the holder of the original private key, a, can form a' and spend the money held at the     new account (the one with address K(A')). To forge this key, an attacker would have to find the preimage (or a col    lision) in the hash function H, and would also have to break the ECDLP. These problems are both assumed very, very hard. If the ECDLP were to be broken, for example, ECDSA signatures would also be unusable.
 
 ##Credits
 
