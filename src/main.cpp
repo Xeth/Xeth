@@ -9,6 +9,7 @@
 
 #include "Application.hpp"
 #include "version.hpp"
+#include "command/info/GetClientVersionCommand.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -21,6 +22,9 @@ int main(int argc, char* argv[])
         if(settings.has("version"))
         {
             std::cout<<"Version: "<<XETH_VERSION<<std::endl;
+            QApplication app(argc, argv);
+            Xeth::GetClientVersionCommand command(settings);
+            std::cout<<"using "<<command().toStdString()<<std::endl;
             return 0;
         }
 
