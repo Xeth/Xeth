@@ -33,7 +33,7 @@ QVariant GetLastReleaseInfoCommand::operator()() const
     QJsonDocument document = QJsonDocument::fromJson(reply->readAll());
     if(document.isNull())
     {
-        throw std::runtime_error("invalid json document");
+        throw std::runtime_error("invalid latest.json document");
     }
     return QVariant::fromValue(document.object().toVariantMap());
 }
