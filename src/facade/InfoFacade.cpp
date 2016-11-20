@@ -16,6 +16,17 @@ QString InfoFacade::getVersion() const
     return QString(XETH_VERSION);
 }
 
+QString InfoFacade::getNewerClientVersion() const
+{
+    return _newerClientVersion;
+}
+
+
+QString InfoFacade::getNewerXethVersion() const
+{
+    return _newerXethVersion;
+}
+
 
 QVariant InfoFacade::getClientVersion() const
 {
@@ -84,7 +95,8 @@ void InfoFacade::checkClientVersion(const QJsonObject &latestData)
     if(isNewVersion(clientVersion, latestVersion))
     {
         clientName.append(" ");
-        _notifier.emitData("version", "client", clientName + latestVersion);
+        _newerClientVersion = clientName + latestVersion;
+        _notifier.emitData("version", "client", _newerClientVersion);
     }
 
 }
@@ -97,6 +109,7 @@ void InfoFacade::checkXethVersion(const QJsonObject &latestData)
 
     if(isNewVersion(version, latestVersion))
     {
+        _newerXethVersion = latestVersion;
         _notifier.emitData("version", "xeth", latestVersion);
     }
 }

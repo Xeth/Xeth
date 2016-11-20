@@ -10,7 +10,7 @@ var MainWindowView = Backbone.View.extend({
     el: "body",
 
     initialize:function(options){
-        _(this).bindAll("openPage","show","loaded", "notifyError");
+        _(this).bindAll("openPage","show","loaded", "notifyError", "checkVersion");
         this.models = {};
         this.bindModels(options);
         this.active = null;
@@ -150,6 +150,9 @@ var MainWindowView = Backbone.View.extend({
         this.subpages["default"] = this.subpages.receive;
 
         this.show();
+        this.checkVersion();
+        this.events.onData("version", this.checkVersion);
+
         }catch(e){alert(e);}
     },
     notifyError:function(event){
@@ -164,6 +167,25 @@ var MainWindowView = Backbone.View.extend({
         this.$el.find("#page_splash").removeClass("active");
         setTimeout(this.loaded, 150);
         setTimeout(this.openPage, 1000);
+    },
+
+    checkVersion: function(){
+        var newerVersion = this.models.info.getNewerXethVersion();
+        if(newerVersion)
+        {
+            alertNewerVersion(newerVersion);
+        }
+        else
+        {
+            newerVersion = this.models.info.getNewerClientVersion();
+            if(newerVersion)
+            {
+                alertNewerVersion(newerVersion);
+            }
+        }
+    },
+    alertNewerVersion:function(version){
+        this.$el.find(".ver").html("New version "+version+" available").addClass("new");
     }
 
 });
