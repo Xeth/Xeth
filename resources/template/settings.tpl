@@ -19,6 +19,9 @@
         <input id="trayClose" type="checkbox" />
         <label for="trayClose">close to tray</label>
     </div>
+    <div class="section_client btns invisible">
+        <a href="javascript:void(0);" rel="client" class="btn">Change Ethereum Client <span class="ver">parity-1.3.8-beta</span></a>
+    </div>
 </div>
 
 
