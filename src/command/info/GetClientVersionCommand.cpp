@@ -4,22 +4,23 @@
 namespace Xeth{
 
 
+
 GetClientVersionCommand::GetClientVersionCommand(const Settings  &settings) : 
     _settings(settings)
 {}
 
 
-QString GetClientVersionCommand::operator()() const
+QString GetClientVersionCommand::operator()(Format format) const
 {
     QProcess *process = EthProcessFactory::Create(_settings);
     process->deleteLater();
 
     if(isParity(process))
     {
-        return getParityVersion(process);
+        return getParityVersion(process, format);
     }
 
-    return getGethVersion(process);
+    return getGethVersion(process, format);
 }
 
 
@@ -28,15 +29,35 @@ bool GetClientVersionCommand::isParity(QProcess *process) const
     return process->program().contains("parity");
 }
 
-QString GetClientVersionCommand::getParityVersion(QProcess *process) const
+QString GetClientVersionCommand::getParityVersion(QProcess *process, Format format) const
 {
-    return getClientVersion(process, "--version", "Parity/(.*)+\\n", "Parity ");
+    if(format==Full_Text)
+    {
+        return getParityVersion(process, "Parity ");
+    }
+    return getParityVersion(process, "");
 }
 
 
-QString GetClientVersionCommand::getGethVersion(QProcess *process) const
+QString GetClientVersionCommand::getParityVersion(QProcess *process, const QString &prepend) const
 {
-    return getClientVersion(process, "version", "Version: (.*)+\\n", "Geth ");
+    return getClientVersion(process, "--version", "Parity/(.*)+\\n", prepend);
+}
+
+
+QString GetClientVersionCommand::getGethVersion(QProcess *process, Format format) const
+{
+    if(format==Full_Text)
+    {
+        return getGethVersion(process, "Geth ");
+    }
+    return getGethVersion(process, "");
+}
+
+
+QString GetClientVersionCommand::getGethVersion(QProcess *process, const QString &prepend) const
+{
+    return getClientVersion(process, "version", "Version: (.*)+\\n", prepend);
 }
 
 
