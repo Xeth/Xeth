@@ -4,3 +4,19 @@
 	margin-right: 30px;
 	display: block;
 }
+#page_settings .section_client {
+    margin-top: 40px;
+}
+#page_settings .section_client .btn {
+    float: left;
+}
+#page_settings .section_client .ver {
+    text-transform: none;
+    color: #d2d5d6;
+}
+#page_settings .section_client .ver:before {
+    content: "(";
+}
+#page_settings .section_client .ver:after {
+    content: ")";
+}

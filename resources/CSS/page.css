@@ -246,16 +246,32 @@
 	opacity: 0;
 }
 .mainNav .footer .about {
-    margin: -10px;
+    margin: -20px;
     font-size: 0.7rem;
+    padding: 0 5px;
     color: #3E4E5A;
     margin-top: 20px;
+    line-height: 20px;
+    height: 20px;
 }
 .mainNav .footer .about .ver {
     float: right;
+    text-align: right;
+    margin-bottom: -20px;
+    transition: margin-top 300ms ease-in-out 1000ms;
+}
+.mainNav .footer .about .ver.new {
+    margin-top: -20px;
 }
 .mainNav .footer .about .ver:before {
     content: "v.";
+}
+.mainNav .footer .about .ver .newver {
+    color: #1C2E30;
+    background-color: #F7931E;
+    padding: 0 5px;
+    display: block;
+    margin-right: -5px; 
 }
 #newAddressSeedLoader[loader="100"] .loader .txt {
 	opacity: 0;

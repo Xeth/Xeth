@@ -37,7 +37,10 @@
             <div class="icon updated" title="">&nbsp;</div>
         </div>
         <div class="about">
-            <span class="ver"><%=info.getVersion()%></span>
+            <span class="ver new1">
+                <%=info.getVersion()%>
+                <a href="#" class="newver">New version available</a>
+            </span>
             <span>&copy; 2016 XETH (GPLv2)</span>
         </div>
     </div>
