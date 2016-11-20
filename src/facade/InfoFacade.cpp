@@ -23,6 +23,12 @@ QVariant InfoFacade::getClientVersion() const
 }
 
 
+QVariant InfoFacade::getClientVersionNumber() const
+{
+    GetClientVersionCommand command(_settings);
+    return _invoker.invoke(command, GetClientVersionCommand::Version_Only);
+}
+
 QVariant InfoFacade::getLatestReleaseInfo() const
 {
     GetLastReleaseInfoCommand command;

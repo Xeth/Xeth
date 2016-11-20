@@ -23,6 +23,7 @@ class InfoFacade : public QObject
         InfoFacade(const Settings &,  Invoker<Notifier> &);
         Q_INVOKABLE QString  getVersion() const;
         Q_INVOKABLE QVariant getClientVersion() const;
+        Q_INVOKABLE QVariant getClientVersionNumber() const;
         Q_INVOKABLE QVariant getLatestReleaseInfo() const;
         Q_INVOKABLE QObject * getLatestReleaseInfoAsync() const;
 
