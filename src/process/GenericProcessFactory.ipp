@@ -20,4 +20,14 @@ QProcess * GenericProcessFactory<ProcessInitializer>::Create()
 }
 
 
+template<class ProcessInitializer>
+QProcess * GenericProcessFactory<ProcessInitializer>::Create(const Settings &settings, const QStringList &args)
+{
+    QProcess *process = new QProcess;
+    ProcessInitializer::Initialize(*process, settings, args);
+    return process;
+}
+
+
+
 }
