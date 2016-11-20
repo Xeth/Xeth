@@ -41,7 +41,7 @@ QString GetClientVersionCommand::getParityVersion(QProcess *process, Format form
 
 QString GetClientVersionCommand::getParityVersion(QProcess *process, const QString &prepend) const
 {
-    return getClientVersion(process, "--version", "Parity/(.*)+\\n", prepend);
+    return getClientVersion(process, "--version", "Parity/v(.*)+\\n", prepend);
 }
 
 
