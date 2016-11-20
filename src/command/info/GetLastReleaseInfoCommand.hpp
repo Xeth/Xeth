@@ -20,6 +20,7 @@ class GetLastReleaseInfoCommand
 {
     public:
         QVariant operator()() const;
+        QJsonObject getJson() const;
 };
 
 }

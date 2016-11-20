@@ -4,6 +4,8 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <QString>
+#include <QtConcurrent>
+
 
 #include "../version.hpp"
 #include "command/info/GetClientVersionCommand.hpp"
@@ -20,16 +22,27 @@ class InfoFacade : public QObject
     Q_OBJECT
 
     public:
-        InfoFacade(const Settings &,  Invoker<Notifier> &);
+        InfoFacade(const Settings &, Notifier &, Invoker<Notifier> &);
         Q_INVOKABLE QString  getVersion() const;
         Q_INVOKABLE QVariant getClientVersion() const;
         Q_INVOKABLE QVariant getClientVersionNumber() const;
         Q_INVOKABLE QVariant getLatestReleaseInfo() const;
         Q_INVOKABLE QObject * getLatestReleaseInfoAsync() const;
 
+        void checkVersion();
+        void checkVersionAsync();
+
+    private:
+        bool isNewVersion(const QString &, const QString &);
+        void checkClientVersion(const QJsonObject &);
+        void checkXethVersion(const QJsonObject &);
+        qulonglong normalizeVersionNumber(const QString &);
+        void testVersion(const QString &, const QString &);
+
     private:
         const Settings &_settings;
-         Invoker<Notifier> &_invoker;
+        Notifier &_notifier;
+        Invoker<Notifier> &_invoker;
 };
 
 

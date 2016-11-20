@@ -26,7 +26,7 @@ Facade::Facade(const Settings &settings) :
     _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker),
     _network(_provider, _invoker),
     _blockchain(_provider, _notifier, _synchronizer, _invoker),
-    _info(_settings, _invoker)
+    _info(_settings, _notifier, _invoker)
 {
 
     Ethereum::Connector::NetworkParams netParams = settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net;
@@ -218,6 +218,7 @@ void Facade::setReady()
         _synchronizer.loadAddresses();
         _synchronizer.synchronize();
         _notifier.emitReady();
+        _info.checkVersionAsync();
     }
 }
 

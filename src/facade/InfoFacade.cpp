@@ -4,8 +4,9 @@
 namespace Xeth{
 
 
-InfoFacade::InfoFacade(const Settings &settings,  Invoker<Notifier>  &invoker) : 
+InfoFacade::InfoFacade(const Settings &settings, Notifier &notifier, Invoker<Notifier>  &invoker) : 
     _settings(settings),
+    _notifier(notifier),
     _invoker(invoker)
 {}
 
@@ -40,6 +41,108 @@ Q_INVOKABLE QObject * InfoFacade::getLatestReleaseInfoAsync() const
 {
     GetLastReleaseInfoCommand command;
     return _invoker.invokeAsync(command, NullCommandArguments());
+}
+
+void InfoFacade::checkVersionAsync()
+{
+     QtConcurrent::run(this, &InfoFacade::checkVersion);
+}
+
+void InfoFacade::checkVersion()
+{
+    GetLastReleaseInfoCommand cmd;
+    QJsonObject latestData  = cmd.getJson();
+
+    try
+    {
+        checkXethVersion(latestData);
+        checkClientVersion(latestData);
+    }
+    catch(...)
+    {}
+}
+
+
+void InfoFacade::checkClientVersion(const QJsonObject &latestData)
+{
+    GetClientVersionCommand cmd(_settings);
+    QString clientInfo = cmd();
+    QString clientName, clientVersion;
+    if(clientInfo.contains("Parity"))
+    {
+        clientName = "parity";
+        clientVersion = clientInfo.right(7);
+    }
+    else
+    {
+        clientName = "geth";
+        clientVersion = clientInfo.right(5);
+    }
+
+    QString latestVersion = latestData[clientName].toString();
+
+    if(isNewVersion(clientVersion, latestVersion))
+    {
+        clientName.append(" ");
+        _notifier.emitData("version", "client", clientName + latestVersion);
+    }
+
+}
+
+
+void InfoFacade::checkXethVersion(const QJsonObject &latestData)
+{
+    QString version = XETH_VERSION;
+    QString latestVersion = latestData["xeth"].toString();
+
+    if(isNewVersion(version, latestVersion))
+    {
+        _notifier.emitData("version", "xeth", latestVersion);
+    }
+}
+
+bool InfoFacade::isNewVersion(const QString &current, const QString &latest)
+{
+    return normalizeVersionNumber(current) < normalizeVersionNumber(latest);
+}
+
+
+qulonglong InfoFacade::normalizeVersionNumber(const QString &str)
+{
+    QString normalized;
+    int parsed = 0;
+    int digits = 0;
+
+    for(int i = 0; i < str.size(); i++)
+    {
+        if(str[i].isDigit())
+        {
+            normalized.append(str[i]);
+            digits ++;
+        }
+        else
+        {
+            for(int j=digits; j<4; j++)
+            {
+                normalized.append('0');
+            }
+
+            digits = 0;
+            parsed++;
+            if(parsed > 2)
+            {
+                break;
+            }
+        }
+    }
+    if(parsed < 3)
+    {
+        for(int j=digits; j<4; j++)
+        {
+            normalized.append('0');
+        }
+    }
+    return normalized.toULongLong();
 }
 
 }
