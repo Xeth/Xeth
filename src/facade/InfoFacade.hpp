@@ -24,6 +24,7 @@ class InfoFacade : public QObject
         Q_INVOKABLE QString  getVersion() const;
         Q_INVOKABLE QVariant getClientVersion() const;
         Q_INVOKABLE QVariant getLatestReleaseInfo() const;
+        Q_INVOKABLE QObject * getLatestReleaseInfoAsync() const;
 
     private:
         const Settings &_settings;

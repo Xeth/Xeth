@@ -30,4 +30,10 @@ QVariant InfoFacade::getLatestReleaseInfo() const
 }
 
 
+Q_INVOKABLE QObject * InfoFacade::getLatestReleaseInfoAsync() const
+{
+    GetLastReleaseInfoCommand command;
+    return _invoker.invokeAsync(command, NullCommandArguments());
+}
+
 }
