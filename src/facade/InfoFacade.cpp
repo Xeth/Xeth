@@ -82,12 +82,12 @@ void InfoFacade::checkClientVersion(const QJsonObject &latestData)
     if(clientInfo.contains("Parity"))
     {
         clientName = "parity";
-        clientVersion = clientInfo.right(7);
+        clientVersion = clientInfo.mid(7, clientInfo.size());
     }
     else
     {
         clientName = "geth";
-        clientVersion = clientInfo.right(5);
+        clientVersion = clientInfo.mid(5, clientInfo.size());
     }
 
     QString latestVersion = latestData[clientName].toString();
