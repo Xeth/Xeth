@@ -173,19 +173,20 @@ var MainWindowView = Backbone.View.extend({
         var newerVersion = this.models.info.getNewerXethVersion();
         if(newerVersion)
         {
-            alertNewerVersion(newerVersion);
+            this.alertNewerVersion("New version "+newerVersion+" available");
         }
         else
         {
             newerVersion = this.models.info.getNewerClientVersion();
             if(newerVersion)
             {
-                alertNewerVersion(newerVersion);
+                this.alertNewerVersion("New "+newerVersion+" available");
             }
         }
     },
-    alertNewerVersion:function(version){
-        this.$el.find(".ver").html("New version "+version+" available").addClass("new");
+
+    alertNewerVersion:function(msg){
+        this.$el.find(".ver").addClass("new").find(".newver").html(msg);
     }
 
 });
