@@ -4,8 +4,9 @@
 namespace Xeth{
 
 
-InfoFacade::InfoFacade(const Settings &settings) : 
-    _settings(settings)
+InfoFacade::InfoFacade(const Settings &settings,  Invoker<Notifier>  &invoker) : 
+    _settings(settings),
+    _invoker(invoker)
 {}
 
 
@@ -15,10 +16,18 @@ QString InfoFacade::getVersion() const
 }
 
 
-QString InfoFacade::getClientVersion() const
+QVariant InfoFacade::getClientVersion() const
 {
     GetClientVersionCommand command(_settings);
-    return command();
+    return _invoker.invoke(command, NullCommandArguments());
 }
+
+
+QVariant InfoFacade::getLatestReleaseInfo() const
+{
+    GetLastReleaseInfoCommand command;
+    return _invoker.invoke(command, NullCommandArguments());
+}
+
 
 }
