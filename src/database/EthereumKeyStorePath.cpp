@@ -34,31 +34,11 @@ EthereumKeyStorePath::EthereumKeyStorePath() :
 
 std::string EthereumKeyStorePath::GetDefaultPath(bool testnet)
 {
-    boost::filesystem::path path;
-#if  defined(__APPLE_OS__)
-    path = getenv("HOME");
-    path /= "Library/Ethereum";
-#elif defined(__LINUX_OS__)
-    path = getenv("HOME");
-    path /= ".ethereum";
-#elif defined(__WINDOWS_OS__)
-    char appdata[1024] = "";
-    if (SHGetSpecialFolderPathA(NULL, appdata, CSIDL_APPDATA, true))
-    {
-        path = appdata;
-    }
-    else
-    {
-        path = getenv("HOMEPATH");
-    }
-    path /= "Ethereum";
-#endif
     if(testnet)
     {
-        path /= "testnet";
+        return ApplicationPath::TestnetKeys().toStdString();
     }
-
-    return MakePath(path);
+    return ApplicationPath::Keys().toStdString();
 }
 
 

@@ -91,26 +91,7 @@ bool Directory::createIfNotExistsNoThrow()
 
 boost::filesystem::path Directory::GetDefaultPath()
 {
-    std::string path;
-#if  defined(__APPLE_OS__)
-    path = getenv("HOME");
-    path += "/Library/Xeth";
-#elif defined(__LINUX_OS__)
-    path = getenv("HOME");
-    path += "/.xeth";
-#elif defined(__WINDOWS_OS__)
-    char appdata[1024] = "";
-    if (SHGetSpecialFolderPathA(NULL, appdata, CSIDL_APPDATA, true))
-    {
-        path = appdata;
-    }
-    else
-    {
-        path = getenv("HOMEPATH");
-    }
-    path += "\\Xeth";
-#endif
-    return path;
+    return ApplicationPath::XethData().toStdString();
 }
 
 boost::filesystem::path Directory::ResolvePath(const char *path)

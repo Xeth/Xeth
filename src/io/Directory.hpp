@@ -10,6 +10,7 @@
 
 
 #include "conf/Settings.hpp"
+#include "ApplicationPath.hpp"
 
 namespace Xeth{
 
