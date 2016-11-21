@@ -21,6 +21,10 @@ var Config = Backbone.Model.extend({
         return false;
     },
 
+    updateEthereumClient:function(path){
+        return XETH_config.updateEthereumClient(path);
+    },
+
     observe: function(){
         XETH_config.Change.connect(this, this.triggerChange);
     },

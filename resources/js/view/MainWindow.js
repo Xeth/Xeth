@@ -122,6 +122,7 @@ var MainWindowView = Backbone.View.extend({
             el: this.$el.find("#page_settings"),
             router: this.router,
             config: this.models.config,
+            info: this.models.info,
             templates:this.templates
         });
         this.subpages.bitprofile = new BitprofilePageView
@@ -138,6 +139,17 @@ var MainWindowView = Backbone.View.extend({
             router:this.router,
             templates:this.templates
         });
+
+        this.subpages.update = new UpdatePageView
+        ({
+            filesystem: this.models.filesystem,
+            router: this.models.router,
+            info: this.models.info,
+            config: this.models.config,
+            templates: this.templates,
+            el: this.$el.find("#page_update")
+        });
+
         this.menu = new MenuView({el:this.$el.find(".mainNav")});
         this.menu.on("change", this.openPage);
         this.progress = new ProgressView({el:this.$el.find(".footer"), model:this.models.progress});

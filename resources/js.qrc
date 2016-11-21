@@ -61,5 +61,6 @@
         <file>js/view/BitprofileCreatePage.js</file>
         <file>js/view/BitprofileEditPage.js</file>
         <file>js/view/NetworkView.js</file>
+        <file>js/view/UpdatePage.js</file>
     </qresource>
 </RCC>

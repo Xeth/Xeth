@@ -20,5 +20,6 @@
         <file>template/import_bitprofile.tpl</file>
         <file>template/bitprofile_form.tpl</file>
         <file>template/view_bitprofile.tpl</file>
+        <file>template/update.tpl</file>
     </qresource>
 </RCC>

@@ -10,13 +10,14 @@ var SettingsPageView = SubPageView.extend({
             "changeCloseTray"
         );
         this.config = options.config;
+        this.info = options.info;
         SubPageView.prototype.initialize.call(this,options);
         this.template = options.templates.get("settings");
         this.router = options.router;
     },
 
     render:function(){
-        this.$el.html(this.template());
+        this.$el.html(this.template({info:this.info}));
         this.menu = new MenuView({el: this.$el.find(".btns")});
         this.menu.on("change", this.router.redirect);
         this.trayToggle = this.$el.find("#trayToggle");
