@@ -41,22 +41,18 @@ QVariant BrowseCommand::operator()(const QVariantMap &request)
 
 QVariant BrowseCommand::browseFile(const QString &caption, QString &filter)
 {
-    
-//    return QVariant::fromValue(QFileDialog::getOpenFileName(NULL, caption, QDir::currentPath(), extensions, &extensions));
     return openFileDialog(caption, QFileDialog::ExistingFiles, filter);
 }
 
 
 QVariant BrowseCommand::browseNewFile(const QString &caption)
 {
-//    return QVariant::fromValue(QFileDialog::getSaveFileName(NULL, caption));
     return openFileDialog(caption, QFileDialog::AnyFile, "");
 }
 
 
 QVariant BrowseCommand::browseDirectory(const QString &caption)
 {
-//    return QVariant::fromValue(QFileDialog::getExistingDirectory(NULL, caption));
     return openFileDialog(caption, QFileDialog::DirectoryOnly, "");
 }
 
@@ -66,7 +62,10 @@ QString BrowseCommand::openFileDialog(const QString &caption, const QFileDialog:
     QFileDialog dialog(NULL, caption);
     dialog.setViewMode(QFileDialog::Detail);
     dialog.setFileMode(mode);
-    dialog.setNameFilter(filter);
+    if(filter.size())
+    {
+        dialog.setNameFilter(filter);
+    }
     dialog.setWindowModality(Qt::ApplicationModal);
     dialog.activateWindow();
     dialog.setFocus();
