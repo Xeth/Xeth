@@ -54,23 +54,30 @@ Q_INVOKABLE QObject * InfoFacade::getLatestReleaseInfoAsync() const
     return _invoker.invokeAsync(command, NullCommandArguments());
 }
 
-void InfoFacade::checkVersionAsync()
+void InfoFacade::fetchLatestReleaseDataAsync()
 {
-     QtConcurrent::run(this, &InfoFacade::checkVersion);
+     QtConcurrent::run(this, &InfoFacade::fetchLatestReleaseData);
 }
 
-void InfoFacade::checkVersion()
+void InfoFacade::fetchLatestReleaseData()
 {
     GetLastReleaseInfoCommand cmd;
-    QJsonObject latestData  = cmd.getJson();
+    _latestData  = cmd.getJson();
 
     try
     {
-        checkXethVersion(latestData);
-        checkClientVersion(latestData);
+        update();
     }
     catch(...)
     {}
+}
+
+
+QVariant InfoFacade::update()
+{
+    checkXethVersion(_latestData);
+    checkClientVersion(_latestData);
+    return QVariant::fromValue(true);
 }
 
 
@@ -96,8 +103,12 @@ void InfoFacade::checkClientVersion(const QJsonObject &latestData)
     {
         clientName.append(" ");
         _newerClientVersion = clientName + latestVersion;
-        _notifier.emitData("version", "client", _newerClientVersion);
     }
+    else
+    {
+        _newerClientVersion = "";
+    }
+    _notifier.emitData("update", "client", _newerClientVersion);
 
 }
 
@@ -110,8 +121,12 @@ void InfoFacade::checkXethVersion(const QJsonObject &latestData)
     if(isNewVersion(version, latestVersion))
     {
         _newerXethVersion = latestVersion;
-        _notifier.emitData("version", "xeth", latestVersion);
     }
+    else
+    {
+        _newerXethVersion = "";
+    }
+    _notifier.emitData("update", "xeth", latestVersion);
 }
 
 bool InfoFacade::isNewVersion(const QString &current, const QString &latest)

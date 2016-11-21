@@ -218,7 +218,7 @@ void Facade::setReady()
         _synchronizer.loadAddresses();
         _synchronizer.synchronize();
         _notifier.emitReady();
-        _info.checkVersionAsync();
+        _info.fetchLatestReleaseDataAsync();
     }
 }
 

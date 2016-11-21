@@ -31,8 +31,10 @@ class InfoFacade : public QObject
         Q_INVOKABLE QString getNewerClientVersion() const;
         Q_INVOKABLE QString getNewerXethVersion() const;
 
-        void checkVersion();
-        void checkVersionAsync();
+        Q_INVOKABLE QVariant update();
+
+        void fetchLatestReleaseData();
+        void fetchLatestReleaseDataAsync();
 
     private:
         bool isNewVersion(const QString &, const QString &);
@@ -45,6 +47,7 @@ class InfoFacade : public QObject
         const Settings &_settings;
         Notifier &_notifier;
         Invoker<Notifier> &_invoker;
+        QJsonObject _latestData;
         QString _newerXethVersion;
         QString _newerClientVersion;
 };
