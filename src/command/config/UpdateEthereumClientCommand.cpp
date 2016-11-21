@@ -74,11 +74,20 @@ void UpdateEthereumClientCommand::backupIfExists(const QString &path, const QStr
 #endif
 
     QString backup = file;
-    file += ".backup";
+    backup += ".backup";
 
     qDebug()<<"file="<<file<<" backup : "<<backup;
 
-    QFile::copy(file, backup);
+    if (QFile::exists(file))
+    {
+        if(QFile::exists(backup))
+        {
+            QFile::remove(backup);
+        }
+        QFile::copy(file, backup);
+        QFile::remove(file);
+    }
+
 }
 
 
