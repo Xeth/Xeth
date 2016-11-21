@@ -3,7 +3,7 @@
     <input id="update_clientName" disabled type="text" />
     <div class="section_submit">
         <div class="submit half_right">
-            <a href="javascript:void(0);" id="update_submit" class="btnSubmit"><span class="txt">Import</span></a>
+            <a href="javascript:void(0);" id="update_submit" class="btnSubmit"><span class="txt">Update</span></a>
         </div>
     </div>
 </div>

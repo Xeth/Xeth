@@ -15,6 +15,7 @@ var UpdatePageView = SubPageView.extend({
         this.$el.find(".browse a").click(this.browse);
         this.$el.find(".btnSubmit").click(this.submit);
         this.fileInput = this.$el.find("#update_clientName");
+        this.fileInput.click(this.browse);
     },
 
     open:function(){
