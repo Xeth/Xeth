@@ -4,8 +4,9 @@
 namespace Xeth{
 
 
-ConfigFacade::ConfigFacade(DataBase &database, Invoker<Notifier> &invoker):
+ConfigFacade::ConfigFacade(DataBase &database, ProcessSupervisor &eth, Invoker<Notifier> &invoker):
     _database(database),
+    _eth(eth),
     _invoker(invoker)
 {
     QObject::connect(&database.getConfig(), &ConfigStore::Change, this, &ConfigFacade::emitChange);
@@ -34,7 +35,11 @@ QVariant ConfigFacade::set(const QVariantMap &request)
 
 
 
-
+QVariant ConfigFacade::updateEthereumClient(const QString &path)
+{
+    UpdateEthereumClientCommand command(_eth);
+    return _invoker.invoke(command, path);
+}
 
 
 }
