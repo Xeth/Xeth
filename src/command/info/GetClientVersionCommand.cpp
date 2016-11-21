@@ -1,6 +1,5 @@
 #include "GetClientVersionCommand.hpp"
 
-
 namespace Xeth{
 
 
@@ -41,7 +40,7 @@ QString GetClientVersionCommand::getParityVersion(QProcess *process, Format form
 
 QString GetClientVersionCommand::getParityVersion(QProcess *process, const QString &prepend) const
 {
-    return getClientVersion(process, "--version", "Parity/v(.*)+\\n", prepend);
+    return getClientVersion(process, "--version", ".*Parity/v(.+)\\n", prepend);
 }
 
 
@@ -69,6 +68,7 @@ QString GetClientVersionCommand::getClientVersion(QProcess *process, const QStri
     process->start();
     process->waitForFinished();
     QString output  = process->readAllStandardOutput();
+    output += process->readAllStandardError();
     QRegExp regexp = QRegExp(pattern);
     regexp.setMinimal(true);
     regexp.indexIn(output);
