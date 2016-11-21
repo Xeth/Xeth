@@ -7,7 +7,8 @@ var SettingsPageView = SubPageView.extend({
             "updateCloseTray",
             "changeShowTray",
             "changeMinimizeTray",
-            "changeCloseTray"
+            "changeCloseTray",
+            "updateClientVersion"
         );
         this.config = options.config;
         this.info = options.info;
@@ -17,7 +18,9 @@ var SettingsPageView = SubPageView.extend({
     },
 
     render:function(){
-        this.$el.html(this.template({info:this.info}));
+        this.$el.html(this.template());
+        this.updateClientVersion();
+        this.info.on("change", this.updateClientVersion);
         this.menu = new MenuView({el: this.$el.find(".btns")});
         this.menu.on("change", this.router.redirect);
         this.trayToggle = this.$el.find("#trayToggle");
@@ -39,6 +42,11 @@ var SettingsPageView = SubPageView.extend({
         this.trayClose.on("change", this.changeCloseTray);
         
         this.menu.render();
+    },
+
+    updateClientVersion:function(){
+        var version = this.info.get("client");
+        this.$el.find(".btns .ver").html(version.length > 20 ? (version.substr(0, 20)+"..."):version);
     },
 
     updateShowTray:function(){

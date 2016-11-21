@@ -33,6 +33,7 @@
         <file>js/model/ProfileResolver.js</file>
         <file>js/model/ProfileValidator.js</file>
         <file>js/model/Network.js</file>
+        <file>js/model/AppInfo.js</file>
 
         <file>js/TemplateRegistry.js</file>
         <file>js/view/utils.js</file>

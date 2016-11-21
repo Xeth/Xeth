@@ -20,11 +20,7 @@
         <label for="trayClose">close to tray</label>
     </div>
     <div class="section_client btns">
-        <a href="javascript:void(0);" rel="update" class="btn">Change Ethereum Client <span class="ver">
-        <%
-            var version = info.getClientVersion();
-            print(version.length > 20 ? (version.substr(0, 20)+"..."):version);
-        %></span></a>
+        <a href="javascript:void(0);" rel="update" class="btn">Change Ethereum Client <span class="ver"></span></a>
     </div>
 </div>
 

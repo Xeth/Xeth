@@ -64,6 +64,7 @@ window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + e
 <script type="text/javascript" src="js/model/ProfileResolver.js"></script>
 <script type="text/javascript" src="js/model/ProfileValidator.js"></script>
 <script type="text/javascript" src="js/model/Network.js"></script>
+<script type="text/javascript" src="js/model/AppInfo.js"></script>
 
 <script type="text/javascript" src="js/TemplateRegistry.js"></script>
 <script type="text/javascript" src="js/view/SubPageView.js"></script>
@@ -108,6 +109,7 @@ try{
     var registrars = new RegistrarCollection;
     var resolver = new ProfileResolver;
     var net = new Network;
+    var appInfo = new AppInfo({events:events});
 
     var view = new MainWindowView
     ({
@@ -143,6 +145,8 @@ try{
         registrars.fetch();
         net.fetch();
         net.observe();
+        appInfo.update();
+        appInfo.observe();
 
         view.bindModels
         ({
@@ -150,7 +154,7 @@ try{
             clipboard: XETH_clipboard,
             templates: XETH_templates,
             config: config,
-            info: XETH_info
+            info: appInfo
         });
 
         view.render();

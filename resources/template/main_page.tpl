@@ -39,7 +39,7 @@
         </div>
         <div class="about">
             <span class="ver new1">
-                <%=info.getVersion()%>
+                <%=info.get('version')%>
                 <a href="#" class="newver">New version available</a>
             </span>
             <span>&copy; 2016 XETH (GPLv2)</span>

@@ -143,7 +143,7 @@ var MainWindowView = Backbone.View.extend({
         this.subpages.update = new UpdatePageView
         ({
             filesystem: this.models.filesystem,
-            router: this.models.router,
+            router: this.router,
             info: this.models.info,
             config: this.models.config,
             templates: this.templates,
@@ -163,7 +163,7 @@ var MainWindowView = Backbone.View.extend({
 
         this.show();
         this.checkVersion();
-        this.events.onData("version", this.checkVersion);
+        this.models.info.on("change", this.checkVersion);
 
         }catch(e){alert(e);}
     },
@@ -182,23 +182,35 @@ var MainWindowView = Backbone.View.extend({
     },
 
     checkVersion: function(){
-        var newerVersion = this.models.info.getNewerXethVersion();
-        if(newerVersion)
+        var info = this.models.info;
+        if(info.get("xethUpdate"))
         {
-            this.alertNewerVersion("New version "+newerVersion+" available");
+            this.alertNewerVersion("New version is available");
         }
         else
         {
-            newerVersion = this.models.info.getNewerClientVersion();
-            if(newerVersion)
+            if(info.get("clientUpdate"))
             {
-                this.alertNewerVersion("New "+newerVersion+" available");
+                this.alertNewerVersion("New "+info.get("latestClient")+" available");
+            }
+            else
+            {
+                this.alertNewerVersion("");
             }
         }
     },
 
     alertNewerVersion:function(msg){
-        this.$el.find(".ver").addClass("new").find(".newver").html(msg);
+        var box = this.$el.find(".ver");
+        box.find(".newver").html(msg);
+        if(msg)
+        {
+            box.addClass("new");
+        }
+        else
+        {
+            box.removeClass("new");
+        }
     }
 
 });

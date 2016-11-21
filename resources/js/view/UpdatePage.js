@@ -38,12 +38,11 @@ var UpdatePageView = SubPageView.extend({
     },
 
     updateClient: function(filename){
+        this.$el.find(".formpage").removeClass("waiting");
         if(this.config.updateEthereumClient(filename)){
             notifySuccess("client updated");
+            this.info.update();
             this.router.redirect("settings");
-        }
-        else{
-            this.$el.find(".formpage").removeClass("waiting")
         }
         return true;
     }
