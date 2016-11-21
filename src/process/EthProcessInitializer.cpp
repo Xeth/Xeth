@@ -13,15 +13,13 @@ void EthProcessInitializer::Initialize(QProcess &process)
 
 QString EthProcessInitializer::GetVendorPath(const QString &rootPath, const char *name)
 {
-
     QString path = rootPath;
-
 #if defined(__WINDOWS_OS__)
-    path.append("\\vendor\\bin\\");
+    path.append("\\");
     path.append(name);
     path.append(".exe");
 #else
-    path.append("/vendor/bin/");
+    path.append("/");
     path.append(name);
 #endif
 
@@ -31,8 +29,13 @@ QString EthProcessInitializer::GetVendorPath(const QString &rootPath, const char
 
 QString EthProcessInitializer::GetVendorPath(const char *name)
 {
-    QString rootPath = QCoreApplication::applicationDirPath();
-    return GetVendorPath(rootPath, name);
+    return GetVendorPath(ApplicationPath::Vendors(), name);
+}
+
+
+QString EthProcessInitializer::GetLocalVendorPath(const char *name)
+{
+    return GetVendorPath(ApplicationPath::LocalVendors(), name);
 }
 
 
@@ -45,15 +48,27 @@ bool EthProcessInitializer::FileExists(const QString &path)
 
 QString EthProcessInitializer::GetDefaultCommand()
 {
-    QString rootPath = QCoreApplication::applicationDirPath();
-    QString parityPath = GetVendorPath(rootPath, "parity");
+    QString parityPath = GetLocalVendorPath("parity");
 
     if(FileExists(parityPath))
     {
         return parityPath;
     }
 
-    QString gethPath = GetVendorPath(rootPath, "geth");
+    parityPath = GetVendorPath("parity");
+    if(FileExists(parityPath))
+    {
+        return parityPath;
+    }
+
+
+    QString gethPath = GetLocalVendorPath("geth");
+    if(FileExists(gethPath))
+    {
+        return gethPath;
+    }
+
+    gethPath = GetVendorPath("geth");
     if(FileExists(gethPath))
     {
         return gethPath;

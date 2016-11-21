@@ -7,6 +7,7 @@
 #include <QFileInfo>
 
 #include "conf/Settings.hpp"
+#include "io/ApplicationPath.hpp"
 
 
 namespace Xeth{
@@ -27,6 +28,7 @@ class EthProcessInitializer
 
     private:
         static QString GetVendorPath(const char *name);
+        static QString GetLocalVendorPath(const char *name);
         static QString GetVendorPath(const QString &root, const char *name);
         static bool FileExists(const QString &path);
         static void SetEnvironment(QProcess &process);
