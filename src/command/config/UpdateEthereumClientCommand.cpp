@@ -1,12 +1,13 @@
 #include "UpdateEthereumClientCommand.hpp"
-
+#include <QDebug>
 
 
 namespace Xeth{
 
 
-UpdateEthereumClientCommand::UpdateEthereumClientCommand(ProcessSupervisor &client) : 
-    _client(client)
+UpdateEthereumClientCommand::UpdateEthereumClientCommand(ProcessSupervisor &client, const Settings &settings) : 
+    _client(client),
+    _settings(settings)
 {}
 
 
@@ -32,15 +33,30 @@ QVariant UpdateEthereumClientCommand::operator()(const QString &path)
     backupIfExists(vendors, "parity");
     backupIfExists(vendors, "geth");
 
+    createIfNotExists(vendors);
+
+
+    qDebug()<<"copy "<<path<<" to "<<makeBinPath(vendors, info);
 
     if(!QFile::copy(path, makeBinPath(vendors, info)))
     {
         throw std::runtime_error("failed to copy file");
     }
 
-    _client.start();
+    _client.attach(EthProcessFactory::Create(_settings));
     return QVariant::fromValue(true);
 }
+
+
+void UpdateEthereumClientCommand::createIfNotExists(const QString &path)
+{
+    boost::filesystem::path p = path.toStdString();
+    if(!boost::filesystem::exists(p))
+    {
+        boost::filesystem::create_directories(p);
+    }
+}
+
 
 void UpdateEthereumClientCommand::backupIfExists(const QString &path, const QString &name)
 {
@@ -59,6 +75,8 @@ void UpdateEthereumClientCommand::backupIfExists(const QString &path, const QStr
 
     QString backup = file;
     file += ".backup";
+
+    qDebug()<<"file="<<file<<" backup : "<<backup;
 
     QFile::copy(file, backup);
 }
@@ -80,13 +98,7 @@ QString UpdateEthereumClientCommand::makeBinPath(const QString &path, const QFil
 
 QString UpdateEthereumClientCommand::getVendorsPath()
 {
-    QString path = QCoreApplication::applicationDirPath();
-#if defined(__WINDOWS_OS__)
-    path.append("\\vendor\\bin\\");
-#else
-    path.append("/vendor/bin/");
-#endif
-    return path;
+    return ApplicationPath::LocalVendors();
 }
 
 

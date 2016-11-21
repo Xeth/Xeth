@@ -23,7 +23,7 @@ class ConfigFacade : public QObject
     Q_OBJECT
 
     public:
-        ConfigFacade(DataBase &, ProcessSupervisor &, Invoker<Notifier> &);
+        ConfigFacade(DataBase &, ProcessSupervisor &, const Settings &, Invoker<Notifier> &);
 
         Q_INVOKABLE QVariant set(const QVariantMap &);
         Q_INVOKABLE QVariant get(const QString &);
@@ -38,6 +38,7 @@ class ConfigFacade : public QObject
     private:
         DataBase &_database;
         ProcessSupervisor &_eth;
+        const Settings &_settings;
         Invoker<Notifier> &_invoker;
 };
 

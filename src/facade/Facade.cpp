@@ -18,7 +18,7 @@ Facade::Facade(const Settings &settings) :
     _invoker(_notifier),
     _wallet(settings, _provider, _database, _notifier, _synchronizer, _invoker),
     _addressbook(_database, _invoker),
-    _config(_database, _eth, _invoker),
+    _config(_database, _eth, _settings, _invoker),
     _converter(_invoker),
     _progress(_synchronizer, _invoker),
     _clipboard(_invoker),
