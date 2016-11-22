@@ -5,8 +5,9 @@
 namespace Xeth{
 
 
-UpdateEthereumClientCommand::UpdateEthereumClientCommand(ProcessSupervisor &client, const Settings &settings) : 
+UpdateEthereumClientCommand::UpdateEthereumClientCommand(ProcessSupervisor &client, Synchronizer &synchronizer, const Settings &settings) : 
     _client(client),
+    _synchronizer(synchronizer),
     _settings(settings)
 {}
 
@@ -26,6 +27,7 @@ QVariant UpdateEthereumClientCommand::operator()(const QString &path)
         throw std::runtime_error("client not known, please use parity or geth");
     }
 
+    _synchronizer.stop();
     _client.stop();
 
     QString vendors = getVendorsPath();
@@ -44,6 +46,8 @@ QVariant UpdateEthereumClientCommand::operator()(const QString &path)
     }
 
     _client.attach(EthProcessFactory::Create(_settings));
+    _client.start();
+    _synchronizer.synchronize();
     return QVariant::fromValue(true);
 }
 

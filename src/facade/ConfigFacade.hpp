@@ -7,6 +7,7 @@
 
 #include "database/DataBase.hpp"
 #include "process/ProcessSupervisor.hpp"
+#include "synchronizer/Synchronizer.hpp"
 #include "Notifier.hpp"
 
 #include "command/Invoker.hpp"
@@ -23,7 +24,7 @@ class ConfigFacade : public QObject
     Q_OBJECT
 
     public:
-        ConfigFacade(DataBase &, ProcessSupervisor &, const Settings &, Invoker<Notifier> &);
+        ConfigFacade(DataBase &, ProcessSupervisor &, Synchronizer &, const Settings &, Invoker<Notifier> &);
 
         Q_INVOKABLE QVariant set(const QVariantMap &);
         Q_INVOKABLE QVariant get(const QString &);
@@ -38,6 +39,7 @@ class ConfigFacade : public QObject
     private:
         DataBase &_database;
         ProcessSupervisor &_eth;
+        Synchronizer &_synchronizer;
         const Settings &_settings;
         Invoker<Notifier> &_invoker;
 };

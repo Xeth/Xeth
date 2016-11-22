@@ -13,6 +13,7 @@
 #include "io/ApplicationPath.hpp"
 #include "process/ProcessSupervisor.hpp"
 #include "process/EthProcessFactory.hpp"
+#include "synchronizer/Synchronizer.hpp"
 
 
 
@@ -22,7 +23,7 @@ namespace Xeth{
 class UpdateEthereumClientCommand
 {
     public:
-        UpdateEthereumClientCommand(ProcessSupervisor &, const Settings &);
+        UpdateEthereumClientCommand(ProcessSupervisor &, Synchronizer &, const Settings &);
         QVariant operator()(const QString &);
 
     private:
@@ -33,6 +34,7 @@ class UpdateEthereumClientCommand
 
     private:
         ProcessSupervisor &_client;
+        Synchronizer &_synchronizer;
         const Settings &_settings;
 };
 
