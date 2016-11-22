@@ -21,23 +21,26 @@ void ProcessErrorHandler::operator()()
 
 void ProcessErrorHandler::operator()(const char *error)
 {
-    time_t now = time(NULL);
-    if((now - _lastErrorTime) < 100)
+    if(_process.isActive())
     {
-        if(++_errors > _limit)
+        time_t now = time(NULL);
+        if((now - _lastErrorTime) < 100)
         {
-            qDebug()<<error;
-            throw std::runtime_error(error);
+            if(++_errors > _limit)
+            {
+                qDebug()<<error;
+                throw std::runtime_error(error);
+            }
         }
-    }
-    else
-    {
-        _errors = 0; //reseting error counter
-    }
+        else
+        {
+            _errors = 0; //reseting error counter
+        }
 
-    _lastErrorTime =  now;
-    qDebug()<<"restarting "<<_process.getProgram()<<" process";
-    _process.restart();
+        _lastErrorTime =  now;
+        qDebug()<<"restarting "<<_process.getProgram()<<" process";
+        _process.restart();
+    }
 }
 
 
