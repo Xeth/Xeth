@@ -55,17 +55,16 @@ QString EthProcessInitializer::GetDefaultCommand()
         return parityPath;
     }
 
-    parityPath = GetVendorPath("parity");
-    if(FileExists(parityPath))
-    {
-        return parityPath;
-    }
-
-
     QString gethPath = GetLocalVendorPath("geth");
     if(FileExists(gethPath))
     {
         return gethPath;
+    }
+
+    parityPath = GetVendorPath("parity");
+    if(FileExists(parityPath))
+    {
+        return parityPath;
     }
 
     gethPath = GetVendorPath("geth");
