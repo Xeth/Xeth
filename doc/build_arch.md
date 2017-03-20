@@ -2,7 +2,7 @@
 install dependecies
 
 ```
-sudo pacman -Suy boost jsoncpp cmake make crypto++ qt5-webkit
+sudo pacman -Suy boost jsoncpp cmake make crypto++ qt5-webkit leveldb
 ```
 
 
