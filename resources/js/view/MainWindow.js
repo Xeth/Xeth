@@ -8,7 +8,7 @@ var PageRouter = function(master){
 
 var MainWindowView = Backbone.View.extend({
     el: "body",
-
+    noThrow:true,
     initialize:function(options){
         _(this).bindAll("openPage","show","loaded", "notifyError", "checkVersion");
         this.models = {};
@@ -42,8 +42,7 @@ var MainWindowView = Backbone.View.extend({
         }
     },
 
-    render: function(){
-        try{
+    _render:function(){
         this.$el.prepend(this.templates.get("main_page")({info:this.models.info}));
 
         this.models.events.onError(this.notifyError);
@@ -165,11 +164,24 @@ var MainWindowView = Backbone.View.extend({
         this.checkVersion();
         this.models.info.on("change", this.checkVersion);
 
-        }catch(e){alert(e);}
     },
+
+    render: function(){
+        if(this.noThrow){
+            try{
+                this._render();
+            }catch(e){
+                alert(e);
+            }
+        }else{
+            this._render();
+        }
+    },
+
     notifyError:function(event){
         notifyError(event.message);
     },
+
     loaded:function(){
         this.$el.addClass("loaded");
         this.$el.find("#page_splash").addClass("off");
