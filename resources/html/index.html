@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>XETH</title>
+
+<script type="text/javascript">
+window.onerror = function(errorMessage, errorUrl, errorLine){alert('Error: ' + errorMessage + ' Script: ' + errorUrl + ' Line: ' + errorLine);}
+</script>
+<!--styles are included by cmake process-->
+</head>
+
+<body>
+<div id="page_splash" class="page active">
+    <div class="logo">
+        Loading...
+    </div>
+</div>
+</body>
+<!--scripts are included by cmake process-->
+<script type="text/javascript">
+try{
+
+    var transactions = new TransactionCollection;
+    var addressbook = new AddressBook;
+    var progress = new Progress;
+    var events = new EventListener;
+    var profiles = new ProfileCollection([], {events: events});
+    var accounts = new AccountCollection([], {profiles:profiles});
+    var registrars = new RegistrarCollection;
+    var resolver = new ProfileResolver;
+    var net = new Network;
+    var appInfo = new AppInfo({events:events});
+
+    var view = new MainWindowView
+    ({
+        accounts:accounts,
+        transactions:transactions,
+        addressbook:addressbook,
+        progress:progress,
+        addressValidator: new AddressValidator,
+        fee: new FeeEstimator,
+        events: events,
+        profiles: profiles,
+        registrars: registrars,
+        resolver: resolver,
+        profileValidator: new ProfileValidator,
+        network: net
+    });
+
+    XETH_event.Ready.connect(function(){
+        var config = new Config;
+        events.listen();
+        profiles.fetch();
+        profiles.observe();
+        accounts.fetch();
+        accounts.observe();
+        transactions.fetch();
+        transactions.observe();
+        addressbook.fetch();
+        addressbook.resolve(transactions);
+        addressbook.observe();
+        progress.fetch();
+        progress.observe();
+        config.observe();
+        registrars.fetch();
+        net.fetch();
+        net.observe();
+        appInfo.update();
+        appInfo.observe();
+
+        view.bindModels
+        ({
+            filesystem: XETH_filesystem,
+            clipboard: XETH_clipboard,
+            templates: XETH_templates,
+            config: config,
+            info: appInfo
+        });
+
+        view.render();
+    });
+
+}
+catch(e)
+{
+    alert("exception : "+e);
+}
+</script>
+</html>
+

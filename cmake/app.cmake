@@ -56,54 +56,6 @@ include_directories(
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
-function(PARSE_RESOURCES RESOURCE_FILES DIR QRC PARSER)
-
-    file(GLOB DIR_PATH "resources/${DIR}")
-    file(GLOB QRC_PATH "resources/${QRC}.qrc")
-
-    list(REMOVE_ITEM ${RESOURCE_FILES} ${DIR_PATH})
-    list(REMOVE_ITEM ${RESOURCE_FILES} ${QRC_PATH})
-
-    file(GLOB_RECURSE FILES "${PROJECT_SOURCE_DIR}/resources/${DIR}/*")
-
-    set(GENERATED_FILES "")
-
-    foreach(FILE_PATH ${FILES})
-        string(REPLACE ${DIR_PATH} "" FILE_NAME "${FILE_PATH}")
-        set(PARSED_NAME ${PROJECT_BINARY_DIR}/resources/${DIR}${FILE_NAME})
-        list(APPEND GENERATED_FILES ${PARSED_NAME})
-    endforeach()
-
-    set(OUT_DIR ${PROJECT_BINARY_DIR}/resources/${DIR})
-    set(OUT_QRC ${PROJECT_BINARY_DIR}/resources/${QRC}.qrc)
-    file(MAKE_DIRECTORY ${OUT_DIR})
-    set(PARSED_CPP ${PROJECT_BINARY_DIR}/${DIR}.cxx)
-    set_source_files_properties(${GENERATED_FILES} PROPERTIES GENERATED TRUE)
-    set_source_files_properties(${PARSED_CPP} PROPERTIES GENERATED TRUE)
-
-    add_custom_target(parse_${DIR}_files COMMAND ${PARSER} ${DIR_PATH} ${OUT_DIR} DEPENDS ${PARSER})
-    add_custom_target(parse_${DIR}_qrc COMMAND  ${CMAKE_COMMAND} -E copy ${QRC_PATH} ${CMAKE_BINARY_DIR}/resources DEPENDS parse_${DIR}_files)
-    add_custom_target(parse_${DIR} COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name ${QRC} -o ${PARSED_CPP} ${OUT_QRC} DEPENDS parse_${DIR}_qrc)
-
-endfunction(PARSE_RESOURCES)
-
-function(COMPILE_RESOURCE RESOURCE)
-    set(RESOURCE_CPP ${PROJECT_BINARY_DIR}/${RESOURCE}.cxx)
-    set_source_files_properties(${RESOURCE_CPP} PROPERTIES GENERATED TRUE)
-    add_custom_target(compile_${RESOURCE} COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} -name ${RESOURCE} -o ${RESOURCE_CPP} ${PROJECT_SOURCE_DIR}/resources/${RESOURCE}.qrc)
-endfunction(COMPILE_RESOURCE)
-
-file(GLOB RESOURCE_FILES "resources/*")
-
-PARSE_RESOURCES(RESOURCE_FILES template template compiler)
-PARSE_RESOURCES(RESOURCE_FILES js js jsmin )
-PARSE_RESOURCES(RESOURCE_FILES CSS css cssmin)
-COMPILE_RESOURCE(html)
-COMPILE_RESOURCE(icon)
-
-file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
-file(COPY ${PROJECT_SOURCE_DIR}/resources/icon DESTINATION ${PROJECT_BINARY_DIR})
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")

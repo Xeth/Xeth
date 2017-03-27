@@ -6,12 +6,12 @@
 
 @font-face {
     font-family: Regular;
-    src: local(Regular), url('../fonts/Ubuntu-Regular.ttf') format('opentype');
+    src: local(Regular), url('../../fonts/Ubuntu-Regular.ttf') format('opentype');
 }
 
 @font-face {
     font-family: Bold;
-    src: local(Regular), url('../fonts/Ubuntu-Bold.ttf') format('opentype');
+    src: local(Regular), url('../../fonts/Ubuntu-Bold.ttf') format('opentype');
 }
 
 html, body {
@@ -26,7 +26,7 @@ html, body {
 }
 
 body {
-	background-image: url(../img/bg2-01.png);
+	background-image: url(../../img/bg2-01.png);
 	background-repeat: no-repeat;
 	background-position: right bottom;
 	
@@ -76,7 +76,7 @@ p {
 }
 
 .bitprofileIcon {
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: center -85px;
 	display: inline-block;
@@ -266,7 +266,7 @@ h1:after {
 	position:absolute;
 	margin: 11px 0px 0px -25px;
 	background-position: center -135px;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 }
 
@@ -277,7 +277,7 @@ input.search {
 .ui-selectmenu-button .ui-selectmenu-text,
 .input .select {
 	background-position: right -425px; /*-104px;*/
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	display: block;
 	color: #778283;
@@ -374,7 +374,7 @@ input[type="number"]:focus {
 }
 .txtBalance .dec:after {
 	content: "eth";
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: left -39px;
 	display: inline-block;
@@ -637,7 +637,7 @@ input[type="number"]:focus {
 	margin-left: 2px;
 	text-indent: 20px;
 	background: none;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 }

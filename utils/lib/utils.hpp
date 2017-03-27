@@ -9,3 +9,4 @@
 QString MakePath(const QString &);
 void MakeDirectory(const QString &);
 void WriteFile(const QString &path, const QString &content);
+QString GetFileContent(const QString &path);

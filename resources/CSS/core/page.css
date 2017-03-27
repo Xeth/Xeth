@@ -46,7 +46,7 @@
 	cursor: pointer;
 	text-transform: uppercase;
 	
-	background-image: url(../img/menu_icons-01.png);
+	background-image: url(../../img/menu_icons-01.png);
 	background-repeat: no-repeat;
 	background-position: 10px -350px;
 }
@@ -99,7 +99,7 @@
 .nav li {
 	display: block;
 	height: 60px;
-	background-image: url(../img/menu_bg-01.png);
+	background-image: url(../../img/menu_bg-01.png);
 	background-position: 0px 0px;	
 	background-repeat: repeat-y;
 	transition: background-color 100ms ease-in-out, margin-left 100ms ease-in-out;
@@ -109,7 +109,7 @@
 }
 
 .subNav .nav li {
-	background-image: url(../img/submenu_bg-01.png);
+	background-image: url(../../img/submenu_bg-01.png);
 }
 
 .nav li a .new:before {
@@ -164,7 +164,7 @@
 	color: #778283;
 	text-transform: uppercase;
 	background-color: rgba(119, 130, 131, 0);
-	background-image: url(../img/menu_icons-01.png);
+	background-image: url(../../img/menu_icons-01.png);
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 	transition: background-color 600ms ease-in-out, margin-left 100ms ease-in-out;
@@ -311,7 +311,7 @@
 	width: 30px;
 	height: 30px;
 	margin: 0px 10px;
-	background-image: url(../img/footer_icons-01.png);
+	background-image: url(../../img/footer_icons-01.png);
 	background-repeat: no-repeat;
 	background-position: 0px 0px;
 }
@@ -406,7 +406,7 @@
 	width: 450px;
 	margin: 25% auto 0 auto;
 	margin-top: calc(30% - 50px);
-	background-image: url(../img/logo-01.png);
+	background-image: url(../../img/logo-01.png);
 	background-repeat: no-repeat;
 	background-position: center top;
 	padding-top: 80px;
@@ -463,7 +463,7 @@
 
 .page .head .title.icon {
 	padding-left: 30px;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: 0px -285px;
 }
@@ -578,7 +578,7 @@
 
 .listItem .header.icon .title,
 .listItem .header.icon:before {
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: left;
 	height: 16px;
@@ -667,7 +667,7 @@
 	margin-right: -9px;
 }
 .listItem .controls .btn {
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 	display: inline-block;
@@ -723,7 +723,7 @@
 	width: 16px;
 	height: 16px;
 	margin-right: 5px;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 	background-position-y: -310px;
@@ -797,7 +797,7 @@
 	position: absolute;
 	height: 16px;
 	width: 16px;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: center -407px;
 	bottom: 10px;

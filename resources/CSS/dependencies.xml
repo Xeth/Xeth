@@ -1,0 +1,9 @@
+<dependencies>
+    <target file="page.css">
+        <dependency>main.css</dependency>
+    </target>
+    <target file="form.css">
+        <dependency>main.css</dependency>
+        <dependency>page.css</dependency>
+    </target>
+</dependencies>

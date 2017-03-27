@@ -59,7 +59,7 @@
 	width: 16px;
 	height: 16px;
 	margin: 11px 5px 0 0;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 }
@@ -113,7 +113,7 @@
 	width: 8px;
 	height: 8px;
 	margin: 1px 3px 0 0;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 }
@@ -163,7 +163,7 @@
 }
 
 .page .formpage .group .btn {
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position-x: center;
 	display: block;
@@ -278,7 +278,7 @@
 
 .page .input.amount:after {
 	content: "eth";
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: left -40px;
 	display: block;
@@ -307,7 +307,7 @@
 
 .page .input.bitprofileID:after {
 	content: "";
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: left -60px;
 	display: block;
@@ -351,7 +351,7 @@
 
 .page .input.date:after {
 	content: "";
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
 	background-position: left -879px;
 	display: block;
@@ -368,7 +368,7 @@
 	text-align:center;
 	font-size: 1.4rem;
 	color: #778283;
-	background-image: url(../img/icons-01.png);
+	background-image: url(../../img/icons-01.png);
 	background-repeat: repeat-x;
 	background-position-x: center;
 	background-position-y: -525px;

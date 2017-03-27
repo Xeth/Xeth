@@ -1,10 +1,11 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent Xml REQUIRED)
 
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
     ${Qt5Concurrent_INCLUDE_DIRS}
+    ${Qt5Xml_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/utils
 )
 
@@ -17,6 +18,7 @@ add_library(utils-lib STATIC ${UTILS_SOURCES})
 
 set(UTILS_LIBRARIES 
     utils-lib
+    ${Qt5Xml_LIBRARIES}
     ${Qt5WebKitWidgets_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5WebKit_LIBRARIES}

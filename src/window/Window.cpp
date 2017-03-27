@@ -32,7 +32,7 @@ Window::Window(Facade &facade) :
     QObject::connect(page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjects()));
     setContextMenuPolicy(Qt::NoContextMenu);
     setFixedSize(960, 600);
-    setUrl("qrc:/index.html");
+    setUrl("qrc:/html/index.html");
     _trayIcon->hide();
     setIcon(":/icon/ethereum.ico");
 

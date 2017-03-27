@@ -27,3 +27,16 @@ void WriteFile(const QString &path, const QString &content)
     stream<<content;
     file.close();
 }
+
+
+QString GetFileContent(const QString &path)
+{
+    QFile file(MakePath(path));
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        qDebug()<<"failed to open file: "<<path;
+    }
+
+    QTextStream stream(&file);
+    return stream.readAll();
+}

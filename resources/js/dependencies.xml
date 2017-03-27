@@ -1,0 +1,24 @@
+<dependencies>
+    <target file="backbone.min.js">
+        <dependency>underscore.min.js</dependency>
+        <dependency>jquery.min.js</dependency>
+    </target>
+    <target file="jquery-ui.min.js">
+        <dependency>jquery.min.js</dependency>
+    </target>
+    <target file="cryptojs-sha256.min.js">
+        <dependency>cryptojs.min.js</dependency>
+    </target>
+    <target file="securerandom.min.js">
+        <dependency>cryptojs-sha256.min.js</dependency>
+    </target>
+    <target file="ninja-seeder.min.js">
+        <dependency>securerandom.min.js</dependency>
+    </target>
+    <target file="jquery.mCustomScrollbar.min.js">
+        <dependency>jquery.mousewheel.min.js</dependency>
+    </target>
+    <target file="daterangepicker.min.js">
+        <dependency>moment.min.js</dependency>
+    </target>
+</dependencies>

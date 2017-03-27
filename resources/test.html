@@ -72,6 +72,8 @@
 <script type="text/javascript" src="js/view/MenuView.js"></script>
 <script type="text/javascript" src="js/view/FeeSlider.js"></script>
 <script type="text/javascript" src="js/view/SettingsPage.js"></script>
+<script type="text/javascript" src="js/view/UpdatePage.js"></script>
+<script type="text/javascript" src="js/view/NetworkPage.js"></script>
 <script type="text/javascript" src="js/view/MainWindow.js"></script>
 <script type="text/javascript" src="simulator/model/Account.js"></script>
 <script type="text/javascript" src="simulator/model/Transaction.js"></script>
@@ -85,11 +87,13 @@
 <script type="text/javascript" src="simulator/model/Fee.js"></script>
 <script type="text/javascript" src="simulator/model/Config.js"></script>
 <script type="text/javascript" src="simulator/model/Registrar.js"></script>
+<script type="text/javascript" src="simulator/model/AppInfo.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     
     var templates = new TemplateRegistry();
     templates.load();
+    var events = new EventListener;
     var accounts = new AccountCollectionSimulator;
     var addressbook = new AddressBookSimulator;
     var transactions = new TransactionCollectionSimulator;
@@ -97,6 +101,7 @@ $(document).ready(function(){
     var addressValidator = new AddressValidator;
     var filesystem = new FileSystem();
     var clipboard = new ClipBoard();
+    var info = new AppInfo({events:events});
     for(var i=0; i<1000; i++){
         	transactions.add({category:"Sent", from: "0x"+i+"fc6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-i*1000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
     }
@@ -135,7 +140,7 @@ $(document).ready(function(){
 	
     setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 15000);
 	
-    var view = new MainWindowView({templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: new EventListener, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator, registrars:new RegistrarCollectionSimulator});
+    var view = new MainWindowView({noThrow: false, templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: events, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator, registrars:new RegistrarCollectionSimulator, info:info});
     setTimeout(function(){
         view.render();
     },1000);

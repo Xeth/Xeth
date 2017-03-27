@@ -12,9 +12,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 set(SKIP_LIBRARY_INSTALL TRUE)
 
-#set(CMAKE_AUTORCC ON)
-
 include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/modules/QRC.cmake)
 
 add_subdirectory(libethrpc)
 add_subdirectory(libethcrypto)
@@ -39,3 +38,6 @@ include(${PROJECT_SOURCE_DIR}/cmake/bin.cmake)
 if(ENABLE_TEST)
     include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
 endif()
+
+
+include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)
