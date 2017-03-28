@@ -58,7 +58,9 @@ INCLUDE_SCRIPTS(test_base_scripts test/test.html)
 INCLUDE_JS(test_scripts test/test.html simulator test_base_scripts)
 INCLUDE_STYLES(test_styles test/test.html)
 
-add_custom_target(test_html DEPENDS test_styles test_scripts)
+add_custom_target(test_templates COMMAND ${PROJECT_BINARY_DIR}/editor --merge-templates test/test.html template WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/resources DEPENDS editor)
+
+add_custom_target(test_html DEPENDS test_styles test_scripts test_templates)
 
 
 COMPILE_QRC(html)
