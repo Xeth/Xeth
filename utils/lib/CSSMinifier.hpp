@@ -12,6 +12,9 @@ class MinifyCSS
 };
 
 
-typedef FileParser<MinifyCSS> CSSMinifier;
-
+class CSSMinifier : public FileParser<MinifyCSS, FileExtensionFilter>
+{
+    public:
+        CSSMinifier();
+};
 

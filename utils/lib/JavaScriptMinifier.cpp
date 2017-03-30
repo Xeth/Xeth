@@ -1,5 +1,7 @@
 #include "JavaScriptMinifier.hpp"
 
+
+
 QString MinifyJS::operator()(const QString &content)
 {
     QString code = content;
@@ -10,3 +12,9 @@ QString MinifyJS::operator()(const QString &content)
 
     return _invoker.execute(js).toString();
 }
+
+
+
+JavascriptMinifier::JavascriptMinifier() :
+    FileParser<MinifyJS, FileExtensionFilter>(FileExtensionFilter("js"))
+{}

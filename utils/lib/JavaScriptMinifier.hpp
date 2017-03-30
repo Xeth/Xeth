@@ -15,6 +15,9 @@ class MinifyJS
 };
 
 
-typedef FileParser<MinifyJS> JavascriptMinifier;
-
+class JavascriptMinifier : public FileParser<MinifyJS, FileExtensionFilter>
+{
+    public:
+        JavascriptMinifier();
+};
 

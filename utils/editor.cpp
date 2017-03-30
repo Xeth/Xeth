@@ -106,6 +106,7 @@ void saveHtml(HtmlEditor &editor, const QStringList &args, int index = 2)
 {
     if(args.size() > index)
     {
+        qDebug()<<"saving result to "<<args[index];
         editor.saveTo(args[index]);
     }
     else
@@ -123,6 +124,16 @@ void executeCommand(void (*command)(const QStringList &), const QStringList &arg
 void executeIncludeCommand(void (*command)(HtmlEditor &, const QString &, const XmlReader &, const QString &, bool), const QStringList &args, const QString &depsPath, const QString &prefix, bool toBody)
 {
     checkArgs(args, 2);
+    qDebug()<<"processing "<<args[0];
+    qDebug()<<"includes directory "<<args[1];
+    qDebug()<<"using prefix : "<<prefix;
+    if(depsPath.length())
+    {
+        qDebug()<<"dependencies file : "<<depsPath;
+    }
+    if(depsPath.length())
+    {
+    }
     HtmlEditor editor(args[0]);
     XmlReader depsReader;
     if(depsPath.length())

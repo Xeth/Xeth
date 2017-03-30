@@ -1,25 +1,57 @@
 
 #include <QDebug>
-template<class Parser>
-FileParser<Parser>::FileParser()
+
+
+inline bool NullFileFilter::operator()(const QFileInfo &) const
+{
+    return true;
+}
+
+
+inline FileExtensionFilter::FileExtensionFilter(const QString &extension) :
+    _extension(extension)
 {}
 
 
-template<class Parser>
-FileParser<Parser>::FileParser(const Parser &parser) : 
+inline bool FileExtensionFilter::operator()(const QFileInfo &info) const
+{
+    return info.completeSuffix() == _extension;
+}
+
+
+
+template<class Parser, class FileFilter>
+FileParser<Parser, FileFilter>::FileParser()
+{}
+
+
+template<class Parser, class FileFilter>
+FileParser<Parser, FileFilter>::FileParser(const Parser &parser) : 
     _parser(parser)
 {}
 
+template<class Parser, class FileFilter>
+FileParser<Parser, FileFilter>::FileParser(const FileFilter &filter) : 
+    _filter(filter)
+{}
 
-template<class Parser>
-bool FileParser<Parser>::parseDirectory(const QString &src, const QString &dest)
+
+template<class Parser, class FileFilter>
+FileParser<Parser, FileFilter>::FileParser(const Parser &parser, const FileFilter &filter) : 
+    _parser(parser),
+    _filter(filter)
+{}
+
+
+template<class Parser, class FileFilter>
+bool FileParser<Parser, FileFilter>::parseDirectory(const QString &src, const QString &dest)
 {
     QDirIterator it(src, QDir::Files, QDirIterator::Subdirectories);
     while(it.hasNext())
     {
         QFileInfo info(it.next());
         QString srcFile = info.filePath();
-        if(srcFile.contains("vendor"))
+        if(srcFile.contains("vendor") || !_filter(info))
         {
             continue;
         }
@@ -35,8 +67,8 @@ bool FileParser<Parser>::parseDirectory(const QString &src, const QString &dest)
 }
 
 
-template<class Parser>
-bool FileParser<Parser>::parse(const QString &src, const QString &dest)
+template<class Parser, class FileFilter>
+bool FileParser<Parser, FileFilter>::parse(const QString &src, const QString &dest)
 {
     QFile input(src), output(dest);
 
