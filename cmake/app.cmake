@@ -78,9 +78,13 @@ else()
 endif()
 
 
-add_dependencies(xeth parse_template)
-add_dependencies(xeth parse_CSS)
-add_dependencies(xeth parse_js)
+#add_dependencies(xeth parse_template)
+#add_dependencies(xeth parse_CSS)
+#add_dependencies(xeth parse_js)
+
+add_dependencies(xeth compile_js)
+add_dependencies(xeth compile_CSS)
+add_dependencies(xeth compile_template)
 add_dependencies(xeth compile_html)
 add_dependencies(xeth compile_icon)
 

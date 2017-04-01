@@ -4,18 +4,17 @@ file(GLOB RESOURCE_FILES "resources/*")
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
 file(COPY ${PROJECT_SOURCE_DIR}/resources/icon DESTINATION ${PROJECT_BINARY_DIR})
 
-GENERATE_QRC(css ${PROJECT_BINARY_DIR}/resources/ CSS img fonts)
+PARSE_RESOURCES_TARGET(parse_template RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template tpl compiler)
+PARSE_RESOURCES_TARGET(parse_js RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/js ${PROJECT_BINARY_DIR}/resources/js js jsmin)
+PARSE_RESOURCES_TARGET(parse_CSS RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/CSS ${PROJECT_BINARY_DIR}/resources/CSS css cssmin)
+
+
+GENERATE_QRC(CSS ${PROJECT_BINARY_DIR}/resources/ CSS img fonts)
 GENERATE_QRC(js ${PROJECT_BINARY_DIR}/resources js)
 GENERATE_QRC(html ${PROJECT_BINARY_DIR}/resources html)
 GENERATE_QRC(icon ${PROJECT_BINARY_DIR}/resources icon)
 GENERATE_QRC(template ${PROJECT_BINARY_DIR}/resources template)
 
-
-PARSE_QRC(RESOURCE_FILES template tpl template compiler)
-PARSE_QRC(RESOURCE_FILES js js js jsmin )
-PARSE_QRC(RESOURCE_FILES CSS css css cssmin)
-
-COMPILE_QRC(icon)
 
 #include js
 
@@ -59,12 +58,20 @@ INCLUDE_JS(test_include_simulators test.html test/simulator test_include_scripts
 INCLUDE_STYLES(test_include_styles test.html ./)
 
 add_custom_target(test_include_templates COMMAND ${PROJECT_BINARY_DIR}/editor --merge-templates test.html template WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/resources DEPENDS editor)
-
+add_dependencies(test_include_templates parse_template)
 add_custom_target(test_html DEPENDS test_include_styles test_include_simulators test_include_templates)
 
 
-COMPILE_QRC(html)
 
+COMPILE_QRC_TARGET(icon)
+COMPILE_QRC_TARGET(js)
+COMPILE_QRC_TARGET(CSS)
+COMPILE_QRC_TARGET(template)
+COMPILE_QRC_TARGET(html)
+
+add_dependencies(compile_js parse_js)
+add_dependencies(compile_CSS parse_CSS)
+add_dependencies(compile_template parse_template)
 add_dependencies(compile_html include_styles)
 add_dependencies(compile_html include_scripts)
 
