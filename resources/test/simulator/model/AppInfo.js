@@ -1,4 +1,4 @@
-var AppInfo = Backbone.Model.extend({
+var AppInfoSimulator = Backbone.Model.extend({
 
     initialize:function(options){
         _(this).bindAll("updateLatest", "update");

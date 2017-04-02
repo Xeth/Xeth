@@ -18,11 +18,11 @@ $(document).ready(function(){
     var accounts = new AccountCollectionSimulator;
     var addressbook = new AddressBookSimulator;
     var transactions = new TransactionCollectionSimulator;
-    var progress = new ProgressSimulator;
-    var addressValidator = new AddressValidator;
     var filesystem = new FileSystem();
     var clipboard = new ClipBoard();
-    var info = new AppInfo({events:events});
+    var info = new AppInfoSimulator({events:events});
+    info.update({version: "0.4.1", client: "0.3.1", latest: {version: "0.4.2", client: "0.6.1"}});
+
     for(var i=0; i<1000; i++){
         	transactions.add({category:"Sent", from: "0x"+i+"fc6fefd7f33ca29ee17f2bfec944695e5f29caf", to: "0x92c6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:3.8, timestamp: (Date.now()-i*1000)/1000, contact: {alias: "Stramba Lemne", bitprofile: "lemny326", avatar: "http://oi68.tinypic.com/i539z7.jpg"} });
     }
@@ -61,7 +61,24 @@ $(document).ready(function(){
 	
     setTimeout(function(){transactions.add({category:"Mined", to: "0x9ac6fefd7f33ca29ee17f2bfec944695e5f29caf", amount:5003, timestamp: Date.now()/1000, hash:'0xcc5151b5737ae3ffdea1a8bdd5d54cce33bc6e8905ccd954c6c830b25abcddfd'})}, 15000);
 	
-    var view = new MainWindowView({noThrow: false, templates: templates, accounts: accounts, addressbook: addressbook, transactions: transactions, progress: progress, filesystem: filesystem, clipboard: clipboard, addressValidator: addressValidator, events: events, profiles: new ProfileCollectionSimulator, fee:new FeeSimulator, config:new ConfigSimulator, registrars:new RegistrarCollectionSimulator, info:info});
+    var view = new MainWindowView({
+            noThrow: false, 
+            templates: templates,
+            accounts: accounts,
+            addressbook: addressbook,
+            transactions: transactions,
+            progress: new ProgressSimulator,
+            filesystem: filesystem,
+            clipboard: clipboard,
+            addressValidator: new AddressValidator,
+            events: events,
+            profiles: new ProfileCollectionSimulator,
+            fee:new FeeSimulator,
+            config:new ConfigSimulator,
+            registrars:new RegistrarCollectionSimulator,
+            info:info,
+            network: new NetworkSimulator
+    });
     setTimeout(function(){
         view.render();
     },1000);
