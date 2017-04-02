@@ -13,9 +13,13 @@ file(GLOB_RECURSE TEST_SOURCES
 )
 
 add_definitions(-DBOOST_PP_VARIADICS)
+file(COPY ${PROJECT_SOURCE_DIR}/test/data DESTINATION ${PROJECT_BINARY_DIR})
 
+add_executable(xeth-test EXCLUDE_FROM_ALL ${TEST_SOURCES})
 
-include_directories(
+target_include_directories(
+    xeth-test
+    PUBLIC
     ${Boost_INCLUDE_DIRS}
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -30,9 +34,6 @@ include_directories(
     ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
-file(COPY ${PROJECT_SOURCE_DIR}/test/data DESTINATION ${PROJECT_BINARY_DIR})
-
-add_executable(xeth-test ${TEST_SOURCES})
 
 target_link_libraries(xeth-test
     xethlib
