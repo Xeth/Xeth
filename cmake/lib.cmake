@@ -9,22 +9,6 @@ endif()
 
 add_definitions(-DBOOST_PP_VARIADICS)
 
-include_directories(
-    ${Boost_INCLUDE_DIRS}
-    ${Qt5WebKitWidgets_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5WebKit_INCLUDE_DIRS}
-    ${Qt5Concurrent_INCLUDE_DIRS}
-    ${Qt5Core_INCLUDE_DIRS}
-    ${JSONCPP_INCLUDE_DIR}
-    ${CRYPTOPP_INCLUDE_DIR}
-    ${LEVELDB_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${PROJECT_BINARY_DIR}/libethcrypto/include
-    ${PROJECT_BINARY_DIR}/libbitprofile/include
-    ${PROJECT_SOURCE_DIR}/libethstealth
-)
 
 if(ENABLE_GMP)
     if(GMP_LIBRARIES)
@@ -51,6 +35,24 @@ list(REMOVE_ITEM LIBRARY_SOURCES ${WINDOW_CPP})
 
 
 add_library(xethlib STATIC ${LIBRARY_SOURCES})
+target_include_directories(
+    xethlib
+    PUBLIC
+    ${Boost_INCLUDE_DIRS}
+    ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5WebKit_INCLUDE_DIRS}
+    ${Qt5Concurrent_INCLUDE_DIRS}
+    ${Qt5Core_INCLUDE_DIRS}
+    ${JSONCPP_INCLUDE_DIR}
+    ${CRYPTOPP_INCLUDE_DIR}
+    ${LEVELDB_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_BINARY_DIR}/libethrpc/include
+    ${PROJECT_BINARY_DIR}/libethcrypto/include
+    ${PROJECT_BINARY_DIR}/libbitprofile/include
+    ${PROJECT_SOURCE_DIR}/libethstealth
+)
 add_dependencies(xethlib ethrpc)
 add_dependencies(xethlib ethcrypto)
 add_dependencies(xethlib ethstealth)

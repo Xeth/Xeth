@@ -1,6 +1,11 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent Xml REQUIRED)
 
-include_directories(
+file(GLOB UTILS_SOURCES ${PROJECT_SOURCE_DIR}/utils/lib/*.cpp)
+
+
+add_library(utils-lib STATIC ${UTILS_SOURCES})
+
+set(UTILS_INCLUDES
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5WebKitWidgets_INCLUDE_DIRS}
@@ -9,12 +14,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/utils
 )
 
-
-file(GLOB UTILS_SOURCES ${PROJECT_SOURCE_DIR}/utils/lib/*.cpp)
-
-
-add_library(utils-lib STATIC ${UTILS_SOURCES})
-
+target_include_directories(utils-lib PUBLIC ${UTILS_INCLUDES})
 
 set(UTILS_LIBRARIES 
     utils-lib
@@ -30,17 +30,19 @@ add_custom_target(utils_js_rcc COMMAND ${Qt5Core_RCC_EXECUTABLE} ${rcc_options} 
 set_source_files_properties(${PROJECT_BINARY_DIR}/utils_js.cxx PROPERTIES GENERATED TRUE)
 
 add_executable(compiler ${PROJECT_SOURCE_DIR}/utils/compiler.cpp ${PROJECT_BINARY_DIR}/utils_js.cxx)
+target_include_directories(compiler PUBLIC ${UTILS_INCLUDES})
 target_link_libraries(compiler ${UTILS_LIBRARIES})
 
 add_dependencies(compiler utils_js_rcc)
 
 add_executable(jsmin ${PROJECT_SOURCE_DIR}/utils/jsmin.cpp ${PROJECT_BINARY_DIR}/utils_js.cxx)
-
+target_include_directories(jsmin PUBLIC ${UTILS_INCLUDES})
 add_dependencies(jsmin utils_js_rcc)
 target_link_libraries(jsmin ${UTILS_LIBRARIES})
 
 add_executable(cssmin ${PROJECT_SOURCE_DIR}/utils/cssmin.cpp)
 target_link_libraries(cssmin ${UTILS_LIBRARIES})
+target_include_directories(cssmin PUBLIC ${UTILS_INCLUDES})
 
 find_package(JsonCPP REQUIRED)
 find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time chrono REQUIRED)
@@ -51,6 +53,7 @@ find_package(Threads REQUIRED)
 
 
 add_executable(dumpdb ${PROJECT_SOURCE_DIR}/utils/dumpdb.cpp)
+target_include_directories(dumpdb PUBLIC ${UTILS_INCLUDES})
 target_link_libraries(dumpdb 
     xethlib
     ethstealth
@@ -82,6 +85,7 @@ endif()
 
 
 add_executable(editor ${PROJECT_SOURCE_DIR}/utils/editor.cpp)
+target_include_directories(editor PUBLIC ${UTILS_INCLUDES})
 target_link_libraries(editor ${UTILS_LIBRARIES})
 
 

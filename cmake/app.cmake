@@ -43,18 +43,7 @@ if(UNIX AND NOT APPLE)
 endif()
 
 
-include_directories(
-    ${Boost_INCLUDE_DIRS}
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5WebKitWidgets_INCLUDE_DIRS}
-    ${Qt5Concurrent_INCLUDE_DIRS}
-    ${JSONCPP_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${PROJECT_BINARY_DIR}/libethcrypto/include
-    ${PROJECT_BINARY_DIR}/libethstealth/include
-)
+
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_CURRENT_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}")
@@ -78,10 +67,6 @@ else()
 endif()
 
 
-#add_dependencies(xeth parse_template)
-#add_dependencies(xeth parse_CSS)
-#add_dependencies(xeth parse_js)
-
 add_dependencies(xeth compile_js)
 add_dependencies(xeth compile_CSS)
 add_dependencies(xeth compile_template)
@@ -92,6 +77,20 @@ add_dependencies(xeth compile_icon)
 
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.la;.lib;.so;.dll")
 
+target_include_directories(
+    xeth
+    PUBLIC
+    ${Boost_INCLUDE_DIRS}
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    ${Qt5Concurrent_INCLUDE_DIRS}
+    ${JSONCPP_INCLUDE_DIR}
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_BINARY_DIR}/libethrpc/include
+    ${PROJECT_BINARY_DIR}/libethcrypto/include
+    ${PROJECT_BINARY_DIR}/libethstealth/include
+)
 
 target_link_libraries(xeth
     xethlib
