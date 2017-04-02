@@ -57,7 +57,7 @@ INCLUDE_SCRIPTS(test_include_scripts test.html ./)
 INCLUDE_JS(test_include_simulators test.html test/simulator test_include_scripts ./)
 INCLUDE_STYLES(test_include_styles test.html ./)
 
-add_custom_target(test_include_templates COMMAND ${PROJECT_BINARY_DIR}/editor --merge-templates test.html template WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/resources DEPENDS editor)
+add_custom_target(test_include_templates COMMAND ${PROJECT_BINARY_DIR}/editor --merge-templates test.html ${PROJECT_SOURCE_DIR}/resources/template WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/resources DEPENDS editor)
 add_dependencies(test_include_templates parse_template)
 add_custom_target(test_html DEPENDS test_include_styles test_include_simulators test_include_templates)
 

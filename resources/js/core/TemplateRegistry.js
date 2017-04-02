@@ -13,7 +13,6 @@ function TemplateRegistry(){
 
     this.register = function(name, content){
         templates[name] = (content instanceof Function) ? content : _.template(content);
-
         return true;
     };
 
