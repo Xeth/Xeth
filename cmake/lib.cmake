@@ -51,8 +51,9 @@ target_include_directories(
     ${PROJECT_BINARY_DIR}/libethrpc/include
     ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libbitprofile/include
-    ${PROJECT_SOURCE_DIR}/libethstealth
+    ${PROJECT_BINARY_DIR}/libethstealth/include
 )
+
 add_dependencies(xethlib ethrpc)
 add_dependencies(xethlib ethcrypto)
 add_dependencies(xethlib ethstealth)
