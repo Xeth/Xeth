@@ -15,10 +15,10 @@ file(GLOB_RECURSE TEST_SOURCES
 add_definitions(-DBOOST_PP_VARIADICS)
 file(COPY ${PROJECT_SOURCE_DIR}/test/data DESTINATION ${PROJECT_BINARY_DIR})
 
-add_executable(xeth-test EXCLUDE_FROM_ALL ${TEST_SOURCES})
+add_executable(xeth-tests EXCLUDE_FROM_ALL ${TEST_SOURCES})
 
 target_include_directories(
-    xeth-test
+    xeth-tests
     PUBLIC
     ${Boost_INCLUDE_DIRS}
     ${Qt5Core_INCLUDE_DIRS}
@@ -35,7 +35,7 @@ target_include_directories(
 )
 
 
-target_link_libraries(xeth-test
+target_link_libraries(xeth-tests
     xethlib
     ethstealth
     bitprofile
@@ -61,6 +61,6 @@ target_link_libraries(xeth-test
 )
 
 if(GMP_LIBRARIES)
-    target_link_libraries(xeth-test ${GMP_LIBRARIES})
+    target_link_libraries(xeth-tests ${GMP_LIBRARIES})
 endif()
 

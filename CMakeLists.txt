@@ -14,6 +14,7 @@ set(SKIP_LIBRARY_INSTALL TRUE)
 
 include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/modules/QRC.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/modules/Test.cmake)
 
 add_subdirectory(libethrpc)
 add_subdirectory(libethcrypto)
@@ -34,10 +35,11 @@ include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/bin.cmake)
-
-if(ENABLE_TEST)
-    include(${PROJECT_SOURCE_DIR}/cmake/test.cmake)
-endif()
+include(${PROJECT_SOURCE_DIR}/cmake/unit-tests.cmake)
 
 
 include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)
+
+
+ADD_TEST_TARGET(ethstealth-tests)
+#ADD_TEST_TARGET(xeth-tests)
