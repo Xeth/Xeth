@@ -21,6 +21,13 @@ GethSimulator<KeyStore, BlockChain>::GethSimulator(KeyStore &keys, BlockChain &c
 
 
 template<class KeyStore, class BlockChain>
+GethSimulator<KeyStore, BlockChain>::~GethSimulator()
+{
+    stop();
+}
+
+
+template<class KeyStore, class BlockChain>
 void GethSimulator<KeyStore, BlockChain>::run()
 {
     _service.run();

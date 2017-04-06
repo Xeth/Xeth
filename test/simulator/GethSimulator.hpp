@@ -37,6 +37,7 @@ class GethSimulator : public boost::noncopyable
     public:
         GethSimulator(KeyStore &, BlockChain &);
         GethSimulator(KeyStore &, BlockChain &, const std::string &path);
+        ~GethSimulator();
 
         void setBalance(const char *address, const BigInt &);
         void addBalance(const char *address, const BigInt &);
@@ -52,9 +53,9 @@ class GethSimulator : public boost::noncopyable
         size_t getChainHeight();
 
         bool listen(const char *path);
-        void stop();
 
     private:
+        void stop();
         void run();
         void acceptNew();
         void handleAccept(boost::shared_ptr<Session> session, const boost::system::error_code& error);
