@@ -28,13 +28,13 @@ void KeyAttributesReaderTest::checkNonExistentStealthKey()
 
 void KeyAttributesReaderTest::checkEthereumKeyCreationTime()
 {
-    Xeth::KeyAttributesReader<Xeth::EthereumKeyStore> reader("data/key/UTC--2016-02-09T04:33:27.434985--d4e7fd527d69f33ad9f88e16dcb218598dc3a3ee");
+    Xeth::KeyAttributesReader<Xeth::EthereumKeyStore> reader("data/key/UTC--2016-02-09T04-33-27.434985--d4e7fd527d69f33ad9f88e16dcb218598dc3a3ee");
     QVERIFY(reader.getCreationTime()==1454992407);
 }
 
 void KeyAttributesReaderTest::checkEthereumKeyAddress()
 {
-    Xeth::KeyAttributesReader<Xeth::EthereumKeyStore> reader("data/key/UTC--2016-02-09T04:33:27.434985--d4e7fd527d69f33ad9f88e16dcb218598dc3a3ee");
+    Xeth::KeyAttributesReader<Xeth::EthereumKeyStore> reader("data/key/UTC--2016-02-09T04-33-27.434985--d4e7fd527d69f33ad9f88e16dcb218598dc3a3ee");
     QVERIFY(reader.getAddress()=="d4e7fd527d69f33ad9f88e16dcb218598dc3a3ee");
 }
 
