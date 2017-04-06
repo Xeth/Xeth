@@ -43,5 +43,4 @@ include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)
 
 ADD_TEST_TARGET(ethcrypto-tests)
 ADD_TEST_TARGET(ethstealth-tests)
-
-#ADD_TEST_TARGET(xeth-tests)
+ADD_TEST_TARGET(xeth-tests ${PROJECT_BINARY_DIR})
