@@ -8,14 +8,22 @@ using Ethereum::Literal;
 using Ethereum::HexEncoder;
 
 StealthScanCriterion::StealthScanCriterion(const StealthKey &key) :
-    ScanCriterion(Literal(Ethereum::Stealth::Address(key))),
+    ScanCriterion(makeAddress(key)),
     _key(key)
 {}
 
 StealthScanCriterion::StealthScanCriterion(const StealthKey &key, const Ethereum::Stealth::Address &address) :
-    ScanCriterion(Literal(address)),
+    ScanCriterion(address.toString()),
     _key(key)
 {}
+
+
+std::string StealthScanCriterion::makeAddress(const StealthKey &key) const
+{
+    Ethereum::Stealth::Address address(key);
+    std::string str =  address.toString();
+    return str;
+}
 
 
 void StealthScanCriterion::uncoverStealthPayment
@@ -39,21 +47,26 @@ void StealthScanCriterion::uncoverStealthPayment
         if(resolver.uncover(Ethereum::Address(to), ephem, secret))
         {
             QJsonObject tx;
+            QString stealthStr = getAddress();
+            QString hashStr = hash.c_str();
+            QString toStr = to.c_str();
+            QString fromStr = from.c_str();
+
             tx.insert("category", QString(TransactionCategory::ToString(TransactionCategory::Received)));
-            tx.insert("hash", QString(hash.c_str()));
-            tx.insert("from",  QString(from.c_str()));
-            tx.insert("to", QString(to.c_str()));
+            tx.insert("hash", hashStr);
+            tx.insert("from", fromStr);
+            tx.insert("to", toStr);
             tx.insert("amount", QString(boost::lexical_cast<std::string>(amount).c_str()));
             tx.insert("timestamp", (int)timestamp);
-            tx.insert("stealth", QString(getAddress()));
+            tx.insert("stealth", stealthStr);
             result.transactions.push_back(tx);
 
             HexEncoder encoder;
             QJsonObject sp;
-            sp.insert("address", QString(to.c_str()));
+            sp.insert("address", toStr);
             sp.insert("secret", QString(encoder.encode(secret.begin(), secret.end()).c_str()));
-            sp.insert("txid", QString(hash.c_str()));
-            sp.insert("stealth", QString(getAddress()));
+            sp.insert("txid", hashStr);
+            sp.insert("stealth", stealthStr);
             tx.insert("timestamp", (int)timestamp);
             result.stealthPayments.push_back(sp);
         }

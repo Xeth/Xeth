@@ -45,6 +45,8 @@ class StealthScanCriterion : public ScanCriterion
         );
 
     private:
+        std::string makeAddress(const StealthKey &) const;
+
         void uncoverStealthPayment
         (
             const std::string &hash,
