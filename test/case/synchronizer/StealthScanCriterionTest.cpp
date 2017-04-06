@@ -7,6 +7,8 @@ Xeth::StealthKey StealthScanCriterionTest::makeKey()
     return generator.generate(cipherFactory.create(), "asdasd123");
 }
 
+
+
 void StealthScanCriterionTest::testReceivedTransaction()
 {
 
@@ -31,13 +33,15 @@ void StealthScanCriterionTest::testReceivedTransaction()
         result
     );
 
-    QVERIFY(result.transactions.size()==1);
+    QString addressStr(address.toString().c_str());
 
+    QVERIFY(result.transactions.size()==1);
     QJsonObject transaction = result.transactions.begin()->toObject();
     QVERIFY(transaction["to"].toString() == paymentAddr.getAddresses()[0].toString().c_str());
     QVERIFY(transaction["from"].toString() == "senderaddress");
+    QVERIFY(transaction["stealth"].toString() == addressStr);
     QVERIFY(transaction["amount"].toString() == boost::lexical_cast<std::string>(Xeth::BigInt(10001)).c_str());
-    QVERIFY(transaction["category"].toString() == Xeth::TransactionCategory::ToString(Xeth::TransactionCategory::Stealth));
+    QVERIFY(transaction["category"].toString() == Xeth::TransactionCategory::ToString(Xeth::TransactionCategory::Received));
     QVERIFY(transaction["timestamp"].toInt() == 1001);
 }
 

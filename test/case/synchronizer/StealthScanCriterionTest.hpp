@@ -19,7 +19,6 @@ class StealthScanCriterionTest : public QObject
 {
     Q_OBJECT
 
-
     private slots:
         void testReceivedTransaction();
         void testUnknownTransaction();
@@ -27,6 +26,7 @@ class StealthScanCriterionTest : public QObject
 
     private:
         Xeth::StealthKey makeKey();
+
 };
 
 
