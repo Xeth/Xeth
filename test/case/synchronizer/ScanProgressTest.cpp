@@ -34,7 +34,7 @@ void ScanProgressTest::testReuse()
     QCOMPARE(progress.getValue(), 100.0);
 
     progress.setRange(9, 200);
-    QCOMPARE(progress.getValue(), 0.0);
+    QCOMPARE(progress.getValue(), 4.5);
 
 }
 
