@@ -28,28 +28,6 @@ void TransactionStoreTest::testInsert()
 }
 
 
-void TransactionStoreTest::testGet()
-{
-    QJsonObject transaction = _store.get("somehash1");
-    QVERIFY(transaction["hash"].toString() == "somehash1");
-    QVERIFY(transaction["index"].toInt() == 0);
-
-    transaction = _store.get("somehash2");
-    QVERIFY(transaction["hash"].toString() == "somehash2");
-    QVERIFY(transaction["index"].toInt() == 1);
-
-    transaction = _store.get("somehash3");
-    QVERIFY(transaction["hash"].toString() == "somehash3");
-    QVERIFY(transaction["index"].toInt() == 2);
-}
-
-
-void TransactionStoreTest::testGetEmpty()
-{
-    QJsonObject transaction = _store.get("somehash4");
-    QVERIFY(transaction.empty());
-}
-
 
 void TransactionStoreTest::testIteration()
 {
@@ -81,7 +59,6 @@ void TransactionStoreTest::testRandomAccessIteration()
     Xeth::TransactionStore::Iterator it = _store.at(1), end = _store.end();
     QVERIFY(it != end);
 
-    QVERIFY((*it)["index"].toInt() == 1);
     QVERIFY((*it)["hash"].toString() == "somehash2");
 
     size_t count = 0;

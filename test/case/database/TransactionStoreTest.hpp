@@ -19,8 +19,6 @@ class TransactionStoreTest : public QObject
         void initTestCase();
         void testOpen();
         void testInsert();
-        void testGet();
-        void testGetEmpty();
         void testIteration();
         void testReverseIteration();
         void testRandomAccessIteration();
