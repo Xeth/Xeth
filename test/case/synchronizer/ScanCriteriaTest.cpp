@@ -9,7 +9,7 @@ void ScanCriteriaTest::testScan()
     blockchain.push("{"
         "\"number\":\"1\", "
         "\"hash\":\"blockhash\", "
-        "\"miner\":\"testaddress\", "
+        "\"miner\":\"0xffff\", "
         "\"timestamp\":\"123\","
          "\"transactions\":[]"
         "}");
@@ -30,7 +30,7 @@ void ScanCriteriaTest::testScan()
          "\"transactions\":["
                 "{"
                     "\"hash\":\"txhash1\","
-                    "\"from\":\"testaddress\","
+                    "\"from\":\"0xffff\","
                     "\"to\":\"somereceiver1\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
@@ -45,7 +45,7 @@ void ScanCriteriaTest::testScan()
                 "{"
                     "\"hash\":\"txhash3\","
                     "\"from\":\"somesender3\","
-                    "\"to\":\"testaddress2\","
+                    "\"to\":\"0xffff2\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -77,7 +77,7 @@ void ScanCriteriaTest::testScan()
                 "{"
                     "\"hash\":\"txhash5\","
                     "\"from\":\"somesender\","
-                    "\"to\":\"testaddress\","
+                    "\"to\":\"0xffff\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -85,8 +85,9 @@ void ScanCriteriaTest::testScan()
         "}");
     Xeth::ScanCriteria criteria;
     QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff2");
+    criteria.setLimit(100);
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
@@ -104,7 +105,7 @@ void ScanCriteriaTest::testEmptyResultScan()
     blockchain.push("{"
         "\"number\":\"1\", "
         "\"hash\":\"blockhash\", "
-        "\"miner\":\"testaddress3\", "
+        "\"miner\":\"0xffff3\", "
         "\"timestamp\":\"123\","
          "\"transactions\":[]"
         "}");
@@ -119,8 +120,9 @@ void ScanCriteriaTest::testEmptyResultScan()
 
     Xeth::ScanCriteria criteria;
     QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff2");
+    criteria.setLimit(100);
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
@@ -143,8 +145,9 @@ void ScanCriteriaTest::testEmptyChainScan()
     "}"); //genesis only
     Xeth::ScanCriteria criteria;
     QSignalSpy spy(&criteria, SIGNAL(Data(const Xeth::PartialScanResult &)));
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress");
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff2");
+    criteria.setLimit(100);
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
@@ -162,7 +165,7 @@ void ScanCriteriaTest::testRandomOffsetScan()
     blockchain.push("{"
         "\"number\":\"1\", "
         "\"hash\":\"blockhash\", "
-        "\"miner\":\"testaddress\", "
+        "\"miner\":\"0xffff\", "
         "\"timestamp\":\"123\","
          "\"transactions\":[]"
         "}");
@@ -183,7 +186,7 @@ void ScanCriteriaTest::testRandomOffsetScan()
          "\"transactions\":["
                 "{"
                     "\"hash\":\"txhash1\","
-                    "\"from\":\"testaddress\","
+                    "\"from\":\"0xffff\","
                     "\"to\":\"somereceiver1\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
@@ -198,7 +201,7 @@ void ScanCriteriaTest::testRandomOffsetScan()
                 "{"
                     "\"hash\":\"txhash3\","
                     "\"from\":\"somesender3\","
-                    "\"to\":\"testaddress2\","
+                    "\"to\":\"0xffff2\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -230,7 +233,7 @@ void ScanCriteriaTest::testRandomOffsetScan()
                 "{"
                     "\"hash\":\"txhash5\","
                     "\"from\":\"somesender\","
-                    "\"to\":\"testaddress\","
+                    "\"to\":\"0xffff\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -238,8 +241,9 @@ void ScanCriteriaTest::testRandomOffsetScan()
         "}");
     Xeth::ScanCriteria criteria;
     QSignalSpy spy(&criteria, &Xeth::ScanCriteria::Data);
-    criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(1, "0xffff");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff2");
+    criteria.setLimit(100);
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
@@ -257,7 +261,7 @@ void ScanCriteriaTest::testConsecutiveScan()
     blockchain.push("{"
         "\"number\":\"1\", "
         "\"hash\":\"blockhash\", "
-        "\"miner\":\"testaddress\", "
+        "\"miner\":\"0xffff\", "
         "\"timestamp\":\"123\","
          "\"transactions\":[]"
         "}");
@@ -278,7 +282,7 @@ void ScanCriteriaTest::testConsecutiveScan()
          "\"transactions\":["
                 "{"
                     "\"hash\":\"txhash1\","
-                    "\"from\":\"testaddress\","
+                    "\"from\":\"0xffff\","
                     "\"to\":\"somereceiver1\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
@@ -293,7 +297,7 @@ void ScanCriteriaTest::testConsecutiveScan()
                 "{"
                     "\"hash\":\"txhash3\","
                     "\"from\":\"somesender3\","
-                    "\"to\":\"testaddress2\","
+                    "\"to\":\"0xffff2\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -325,7 +329,7 @@ void ScanCriteriaTest::testConsecutiveScan()
                 "{"
                     "\"hash\":\"txhash5\","
                     "\"from\":\"somesender\","
-                    "\"to\":\"testaddress\","
+                    "\"to\":\"0xffff\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -333,8 +337,9 @@ void ScanCriteriaTest::testConsecutiveScan()
         "}");
     Xeth::ScanCriteria criteria;
     QSignalSpy spy(&criteria, &Xeth::ScanCriteria::Data);
-    criteria.addCriterion<Xeth::AccountScanCriterion>(1, "testaddress");
-    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "testaddress2");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(1, "0xffff");
+    criteria.addCriterion<Xeth::AccountScanCriterion>(0, "0xffff2");
+    criteria.setLimit(100);
 
     Xeth::ScanResult result;
     Xeth::DummyScanProgress progress;
@@ -359,7 +364,7 @@ void ScanCriteriaTest::testConsecutiveScan()
                 "{"
                     "\"hash\":\"txhash5\","
                     "\"from\":\"somesender\","
-                    "\"to\":\"testaddress2\","
+                    "\"to\":\"0xffff2\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"
@@ -388,7 +393,7 @@ void ScanCriteriaTest::testConsecutiveScan()
                 "{"
                     "\"hash\":\"txhash5\","
                     "\"from\":\"somesender\","
-                    "\"to\":\"testaddress\","
+                    "\"to\":\"0xffff\","
                     "\"value\":\"1000000\","
                     "\"input\":\"\""
                  "}"

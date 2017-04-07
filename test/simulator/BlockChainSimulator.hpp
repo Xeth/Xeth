@@ -40,6 +40,7 @@ class BlockChainSimulator
         size_t getMemPoolSize() const;
 
         TransactionCollection getMemPool() const;
+        Transaction getTransaction(const char *txid) const;
 
 
         void mineBlock(const char *miner);
@@ -49,4 +50,5 @@ class BlockChainSimulator
         std::vector<Ethereum::Connector::Block> _blocks;
         std::vector<Json::Value> _blocksData;
         Json::Value _mempool;
+        mutable std::map<std::string, Json::Value> _transactionsMap;
 };

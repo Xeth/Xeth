@@ -1,7 +1,6 @@
 #include "BlockChainSimulator.hpp"
 
 
-
 BlockChainSimulator::BlockChainSimulator()
 {}
 
@@ -16,17 +15,34 @@ void BlockChainSimulator::push(const std::string &block)
 
 void BlockChainSimulator::push(const char *json)
 {
-    Json::Value value;
+    Json::Value block;
     Json::Reader reader;
 
-    if(!reader.parse(json, json+strlen(json), value))
+    if(!reader.parse(json, json+strlen(json), block))
     {
         throw std::runtime_error("invalid json");
     }
 
-    _blocks.push_back(Ethereum::Connector::Block(value));
-    
-    _blocksData.push_back(value);
+    Json::Value transactions = block["transactions"];
+    Json::Value hashes = Json::arrayValue;
+    for(Json::ValueIterator it = transactions.begin(), end = transactions.end(); it!=end; ++it)
+    {
+        Json::Value tx = *it;
+        std::string hash = tx["hash"].asString();
+        hashes.append(hash);
+        _transactionsMap[hash] = tx;
+    }
+
+    block["transactions"] = hashes;
+
+    _blocks.push_back(Ethereum::Connector::Block(block));
+    _blocksData.push_back(block);
+
+}
+
+BlockChainSimulator::Transaction BlockChainSimulator::getTransaction(const char *txid) const
+{
+    return Transaction(_transactionsMap[txid]);
 }
 
 
@@ -45,6 +61,7 @@ void BlockChainSimulator::pushMemPool(const char *txid, const char *from, const 
     tx["input"] = data ? data : "";
     tx["time"] = Hex(time(NULL));
     _mempool.append(tx);
+    _transactionsMap[txid] = tx;
 }
 
 
