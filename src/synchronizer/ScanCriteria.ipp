@@ -118,6 +118,48 @@ SAVE_CRITERIA_RESULT:
 
 }
 
+template<class BlockChain>
+void ScanCriteria::processBlock(BlockChain &chain, size_t blockIndex, Ethereum::Connector::Block &block, Container::iterator end, ScanResult &result)
+{
+    static BigInt blockReward("5000000000000000000");
+    size_t prevTxSize = result.transactions.size();
+    size_t prevStSize = result.stealthPayments.size();
 
+    std::string miner = block.getMiner();
+    std::string blockHash = block.getHash();
+    time_t blockTime = block.getTimestamp();
+    for(Container::iterator it=_criteria.begin(); it!=end; ++it)
+    {
+        it->second->processHeader(blockIndex, blockHash, miner, blockReward, blockTime, result);
+    }
+
+    Collection<std::string> hashes = block.getTransactionsHashes();
+
+
+    for(Collection<std::string>::Iterator tIt=hashes.begin(), tEnd=hashes.end(); tIt!=tEnd; ++tIt)
+    {
+        std::string hash = *tIt;
+        Transaction transaction = chain.getTransaction(hash.c_str());
+        std::string sender = transaction.getSender();
+        std::string receiver = transaction.getReceiver();
+        std::string txid = transaction.getHash();
+        BigInt amount = transaction.getAmount();
+        std::string data = transaction.getInput();
+
+        for(Container::iterator it=_criteria.begin(); it!=end; ++it)
+        {
+            it->second->processTransaction(txid, sender, receiver, amount, data, blockTime, result);
+        }
+    }
+
+
+    size_t txSize = result.transactions.size();
+    size_t stSize = result.stealthPayments.size();
+    if(prevTxSize != txSize || stSize != prevStSize)
+    {
+        PartialScanResult event = MakePartialScanResult(result, txSize - prevTxSize, stSize - prevStSize, blockIndex);
+        emit Data(event);
+    }
+}
 
 }

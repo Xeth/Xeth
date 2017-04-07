@@ -74,7 +74,10 @@ class ScanCriteria : public QObject
 
     private:
         ScanCriteria(const ScanCriteria &);
+
+        template<class BlockChain>
         void processBlock(BlockChain &, size_t index, Ethereum::Connector::Block &, Container::iterator, ScanResult &);
+
         void addCriterion(size_t minBlock, ScanCriterion *);
         void registerMetaType();
 
