@@ -7,11 +7,11 @@
 #include "simulator/BlockChainSimulator.hpp"
 #include "simulator/ApplicationContext.hpp"
 
-#include "command/wallet/GenerateStealthKeyCommand.hpp"
+#include "command/wallet/GenerateKeyCommand.hpp"
 
 
 
-class GenerateStealthKeyTest : public QObject
+class GenerateKeyCommandTest : public QObject
 {
     Q_OBJECT
 
@@ -21,10 +21,11 @@ class GenerateStealthKeyTest : public QObject
 
 #if __GETH_SIMULATOR_ENABLED__
     public:
-        GenerateStealthKeyTest();
+        GenerateKeyCommandTest();
 
     private slots:
-        void testGenerate();
+        void testGenerateEthereumKey();
+        void testGenerateStealthKey();
         void testGenerateFromEntropy();
         void testInvalidEntropy();
         void testInvalidPassword();
