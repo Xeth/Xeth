@@ -7,6 +7,7 @@
 #include "types/StealthKey.hpp"
 #include "types/Cipher.hpp"
 #include "database/StealthKeyStore.hpp"
+#include "database/KeyImporter.hpp"
 
 #include "simulator/DataBaseDirectory.hpp"
 

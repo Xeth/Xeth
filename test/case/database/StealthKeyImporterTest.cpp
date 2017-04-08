@@ -23,25 +23,25 @@ void StealthKeyImporterTest::checkKey(const std::string &address, const std::str
 void StealthKeyImporterTest::testImport()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(importer.import("data/key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey"));
+    QVERIFY(importer.import("data/key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey", "asdasd123"));
     checkKey("3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw", "data/key/3oTYbZG4ZUsJatou8gmtJatRU19Sn5HXDWnhjRStbMpRsyT4UD4hApbnjuvZThmj1TtTgbbLbUiZ9hrKkjRwcTpV7uxBnEoA1ZsiZCw.skey");
 }
 
 void StealthKeyImporterTest::testNonExistentFile()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(!importer.import("data/key/somenonexistentkey.skey"));
+    QVERIFY(!importer.import("data/key/somenonexistentkey.skey", "asdasd123"));
 }
 
 void StealthKeyImporterTest::testMalformedFile()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(!importer.import("data/key/3oTYZ99VRU4oAqBarSjVAGZpQ1XfyftWkQYJQZKSRAzWAzCizPFS4sqrfZFXhgpQ473jVUJ5mZ5EYviUp9dfPsnD2kQgLWzFtshbCRf.skey"));
+    QVERIFY(!importer.import("data/key/3oTYZ99VRU4oAqBarSjVAGZpQ1XfyftWkQYJQZKSRAzWAzCizPFS4sqrfZFXhgpQ473jVUJ5mZ5EYviUp9dfPsnD2kQgLWzFtshbCRf.skey", "asdasd123"));
 }
 
 void StealthKeyImporterTest::testIncorrectName()
 {
     Xeth::StealthKeyImporter importer(_store);
-    QVERIFY(importer.import("data/key/stealthbackup.skey"));
+    QVERIFY(importer.import("data/key/stealthbackup.skey", "asdasd123"));
     checkKey("3oTYcWA1XeEvkx4JB3MKq8FuSVgESQZG53L8DhMRWY7rnh8tb15cdDLVfGDZKZ5K3XYmwXg3mNSqiZvcWAtXFym4QMR9owhBGTFcgjZ", "data/key/stealthbackup.skey");
 }
