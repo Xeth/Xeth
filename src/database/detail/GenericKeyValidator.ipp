@@ -1,4 +1,3 @@
-#include <QDebug>
 namespace Xeth{
 
 
@@ -13,7 +12,6 @@ bool GenericKeyValidator<Key, Unlocker>::operator()(Key &key, const std::string 
     }
     catch(...)
     {}
-    qDebug()<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~ got unlock exception";
     return false;
 }
 

@@ -1,4 +1,3 @@
-#include <QDebug>
 namespace Xeth{
 
 template<class Store, class Validator>
@@ -78,7 +77,6 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
     std::string absolutePath = boost::filesystem::absolute(path).string();
     if(!reader.read(absolutePath.c_str(), json))
     {
-        qDebug()<<"~~~~~~~~~~~~~~~~~~~~~~~~ invalid file path";
         return false;
     }
 
@@ -89,7 +87,6 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
         value = serializer.unserialize(json);
         if(!_validator(value, args))
         {
-            qDebug()<<"~~~~~~~~~~~~~~~~~~~~~~~` failed to validate";
             return false;
         }
         KeyAttributesReader<Store> attrs(path, json);
@@ -98,7 +95,6 @@ bool FileImporter<Store, Validator>::import(const std::string &path, Json::Value
     }
     catch(...)
     {}
-    qDebug()<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~` got exception ";
     return false;
 }
 
