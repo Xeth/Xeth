@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QTest>
 
-#include "database/EthereumKeyStore.hpp"
+#include "database/KeyImporter.hpp"
 #include "simulator/DataBaseDirectory.hpp"
 
 
