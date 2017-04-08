@@ -1,38 +1,36 @@
 namespace Xeth{
 
 
-template<class Store, class Validator>
-GenericImportKeyCommand<Store, Validator>::GenericImportKeyCommand(Store &store, Synchronizer &synchronizer) : 
-    _store(store),
+template<class Importer>
+GenericImportKeyCommand<Importer>::GenericImportKeyCommand(typename Importer::Store &store, Synchronizer &synchronizer) : 
+    _importer(store),
     _synchronizer(synchronizer)
 {}
 
 
-template<class Store, class Validator>
-bool GenericImportKeyCommand<Store, Validator>::import(const QString &file, const QString &password, QString &address)
+template<class Importer>
+bool GenericImportKeyCommand<Importer>::import(const QString &file, const QString &password, QString &address)
 {
 
-    typename Store::Data key;
+    typename Importer::Data key;
     Json::Value json;
-
-    FileImporter<Store, Validator> importer(_store, Validator(password.toStdString()));
 
     std::string path = file.toStdString();
 
-    if(!importer.import(path.c_str(), json, key))
+    if(!_importer.import(path.c_str(), json, key, password))
     {
         return false;
     }
 
-    KeyAttributesReader<Store> attr(path, json);
+    KeyAttributesReader<typename Importer::Store> attr(path, json);
     _synchronizer.watch(key, attr.getCreationTime());
     AddressBuilder builder;
     address = builder.build(key).c_str();
     return true;
 }
 
-template<class Store, class Validator>
-bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &request, QString &address)
+template<class Importer>
+bool GenericImportKeyCommand<Importer>::import(const QVariantMap &request, QString &address)
 {
 
     if(!request.contains("file")||!request.contains("password"))
@@ -44,8 +42,8 @@ bool GenericImportKeyCommand<Store, Validator>::import(const QVariantMap &reques
 }
 
 
-template<class Store, class Validator>
-QVariant GenericImportKeyCommand<Store, Validator>::operator()(const QVariantMap &request)
+template<class Importer>
+QVariant GenericImportKeyCommand<Importer>::operator()(const QVariantMap &request)
 {
     QString address;
     if(!import(request, address))

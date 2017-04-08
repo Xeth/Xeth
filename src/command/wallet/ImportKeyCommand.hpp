@@ -8,10 +8,8 @@
 #include "process/EthProcessInitializer.hpp"
 #include "io/JsonReader.hpp"
 
-#include "database/KeyImporter.hpp"
+
 #include "detail/GenericImportKeyCommand.hpp"
-#include "detail/StealthKeyValidator.hpp"
-#include "detail/EthereumKeyValidator.hpp"
 
 
 namespace Xeth{
@@ -40,10 +38,10 @@ class ImportKeyCommand
 };
 
 
-class ImportEthereumKeyCommand : public GenericImportKeyCommand<EthereumKeyStore, EthereumKeyValidator>
+class ImportEthereumKeyCommand : public GenericImportKeyCommand<EthereumKeyImporter>
 {
     public:
-        typedef GenericImportKeyCommand<EthereumKeyStore, EthereumKeyValidator> Base;
+        typedef GenericImportKeyCommand<EthereumKeyImporter> Base;
 
     public:
         ImportEthereumKeyCommand(DataBase &db, Synchronizer &);
@@ -68,10 +66,10 @@ class ImportPresaleKeyCommand
 };
 
 
-class ImportStealthKeyCommand : public GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator>
+class ImportStealthKeyCommand : public GenericImportKeyCommand<StealthKeyImporter>
 {
     public:
-        typedef GenericImportKeyCommand<StealthKeyStore, StealthKeyValidator> Base;
+        typedef GenericImportKeyCommand<StealthKeyImporter> Base;
 
     public:
         ImportStealthKeyCommand(DataBase &db, Synchronizer &);

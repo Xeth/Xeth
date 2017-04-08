@@ -6,6 +6,7 @@
 #include "database/StealthKeyStore.hpp"
 #include "database/EthereumKeyStore.hpp"
 #include "database/KeyAttributesReader.hpp"
+#include "database/KeyImporter.hpp"
 
 #include "synchronizer/Synchronizer.hpp"
 
@@ -15,19 +16,19 @@
 namespace Xeth{
 
 
-template<class Store, class Validator>
+template<class Importer>
 class GenericImportKeyCommand
 {
     public:
-        GenericImportKeyCommand(Store &, Synchronizer &);
 
+        GenericImportKeyCommand(typename Importer::Store &, Synchronizer &);
         QVariant operator ()(const QVariantMap &request);
 
         bool import(const QVariantMap &request, QString &address);
         bool import(const QString &file, const QString &password, QString &address);
 
     private:
-        Store &_store;
+        Importer _importer;
         Synchronizer &_synchronizer;
 };
 
