@@ -23,17 +23,17 @@ void StealthPaymentStoreTest::testInsert()
 
 void StealthPaymentStoreTest::testGet()
 {
-    QJsonObject payment = _store.get("someaddress1");
+    QJsonObject payment = _store.get(std::string("someaddress1"));
     QVERIFY(payment["address"].toString() == "someaddress1");
     QVERIFY(payment["secret"].toString() == "sharedsecret1");
     QVERIFY(payment["txid"].toString() == "txid1");
 
-    payment = _store.get("someaddress2");
+    payment = _store.get(std::string("someaddress2"));
     QVERIFY(payment["address"].toString() == "someaddress2");
     QVERIFY(payment["secret"].toString() == "sharedsecret2");
     QVERIFY(payment["txid"].toString() == "txid2");
 
-    payment = _store.get("someaddress3");
+    payment = _store.get(std::string("someaddress3"));
     QVERIFY(payment["address"].toString() == "someaddress3");
     QVERIFY(payment["secret"].toString() == "sharedsecret3");
     QVERIFY(payment["txid"].toString() == "txid3");
@@ -44,7 +44,7 @@ void StealthPaymentStoreTest::testGet()
 
 void StealthPaymentStoreTest::testGetEmpty()
 {
-    QJsonObject payment = _store.get("someaddress4");
+    QJsonObject payment = _store.get(std::string("someaddress4"));
     QVERIFY(payment.empty());
 }
 
