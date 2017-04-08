@@ -26,6 +26,7 @@ class GenerateKeyCommandTest : public QObject
     private slots:
         void testGenerateEthereumKey();
         void testGenerateStealthKey();
+        void testInvalidType();
         void testGenerateFromEntropy();
         void testInvalidEntropy();
         void testInvalidPassword();

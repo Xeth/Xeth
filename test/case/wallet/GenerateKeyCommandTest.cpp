@@ -10,9 +10,9 @@ void GenerateKeyCommandTest::testGenerateEthereumKey()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
+    Xeth::GenerateKeyCommand command(database, synchronizer);
     QVariantMap request;
-    request.insert("password","asdasd123");
+    request["password"] = "asdasd123";
     QVariant result = command(request);
     QVERIFY(result.toBool());
 
@@ -27,7 +27,7 @@ void GenerateKeyCommandTest::testGenerateStealthKey()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
+    Xeth::GenerateKeyCommand command(database, synchronizer);
     QVariantMap request;
     request["password"] = "asdasd123";
     request["type"] = "stealth";
@@ -35,9 +35,27 @@ void GenerateKeyCommandTest::testGenerateStealthKey()
     QVERIFY(result.toBool());
 
     const Xeth::ScanCriteria & criteria = synchronizer.getScanCriteria();
+    Xeth::StealthKeyStore & keys = database.getStealthKeys();
+    QVERIFY(getSize(criteria.begin(), criteria.end())==2);
+    QVERIFY(getSize(keys.begin(), keys.end())== 1);
+}
+
+void GenerateKeyCommandTest::testInvalidType()
+{
+    Xeth::DataBase & database = _context.getDataBase();
+    Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
+    Xeth::GenerateKeyCommand command(database, synchronizer);
+    QVariantMap request;
+    request["password"] = "asdasd123";
+    request["type"] = "magic";
+    QVariant result = command(request);
+    QVERIFY(!result.toBool());
+
+    const Xeth::ScanCriteria & criteria = synchronizer.getScanCriteria();
     Xeth::EthereumKeyStore & keys = database.getEthereumKeys();
     QVERIFY(getSize(criteria.begin(), criteria.end())==2);
-    QVERIFY(getSize(keys.begin(), keys.end())== 2);
+    QVERIFY(getSize(keys.begin(), keys.end())== 1);
+    QVERIFY(getSize(database.getStealthKeys().begin(), database.getStealthKeys().end())==1);
 }
 
 
@@ -45,7 +63,7 @@ void GenerateKeyCommandTest::testGenerateFromEntropy()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
+    Xeth::GenerateKeyCommand command(database, synchronizer);
     QVariantMap request;
     request["password"] = "asdasd123";
     request["entropy"] = "asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd";
@@ -54,14 +72,15 @@ void GenerateKeyCommandTest::testGenerateFromEntropy()
     Xeth::EthereumKeyStore & keys = database.getEthereumKeys();
     const Xeth::ScanCriteria & criteria = synchronizer.getScanCriteria();
     QVERIFY(getSize(criteria.begin(), criteria.end())==3);
-    QVERIFY(getSize(keys.begin(), keys.end())==3);
+    QVERIFY(getSize(keys.begin(), keys.end())==2);
+    QVERIFY(getSize(database.getStealthKeys().begin(), database.getStealthKeys().end())==1);
 }
 
 void GenerateKeyCommandTest::testInvalidEntropy()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
+    Xeth::GenerateKeyCommand command(database, synchronizer);
     QVariantMap request;
     request["password"] = "adsasd123";
     request["entropy"] = "asdas";
@@ -70,7 +89,8 @@ void GenerateKeyCommandTest::testInvalidEntropy()
     Xeth::EthereumKeyStore & keys = database.getEthereumKeys();
     const Xeth::ScanCriteria & criteria = synchronizer.getScanCriteria();
     QVERIFY(getSize(criteria.begin(), criteria.end())==3);
-    QVERIFY(getSize(keys.begin(), keys.end())==3);
+    QVERIFY(getSize(keys.begin(), keys.end())==2);
+    QVERIFY(getSize(database.getStealthKeys().begin(), database.getStealthKeys().end())==1);
 }
 
 
@@ -78,7 +98,7 @@ void GenerateKeyCommandTest::testInvalidPassword()
 {
     Xeth::DataBase & database = _context.getDataBase();
     Xeth::Synchronizer & synchronizer = _context.getSynchronizer();
-    Xeth::GenerateEthereumKeyCommand command(database, synchronizer);
+    Xeth::GenerateKeyCommand command(database, synchronizer);
     QVariantMap request;
     request["entropy"] = "asdas";
     QVariant result = command(request);
@@ -86,7 +106,8 @@ void GenerateKeyCommandTest::testInvalidPassword()
     Xeth::EthereumKeyStore & keys = database.getEthereumKeys();
     const Xeth::ScanCriteria & criteria = synchronizer.getScanCriteria();
     QVERIFY(getSize(criteria.begin(), criteria.end())==3);
-    QVERIFY(getSize(keys.begin(), keys.end())==3);
+    QVERIFY(getSize(keys.begin(), keys.end())==2);
+    QVERIFY(getSize(database.getStealthKeys().begin(), database.getStealthKeys().end())==1);
 }
 
 void GenerateKeyCommandTest::cleanupTestCase()
