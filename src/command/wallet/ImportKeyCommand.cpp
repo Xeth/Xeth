@@ -87,8 +87,6 @@ ImportPresaleKeyCommand::ImportPresaleKeyCommand(const Settings &settings, Synch
 bool ImportPresaleKeyCommand::import(const QString &path, const QString &password, QString &address)
 {
 
-    qDebug()<<"import "<<path<<" password="<<password;
-
     QStringList args;
     Json::Value json;
 
