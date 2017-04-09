@@ -15,7 +15,7 @@ template<class Sender, class Validator, class Estimator>
 QVariant GenericSendCommand<Sender, Validator, Estimator>::operator()(const QVariantMap &request)
 {
 
-    if(!request.contains("from")||!request.contains("to")||!request.contains("amount")||!request.contains("password"))
+    if(!request.contains("from")||!request.contains("address")||!request.contains("amount")||!request.contains("password"))
     {
         return QVariant::fromValue(false);
     }
@@ -33,7 +33,7 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::operator()(const QVar
         _sender.unsetGasPrice();
     }
 
-    return send(request["from"].toString(), request["to"].toString(), request["password"].toString(), request["amount"].toString(), request["logs"], strict);
+    return send(request["from"].toString(), request["address"].toString(), request["password"].toString(), request["amount"].toString(), request["logs"], strict);
 
 }
 
@@ -65,6 +65,7 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
 )
 {
 
+
     if(!validateDestination(to, strict))
     {
         throw std::runtime_error("invalid address");
@@ -85,7 +86,6 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
     }
 
     TransactionObjectBuilder builder;
-
     if(!logs.isNull())
     {
         builder.setExtraData(logs.toMap());
@@ -104,8 +104,11 @@ QVariant GenericSendCommand<Sender, Validator, Estimator>::send
     else
     {
         amount = BigInt(amountStr);
+        if(!amount)
+        {
+            throw std::runtime_error("invalid amount");
+        }
     }
-
 
     QString txid = _sender(_wallet, builder, from, password, to, amount).c_str();
     _database.getTransactions().insert(builder.build());
