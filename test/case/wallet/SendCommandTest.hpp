@@ -7,36 +7,35 @@
 #include "simulator/BlockChainSimulator.hpp"
 #include "simulator/ApplicationContext.hpp"
 
-#include "command/wallet/ImportStealthKeyCommand.hpp"
+#include "command/wallet/SendCommand.hpp"
 
 
 
-class ImportStealthKeyTest : public QObject
+class SendCommandTest : public QObject
 {
     Q_OBJECT
 
     public:
         typedef ::ApplicationContext<KeyStoreSimulator, BlockChainSimulator> ApplicationContext;
         typedef ::GethSimulator<KeyStoreSimulator, BlockChainSimulator> GethSimulator;
-
 #if __GETH_SIMULATOR_ENABLED__
     public:
-        ImportStealthKeyTest();
+        SendCommandTest();
 
     private slots:
-        void testImport();
+        void initTestCase();
+        void testSend();
+        void testSendStealth();
         void testInvalidRequest();
-        void testMalformedFile();
-        void testRenamedFile();
-        void testImportNonExistendFile();
+        void testInvalidDestiantion();
+        void testInvalidSource();
+        void testInvalidPassword();
+        void testNotEnoughFunds();
         void cleanupTestCase();
 
     private:
-        template<class Iterator>
-        size_t getSize(Iterator begin, Iterator end);
-
-    private:
         ApplicationContext _context;
+        Xeth::SendCommand _command;
 #endif
 };
 

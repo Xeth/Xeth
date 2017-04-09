@@ -14,6 +14,12 @@ std::vector<std::string> KeyStoreSimulator::getAccounts()
 }
 
 
+void KeyStoreSimulator::lockAccount(const char *address)
+{
+    _locks[address] = 0;
+}
+
+
 void KeyStoreSimulator::registerAccount(const char *address, const char *password)
 {
     _accounts[address] = password;

@@ -90,6 +90,27 @@ void GethSession<GethSimulator>::handleRead(const boost::system::error_code& err
                         }
                         else
                         {
+                            
+                            response["error"] = "transaction failed";
+                        }
+                    }
+                    else
+                    if(method == "personal_signAndSendTransaction")
+                    {
+                        Json::Value tx = params[0];
+                        const char *data = tx.isMember("data") ? tx["data"].asCString() : NULL;
+                        const char *from = tx["from"].asCString();
+                        const char *to = tx["to"].asCString();
+                        const char *value = tx["value"].asCString();
+                        const char * password = params[1].asCString();
+
+                        std::string txid = _simulator->sendTransaction(from, to, BigInt(value), data, password);
+                        if(txid.size())
+                        {
+                            response["result"] = txid;
+                        }
+                        else
+                        {
                             response["error"] = "transaction failed";
                         }
                     }

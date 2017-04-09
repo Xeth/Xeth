@@ -71,6 +71,29 @@ bool GethSimulator<KeyStore, BlockChain>::unlockAccount(const char *address, con
 
 
 template<class KeyStore, class BlockChain>
+std::string GethSimulator<KeyStore, BlockChain>::sendTransaction(const char *from, const char *to, const BigInt &amount, const char *data, const char *password)
+{
+    {
+        boost::mutex::scoped_lock lock(_mutex);
+        if(!_keys.unlockAccount(from, password, 1))
+        {
+            return "";
+        }
+
+        if(_balances[from] < amount)
+        {
+            return "";
+        }
+    }
+    addBalance(from, -amount);
+    addBalance(to, amount);
+    std::string txid = RandomHexString();
+    _chain.pushMemPool(txid.c_str(), from, to, amount, data);
+    _keys.lockAccount(from);
+    return txid;
+}
+
+template<class KeyStore, class BlockChain>
 std::string GethSimulator<KeyStore, BlockChain>::sendTransaction(const char *from, const char *to, const BigInt &amount, const char *data)
 {
     {

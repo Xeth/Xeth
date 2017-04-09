@@ -44,6 +44,7 @@ class GethSimulator : public boost::noncopyable
         BigInt getBalance(const char *address);
 
         std::string sendTransaction(const char *from, const char *to, const BigInt &amount, const char *data=NULL);
+        std::string sendTransaction(const char *from, const char *to, const BigInt &amount, const char *data, const char *password);
 
         bool unlockAccount(const char *address, const char *password, size_t duration);
         std::vector<std::string> getAccounts();

@@ -16,6 +16,7 @@ class KeyStoreSimulator
         bool unlockAccount(const char *address, const char *password, size_t duration);
         std::vector<std::string> getAccounts();
         bool isUnlocked(const char *address);
+        void lockAccount(const char *address);
 
     private:
         std::map<std::string, std::string> _accounts;
