@@ -11,6 +11,11 @@ SendCommand::SendCommand(Ethereum::Connector::Provider &provider, DataBase &data
 
 QVariant SendCommand::operator()(const QVariantMap &request)
 {
+    if(!request.contains("address") || !request.contains("from") || !request.contains("amount") || !request.contains("password"))
+    {
+        return QVariant::fromValue(false);
+    }
+
     QString to = request["address"].toString();
     QString from = request["from"].toString();
     QString password = request["password"].toString();
@@ -21,10 +26,16 @@ QVariant SendCommand::operator()(const QVariantMap &request)
     bool strict = request.contains("checksum") ? request["checksum"].toBool() : false;
     size_t addrSize = to.length();
 
+
     if(addrSize==40||addrSize==42)
     {
         SendToAddressCommand command(_provider, _database);
         return send(command, from, to, password, amount, gas, price, request["logs"], strict);
+    }
+    else
+    if(addrSize < 42)
+    {
+        return QVariant::fromValue(false);
     }
     SendToStealthCommand command(_provider, _database);
     return send(command, from, to, password, amount, gas, price, request["logs"], strict);
