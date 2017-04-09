@@ -33,6 +33,8 @@ class EthProcessInitializer
         static bool FileExists(const QString &path);
         static void SetEnvironment(QProcess &process);
 
+        static void SetPathArgument(QStringList &, const Settings &);
+
 };
 
 

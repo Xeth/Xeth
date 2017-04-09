@@ -1,6 +1,9 @@
 #include "EthProcessInitializer.hpp"
 #include "database/EthereumKeyStorePath.hpp"
+#include "io/ApplicationPath.hpp"
+
 #include <QDebug>
+#include <QDir>
 
 namespace Xeth{
 
@@ -99,14 +102,28 @@ QString EthProcessInitializer::GetCommand(const Settings &settings)
 QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
 {
     QStringList args;
-    if(settings.get<bool>("testnet", false))
-    {
-        args.push_back("--testnet");
-    }
+
     args.push_back("--verbosity=0");
     args.push_back("--cache=1024");
     args.push_back("--targetgaslimit=1500000");
     args.push_back("--gasprice=20000000000");
+
+    QString keystoreOpt = "--keystore=";
+    keystoreOpt += ApplicationPath::EthereumData();
+    keystoreOpt += QDir::separator();
+    keystoreOpt += "keystore";
+    keystoreOpt += QDir::separator();
+    if(settings.get<bool>("testnet", false))
+    {
+        args.push_back("--testnet");
+        keystoreOpt += "testnet";
+    }
+    else
+    {
+        keystoreOpt += "ethereum";
+    }
+    args.push_back(keystoreOpt);
+
 
     if(! settings.get<int>("dao-fork", 1))
     {
@@ -129,6 +146,20 @@ QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
 QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
 {
     QStringList args;
+
+    args.push_back("--geth");
+    args.push_back("--no-dapps");
+    args.push_back("--pruning=archive");
+    args.push_back("--cache-size-db=1024");
+    args.push_back("--gas-floor-target=1500000");
+    args.push_back("--gasprice=20000000000");
+    args.push_back("--gas-cap=1500000");
+
+    QString keystoreOpt = "--keys-path=";
+    keystoreOpt += ApplicationPath::EthereumData();
+    keystoreOpt += QDir::separator();
+    keystoreOpt += "keystore";
+
     if(settings.get<bool>("testnet", false))
     {
         args.push_back("--chain=morden");
@@ -140,17 +171,12 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
             args.push_back("--chain=homestead-dogmatic");
         }
     }
-    args.push_back("--geth");
-    args.push_back("--no-dapps");
-    args.push_back("--pruning=archive");
-    args.push_back("--cache-size-db=1024");
-    args.push_back("--gas-floor-target=1500000");
-    args.push_back("--gasprice=20000000000");
-    args.push_back("--gas-cap=1500000");
-    EthereumKeyStorePath path(settings);
-    QString pathArg = "--keys-path=";
-    pathArg += path.toString().c_str();
-    args.push_back(pathArg);
+
+    args.push_back(keystoreOpt);
+
+
+    qDebug()<<"args="<<args;
+
     return args;
 }
 
