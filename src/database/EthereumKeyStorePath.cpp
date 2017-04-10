@@ -11,7 +11,7 @@ EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
     if(settings.has("keystore"))
     {
         boost::filesystem::path  path = boost::filesystem::absolute(settings.get("keystore") );
-        _path = MakePath(path);
+        _path = MakePath(path, settings.get("testnet", false));
     }
     else
     {
@@ -21,8 +21,8 @@ EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 
 
 
-EthereumKeyStorePath::EthereumKeyStorePath(const std::string &path) :
-    _path(MakePath(path))
+EthereumKeyStorePath::EthereumKeyStorePath(const std::string &path, bool testnet) :
+    _path(MakePath(path, testnet))
 {}
 
 
@@ -42,15 +42,15 @@ std::string EthereumKeyStorePath::GetDefaultPath(bool testnet)
 }
 
 
-std::string EthereumKeyStorePath::MakePath(const std::string &dir)
+std::string EthereumKeyStorePath::MakePath(const std::string &dir, bool testnet)
 {
     boost::filesystem::path path = boost::filesystem::absolute(dir);
-    return MakePath(path);
+    return MakePath(path, testnet);
 }
 
-std::string EthereumKeyStorePath::MakePath(boost::filesystem::path &path)
+std::string EthereumKeyStorePath::MakePath(boost::filesystem::path &path, bool testnet)
 {
-    path /= "keystore";
+    path /= testnet ? "testnet" : "ethereum";
     return path.string();
 }
 

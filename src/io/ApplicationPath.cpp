@@ -86,9 +86,9 @@ QString ApplicationPath::Keys()
 {
     QString path = EthereumData();
 #if defined(__WINDOWS_OS__)
-    path += "\\keystore";
+    path += "\\keystore\\ethereum";
 #else
-    path += "/keystore";
+    path += "/keystore/ethereum";
 #endif
     return path;
 }
@@ -98,9 +98,9 @@ QString ApplicationPath::TestnetKeys()
 {
     QString path = EthereumData();
 #if defined(__WINDOWS_OS__)
-    path += "\\testnet\\keystore";
+    path += "\\keystore\\testnet";
 #else
-    path += "/testnet/keystore";
+    path += "/keystore/testnet";
 #endif
     return path;
 }
