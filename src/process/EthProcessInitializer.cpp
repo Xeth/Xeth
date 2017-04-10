@@ -99,31 +99,49 @@ QString EthProcessInitializer::GetCommand(const Settings &settings)
 }
 
 
+void EthProcessInitializer::SetArgument(QStringList &args, const char *name, const QString &value)
+{
+    QString opt = name;
+    opt += value;
+    args.push_back(opt);
+}
+
+
+QString EthProcessInitializer::GetDefaultKeystorePath()
+{
+    QString path = ApplicationPath::EthereumData();
+    path += QDir::separator();
+    path += "keystore";
+    return path;
+}
+
+QString EthProcessInitializer::GetParityKeystorePath(const Settings &settings)
+{
+    return settings.has("keystore") ? settings.get("keystore") : GetDefaultKeystorePath();
+}
+
+QString EthProcessInitializer::GetGethKeystorePath(const Settings &settings)
+{
+    QString path = settings.has("keystore") ? settings.get("keystore") : GetDefaultKeystorePath();
+    path += QDir::separator();
+    path += settings.get("testnet", false) ? "ethereum" : "testnet";
+    return path;
+}
+
+
 QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
 {
     QStringList args;
 
     args.push_back("--verbosity=0");
-    args.push_back("--cache=1024");
-    args.push_back("--targetgaslimit=1500000");
-    args.push_back("--gasprice=20000000000");
-
-    QString keystoreOpt = "--keystore=";
-    keystoreOpt += ApplicationPath::EthereumData();
-    keystoreOpt += QDir::separator();
-    keystoreOpt += "keystore";
-    keystoreOpt += QDir::separator();
+    SetArgument(args, "--cache=", settings.get("cache-size", "1024"));
+    SetArgument(args, "--targetgaslimit=", settings.get("gaslimit", "1500000"));
+    SetArgument(args, "--gasprice=", settings.get("gasprice", "20000000000"));
+    SetArgument(args, "--keystore=", GetGethKeystorePath(settings));
     if(settings.get<bool>("testnet", false))
     {
         args.push_back("--testnet");
-        keystoreOpt += "testnet";
     }
-    else
-    {
-        keystoreOpt += "ethereum";
-    }
-    args.push_back(keystoreOpt);
-
 
     if(! settings.get<int>("dao-fork", 1))
     {
@@ -138,6 +156,7 @@ QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
     {
         args.push_back("--fast");
     }
+
     return args;
 }
 
@@ -150,15 +169,13 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
     args.push_back("--geth");
     args.push_back("--no-dapps");
     args.push_back("--pruning=archive");
-    args.push_back("--cache-size-db=1024");
-    args.push_back("--gas-floor-target=1500000");
-    args.push_back("--gasprice=20000000000");
-    args.push_back("--gas-cap=1500000");
 
-    QString keystoreOpt = "--keys-path=";
-    keystoreOpt += ApplicationPath::EthereumData();
-    keystoreOpt += QDir::separator();
-    keystoreOpt += "keystore";
+    SetArgument(args, "--cache-size-db", settings.get("cache-size", "1024"));
+    SetArgument(args, "--gas-floor-target", settings.get("gaslimit", "1500000"));
+    SetArgument(args, "--gasprice=", settings.get("gasprice", "20000000000"));
+    SetArgument(args, "--gas-cap=", settings.get("gaslimit", "1500000"));
+    SetArgument(args, "--keystore=", GetParityKeystorePath(settings));
+
 
     if(settings.get<bool>("testnet", false))
     {
@@ -171,8 +188,6 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
             args.push_back("--chain=homestead-dogmatic");
         }
     }
-
-    args.push_back(keystoreOpt);
 
 
     qDebug()<<"args="<<args;

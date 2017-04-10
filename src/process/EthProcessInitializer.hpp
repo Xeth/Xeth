@@ -32,6 +32,10 @@ class EthProcessInitializer
         static QString GetVendorPath(const QString &root, const char *name);
         static bool FileExists(const QString &path);
         static void SetEnvironment(QProcess &process);
+        static QString GetDefaultKeystorePath();
+        static QString GetParityKeystorePath(const Settings &);
+        static QString GetGethKeystorePath(const Settings &);
+        static void SetArgument(QStringList &, const char *, const QString &);
 
         static void SetPathArgument(QStringList &, const Settings &);
 
