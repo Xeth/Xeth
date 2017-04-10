@@ -170,11 +170,11 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
     args.push_back("--no-dapps");
     args.push_back("--pruning=archive");
 
-    SetArgument(args, "--cache-size-db", settings.get("cache-size", "1024"));
-    SetArgument(args, "--gas-floor-target", settings.get("gaslimit", "1500000"));
+    SetArgument(args, "--cache-size-db=", settings.get("cache-size", "1024"));
+    SetArgument(args, "--gas-floor-target=", settings.get("gaslimit", "1500000"));
     SetArgument(args, "--gasprice=", settings.get("gasprice", "20000000000"));
     SetArgument(args, "--gas-cap=", settings.get("gaslimit", "1500000"));
-    SetArgument(args, "--keystore=", GetParityKeystorePath(settings));
+    SetArgument(args, "--keys-path=", GetParityKeystorePath(settings));
 
 
     if(settings.get<bool>("testnet", false))
