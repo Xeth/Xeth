@@ -74,7 +74,6 @@ class Window : public QWebView
         QMenu *_trayMenu;
         QAction *_activateAction;
         QAction *_quitAction;
-
 };
 
 }

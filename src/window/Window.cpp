@@ -199,8 +199,8 @@ void Window::closeEvent(QCloseEvent *event)
 void Window::notifyTransaction(const QVariantMap &tx)
 {
     QString amount = tx["amount"].toString();
-    time_t timestamp = tx["timestamp"].toString().toUInt();
-    if(amount!="0" && (timestamp > (time(NULL)-86400) ))
+    time_t timestamp = tx["timestamp"].toUInt();
+    if(amount!="0" && (timestamp > (time(NULL)-259200)) )
     {
         _trayIcon->showMessage(tx["category"].toString(), _facade.getConverter().fromWei(amount).toString());
     }
