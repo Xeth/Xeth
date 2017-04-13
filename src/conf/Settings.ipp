@@ -12,12 +12,12 @@ T Settings::get(const char *name) const
 template<class T>
 T Settings::get(const char *name, const T &defaultVal) const throw()
 {
-    boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
+    DataMap::const_iterator it= _data.find(name);
     if(it==_data.end())
     {
         return defaultVal;
     }
-    return boost::lexical_cast<T>(it->second);
+    return boost::lexical_cast<T>(it->toStdString());
 }
 
 
@@ -37,7 +37,7 @@ void Settings::getVector(const char *name, Vector &vec) const
 template<class Vector>
 void Settings::getVector(const char *name, Vector &vec) const
 {
-    std::string data = get<std::string>(name);
+    std::string data = get(name).toStdString();
     std::vector<std::string> items, result;
     boost::trim_if(data, boost::is_any_of(";"));
     boost::split(result, data, boost::is_any_of(";"), boost::token_compress_on);

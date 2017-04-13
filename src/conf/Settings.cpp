@@ -9,34 +9,63 @@ namespace Xeth{
 
 bool Settings::has(const char *name) const
 {
-    boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
+
+    for(SourceMap::const_iterator it = _sources.begin(), end = _sources.end(); it != end; ++it)
+    {
+        const SourcePtr & source = *it;
+        if(source->has(name))
+        {
+            return true;
+        }
+    }
+
+    DataMap::const_iterator it= _data.find(name);
     return it!=_data.end();
 }
 
 
-const char * Settings::get(const char *name) const
+QString Settings::get(const char *name) const
 {
-    boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
+
+    for(SourceMap::const_iterator it = _sources.begin(), end = _sources.end(); it != end; ++it)
+    {
+        const SourcePtr & source = *it;
+        if(source->has(name))
+        {
+            return source->get(name);
+        }
+    }
+
+    DataMap::const_iterator it= _data.find(name);
     if(it==_data.end())
     {
         std::stringstream err;
         err<<"settings ["<<name<<"] not found";
         throw std::runtime_error(err.str());
     }
-    return it->second.c_str();
+    return *it;
 }
 
 
 
 
-const char * Settings::get(const char *name, const char *defaultVal) const
+QString Settings::get(const char *name, const char *defaultVal) const
 {
-    boost::unordered_map<std::string, std::string>::const_iterator it= _data.find(name);
+    for(SourceMap::const_iterator it = _sources.begin(), end = _sources.end(); it != end; ++it)
+    {
+        const SourcePtr & source = *it;
+        if(source->has(name))
+        {
+            return source->get(name);
+        }
+    }
+
+    DataMap::const_iterator it= _data.find(name);
     if(it==_data.end())
     {
         return defaultVal;
     }
-    return it->second.c_str();
+    return *it;
 }
 
 
@@ -44,7 +73,7 @@ const char * Settings::get(const char *name, const char *defaultVal) const
 
 void Settings::set(const char *name, const char *value)
 {
-    _data.insert(std::make_pair(name, value));
+    _data[name] = value;
 }
 
 
@@ -72,7 +101,7 @@ void Settings::set(const boost::program_options::parsed_options &parsed)
 {
     BOOST_FOREACH(const option &opt, parsed.options)
     {
-        _data[opt.string_key] = opt.value.size() ? *opt.value.begin() : "1";
+        _data[opt.string_key.c_str()] = opt.value.size() ? opt.value.begin()->c_str() : "1";
     }
 }
 

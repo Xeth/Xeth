@@ -12,6 +12,9 @@
 #include <boost/algorithm/string.hpp>
 
 #include <QStringList>
+#include <QMap>
+
+#include "SettingSource.hpp"
 
 
 namespace Xeth{
@@ -21,8 +24,15 @@ class Settings
 {
     public:
         typedef boost::program_options::basic_option<char> option;
+        typedef boost::shared_ptr<SettingSource> SourcePtr;
+        typedef std::vector<SourcePtr> SourceMap;
+        typedef QMap<QString, QString> DataMap;
 
     public:
+
+
+        void addSource(const boost::shared_ptr<SettingSource> &);
+
 
         bool has(const char *) const;
 
@@ -32,8 +42,8 @@ class Settings
         template<class T>
         T get(const char *, const T &) const throw();
 
-        const char * get(const char *)  const;
-        const char * get(const char *, const char *) const;
+        QString get(const char *)  const;
+        QString get(const char *, const char *) const;
 
         template<class T, class Vector>
         void getVector(const char *, Vector &) const;
@@ -55,7 +65,8 @@ class Settings
         void set(const boost::program_options::parsed_options &);
 
     private:
-        boost::unordered_map<std::string, std::string> _data;
+        SourceMap _sources;
+        DataMap _data;
 };
 
 

@@ -11,7 +11,7 @@ Directory::Directory(const Settings &settings, bool create)
 {
     if(settings.has("datadir"))
     {
-        _path = boost::filesystem::absolute(settings.get("datadir"));
+        _path = boost::filesystem::absolute(settings.get("datadir").toStdString());
     }
     else
     {
