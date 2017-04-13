@@ -59,6 +59,7 @@ class LevelDbStore
         Iterator begin() const;
         Iterator end() const;
         Iterator find(const Key &) const;
+        bool has(const Key &) const;
 
         ReverseIterator rbegin() const;
         ReverseIterator rend() const;

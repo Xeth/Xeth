@@ -34,6 +34,17 @@ void ConfigStore::insert(const char *key, const QString &value)
 }
 
 
+bool ConfigStore::has(const char *name) const
+{
+    return Base::has(name);
+}
+
+
+QString ConfigStore::get(const char *name) const
+{
+    return Base::get(name);
+}
+
 
 
 

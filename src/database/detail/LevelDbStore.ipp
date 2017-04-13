@@ -127,6 +127,13 @@ LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::find(co
 }
 
 template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
+bool LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::has(const Key &key) const
+{
+    Iterator it = find(key);
+    return it != end();
+}
+
+template<class Value, class ValueSerializer, class Key, class KeySerializer, class KeyComparator>
 typename LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::Iterator 
 LevelDbStore<Value, ValueSerializer, Key, KeySerializer, KeyComparator>::makeIterator(leveldb::Iterator *it) const
 {

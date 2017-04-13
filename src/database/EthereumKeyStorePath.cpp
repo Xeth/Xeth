@@ -10,7 +10,7 @@ EthereumKeyStorePath::EthereumKeyStorePath(const Settings &settings)
 {
     if(settings.has("keystore"))
     {
-        boost::filesystem::path  path = boost::filesystem::absolute(settings.get("keystore") );
+        boost::filesystem::path  path = boost::filesystem::absolute(settings.get("keystore").toStdString() );
         _path = MakePath(path, settings.get("testnet", false));
     }
     else
