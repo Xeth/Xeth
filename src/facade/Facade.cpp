@@ -8,7 +8,7 @@
 namespace Xeth{
 
 
-Facade::Facade(const Settings &settings) :
+Facade::Facade(Settings &settings) :
     _settings(settings),
     _ready(false),
     _database(settings),
@@ -28,7 +28,7 @@ Facade::Facade(const Settings &settings) :
     _blockchain(_provider, _notifier, _synchronizer, _invoker),
     _info(_settings, _notifier, _invoker)
 {
-
+    _settings.addSource(&_database.getConfig());
     Ethereum::Connector::NetworkParams netParams = settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net;
     _eth.attach(EthProcessFactory::Create(settings));
     _eth.addLoader(WaitForRpcServer(_provider, netParams));
@@ -54,6 +54,12 @@ Facade::Facade(const Settings &settings) :
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     thread->start();
+}
+
+
+DataBase & Facade::getDataBase()
+{
+    return _database;
 }
 
 Facade::~Facade()

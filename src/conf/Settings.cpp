@@ -7,6 +7,11 @@
 namespace Xeth{
 
 
+void Settings::addSource(const SourcePtr &source)
+{
+    _sources.push_back(source);
+}
+
 bool Settings::has(const char *name) const
 {
 

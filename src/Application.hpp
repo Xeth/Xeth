@@ -17,7 +17,7 @@ class Application : public QObject
     Q_OBJECT
 
     public:
-        Application(const Settings &, int &argc, char **argv);
+        Application(Settings &, int &argc, char **argv);
         int exec();
         Window & getWindow();
 

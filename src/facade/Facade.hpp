@@ -53,8 +53,10 @@ class Facade : public QObject
         typedef Xeth::InfoFacade Info;
 
     public:
-        Facade(const Settings &);
+        Facade(Settings &);
         ~Facade();
+
+        DataBase & getDataBase();
 
         Notifier & getNotifier();
         AddressBook & getAddressBook();
@@ -92,7 +94,7 @@ class Facade : public QObject
         void setReady();
 
     private:
-        const Settings &_settings;
+        Settings &_settings;
         bool _ready;
 
         Ethereum::Connector::Provider _provider;

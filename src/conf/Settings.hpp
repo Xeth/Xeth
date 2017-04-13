@@ -24,14 +24,14 @@ class Settings
 {
     public:
         typedef boost::program_options::basic_option<char> option;
-        typedef boost::shared_ptr<SettingSource> SourcePtr;
+        typedef SettingSource * SourcePtr;
         typedef std::vector<SourcePtr> SourceMap;
         typedef QMap<QString, QString> DataMap;
 
     public:
 
 
-        void addSource(const boost::shared_ptr<SettingSource> &);
+        void addSource(const SourcePtr &);
 
 
         bool has(const char *) const;
