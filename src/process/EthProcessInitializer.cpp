@@ -143,6 +143,12 @@ QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
         args.push_back("--testnet");
     }
 
+    if(settings.has("datadir"))
+    {
+        SetArgument(args, "--datadir", settings.get("datadir"));
+    }
+
+
     if(! settings.get<int>("dao-fork", 1))
     {
         args.push_back("--oppose-dao-fork");
@@ -152,9 +158,16 @@ QStringList EthProcessInitializer::GetGethArguments(const Settings &settings)
         args.push_back("--support-dao-fork");
     }
 
-    if(settings.get<int>("fast", 1))
+    if(settings.has("light-client"))
     {
-        args.push_back("--fast");
+        args.push_back("--light");
+    }
+    else
+    {
+        if(settings.get<int>("fast", 1))
+        {
+            args.push_back("--fast");
+        }
     }
 
     return args;
@@ -174,6 +187,12 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
     SetArgument(args, "--gas-floor-target=", settings.get("gaslimit", "1500000"));
     SetArgument(args, "--gasprice=", settings.get("gasprice", "20000000000"));
     SetArgument(args, "--gas-cap=", settings.get("gaslimit", "1500000"));
+
+    if(settings.has("datadir"))
+    {
+        SetArgument(args, "--datadir", settings.get("datadir"));
+    }
+
     SetArgument(args, "--keys-path=", GetParityKeystorePath(settings));
 
 
@@ -189,8 +208,10 @@ QStringList EthProcessInitializer::GetParityArguments(const Settings &settings)
         }
     }
 
-
-    qDebug()<<"args="<<args;
+    if(settings.has("light-client"))
+    {
+        qDebug()<<"parity has no light client implementation";
+    }
 
     return args;
 }
