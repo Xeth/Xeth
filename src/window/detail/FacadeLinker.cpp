@@ -34,7 +34,7 @@ void FacadeLinker::linkObjects()
     _frame->addToJavaScriptWindowObject("XETH_bitprofile", &_facade->getBitProfile());
     _frame->addToJavaScriptWindowObject("XETH_network", &_facade->getNetwork());
     _frame->addToJavaScriptWindowObject("XETH_blockchain",&_facade->getBlockChain());
-    _frame->addToJavaScriptWindowObject("XETH_info", &_facade->getInfo());
+    _frame->addToJavaScriptWindowObject("XETH_system", &_facade->getSystem());
 }
 
 

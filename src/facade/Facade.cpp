@@ -26,7 +26,7 @@ Facade::Facade(Settings &settings) :
     _bitprofile(_provider, _database, _synchronizer, _notifier, _settings, _invoker),
     _network(_provider, _invoker),
     _blockchain(_provider, _notifier, _synchronizer, _invoker),
-    _info(_settings, _notifier, _invoker)
+    _system(_settings, _notifier, _invoker)
 {
     _settings.addSource(&_database.getConfig());
     Ethereum::Connector::NetworkParams netParams = settings.get("testnet", false)?Ethereum::Connector::Test_Net:Ethereum::Connector::Main_Net;
@@ -137,9 +137,9 @@ Facade::BlockChain & Facade::getBlockChain()
 }
 
 
-Facade::Info & Facade::getInfo()
+Facade::System & Facade::getSystem()
 {
-    return _info;
+    return _system;
 }
 
 
@@ -210,9 +210,9 @@ const Facade::BlockChain & Facade::getBlockChain() const
 }
 
 
-const Facade::Info & Facade::getInfo() const
+const Facade::System & Facade::getSystem() const
 {
-    return _info;
+    return _system;
 }
 
 
@@ -224,7 +224,7 @@ void Facade::setReady()
         _synchronizer.loadAddresses();
         _synchronizer.synchronize();
         _notifier.emitReady();
-        _info.fetchLatestReleaseDataAsync();
+        _system.fetchLatestReleaseDataAsync();
     }
 }
 

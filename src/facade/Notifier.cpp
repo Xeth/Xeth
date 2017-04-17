@@ -27,6 +27,21 @@ void Notifier::emitData(const QString &context, const QString &key, const QVaria
     emit Data(event);
 }
 
+void Notifier::emitWarning(const QString &msg)
+{
+    QVariantMap event;
+    event["message"] = msg;
+    emit Warning(event);
+}
+
+void Notifier::emitWarning(const QString &context, const QString &msg)
+{
+    QVariantMap event;
+    event["context"] = context;
+    event["message"] = msg;
+    emit Warning(event);
+}
+
 
 void Notifier::emitError(const QString &msg)
 {

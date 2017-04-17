@@ -23,6 +23,8 @@ class Notifier : public QObject
         void emitObjectError(const QString &context, const QString &uri, const QString &msg);
         void emitError(const QString &context, const QString &msg);
         void emitError(const QString &);
+        void emitWarning(const QString &context, const QString &msg);
+        void emitWarning(const QString &);
         void emitMessage(const QString &);
         void emitReady();
 
@@ -33,6 +35,7 @@ class Notifier : public QObject
     signals:
         void Ready() const;
         void Error(const QVariantMap &) const;
+        void Warning(const QVariantMap &) const;
         void Message(const QString &) const;
         void Data(const QVariantMap &) const;
 

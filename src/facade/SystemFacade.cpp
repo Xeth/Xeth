@@ -1,79 +1,106 @@
 
-#include "InfoFacade.hpp"
+#include "SystemFacade.hpp"
 
 namespace Xeth{
 
 
-InfoFacade::InfoFacade(const Settings &settings, Notifier &notifier, Invoker<Notifier>  &invoker) : 
+SystemFacade::SystemFacade(const Settings &settings, Notifier &notifier, Invoker<Notifier>  &invoker) : 
     _settings(settings),
     _notifier(notifier),
-    _invoker(invoker)
-{}
+    _invoker(invoker),
+    _prober(_settings)
+{
+    QObject::connect(&_prober, &SystemProber::Error, this, &SystemFacade::emitError);
+    QObject::connect(&_prober, &SystemProber::Warning, this, &SystemFacade::emitWarning);
+    _prober.addProbe<HddProbe>();
+}
 
 
-QString InfoFacade::getVersion() const
+const QStringList & SystemFacade::getErrors() const
+{
+    return _prober.getErrors();
+}
+
+
+const QStringList & SystemFacade::getWarnings() const
+{
+    return _prober.getWarnings();
+}
+
+
+void SystemFacade::emitError(const QString &msg)
+{
+    emit Error(msg);
+}
+
+void SystemFacade::emitWarning(const QString &msg)
+{
+    emit Warning(msg);
+}
+
+QString SystemFacade::getVersion() const
 {
     return QString(XETH_VERSION);
 }
 
-QString InfoFacade::getNewerClientVersion() const
+QString SystemFacade::getNewerClientVersion() const
 {
     return _newerClientVersion;
 }
 
 
-QString InfoFacade::getNewerXethVersion() const
+QString SystemFacade::getNewerXethVersion() const
 {
     return _newerXethVersion;
 }
 
 
-QVariant InfoFacade::getClientVersion() const
+QVariant SystemFacade::getClientVersion() const
 {
     GetClientVersionCommand command(_settings);
     return _invoker.invoke(command, NullCommandArguments());
 }
 
 
-QVariant InfoFacade::getClientVersionNumber() const
+QVariant SystemFacade::getClientVersionNumber() const
 {
     GetClientVersionCommand command(_settings);
     return _invoker.invoke(command, GetClientVersionCommand::Version_Only);
 }
 
-QVariant InfoFacade::getLatestReleaseInfo() const
+QVariant SystemFacade::getLatestReleaseInfo() const
 {
     GetLastReleaseInfoCommand command;
     return _invoker.invoke(command, NullCommandArguments());
 }
 
 
-Q_INVOKABLE QObject * InfoFacade::getLatestReleaseInfoAsync() const
+Q_INVOKABLE QObject * SystemFacade::getLatestReleaseInfoAsync() const
 {
     GetLastReleaseInfoCommand command;
     return _invoker.invokeAsync(command, NullCommandArguments());
 }
 
-void InfoFacade::fetchLatestReleaseDataAsync()
+void SystemFacade::fetchLatestReleaseDataAsync()
 {
-     QtConcurrent::run(this, &InfoFacade::fetchLatestReleaseData);
+     QtConcurrent::run(this, &SystemFacade::fetchLatestReleaseData);
 }
 
-void InfoFacade::fetchLatestReleaseData()
+void SystemFacade::fetchLatestReleaseData()
 {
     GetLastReleaseInfoCommand cmd;
     _latestData  = cmd.getJson();
 
     try
     {
-        update();
+        updateLatestReleaseInfo();
     }
     catch(...)
     {}
 }
 
 
-QVariant InfoFacade::update()
+QVariant SystemFacade::updateLatestReleaseInfo()
 {
     checkXethVersion(_latestData);
     checkClientVersion(_latestData);
@@ -81,7 +108,7 @@ QVariant InfoFacade::update()
 }
 
 
-void InfoFacade::checkClientVersion(const QJsonObject &latestData)
+void SystemFacade::checkClientVersion(const QJsonObject &latestData)
 {
     GetClientVersionCommand cmd(_settings);
     QString clientInfo = cmd();
@@ -113,7 +140,7 @@ void InfoFacade::checkClientVersion(const QJsonObject &latestData)
 }
 
 
-void InfoFacade::checkXethVersion(const QJsonObject &latestData)
+void SystemFacade::checkXethVersion(const QJsonObject &latestData)
 {
     QString version = XETH_VERSION;
     QString latestVersion = latestData["xeth"].toString();
@@ -129,13 +156,13 @@ void InfoFacade::checkXethVersion(const QJsonObject &latestData)
     _notifier.emitData("update", "xeth", latestVersion);
 }
 
-bool InfoFacade::isNewVersion(const QString &current, const QString &latest)
+bool SystemFacade::isNewVersion(const QString &current, const QString &latest)
 {
     return normalizeVersionNumber(current) < normalizeVersionNumber(latest);
 }
 
 
-qulonglong InfoFacade::normalizeVersionNumber(const QString &str)
+qulonglong SystemFacade::normalizeVersionNumber(const QString &str)
 {
     QString normalized;
     int parsed = 0;

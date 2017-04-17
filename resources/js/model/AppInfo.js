@@ -11,9 +11,9 @@ var AppInfo = Backbone.Model.extend({
     },
 
     update:function(){
-        this.set("version", XETH_info.getVersion());
-        this.set("client", XETH_info.getClientVersion());
-        XETH_info.update();
+        this.set("version", XETH_system.getVersion());
+        this.set("client", XETH_system.getClientVersion());
+        XETH_system.updateLatestReleaseInfo();
         if(!this.observing)
         {
             this.updateLatest();
@@ -21,8 +21,8 @@ var AppInfo = Backbone.Model.extend({
     },
 
     updateLatest:function(){
-        var newerClientVersion = XETH_info.getNewerClientVersion();
-        var newerVersion = XETH_info.getNewerXethVersion();
+        var newerClientVersion = XETH_system.getNewerClientVersion();
+        var newerVersion = XETH_system.getNewerXethVersion();
 
         if(newerClientVersion){
             this.set({"clientUpdate": true, "latestClient": newerClientVersion});

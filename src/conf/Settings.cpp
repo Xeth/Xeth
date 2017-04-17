@@ -1,8 +1,9 @@
 
+#include <boost/filesystem.hpp>
+
 #include "Settings.hpp"
 #include "io/Directory.hpp"
 
-#include <boost/filesystem.hpp>
 
 namespace Xeth{
 
