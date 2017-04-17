@@ -34,6 +34,15 @@ class LevelDbIterator :
         Value dereference() const;
         bool equal(const LevelDbIterator &) const;
 
+        template<class KeyData>
+        bool compareKey(const KeyData &) const;
+        bool compareKey(const std::string &) const;
+        bool compareKey(const char *) const;
+
+    private:
+        template<class String>
+        bool compareStringKey(const String &) const;
+
     private:
         DataDecoder _dataDecoder;
         KeyDecoder _keyDecoder;

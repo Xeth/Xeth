@@ -1,4 +1,3 @@
-
 namespace Xeth{
 
 
@@ -29,13 +28,43 @@ std::string LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::keyString() co
 
 
 template<class DataDecoder, class Value, class KeyDecoder, class Key>
+template<class KeyData>
+bool LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::compareKey(const KeyData &key) const
+{
+    return _handle->key() == key;
+}
+
+
+template<class DataDecoder, class Value, class KeyDecoder, class Key>
+bool LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::compareKey(const std::string &key) const
+{
+    return compareStringKey(key);
+}
+
+
+template<class DataDecoder, class Value, class KeyDecoder, class Key>
+bool LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::compareKey(const char *key) const
+{
+    return compareStringKey(key);
+}
+
+
+template<class DataDecoder, class Value, class KeyDecoder, class Key>
+template<class String>
+bool LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::compareStringKey(const String &key) const
+{
+    return _handle->key().ToString() == key;
+}
+
+
+
+template<class DataDecoder, class Value, class KeyDecoder, class Key>
 bool LevelDbIterator<DataDecoder, Value, KeyDecoder, Key>::equal(const LevelDbIterator &it) const
 {
     if((_valid == it._valid) && (!_valid || (_handle->key() == it._handle->key())))
     {
         return true;
     }
-
     return false;
 }
 
