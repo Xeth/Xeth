@@ -23,7 +23,7 @@
         <li class="transactions"><a page="page_transactions">transactions</a></li>
         <li class="settings"><a page="page_settings">settings</a></li>
     </ul>
-    <div class="footer">
+    <div class="footer notify error">
         <div class="preloader status" loader="50">
             <div class="message">
                 Loading...
@@ -39,11 +39,14 @@
             <div class="icon updated" title="">&nbsp;</div>
         </div>
         <div class="about">
-            <span class="ver new1">
+            <span class="ver new">
                 <%=info.get('version')%>
                 <a href="#" class="newver">New version available</a>
             </span>
             <span>&copy; 2016 XETH (GPLv2)</span>
+        </div>
+        <div class="notification">
+            persistent message
         </div>
     </div>
 </div>

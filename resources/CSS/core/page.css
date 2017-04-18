@@ -229,9 +229,13 @@
 
 .mainNav .footer {
 	position: absolute;
-	bottom: 20px;
+	bottom: -10px;
 	left: 20px;
 	right: 25px;
+    transition: bottom 300ms ease-in-out 1000ms;
+}
+.mainNav .footer.notify {
+	bottom: 20px;
 }
 .preloader {
 	text-align: center;
@@ -268,10 +272,32 @@
 }
 .mainNav .footer .about .ver .newver {
     color: #1C2E30;
-    background-color: #F7931E;
+    background-color: #8CC63F;
     padding: 0 5px;
     display: block;
     margin-right: -5px; 
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease-in-out 1000ms;
+}
+.mainNav .footer .about .ver.new .newver {
+    opacity: 1;
+    pointer-events: auto;
+}
+.mainNav .footer .notification {
+    color: #ffffff;
+    background-color: #F7931E;
+    margin: -20px;
+    margin-top: 22px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 2;
+}
+.mainNav .footer.error .notification {
+    background-color: #F15A24;
 }
 #newAddressSeedLoader[loader="100"] .loader .txt {
 	opacity: 0;
