@@ -11,6 +11,7 @@
 <div id="page_settings" class="page off"></div>
 <div id="page_bitprofile" class="page navpage off"></div>
 <div id="page_update" class="page off"></div>
+<div id="page_startup" class="page off"></div>
 
 
 <div class="mainNav menu">

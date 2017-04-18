@@ -2,13 +2,9 @@
 #page_newAddress .innerpage {
 	top: 60px;
 }
-#page_newAddress p {
-	text-align:center;
-}
 #page_newAddress .skip {
 	margin-top:140px;
 }
 #page_newAddress_create .section_stealth {
-	text-align:center;
 	margin: 90px 0 70px 0;
 }

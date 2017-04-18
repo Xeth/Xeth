@@ -150,6 +150,12 @@ var MainWindowView = Backbone.View.extend({
             templates: this.templates,
             el: this.$el.find("#page_update")
         });
+        this.subpages.startup = new StartupPageView
+        ({
+            router: this.router,
+            templates: this.templates,
+            el: this.$el.find("#page_startup")
+        });
 
         this.menu = new MenuView({el:this.$el.find(".mainNav")});
         this.menu.on("change", this.openPage);
