@@ -6,7 +6,13 @@ namespace Xeth{
 
 SystemProber::SystemProber(const Settings &settings) :
     _settings(settings)
-{}
+{
+    if(!QObject::connect(&_timer, &QTimer::timeout, this, &SystemProber::run))
+    {
+        throw std::runtime_error("failed to connect timeout signal");
+    }
+    
+}
 
 
 SystemProber::~SystemProber()
@@ -15,15 +21,11 @@ SystemProber::~SystemProber()
 }
 
 
-const SystemProber::Errors & SystemProber::getErrors() const
+void SystemProber::loopAsync(time_t interval)
 {
-    return _errors;
-}
-
-
-const SystemProber::Warnings & SystemProber::getWarnings() const
-{
-    return _warnings;
+    _timer.setInterval(interval);
+    _timer.setSingleShot(false);
+    _timer.start();
 }
 
 
@@ -37,6 +39,8 @@ bool SystemProber::run()
             return false;
         }
     }
+
+    emit Success();
 
     return true;
 }
@@ -63,14 +67,12 @@ void SystemProber::registerProbe(Probe *probe)
 
 void SystemProber::emitError(const QString &msg)
 {
-    _errors.push_back(msg);
     emit Error(msg);
 }
 
 
 void SystemProber::emitWarning(const QString &msg)
 {
-    _warnings.push_back(msg);
     emit Warning(msg);
 }
 

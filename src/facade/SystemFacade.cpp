@@ -12,21 +12,15 @@ SystemFacade::SystemFacade(const Settings &settings, Notifier &notifier, Invoker
 {
     QObject::connect(&_prober, &SystemProber::Error, this, &SystemFacade::emitError);
     QObject::connect(&_prober, &SystemProber::Warning, this, &SystemFacade::emitWarning);
+    QObject::connect(&_prober, &SystemProber::Success, this, &SystemFacade::emitSuccess);
     _prober.addProbe<HddProbe>();
+    _prober.loopAsync(300000);
 }
 
-
-const QStringList & SystemFacade::getErrors() const
+void SystemFacade::emitSuccess()
 {
-    return _prober.getErrors();
+    emit Success();
 }
-
-
-const QStringList & SystemFacade::getWarnings() const
-{
-    return _prober.getWarnings();
-}
-
 
 void SystemFacade::emitError(const QString &msg)
 {

@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QObject>
+#include <QTimer>
 
 #include "Probe.hpp"
 
@@ -17,11 +18,6 @@ class SystemProber : public QObject
     Q_OBJECT
 
     public:
-        typedef QStringList MsgContainer;
-        typedef MsgContainer Errors;
-        typedef MsgContainer Warnings;
-
-    public:
 
         SystemProber(const Settings &);
         ~SystemProber();
@@ -32,14 +28,15 @@ class SystemProber : public QObject
         template<class Probe, class Args>
         void addProbe(const Args &);
 
-        bool run();
+        void loopAsync(time_t interval = 300000);
 
-        const Errors & getErrors() const;
-        const Warnings & getWarnings() const;
+    public slots:
+        bool run();
 
     signals:
         void Warning(const QString &) const;
         void Error(const QString &) const;
+        void Success() const;
 
 
     private slots:
@@ -55,9 +52,9 @@ class SystemProber : public QObject
 
 
         ProbeContainer _probers;
-        MsgContainer   _warnings;
-        MsgContainer   _errors;
         const Settings  &_settings;
+        QTimer _timer;
+        time_t _interval;
 };
 
 

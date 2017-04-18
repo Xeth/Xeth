@@ -35,8 +35,6 @@ class SystemFacade : public QObject
         Q_INVOKABLE QObject * getLatestReleaseInfoAsync() const;
         Q_INVOKABLE QString getNewerClientVersion() const;
         Q_INVOKABLE QString getNewerXethVersion() const;
-        Q_INVOKABLE const QStringList & getErrors() const;
-        Q_INVOKABLE const QStringList & getWarnings() const;
 
         Q_INVOKABLE QVariant updateLatestReleaseInfo();
 
@@ -46,10 +44,12 @@ class SystemFacade : public QObject
     signals:
         void Error(const QString &) const;
         void Warning(const QString &) const;
+        void Success() const;
 
     private slots:
         void emitError(const QString &);
         void emitWarning(const QString &);
+        void emitSuccess();
 
     private:
         bool isNewVersion(const QString &, const QString &);
