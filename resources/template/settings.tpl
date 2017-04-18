@@ -22,6 +22,10 @@
     <div class="section_client btns">
         <a href="javascript:void(0);" rel="update" class="btn">Change Ethereum Client <span class="ver"></span></a>
     </div>
+    <div class="section_clientLight txtNote">
+            <input id="clientLight" type="checkbox" />
+			<label for="clientLight">Use Light Client</label>
+        </div>
 </div>
 
 

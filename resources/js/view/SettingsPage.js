@@ -8,7 +8,8 @@ var SettingsPageView = SubPageView.extend({
             "changeShowTray",
             "changeMinimizeTray",
             "changeCloseTray",
-            "updateClientVersion"
+            "updateClientVersion",
+            "changeClientLight"
         );
         this.config = options.config;
         this.info = options.info;
@@ -25,10 +26,12 @@ var SettingsPageView = SubPageView.extend({
         this.menu.on("change", this.router.redirect);
         this.trayToggle = this.$el.find("#trayToggle");
         this.trayMinimize = this.$el.find("#trayMinimize");
+        this.clientLight = this.$el.find("#clientLight");
         this.trayClose = this.$el.find("#trayClose");
         this.trayToggle.button({text:false});
         this.trayMinimize.button({text:false});
         this.trayClose.button({text:false});
+        this.clientLight.button({text:false});
 
         this.updateShowTray();
         this.updateMinimizeTray();
@@ -37,9 +40,11 @@ var SettingsPageView = SubPageView.extend({
         this.config.on("change:tray", this.updateShowTray);
         this.config.on("change:tray_minimize", this.updateMinimizeTray);
         this.config.on("change:tray_close", this.updateCloseTray);
+        this.config.on("change:client_light", this.updateClientLight);
         this.trayToggle.on("change", this.changeShowTray);
         this.trayMinimize.on("change", this.changeMinimizeTray);
         this.trayClose.on("change", this.changeCloseTray);
+        this.clientLight.on("change", this.changeClientLight);
         
         this.menu.render();
     },
@@ -59,6 +64,10 @@ var SettingsPageView = SubPageView.extend({
 
     updateCloseTray:function(){
         this.updateOption(this.trayClose, "tray_close");
+    },
+
+    updateClientLight:function(){
+        this.updateOption(this.clientLight, "client_light");
     },
 
     updateOption:function(checkbox, name){
@@ -92,6 +101,10 @@ var SettingsPageView = SubPageView.extend({
 
     changeCloseTray:function(){
         this.changeOption(this.trayClose, "tray_close");
+    },
+
+    changeClientLight:function(){
+        this.changeOption(this.clientLight, "client_light");
     },
 
     changeOption:function(checkbox, name){
