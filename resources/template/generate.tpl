@@ -9,18 +9,18 @@
 </div>
 
 <div id="page_newAddress_seed" class="page subpage innerpage">
-    <p>randomly move the mouse / click / press keyboard keys to generate the random seed</p>
+    <p class="txtNote">randomly move the mouse / click / press keyboard keys to generate the random seed</p>
     
     <div class="formpage">
         <div class="skip">
             <a href="javascript:void(0);" id="skipNewAddressSeed" class="btnSubmit"><span class="txt">Skip</span></a>
-    		<p>continue with the system random generator</p>
+    		<p class="txtNote">continue with the system random generator</p>
         </div>
     </div>
 </div>
 <div id="page_newAddress_create" class="page subpage innerpage">
 	<div class="formpage">
-        <div class="section_stealth">
+        <div class="section_stealth txtNote">
             <input id="newAddress_stealth" type="checkbox" />
 			<label for="newAddress_stealth">Stealth Address (for private exchange of funds)</label>
         </div>
