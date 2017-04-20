@@ -22,4 +22,17 @@ QVariant GenericGetBalanceCommand<type>::operator()(const QString &address)
 }
 
 
+template<BalanceType::Value type>
+QVariant GenericGetBalanceCommand<type>::operator()()
+{
+    Ethereum::Connector::Collection<std::string> addresses = _wallet.getAccounts();
+    Ethereum::Connector::BigInt balance = 0;
+    for(Ethereum::Connector::Collection<std::string>::Iterator it = addresses.begin(), end = addresses.end(); it!=end; ++it)
+    {
+        std::string address = *it;
+        balance += _wallet.getBalance(address.c_str(), BalanceType::ToString(type));
+    }
+    return balance.str().c_str();
+}
+
 }

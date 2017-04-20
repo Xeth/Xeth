@@ -23,6 +23,7 @@ class GenericGetBalanceCommand
 
         QVariant operator()(const QString &);
         QVariant operator()(const char *);
+        QVariant operator()();
 
 
     private:

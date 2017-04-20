@@ -89,6 +89,19 @@ QVariant WalletFacade::getPendingBalance(const QString &address)
     return _invoker.invoke(command, address);
 }
 
+QVariant WalletFacade::getBalance()
+{
+    GetBalanceCommand command(_provider);
+    return _invoker.invoke(command, NullCommandArguments());
+}
+
+QVariant WalletFacade::getPendingBalance()
+{
+    GetPendingBalanceCommand command(_provider);
+    return _invoker.invoke(command, NullCommandArguments());
+}
+
+
 QObject * WalletFacade::getBalanceAsync(const QString &address)
 {
     GetBalanceCommand command(_provider);
@@ -99,6 +112,18 @@ QObject * WalletFacade::getPendingBalanceAsync(const QString &address)
 {
     GetPendingBalanceCommand command(_provider);
     return _invoker.invokeAsync(command, address);
+}
+
+QObject * WalletFacade::getBalanceAsync()
+{
+    GetBalanceCommand command(_provider);
+    return _invoker.invokeAsync(command, NullCommandArguments());
+}
+
+QObject * WalletFacade::getPendingBalanceAsync()
+{
+    GetPendingBalanceCommand command(_provider);
+    return _invoker.invokeAsync(command, NullCommandArguments());
 }
 
 QVariant WalletFacade::send(const QVariantMap &request)
