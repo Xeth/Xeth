@@ -81,7 +81,7 @@
 	display: block;
 	position: absolute;
 	z-index: 2;
-	top: 100px;
+	top: 158px;
 	left: 20px;
 	right: 0;
 	margin: 0;
@@ -299,6 +299,36 @@
 .mainNav .footer.error .notification {
     background-color: #F15A24;
 }
+
+.mainNav .funds {
+    height: 38px;
+    background-color: #37464F;
+    padding: 10px;
+}
+.mainNav .funds .totalBalance {
+    float: left;
+    line-height: 19px;
+    font-size: 0.9rem;
+}
+.mainNav .funds .totalBalance .title {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #778283;
+}
+/*
+.mainNav .funds .totalBalance .txtBalance .dec:after {
+    display: none;
+}
+*/
+.mainNav .funds .currency {
+    float: right;
+    padding-right: 5px;
+    width: 80px;
+}
+.mainNav .funds .currency .currencySelect {
+    width: 60px !important;
+}
+
 #newAddressSeedLoader[loader="100"] .loader .txt {
 	opacity: 0;
 }

@@ -276,7 +276,8 @@
 	width: 250px;
 }
 
-.page .input.amount:after {
+.input.amount:after,
+.currency_eth .input.amount:after {
 	content: "eth";
 	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
@@ -292,6 +293,19 @@
 	line-height:16px;
 	color:#1C2E30;
 	pointer-events: none;
+}
+
+.currency_aug .input.amount:after {
+	content: "aug";
+	padding-left: 20px;
+	background-position: left -1027px;
+    color: #5C2634;
+}
+.currency_gno .input.amount:after {
+	content: "gno";
+	padding-left: 21px;
+	background-position: left -1067px;
+    color: #00a6c4;
 }
 
 .page .input.bitprofileID {
@@ -476,9 +490,16 @@
 .page .formpage h1 .fee .eth:before {
 	content:" (";
 }
-.page .formpage h1 .fee .eth:after {
+.page .formpage h1 .fee .eth:after,
+.currency_eth .fee .eth:after {
 	content:" ETH)";
 	margin-left:5px;
+}
+.currency_aug .fee .eth:after {
+	content:" AUG)";
+}
+.currency_gno .fee .eth:after {
+	content:" GNO)";
 }
 
 .page .formpage h1 .controls {

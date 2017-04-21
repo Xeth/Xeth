@@ -14,8 +14,23 @@
 <div id="page_startup" class="page off"></div>
 
 
-<div class="mainNav menu">
+<div class="mainNav menu darkTheme">
     <a class="profile bitprofile" href="javascript:void(0)" page="page_bitprofile" rel="bitprofile">BitProfile</a>
+    <div class="funds">
+        <div class="currency">
+            <select id="globalCurrency">
+                <option value="eth">eth</option>
+                <option value="aug">aug</option>
+                <option value="gno">gno</option>
+            </select>
+        </div>
+        <div class="totalBalance">
+            <div class="title">Total balance:</div>
+            <span class="txtBalance">
+                <span class="int">5003</span><span class="dec">0</span>
+            </span>
+        </div>
+    </div>
     <ul class="nav">
         <li class="send"><a page="page_send">send</a></li>
         <li class="receive"><a page="page_receive">receive</a></li>

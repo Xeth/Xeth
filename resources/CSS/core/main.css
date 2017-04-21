@@ -164,6 +164,17 @@ textarea {
 	outline: none;
 	transition: background-color 300ms ease-in-out;
 }
+
+.darkTheme .ui-selectmenu-button,
+.darkTheme .input,
+.darkTheme input[type="text"],
+.darkTheme input[type="password"],
+.darkTheme input[type="number"],
+.darkTheme textarea {
+	color: #ffffff;
+	background-color: #5f6b72;
+	background-color: rgba(255, 255, 255, 0.2);
+}
 .ui-selectmenu-button {
 	width: 160px !important;
 }
@@ -193,6 +204,17 @@ input[type="number"]:hover,
 textarea:hover {
 	background-color: #edeeef;
 	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.darkTheme .ui-state-focus,
+.darkTheme .ui-selectmenu-button:hover,
+.darkTheme .input:hover,
+.darkTheme input[type="text"]:hover,
+.darkTheme input[type="password"]:hover,
+.darkTheme input[type="number"]:hover,
+.darkTheme textarea:hover {
+	background-color: #E4E6E6;
+	background-color: rgba(255, 255, 255, 0.4);
 }
 
 input[type="text"]::-ms-clear,
@@ -285,6 +307,11 @@ input.search {
 	margin-right: -5px;
 	text-transform: uppercase;
 }
+.darkTheme .ui-selectmenu-button .ui-selectmenu-text,
+.darkTheme .input .select {
+	background-position: right -1106px;
+	color: #ffffff;
+}
 
 label.ui-button,
 .checkbox {
@@ -372,7 +399,8 @@ input[type="number"]:focus {
 .txtBalance .dec:before {
 	content:".";
 }
-.txtBalance .dec:after {
+.txtBalance .dec:after,
+.currency_eth .txtBalance .dec:after {
 	content: "eth";
 	background-image: url(../../img/icons-01.png);
 	background-repeat: no-repeat;
@@ -389,11 +417,42 @@ input[type="number"]:focus {
 	font-size:0.7rem;
 	color:#1C2E30;
 }
+.currency_aug .txtBalance .dec:after {
+	content: "aug";
+	margin-left: -1px;
+	padding-left: 20px;
+	background-position: left -1026px;
+    color: #5C2634;
+}
+.currency_gno .txtBalance .dec:after {
+	content: "gno";
+	margin-left: 1px;
+	padding-left: 21px;
+	background-position: left -1066px;
+    color: #00a6c4;
+}
 .txtBalance.pending .int {
     color: #BE6469;
 }
 .txtBalance.pending .dec {
     color: #BB874E;
+}
+
+.darkTheme .txtBalance .int {
+	color:#ffffff;
+}
+.darkTheme .txtBalance .dec:after,
+.currency_eth .darkTheme .txtBalance .dec:after{
+	background-position: left -1006px;
+	color:#ffffff;
+}
+.currency_aug .darkTheme .txtBalance .dec:after {
+	background-position: left -1046px;
+    color: #DCAEBA;
+}
+.currency_gno .darkTheme .txtBalance .dec:after {
+	background-position: left -1086px;
+    color: #33b8d0;
 }
 
 /******************************************************/

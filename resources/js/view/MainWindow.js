@@ -167,6 +167,9 @@ var MainWindowView = Backbone.View.extend({
         for(var i in this.subpages) this.subpages[i].render();
         this.menuAlias = {default: "receive"};
         this.subpages["default"] = this.subpages.receive;
+        
+        this.globalCurrency = this.$el.find("#globalCurrency");
+        this.globalCurrency.selectmenu().selectmenu( "widget" ).addClass( "currencySelect" );
 
         this.show();
         this.checkVersion();
