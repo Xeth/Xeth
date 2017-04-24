@@ -417,8 +417,8 @@ input[type="number"]:focus {
 	font-size:0.7rem;
 	color:#1C2E30;
 }
-.currency_aug .txtBalance .dec:after {
-	content: "aug";
+.currency_rep .txtBalance .dec:after {
+	content: "rep";
 	margin-left: -1px;
 	padding-left: 20px;
 	background-position: left -1026px;
@@ -446,7 +446,7 @@ input[type="number"]:focus {
 	background-position: left -1006px;
 	color:#ffffff;
 }
-.currency_aug .darkTheme .txtBalance .dec:after {
+.currency_rep .darkTheme .txtBalance .dec:after {
 	background-position: left -1046px;
     color: #DCAEBA;
 }
