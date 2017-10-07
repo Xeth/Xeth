@@ -10,7 +10,7 @@
 
 * Cmake (3.5.2)
  | [official site](https://cmake.org/)
- | [direct download](https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.exe)
+ | [direct download](https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi)
 
 * Install Git
  | [official site](https://git-scm.com/)

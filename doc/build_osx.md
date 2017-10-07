@@ -25,13 +25,13 @@ alternatively you can compile ipfs [https://github.com/ipfs/go-ipfs#build-from-s
 ### install [parity](https://ethcore.io/parity.html)
 install RUST
 ```
-brew install multirust
-multirust default stable
-
+curl https://sh.rustup.rs -sSf | sh
+cargo install --git https://github.com/paritytech/ethabi.git ethabi-cli
+rustup default stable
 ```
 install latest parity
 ```
-cd && git clone https://github.com/ethcore/parity.git
+cd && git clone https://github.com/paritytech/parity.git
 cd parity
 cargo build --release
 sudo cp target/release/parity /usr/local/bin
