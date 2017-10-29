@@ -49,9 +49,11 @@ target_include_directories(
     ${LEVELDB_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${PROJECT_BINARY_DIR}/libethcrypto/include
+    ${ETHCRYPTO_INCLUDE_DIRS}
+#    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libbitprofile/include
-    ${PROJECT_BINARY_DIR}/libethstealth/include
+    ${ETHSTEALTH_INCLUDE_DIRS}
+#    ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
 add_dependencies(xethlib ethrpc)
