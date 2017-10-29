@@ -1,19 +1,22 @@
 
+#copy resources
 file(GLOB RESOURCE_FILES "resources/*")
-
 file(COPY ${RESOURCE_FILES} DESTINATION ${PROJECT_BINARY_DIR}/resources)
 file(COPY ${PROJECT_SOURCE_DIR}/resources/icon DESTINATION ${PROJECT_BINARY_DIR})
 
-PARSE_RESOURCES_TARGET(parse_template RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template tpl compiler)
-PARSE_RESOURCES_TARGET(parse_js RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/js ${PROJECT_BINARY_DIR}/resources/js js jsmin)
-PARSE_RESOURCES_TARGET(parse_CSS RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/CSS ${PROJECT_BINARY_DIR}/resources/CSS css cssmin)
+include(cmake/modules/QRC.cmake)
+
+ADD_PARSE_RESOURCES_TARGET(parse_template RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/template ${PROJECT_BINARY_DIR}/resources/template tpl compiler)
+ADD_PARSE_RESOURCES_TARGET(parse_js RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/js ${PROJECT_BINARY_DIR}/resources/js js jsmin)
+ADD_PARSE_RESOURCES_TARGET(parse_CSS RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/CSS ${PROJECT_BINARY_DIR}/resources/CSS css cssmin)
 
 
-GENERATE_QRC(CSS ${PROJECT_BINARY_DIR}/resources/ CSS img fonts)
-GENERATE_QRC(js ${PROJECT_BINARY_DIR}/resources js)
-GENERATE_QRC(html ${PROJECT_BINARY_DIR}/resources html)
-GENERATE_QRC(icon ${PROJECT_BINARY_DIR}/resources icon)
-GENERATE_QRC(template ${PROJECT_BINARY_DIR}/resources template)
+#GENERATE_QRC(CSS ROOT_PATH ${PROJECT_BINARY_DIR}/resources/ RESOURCES CSS img fonts)
+#GENERATE_QRC(js ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES js)
+#GENERATE_QRC(html ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES html)
+#GENERATE_QRC(icon ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES icon)
+#GENERATE_QRC(template ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES template)
+#GENERATE_QRC(utils_js ROOT_PATH ${PROJECT_SOURCE_DIR}/utils/vendor RESOURCES utils_js)
 
 
 #include js
@@ -63,17 +66,24 @@ add_custom_target(test_html DEPENDS test_include_styles test_include_simulators 
 
 
 
-COMPILE_QRC_TARGET(icon)
-COMPILE_QRC_TARGET(js)
-COMPILE_QRC_TARGET(CSS)
-COMPILE_QRC_TARGET(template)
-COMPILE_QRC_TARGET(html)
+#DEFINE_COMPILE_QRC_TARGET(icon)
+#DEFINE_COMPILE_QRC_TARGET(js)
+#DEFINE_COMPILE_QRC_TARGET(CSS)
+#DEFINE_COMPILE_QRC_TARGET(template)
+#DEFINE_COMPILE_QRC_TARGET(html)
+#DEFINE_COMPILE_QRC_TARGET(utils_js)
 
-add_dependencies(compile_js parse_js)
-add_dependencies(compile_CSS parse_CSS)
-add_dependencies(compile_template parse_template)
-add_dependencies(compile_html include_styles)
-add_dependencies(compile_html include_scripts)
+ADD_QRC_TARGET(CSS ROOT_PATH ${PROJECT_BINARY_DIR}/resources/ RESOURCES CSS img fonts)
+ADD_QRC_TARGET(js ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES js)
+ADD_QRC_TARGET(html ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES html)
+ADD_QRC_TARGET(icon ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES icon)
+ADD_QRC_TARGET(template ROOT_PATH ${PROJECT_BINARY_DIR}/resources RESOURCES template)
+
+#add_dependencies(compile_js parse_js)
+#add_dependencies(compile_CSS parse_CSS)
+#add_dependencies(compile_template parse_template)
+#add_dependencies(compile_html include_styles)
+#add_dependencies(compile_html include_scripts)
 
 
 
