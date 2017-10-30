@@ -33,12 +33,12 @@ add_dependencies(ethstealth ethcrypto)
 
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/app.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/bin.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/unit-tests.cmake)
 
 
-include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)
 
 
 ADD_TEST_TARGET(ethcrypto-tests)

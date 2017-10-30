@@ -67,11 +67,12 @@ else()
 endif()
 
 
-add_dependencies(xeth compile_js)
-add_dependencies(xeth compile_CSS)
-add_dependencies(xeth compile_template)
-add_dependencies(xeth compile_html)
-add_dependencies(xeth compile_icon)
+add_dependencies(xeth resources)
+#add_dependencies(xeth compile_js)
+#add_dependencies(xeth compile_CSS)
+#add_dependencies(xeth compile_template)
+#add_dependencies(xeth compile_html)
+#add_dependencies(xeth compile_icon)
 
 
 
