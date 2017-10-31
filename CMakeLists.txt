@@ -16,11 +16,12 @@ include(${PROJECT_SOURCE_DIR}/cmake/modules/OSFlags.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/modules/QRC.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/modules/Test.cmake)
 
-add_subdirectory(libethrpc)
-add_subdirectory(libethcrypto)
 
-set(ETHCRYPTO_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethcrypto/include")
-set(ETHCRYPTO_LIBRARY "ethcrypto")
+add_subdirectory(libethcrypto)
+add_subdirectory(libethrpc)
+
+#set(ETHCRYPTO_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethcrypto/include")
+#set(ETHCRYPTO_LIBRARY "ethcrypto")
 add_subdirectory(libethstealth)
 
 set(ETHRPC_INCLUDE_DIR "${PROJECT_BINARY_DIR}/libethrpc/include")

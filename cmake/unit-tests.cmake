@@ -57,7 +57,6 @@ target_link_libraries(xeth-tests
     ${Boost_REGEX_LIBRARY}
     ${Boost_DATE_TIME_LIBRARY}
     ${Boost_CHRONO_LIBRARY}
-    ${CRYPTOPP_LIBRARY}
     ${LEVELDB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
 )

@@ -1,7 +1,6 @@
 find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
 find_package(JsonCPP REQUIRED)
 find_package(LevelDB REQUIRED)
-find_package(CryptoPP REQUIRED) 
 
 if(ENABLE_GMP)
     find_package(GMP)
@@ -45,11 +44,10 @@ target_include_directories(
     ${Qt5Concurrent_INCLUDE_DIRS}
     ${Qt5Core_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIR}
-    ${CRYPTOPP_INCLUDE_DIR}
     ${LEVELDB_INCLUDE_DIR}
+    ${ETHCRYPTO_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_BINARY_DIR}/libethrpc/include
-    ${ETHCRYPTO_INCLUDE_DIRS}
 #    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libbitprofile/include
     ${ETHSTEALTH_INCLUDE_DIRS}
