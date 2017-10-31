@@ -47,7 +47,7 @@ target_include_directories(
     ${LEVELDB_INCLUDE_DIR}
     ${ETHCRYPTO_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src
-    ${PROJECT_BINARY_DIR}/libethrpc/include
+    ${ETHRPC_INCLUDE_DIRS}
 #    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libbitprofile/include
     ${ETHSTEALTH_INCLUDE_DIRS}
