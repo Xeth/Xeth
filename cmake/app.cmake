@@ -1,13 +1,4 @@
-find_package(Qt5 COMPONENTS Core WebKit WebKitWidgets Concurrent REQUIRED)
-find_package(JsonCPP REQUIRED)
-#set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost COMPONENTS system filesystem thread program_options random regex date_time chrono REQUIRED)
-find_package(LevelDB REQUIRED)
-find_package(GMP)
 
-
-set(CMAKE_THREAD_PREFER_PTHREAD ON)
-find_package(Threads REQUIRED)
 
 file(GLOB_RECURSE WINDOW_SOURCES "src/window/*.cpp")
 set(APP_SOURCES src/main.cpp src/Application.cpp ${WINDOW_SOURCES})
@@ -68,11 +59,6 @@ endif()
 
 
 add_dependencies(xeth resources)
-#add_dependencies(xeth compile_js)
-#add_dependencies(xeth compile_CSS)
-#add_dependencies(xeth compile_template)
-#add_dependencies(xeth compile_html)
-#add_dependencies(xeth compile_icon)
 
 
 

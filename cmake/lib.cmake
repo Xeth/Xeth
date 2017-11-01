@@ -1,10 +1,3 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent REQUIRED)
-find_package(JsonCPP REQUIRED)
-find_package(LevelDB REQUIRED)
-
-if(ENABLE_GMP)
-    find_package(GMP)
-endif()
 
 add_definitions(-DBOOST_PP_VARIADICS)
 
@@ -48,10 +41,8 @@ target_include_directories(
     ${ETHCRYPTO_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src
     ${ETHRPC_INCLUDE_DIRS}
-#    ${PROJECT_BINARY_DIR}/libethcrypto/include
     ${PROJECT_BINARY_DIR}/libbitprofile/include
     ${ETHSTEALTH_INCLUDE_DIRS}
-#    ${PROJECT_BINARY_DIR}/libethstealth/include
 )
 
 add_dependencies(xethlib ethrpc)

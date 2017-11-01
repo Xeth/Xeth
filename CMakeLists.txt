@@ -32,6 +32,7 @@ add_subdirectory(libbitprofile)
 add_dependencies(bitprofile ethrpc)
 add_dependencies(ethstealth ethcrypto)
 
+include(${PROJECT_SOURCE_DIR}/cmake/deps.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/lib.cmake)
 include(${PROJECT_SOURCE_DIR}/cmake/resources.cmake)

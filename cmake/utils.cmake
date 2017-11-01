@@ -1,4 +1,4 @@
-find_package(Qt5 COMPONENTS Core Widgets WebKit WebKitWidgets Concurrent Xml REQUIRED)
+
 
 file(GLOB UTILS_SOURCES ${PROJECT_SOURCE_DIR}/utils/lib/*.cpp)
 
