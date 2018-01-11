@@ -83,6 +83,37 @@ if(GMP_LIBRARIES)
 endif()
 
 
+add_executable(reveal ${PROJECT_SOURCE_DIR}/utils/reveal.cpp)
+target_include_directories(reveal PUBLIC ${UTILS_INCLUDES} ${ETHCRYPTO_INCLUDE_DIRS} ${ETHSTEALTH_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src)
+target_link_libraries(reveal 
+    xethlib
+    ethstealth
+    bitprofile
+    ethrpc
+    ethcrypto
+    ${Qt5WebKitWidgets_LIBRARIES}
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5WebKit_LIBRARIES}
+    ${Qt5Concurrent_LIBRARIES}
+    ${Qt5Core_LIBRARIES}
+    ${JSONCPP_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
+    ${Boost_THREAD_LIBRARY}
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_RANDOM_LIBRARY}
+    ${Boost_REGEX_LIBRARY}
+    ${Boost_DATE_TIME_LIBRARY}
+    ${Boost_CHRONO_LIBRARY}
+    ${LEVELDB_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT} 
+)
+
+if(GMP_LIBRARIES)
+    target_link_libraries(reveal ${GMP_LIBRARIES})
+endif()
+
+
 add_executable(editor ${PROJECT_SOURCE_DIR}/utils/editor.cpp)
 target_include_directories(editor PUBLIC ${UTILS_INCLUDES})
 target_link_libraries(editor ${UTILS_LIBRARIES})
