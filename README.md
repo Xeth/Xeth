@@ -1,4 +1,4 @@
-# Xeth wallet is no longer maintained. Please use alternative wallets such as https://github.com/ethereum/mist
+# Xeth is no longer maintained. Please use alternative wallets such as https://github.com/ethereum/mist
 
 # Xeth
 
