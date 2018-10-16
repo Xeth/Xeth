@@ -1,3 +1,5 @@
+# Xeth wallet is no longer maintained. Please use alternative wallets such as https://github.com/ethereum/mist
+
 # Xeth
 
 Xeth is a free, open-source [Ethereum](http://ethereum.org) GUI wallet. It implements various useful features, like [stealth payments](doc/stealth.md), [bitprofile](http://bitprofile.org) support, secure random key generation, address book support, and much more.
